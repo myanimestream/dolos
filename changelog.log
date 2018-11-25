@@ -1,0 +1,146 @@
+version: 2.1.0-dev;
+------------------
+changed: deities is now **dolos**!;
+
+
+===============
+version: 2.0.0;
+release: 2018-08-16;
+--------------
+added[2]: Basic support for [Kitsu](https://kitsu.io) is here!;
+added: Showing a warning when playing an embedded player;
+changed: Set timeout for RapidVideo streams to 5 seconds which should result in less embedded RapidVideo players;
+changed: Adjusted anime uids such that they may include numbers and various kanji characters;
+changed: Changed behaviour of Greaser (the build tool for MyAnimeStream) so there might be a few new bugs;
+changed: Adjusted CSS for changelog so it looks better;
+changed: Can now download videos using context menu;
+fixed: "Random Anime Button" on "Plan to Watch" list no longer opens anime that haven't aired yet;
+fixed: Injecting "no-referrer" policy to ensure that Mp4Upload works;
+fixed: `MyAnimeStream`: Fixed a severe problem with how the anime status was determined that would break movies;
+fixed: Showing correct episode number in "Couldn't find episode x" modal now;
+fixed: not displaying "unseen episodes" when anime hasn't been started;
+
+
+===============
+version: 1.7.0;
+release: 2018-07-05 22:02;
+---
+ADDED: Added a button to the "Plan to Watch" section of the anime list which links to a random anime on the list;
+ADDED: Iframes can now go fullscreen and are adjusted to the page;
+CHANGED: Adjusted TTL for stream links. Should result in less embedded streams;
+FIXED: Embedded players using iframes work now. It didn't work because the links were using http instead of https;
+FIXED: Using `sendBeacon` to send episode updates which should finally fix the problem with updating the current episode index when leaving the page;
+
+
+===============
+version: 1.6.0;
+release: 2018-07-04 23:58;
+---
+ADDED: Making sure that episode keys don't have dots in them;
+CHANGED: Now only reporting "actual" Deities errors to Sentry;
+CHANGED: Only storing episode data for anime that are being watched;
+FIXED: Rapidvideo poster now has better error handling;
+FIXED: Calling the correct function in episode template now;
+
+
+===============
+version: 1.5.1;
+release: 2018-07-04 14:27;
+---
+FIXED: Fixed typo "an uid";
+FIXED: Player embeds for episodes without working streams;
+FIXED: Preload now returns host url when there's no working streams;
+FIXED: Fixed setting current episode as watched when past required watch time;
+
+
+===============
+version: 1.5.0;
+release: 2018-07-04 02:51;
+---
+CHANGED: Changed "v.x.y.z" to "vx.y.z". You can thank me later!;
+CHANGED: Following the semantic versioning scheme now;
+CHANGED[1]: Restructured some of the api endpoints;
+CHANGED: Storing previous episode count on the server to ensure cross-device flow(????);
+FIXED[1]: 9Anime changed their encryption... again! Using a different approach through a seperate server now;
+REMOVED: Since keeping fullscreen across episodes didn't work anyway, it was removed;
+
+
+===============
+version: 1.4.5;
+release: 2018-07-02 23:49;
+---
+ADDED: Preloading next episode to make transition quicker;
+CHANGED: Streams now cache posters even if they don't have any links;
+CHANGED: Stream selection isn't greedy anymore but returns when finding the first working stream;
+FIXED: Timeout error for broken streams;
+
+
+==============
+version: 1.4.4;
+release: 2018-07-01;
+---
+CHANGED: Using `a` element links instead of onclick events;
+FIXED: Autoplaying from "Continue Watching" button works now;
+FIXED: Storing previous latest episode for displaying "new episode" fixed.;
+FIXED[1]: Gogoanime now runs through a "proxy" to make sure it doesn't break *that* easily again;
+
+
+==============
+version: 1.4.0;
+release: 2018-06-28 15:58;
+---
+ADDED[1]: Keeping fullscreen when automatically switching to next episode;
+ADDED: "Continue Watching" / "Start Watching" button autoplays;
+CHANGED: >
+Showing "new episode" when there's actually a new episode compared to
+last time and showing "unseen episode" when there are unseen episodes;
+
+CHANGED: Adjusted some bits of code for Codacy;
+FIXED: 9anime works again (just a question of how long);
+FIXED: Handling special Unicode BOM character;
+FIXED: Autoplay from the second last to the last episode works now;
+
+
+==============
+version: 1.2.2;
+release: 2018-06-26 21:05;
+---
+DEPRECATED: MyAnimeStream just got its own [GitHub repository](https://github.com/siku2/MyAnimeStream);
+
+
+==============
+version: 1.2.1;
+release: 2018-06-26 20:32:20;
+---
+added: Stream links expire after a certain time thus broken streams should fix themselves after a while;
+added: AnimeList details are now cached so they load quicker;
+added: Pagination for episode lists;
+fixed: Improved UID caching;
+fixed: Mp4Upload no longer broken;
+fixed[2]: 9Anime anime work again;
+fixed: Detecting Unicode BOM;
+
+
+==============
+version: 1.1.0;
+release: 2018-06-14 16:15:45.066;
+---
+added: When switching to the next episode the player automatically starts playing;
+added: [Mp4Upload](https://www.mp4upload.com) stream extractor;
+
+changed: Temporarily disabled Streamango and Estream sources as they're ip locked;
+fixed[1]: Cached Streamango streams no longer crash Grobber;
+
+
+=============
+version: 1.0.6;
+release: 2018-06-10 19:24:00.000;
+---
+
+added[2]: Can now extract streams from [Streamango](https://streamango.com/);
+added[1]: This very changelog;
+
+fixed[1]: User settings are now stored properly on the server *(now if only the corresponding MAL page were accessible)*;
+fixed: Anime with no episodes no longer cause `uid invalid` errors;
+
+changed[1]: Changed the caching of anime uids. You can expect a lot of "unknown uid" messages on your anime list because of this. **Sorry!**;

@@ -1,0 +1,30 @@
+userscript:
+  name:                 MyAnimeStream
+  author:               siku2
+  version:              2.1.0
+  description:          Get the most out of your favourite anime site by turning it into a streaming site.
+  homepage:             https://mas.dokkeral.com/
+  downloadURL:          https://mas.dokkeral.com/download
+  icon:                 https://mas.dokkeral.com/images/logo
+  include:
+    - /^http(?:s)?\:\/\/myanimelist\.net.*$/
+    - /^http(?:s)?\:\/\/kitsu\.io.*$/
+  noframes:             true
+  run-at:               document-start
+  require:
+    - https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js
+    - https://cdn.jsdelivr.net/npm/raven-js/dist/raven.min.js
+    - https://cdn.jsdelivr.net/npm/plyr/dist/plyr.polyfilled.min.js
+    - https://cdn.jsdelivr.net/npm/js-cookie/src/js.cookie.min.js
+
+settings:
+  entry: "core.js"
+  bundler:
+    globals:
+      jQuery: jquery
+      Raven: raven-js
+      Cookies: js-cookie
+      Plyr: plyr
+  processor:
+    script_enabled: false
+    log_format: "{script.fileid}: {message}"
