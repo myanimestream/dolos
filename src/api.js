@@ -76,7 +76,7 @@ export async function getAnimeInfo(name, status) {
     }
     if (!found) {
         console.log("Searching for anime", name);
-        const result = await $.getJSON(grobberUrl + "/search/" + name, {
+        const result = await $.getJSON(grobberUrl + "/anime/search/" + name, {
             dub: await config.dub
         });
 
