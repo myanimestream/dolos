@@ -1,0 +1,45 @@
+{
+  "ext_description": {
+    "message": "Get the most out of your favourite anime site by turning it into a streaming site.",
+    "description": "The description of the extension"
+  },
+  "language__en": {
+    "message": "English"
+  },
+  "language__de": {
+    "message": "German"
+  },
+  "language__translation_type__dubbed": {
+    "message": "Dubbed"
+  },
+  "language__translation_type__subbed": {
+    "message": "Subbed"
+  },
+  "options__video": {
+    "message": "Video"
+  },
+  "options__site_integration": {
+    "message": "Site Integration"
+  },
+  "options__debug": {
+    "message": "Debug"
+  },
+  "options__general__title": {
+    "message": "General Settings"
+  },
+  "options__general__autoplay": {
+    "message": "Autoplay"
+  },
+  "options__general__auto_next": {
+    "message": "Auto next"
+  },
+  "options__language__title": {
+    "message": "Language Settings"
+  },
+  "options__language__language": {
+    "message": "Language"
+  },
+  "options__language__translation_type": {
+    "message": "Translation Type"
+  }
+}

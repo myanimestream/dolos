@@ -1,0 +1,44 @@
+{
+  "ext_description": {
+    "message": "Hole das meiste aus deiner lieblings Anime-Seite, indem sie in eine Streaming-Seite umgewandelt wird."
+  },
+  "language__en": {
+    "message": "Englisch Masterrace"
+  },
+  "language__de": {
+    "message": "Deutsch"
+  },
+  "language__translation_type__dubbed": {
+    "message": "Dubbed"
+  },
+  "language__translation_type__subbed": {
+    "message": "Subbed"
+  },
+  "options__video": {
+    "message": "Video"
+  },
+  "options__site_integration": {
+    "message": "Integration"
+  },
+  "options__debug": {
+    "message": "Debug"
+  },
+  "options__general__title": {
+    "message": "Allgemeine Einstellungen"
+  },
+  "options__general__autoplay": {
+    "message": "Autoplay"
+  },
+  "options__general__auto_next": {
+    "message": "Auto next"
+  },
+  "options__language__title": {
+    "message": "Spracheinstellungen"
+  },
+  "options__language__language": {
+    "message": "Sprache"
+  },
+  "options__language__translation_type": {
+    "message": "Übersetzungsart"
+  }
+}

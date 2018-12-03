@@ -1,0 +1,47 @@
+{
+  "manifest_version": 2,
+  "name": "MyAnimeStream",
+  "version": "0.0.0",
+  "description": "__MSG_ext_description__",
+  "default_locale": "en",
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "storage"
+  ],
+  "browser_action": {
+    "default_icon": "icon32.png",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "run_at": "document_idle",
+      "matches": [
+        "*://kitsu.io/*"
+      ],
+      "js": [
+        "js/kitsu.js"
+      ]
+    },
+    {
+      "run_at": "document_idle",
+      "matches": [
+        "*://myanimelist.net/*"
+      ],
+      "js": [
+        "js/myanimelist.js"
+      ]
+    }
+  ]
+}
