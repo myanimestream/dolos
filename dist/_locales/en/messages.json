@@ -41,5 +41,34 @@
   },
   "options__language__translation_type": {
     "message": "Translation Type"
+  },
+  "options__grobber__title": {
+    "message": "Grobber Settings"
+  },
+  "options__grobber__url": {
+    "message": "Api url"
+  },
+  "options__grobber__url__invalid": {
+    "message": "Invalid url"
+  },
+  "options__grobber__url__test_failed": {
+    "message": "Test failed"
+  },
+  "player__video_title_format": {
+    "message": "%TITLE$ Episode %EPISODE_NUMBER%",
+    "placeholders": {
+      "title": {
+        "content": "$1"
+      },
+      "episode_number": {
+        "content": "$2"
+      }
+    }
+  },
+  "player__skip_next": {
+    "message": "Next Episode"
+  },
+  "player__skip_previous": {
+    "message": "Previous Episode"
   }
 }

@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import DolosAppBar from "./AppBar";
-
 
 interface AppProps {
 }
@@ -21,7 +19,7 @@ export default class Popup extends React.Component<AppProps, AppState> {
 
     render() {
         return (
-            <DolosAppBar/>
+            "Hello World"
         )
     }
 }

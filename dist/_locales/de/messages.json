@@ -8,29 +8,14 @@
   "language__de": {
     "message": "Deutsch"
   },
-  "language__translation_type__dubbed": {
-    "message": "Dubbed"
-  },
-  "language__translation_type__subbed": {
-    "message": "Subbed"
-  },
   "options__video": {
     "message": "Video"
   },
   "options__site_integration": {
     "message": "Integration"
   },
-  "options__debug": {
-    "message": "Debug"
-  },
   "options__general__title": {
     "message": "Allgemeine Einstellungen"
-  },
-  "options__general__autoplay": {
-    "message": "Autoplay"
-  },
-  "options__general__auto_next": {
-    "message": "Auto next"
   },
   "options__language__title": {
     "message": "Spracheinstellungen"
@@ -40,5 +25,23 @@
   },
   "options__language__translation_type": {
     "message": "Übersetzungsart"
+  },
+  "options__grobber__title": {
+    "message": "Grobber Einstellungen"
+  },
+  "options__grobber__url": {
+    "message": "Api url"
+  },
+  "options__grobber__url__invalid": {
+    "message": "Ungültige url"
+  },
+  "options__grobber__url__test_failed": {
+    "message": "Test nicht bestanden"
+  },
+  "player__skip_next": {
+    "message": "Nächste Episode"
+  },
+  "player__skip_previous": {
+    "message": "Vorherige Episode"
   }
 }

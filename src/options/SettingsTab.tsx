@@ -142,6 +142,12 @@ export interface SettingsTabContentProps {
     changeConfig: (string, any) => void;
 }
 
-export class SettingsTabContent<P extends SettingsTabContentProps = SettingsTabContentProps, S = any> extends React.Component<P, S> {
+export class SettingsTabContent<P extends SettingsTabContentProps = SettingsTabContentProps, S = {}> extends React.Component<P, S> {
+    toggle(param: keyof Config) {
+        this.change(param, !this.props.config[param]);
+    }
 
+    change(param: keyof Config, value: any) {
+        this.props.changeConfig(param, value);
+    }
 }

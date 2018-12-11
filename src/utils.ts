@@ -1,6 +1,7 @@
-export async function artificialDelay(delay: number, ...waiting: Promise<any>[]): Promise<void> {
-    const timeout = new Promise(res => setTimeout(res, delay));
+export async function artificialDelay<T>(delay: number, ...waiting: Promise<T>[]): Promise<T[]> {
+    const timeout = new Promise(res => setTimeout(res, delay)) as Promise<T>;
     waiting.push(timeout);
 
-    await Promise.all(waiting);
+    const res = await Promise.all(waiting);
+    return res.slice(0, res.length - 1)
 }

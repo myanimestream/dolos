@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "MyAnimeStream",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "__MSG_ext_description__",
   "default_locale": "en",
   "icons": {
@@ -10,19 +10,17 @@
     "48": "icon48.png",
     "128": "icon128.png"
   },
-  "options_page": "options.html",
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
   "permissions": [
-    "storage"
+    "storage",
+    "<all_urls>"
   ],
   "browser_action": {
     "default_icon": "icon32.png",
     "default_popup": "popup.html"
-  },
-  "background": {
-    "scripts": [
-      "js/background.js"
-    ],
-    "persistent": false
   },
   "content_scripts": [
     {

@@ -20,36 +20,11 @@ import {SettingsTabContent} from "../SettingsTab";
 const _ = chrome.i18n.getMessage;
 
 export default class Video extends SettingsTabContent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            contracted: new Set<number>()
-        };
-    }
-
-    toggle(param: string) {
-        this.change(param, !this.props.config[param]);
-    }
-
-    change(param: string, value: any) {
-        this.props.changeConfig(param, value);
-    }
-
-    togglePanel = (panel: number) => {
-        const contracted = this.state.contracted;
-
-        if (contracted.has(panel))
-            contracted.delete(panel);
-        else
-            contracted.add(panel);
-        this.forceUpdate();
-    };
-
     render() {
         const config = this.props.config;
 
         return (
-            <div>
+            <>
                 <List subheader={<ListSubheader>{_("options__general__title")}</ListSubheader>}>
                     <ListItem>
                         <ListItemIcon>
@@ -110,7 +85,7 @@ export default class Video extends SettingsTabContent {
                         </ListItemSecondaryAction>
                     </ListItem>
                 </List>
-            </div>
+            </>
         );
     }
 }

@@ -1,16 +1,22 @@
+import Language from "./language";
+
 export default interface Config {
+    grobberUrl: string;
+
     autoplay: boolean;
     autoNext: boolean;
 
-    language: string;
+    language: Language;
     dubbed: boolean;
 }
 
 const DEFAULT_CONFIG: Config = {
+    grobberUrl: "https://mas.dokkeral.com",
+
     autoplay: true,
     autoNext: true,
 
-    language: "en",
+    language: Language.ENGLISH,
     dubbed: false
 };
 
