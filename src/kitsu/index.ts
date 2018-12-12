@@ -1,5 +1,6 @@
-import {SkipButton} from "../common/Player";
-import {AnimePage} from "../page";
+import {Service} from "../common";
+import {SkipButton} from "../common/components";
+import {EpisodePage} from "../common/pages";
 import {transitionTo} from "./inject";
 import UrlObserver from "./url-observer";
 
@@ -20,54 +21,15 @@ function waitUntilExists(selector: string): Promise<Element> {
     });
 }
 
-
-class Kitsu extends AnimePage {
-    urlObserver: UrlObserver;
-
-    _animeIdentifier?: string;
-    _episodeIndex?: number;
-
-    constructor(...args) {
-        super("kitsu", ...args);
-
-        this.urlObserver = new UrlObserver(250, (_, url) => this.route(new URL(url)));
-    }
-
-    async load() {
-        this.insertNoReferrerPolicy();
-        this.urlObserver.start();
-    }
-
-    async route(url: URL) {
-        this.state.removeInjected();
-
-        let match;
-        console.log(url.pathname);
-
-        match = url.pathname.match(/\/anime\/(.+)\/episodes\/(\d+)/);
-        if (match) {
-            this._animeIdentifier = match[1];
-            this._episodeIndex = parseInt(match[2]) - 1;
-            await this.showEpisode();
-        }
-    }
-
-    async injectPlayer(player: Element) {
-        (await waitUntilExists(".media-container .unit-summary"))
-            .insertAdjacentElement("afterend", player);
-        this.state.injected(player);
-    }
-
-    async getAnimeIdentifier(): Promise<string | null> {
-        return this._animeIdentifier;
-    }
-
-    async getAnimeSearchQuery(): Promise<string | null> {
-        return (await waitUntilExists("meta[property=\"og:title\"]")).getAttribute("content");
-    }
-
+class KitsuEpisodePage extends EpisodePage {
     async getEpisodeIndex(): Promise<number | null> {
-        return this._episodeIndex;
+        return this.state.memory.episodeIndex;
+    }
+
+    async injectEmbed(embed: Element): Promise<any> {
+        (await waitUntilExists(".media-container .unit-summary"))
+            .insertAdjacentElement("afterend", embed);
+        this.state.injected(embed);
     }
 
     async nextEpisodeButton(): Promise<SkipButton | null> {
@@ -101,6 +63,47 @@ class Kitsu extends AnimePage {
         epIndex = epIndex || await this.getEpisodeIndex();
         transitionTo("anime.show.episodes.show", epIndex);
     }
+}
+
+
+class Kitsu extends Service {
+    urlObserver: UrlObserver;
+
+    constructor() {
+        super("kitsu");
+        this.EPISODE_PAGE = KitsuEpisodePage;
+
+        this.urlObserver = new UrlObserver(250, (_, url) => this.route(new URL(url)));
+    }
+
+    async load() {
+        await super.load(false);
+        this.urlObserver.start();
+    }
+
+    async route(url: URL) {
+        await this.state.reload();
+
+        let match;
+        console.log(url.pathname);
+
+        match = url.pathname.match(/\/anime\/(.+)\/episodes\/(\d+)/);
+        if (match) {
+            this.state.memory.animeIdentifier = match[1];
+            this.state.memory.episodeIndex = parseInt(match[2]) - 1;
+            await this.showEpisodePage();
+        }
+    }
+
+    async getAnimeIdentifier(): Promise<string | null> {
+        return this.state.memory.animeIdentifier;
+    }
+
+    async getAnimeSearchQuery(): Promise<string | null> {
+        return (await waitUntilExists("meta[property=\"og:title\"]")).getAttribute("content");
+    }
+
+
 }
 
 (new Kitsu()).load();

@@ -10,7 +10,7 @@ export default interface Config {
     dubbed: boolean;
 }
 
-const DEFAULT_CONFIG: Config = {
+export const DEFAULT_CONFIG: Config = {
     grobberUrl: "https://mas.dokkeral.com",
 
     autoplay: true,
@@ -19,7 +19,3 @@ const DEFAULT_CONFIG: Config = {
     language: Language.ENGLISH,
     dubbed: false
 };
-
-export function buildConfig(data: Object): Config {
-    return Object.assign({}, DEFAULT_CONFIG, data);
-}

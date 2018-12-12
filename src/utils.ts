@@ -5,3 +5,7 @@ export async function artificialDelay<T>(delay: number, ...waiting: Promise<T>[]
     const res = await Promise.all(waiting);
     return res.slice(0, res.length - 1)
 }
+
+export interface Type<T> extends Function {
+    new(...args: any[]): T;
+}

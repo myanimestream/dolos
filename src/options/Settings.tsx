@@ -22,7 +22,7 @@ import classNames from "classnames";
 import * as React from "react";
 import {HashRouter, Link, matchPath, Redirect, Route, Switch, withRouter} from "react-router-dom";
 import Config from "../config";
-import * as Store from "../store";
+import Store from "../store";
 import SettingsTab from "./SettingsTab";
 import {Debug, SiteIntegration, Video} from "./tabs";
 
@@ -124,7 +124,7 @@ export default withStyles(styles)(class Settings extends React.Component<Setting
     handleDrawerClose = () => this.setState({drawerOpen: false});
 
     saveConfig = async (config: Config) => {
-        await Store.setConfig(config);
+        await Store.set("config", config);
         this.setState({configPromise: Promise.resolve(config)});
     };
 
