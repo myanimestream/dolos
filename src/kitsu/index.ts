@@ -34,7 +34,7 @@ class KitsuEpisodePage extends EpisodePage {
 
     async nextEpisodeButton(): Promise<SkipButton | null> {
         const epIndex = await this.getEpisodeIndex();
-        if (!epIndex || epIndex === 0)
+        if (!epIndex && epIndex !== 0)
             return null;
 
         return {
@@ -44,13 +44,13 @@ class KitsuEpisodePage extends EpisodePage {
     }
 
     async showNextEpisode(epIndex?: number): Promise<any> {
-        epIndex = epIndex || await this.getEpisodeIndex() + 2;
+        epIndex = (epIndex || epIndex === 0) ? epIndex : await this.getEpisodeIndex() + 2;
         transitionTo("anime.show.episodes.show", epIndex);
     }
 
     async prevEpisodeButton(): Promise<SkipButton | null> {
         const epIndex = await this.getEpisodeIndex();
-        if (!epIndex || epIndex === 0)
+        if (!epIndex && epIndex !== 0)
             return null;
 
         return {
@@ -60,7 +60,7 @@ class KitsuEpisodePage extends EpisodePage {
     }
 
     async showPrevEpisode(epIndex?: number): Promise<any> {
-        epIndex = epIndex || await this.getEpisodeIndex();
+        epIndex = (epIndex || epIndex === 0) ? epIndex : await this.getEpisodeIndex();
         transitionTo("anime.show.episodes.show", epIndex);
     }
 }

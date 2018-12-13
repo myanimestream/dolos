@@ -46,7 +46,7 @@ interface SettingsTabProps extends WithStyles<typeof styles> {
 
 interface SettingsTabState {
     originalConfig?: Config;
-    config?: Config;
+    config?: Partial<Config>;
 
     showSave: boolean;
     saving: boolean;
@@ -67,7 +67,24 @@ export default withStyles(styles)(
 
         async reloadConfig() {
             const config = await this.props.getConfig();
-            this.setState({config, originalConfig: Object.assign({}, config)});
+
+            const editConfig = new Proxy({}, {
+                get(target: {}, p: PropertyKey): any {
+                    if (p in target) return target[p];
+                    else return config[p];
+                },
+                set(target: {}, p: PropertyKey, value: any): boolean {
+                    if (value === config[p]) delete target[p];
+                    else target[p] = value;
+
+                    return true;
+                },
+                has(target: {}, p: PropertyKey): boolean {
+                    return p in config;
+                }
+            });
+
+            this.setState({config: editConfig, originalConfig: config});
         }
 
         async componentDidMount() {
@@ -77,7 +94,7 @@ export default withStyles(styles)(
         async save() {
             if (!this.state.saved && !this.state.saving) {
                 this.setState({saving: true});
-                await artificialDelay(500, this.props.saveConfig(this.state.config));
+                await artificialDelay(500);
                 await this.reloadConfig();
                 this.setState({saving: false, saved: true});
             }
@@ -100,6 +117,7 @@ export default withStyles(styles)(
                 return;
 
             config[param] = value;
+            this.state.originalConfig[param] = value;
 
             let isDirty = this.getDirty();
             this.setState({config, saved: !isDirty, showSave: isDirty});

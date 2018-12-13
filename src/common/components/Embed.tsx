@@ -20,11 +20,13 @@ interface EmbedProps extends PlayerProps {
 
 export default class Embed extends React.Component<EmbedProps> {
     render() {
-        const {skipPrev, skipNext, sources} = this.props;
+        const {skipPrev, skipNext} = this.props;
+
+        const player = React.createElement(Player, this.props);
 
         return (
             <>
-                <Player sources={sources}/>
+                {player}
                 <Paper>
                     <Tooltip title={_("player__skip_previous")}>
                         <span>

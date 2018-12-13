@@ -24,6 +24,9 @@ class StoreObject<T = {}> {
         return new Proxy(
             new StoreObject<T>(store, key, data || {} as T),
             {
+                has(target: StoreObject<T>, p: keyof T): boolean {
+                    return target.has(p);
+                },
                 get(target: StoreObject<T>, p: keyof T): any {
                     if (p in target) {
                         // @ts-ignore
@@ -33,15 +36,25 @@ class StoreObject<T = {}> {
                     return target.get(p);
                 },
                 set(target: StoreObject<T>, p: keyof T, value: any): boolean {
-                    if (p in target) return true;
+                    if (p in target) {
+                        target[p as any] = value;
+                        return true;
+                    }
 
                     console.log("setting", target, p, value);
                     target.set(p, value)
                         .catch(reason => console.trace("Couldn't set storeobject property", p, "for", target, reason));
                     return true;
+                },
+                ownKeys(target: StoreObject<T>): (keyof T)[] {
+                    return target.ownKeys();
                 }
             }
         );
+    }
+
+    has(key: keyof T): boolean {
+        return key in this._container;
     }
 
     get(key: keyof T): any {
@@ -51,6 +64,10 @@ class StoreObject<T = {}> {
     async set(key: keyof T, value: any) {
         this._container[key] = value;
         await this._store.set(this._key, this._container);
+    }
+
+    ownKeys(): (keyof T)[] {
+        return Object.keys(this._container) as (keyof T)[];
     }
 
     update(newValue: T) {

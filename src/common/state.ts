@@ -63,7 +63,7 @@ export default class State {
 
         let resp;
         try {
-            resp = await this.request("/anime/search", {anime: query, language: config.language, dubbed: config.dubbed});
+            resp = await this.request("/anime/search/", {anime: query, language: config.language, dubbed: config.dubbed});
         } catch (e) {
             console.trace("Couldn't search for anime", e);
             return null;
@@ -79,7 +79,7 @@ export default class State {
     async getEpisode(uid: string, index: number): Promise<Episode | null> {
         let resp;
         try {
-            resp = await this.request("/anime/episode", {uid, episode: index});
+            resp = await this.request("/anime/episode/", {uid, episode: index});
         } catch (e) {
             console.trace("Couldn't fetch episode data", e);
             return null;
