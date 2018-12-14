@@ -147,13 +147,13 @@ export default withStyles(styles)(class Settings extends React.Component<Setting
     };
 
     render() {
-        const classes = this.props.classes;
+        const {classes} = this.props;
 
         return (
             <HashRouter>
                 <div className={classes.root}>
                     <CssBaseline/>
-                    <AppBar position="absolute"
+                    <AppBar position="fixed"
                             className={classNames(classes.appBar, this.state.drawerOpen && classes.appBarShift)}>
                         <Toolbar disableGutters={!this.state.drawerOpen} className={classes.toolbar}>
                             <IconButton
@@ -174,7 +174,7 @@ export default withStyles(styles)(class Settings extends React.Component<Setting
                                 noWrap
                                 className={classes.title}
                             >
-                                MyAnimeStream
+                                Dolos Settings
                             </Typography>
                         </Toolbar>
                     </AppBar>
