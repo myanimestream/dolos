@@ -1,6 +1,10 @@
-import Language from "./language";
+export enum Language {
+    ENGLISH = "en",
+    GERMAN = "de",
+}
 
-export default interface Config {
+
+export interface Config {
     grobberUrl: string;
 
     autoplay: boolean;
@@ -18,4 +22,13 @@ export const DEFAULT_CONFIG: Config = {
 
     language: Language.ENGLISH,
     dubbed: false
+};
+
+
+export interface StoredAnimeInfo {
+    uid?: string;
+}
+
+export const DEFAULT_STORED_ANIME_INFO: StoredAnimeInfo = {
+    uid: null,
 };

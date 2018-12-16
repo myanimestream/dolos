@@ -200,7 +200,7 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
                         <Switch>
                             <Redirect exact path="/" to="/home"/>
                             <Route path="/home" render={this.renderHome}/>
-                            <Route path="/test" render={() => "rip?"}/>
+                            <Route path="/test" render={() => <Typography>"rip?"</Typography>}/>
 
                             <Route path="/feedback" render={this.renderFeedback}/>
                             <Route path="/help" render={this.renderHelp}/>

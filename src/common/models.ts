@@ -1,4 +1,4 @@
-import Language from "../language";
+import {Language} from "../models";
 
 export class GrobberResponseError extends Error {
     code: number;

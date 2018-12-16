@@ -1,5 +1,4 @@
-import Config, {DEFAULT_CONFIG} from "./config";
-import StoredAnimeInfo, {DEFAULT_STORED_ANIME_INFO} from "./stored-anime-info";
+import {Config, DEFAULT_CONFIG, DEFAULT_STORED_ANIME_INFO, StoredAnimeInfo} from "./models";
 import StorageChange = chrome.storage.StorageChange;
 
 type StoreProxy<T = {}> = {
@@ -41,9 +40,8 @@ class StoreObject<T = {}> {
                         return true;
                     }
 
-                    console.log("setting", target, p, value);
                     target.set(p, value)
-                        .catch(reason => console.trace("Couldn't set storeobject property", p, "for", target, reason));
+                        .catch(reason => console.error("Couldn't set storeobject property", p, "for", target, reason));
                     return true;
                 },
                 ownKeys(target: StoreObject<T>): (keyof T)[] {
@@ -70,8 +68,8 @@ class StoreObject<T = {}> {
         return Object.keys(this._container) as (keyof T)[];
     }
 
+    // noinspection JSUnusedGlobalSymbols
     update(newValue: T) {
-        console.log("update", this, newValue);
         Object.assign(this._container, newValue);
     }
 
@@ -88,13 +86,11 @@ export class Store {
         chrome.storage.onChanged.addListener(this.onValueChanged);
     }
 
-    onValueChanged = (changes: { [key: string]: StorageChange }, areaName: string) => {
+    onValueChanged = (changes: { [key: string]: StorageChange }) => {
         for (const [key, change] of Object.entries(changes)) {
             const storeObject = this._cache[key];
             if (storeObject) storeObject.update(change.newValue);
         }
-
-        console.log(changes, areaName);
     };
 
     getRaw(keys?: string | string[] | Object): Promise<{ [key: string]: any }> {
@@ -111,8 +107,6 @@ export class Store {
         if (!(key in this._cache)) {
             const value = (await this.getRaw(key))[key];
             this._cache[key] = StoreObject.create(this, key, value);
-            console.log("getting", key, this._cache[key]);
-
         }
 
         return this._cache[key];
@@ -143,7 +137,6 @@ export class Store {
     async getStoredAnimeInfo(service_id: string, identifier: string, config?: StoreProxyObject<Config>): Promise<StoreProxyObject<StoredAnimeInfo>> {
         let key = await this.buildIdentifier(service_id, identifier, config);
         const info = await this.get(key);
-        console.log("defaulted", key);
 
         info.setDefaults(DEFAULT_STORED_ANIME_INFO);
 

@@ -21,7 +21,7 @@ import VideoLibraryIcon from "@material-ui/icons/VideoLibrary";
 import classNames from "classnames";
 import * as React from "react";
 import {HashRouter, Link, matchPath, Redirect, Route, Switch, withRouter} from "react-router-dom";
-import Config from "../config";
+import {Config} from "../models";
 import Store from "../store";
 import SettingsTab from "./SettingsTab";
 import {Debug, SiteIntegration, Video} from "./tabs";

@@ -1,7 +1,6 @@
 import axios from "axios";
-import Config from "../config";
+import {Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
-import StoredAnimeInfo from "../stored-anime-info";
 import {Episode, episodeFromResp, GrobberResponseError, SearchResult} from "./models";
 import {ServicePage} from "./pages";
 
@@ -43,7 +42,7 @@ export default class State {
         if (this.page) await this.page.unload();
         this.page = page;
 
-        if (page) page.load().catch(reason => console.trace("Something went wrong while loading service page", reason, page));
+        if (page) page.load().catch(reason => console.error("Something went wrong while loading service page", reason, page));
     }
 
 
@@ -65,7 +64,7 @@ export default class State {
         try {
             resp = await this.request("/anime/search/", {anime: query, language: config.language, dubbed: config.dubbed});
         } catch (e) {
-            console.trace("Couldn't search for anime", e);
+            console.error("Couldn't search for anime", e);
             return null;
         }
 
@@ -81,7 +80,7 @@ export default class State {
         try {
             resp = await this.request("/anime/episode/", {uid, episode: index});
         } catch (e) {
-            console.trace("Couldn't fetch episode data", e);
+            console.error("Couldn't fetch episode data", e);
             return null;
         }
 

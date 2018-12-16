@@ -1,17 +1,9 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
-import {green} from "@material-ui/core/colors";
-
-import Fab from "@material-ui/core/Fab";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
-
-import CheckIcon from "@material-ui/icons/Check";
-import SaveIcon from "@material-ui/icons/Save";
-import classNames from "classnames";
 import * as React from "react";
 
-import Config from "../config";
-import {artificialDelay} from "../utils";
+import {Config} from "../models";
 
 const styles = theme => createStyles({
     root: {
@@ -22,19 +14,6 @@ const styles = theme => createStyles({
         margin: theme.spacing.unit,
         position: "relative",
         alignSelf: "flex-end",
-    },
-    buttonSuccess: {
-        backgroundColor: green[500],
-        "&:hover": {
-            backgroundColor: green[700],
-        },
-    },
-    fabProgress: {
-        color: green[500],
-        position: "absolute",
-        top: -6,
-        left: -6,
-        zIndex: 1,
     }
 });
 
@@ -91,15 +70,6 @@ export default withStyles(styles)(
             await this.reloadConfig();
         }
 
-        async save() {
-            if (!this.state.saved && !this.state.saving) {
-                this.setState({saving: true});
-                await artificialDelay(500);
-                await this.reloadConfig();
-                this.setState({saving: false, saved: true});
-            }
-        }
-
         getDirty(): boolean {
             const original = this.state.originalConfig;
 
@@ -124,10 +94,13 @@ export default withStyles(styles)(
         }
 
         render() {
-            if (!this.state.config)
+            if (!this.state.config) {
                 return (
                     <CircularProgress/>
                 );
+            }
+
+            const {classes} = this.props;
 
             // @ts-ignore
             const content = React.createElement(this.props.content, {
@@ -135,21 +108,9 @@ export default withStyles(styles)(
                 changeConfig: (param: string, value: any) => this.changeConfig(param, value)
             });
 
-            const classes = this.props.classes;
-
-            const buttonClassname = classNames({
-                [classes.buttonSuccess]: this.state.saved,
-            });
-
             return (
                 <div className={classes.root}>
                     {content}
-                    <div className={classes.wrapper}>
-                        <Fab color="primary" className={buttonClassname} onClick={this.save.bind(this)} disabled={!this.state.showSave}>
-                            {this.state.showSave && this.state.saved ? <CheckIcon/> : <SaveIcon/>}
-                        </Fab>
-                        {this.state.saving && <CircularProgress className={classes.fabProgress} size={68}/>}
-                    </div>
                 </div>
             );
         }
