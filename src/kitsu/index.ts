@@ -70,14 +70,12 @@ class Kitsu extends Service {
     urlObserver: UrlObserver;
 
     constructor() {
-        super("kitsu");
-        this.EPISODE_PAGE = KitsuEpisodePage;
-
+        super("kitsu", KitsuEpisodePage);
         this.urlObserver = new UrlObserver(250, (_, url) => this.route(new URL(url)));
     }
 
     async load() {
-        await super.load(false);
+        await super.load(true);
         this.urlObserver.start();
     }
 

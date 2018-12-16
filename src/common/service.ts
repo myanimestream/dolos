@@ -3,14 +3,15 @@ import {EpisodePage} from "./pages";
 import State from "./state";
 
 export default abstract class Service<episodePage extends EpisodePage = EpisodePage> {
-    EPISODE_PAGE: Type<episodePage>;
+    EpisodePage: Type<episodePage>;
 
     state: State;
 
-    protected constructor(service_id: string, state?: Partial<State>) {
+    protected constructor(service_id: string, episodePage: Type<episodePage>, state?: Partial<State>) {
         const s = new State(service_id);
         Object.assign(s, state);
         this.state = s;
+        this.EpisodePage = episodePage;
     }
 
     abstract async route(url: URL);
@@ -19,10 +20,10 @@ export default abstract class Service<episodePage extends EpisodePage = EpisodeP
 
     abstract async getAnimeIdentifier(): Promise<string | null>;
 
-    async load(doRoute?: boolean) {
+    async load(noRoute?: boolean) {
         this.insertNoReferrerPolicy();
 
-        if (doRoute) await this.route(new URL(location.href));
+        if (!noRoute) await this.route(new URL(location.href));
     }
 
     insertNoReferrerPolicy() {
@@ -48,6 +49,6 @@ export default abstract class Service<episodePage extends EpisodePage = EpisodeP
 
 
     async showEpisodePage() {
-        await this.state.loadPage(new this.EPISODE_PAGE(this));
+        await this.state.loadPage(new this.EpisodePage(this));
     }
 }
