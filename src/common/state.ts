@@ -2,7 +2,7 @@ import axios from "axios";
 import {Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
 import {Episode, episodeFromResp, GrobberResponseError, SearchResult} from "./models";
-import {ServicePage} from "./pages";
+import ServicePage from "./service-page";
 
 export default class State {
     serviceId: string;
@@ -52,7 +52,7 @@ export default class State {
         const resp = await axios.get(config.grobberUrl + endpoint, requestConfig);
 
         const data = resp.data;
-        if (!data.success) throw new GrobberResponseError(data.msg, data.code);
+        if (!data.success) throw new GrobberResponseError(data.msg, data.code, data.name);
 
         return data;
     }

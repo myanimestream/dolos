@@ -1,11 +1,13 @@
 import {Language} from "../models";
 
 export class GrobberResponseError extends Error {
+    name: string;
     code: number;
 
-    constructor(msg: string, code: number) {
+    constructor(msg: string, code: number, name: string) {
         super(msg);
         this.code = code;
+        this.name = name;
     }
 }
 

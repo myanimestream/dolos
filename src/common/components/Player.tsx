@@ -9,7 +9,8 @@ export interface PlayerSource {
 }
 
 export interface PlayerProps {
-    options?: Object;
+    options?: any;
+    eventListener?: { [key: string]: (event: CustomEvent) => any };
     poster?: string;
     sources: PlayerSource[];
 }
@@ -18,7 +19,20 @@ export default class Player extends React.Component<PlayerProps> {
     player?: Plyr;
 
     componentDidMount() {
-        this.player = new Plyr(ReactDOM.findDOMNode(this), this.props.options);
+        const {eventListener, options} = this.props;
+        // normal autoplay doesn't fire ended event!
+        const autoplay = options.autoplay;
+        options.autoplay = false;
+
+        this.player = new Plyr(ReactDOM.findDOMNode(this), options);
+
+        if (eventListener) {
+            for (const [event, handler] of Object.entries(eventListener)) {
+                this.player.on(event, handler);
+            }
+        }
+
+        if (autoplay) this.player.play();
     }
 
     componentWillUnmount() {

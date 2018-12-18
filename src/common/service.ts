@@ -1,16 +1,17 @@
 import {Type} from "../utils";
-import {EpisodePage} from "./pages";
+import {EpisodePage, OverviewPage} from "./pages";
 import State from "./state";
 
-export default abstract class Service<episodePage extends EpisodePage = EpisodePage> {
-    EpisodePage: Type<episodePage>;
+export default abstract class Service {
+    OverviewPage: Type<OverviewPage>;
+    EpisodePage: Type<EpisodePage>;
 
     state: State;
 
-    protected constructor(service_id: string, episodePage: Type<episodePage>, state?: Partial<State>) {
-        const s = new State(service_id);
-        Object.assign(s, state);
-        this.state = s;
+    protected constructor(service_id: string, episodePage: Type<EpisodePage>,) {
+        this.state = new State(service_id);
+
+        this.OverviewPage = null;
         this.EpisodePage = episodePage;
     }
 

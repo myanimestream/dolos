@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Embed, PlayerSource, SkipButton} from "../components";
 import {Episode} from "../models";
-import ServicePage from "./service";
+import ServicePage from "../service-page";
 import _ = chrome.i18n.getMessage;
 
 
@@ -60,6 +60,9 @@ export default abstract class EpisodePage extends ServicePage {
     }
 
     async load() {
-        await this.injectEmbed(await this.buildEpisode(await this.getEpisode()));
+        const episode = await this.getEpisode();
+        if (episode) {
+            await this.injectEmbed(await this.buildEpisode(episode));
+        }
     }
 }
