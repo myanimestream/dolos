@@ -54,8 +54,17 @@
   "options__grobber__url__test_failed": {
     "message": "Test failed"
   },
+  "options__grobber__url__trailing_slash": {
+    "message": "Trailing slash?"
+  },
+  "options__grobber__url__version_mismatch": {
+    "message": "Wrong version"
+  },
+  "options__grobber__url__no_grobber": {
+    "message": "No Grobber response"
+  },
   "player__video_title_format": {
-    "message": "%TITLE$ Episode %EPISODE_NUMBER%",
+    "message": "$TITLE$ Episode $EPISODE_NUMBER$",
     "placeholders": {
       "title": {
         "content": "$1"
@@ -70,5 +79,11 @@
   },
   "player__skip_previous": {
     "message": "Previous Episode"
+  },
+  "episode__error": {
+    "message": "Couldn't get episode, Sorry!"
+  },
+  "episode__embedded_stream": {
+    "message": "Couldn't extract any sources for this episode.\nImportant: Your watch status won't automatically update!"
   }
 }

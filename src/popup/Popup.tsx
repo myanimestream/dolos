@@ -24,50 +24,55 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import * as React from "react";
 import {HashRouter, matchPath, NavLink, Redirect, Route, Switch, withRouter} from "react-router-dom";
 
-const drawerWidth = 240;
 
-const styles = (theme: Theme) => createStyles({
-    root: {
-        ...this.grow,
-        minWidth: 300,
-        minHeight: 400,
-    },
-    grow: {
+const styles = (theme: Theme) => {
+    const drawerWidth = 240;
+
+    const grow = {
         flexGrow: 1,
-    },
-    appBar: {
-        marginLeft: drawerWidth,
-        [theme.breakpoints.up("sm")]: {
-            width: `calc(100% - ${drawerWidth}px)`,
+    };
+
+    return createStyles({
+        root: {
+            ...grow,
+            minWidth: 300,
+            minHeight: 400,
         },
-    },
-    menuButton: {
-        marginRight: 20,
-        [theme.breakpoints.up("sm")]: {
-            display: "none",
+        grow,
+        appBar: {
+            marginLeft: drawerWidth,
+            [theme.breakpoints.up("sm")]: {
+                width: `calc(100% - ${drawerWidth}px)`,
+            },
         },
-    },
-    drawer: {
-        [theme.breakpoints.up("sm")]: {
+        menuButton: {
+            marginRight: 20,
+            [theme.breakpoints.up("sm")]: {
+                display: "none",
+            },
+        },
+        drawer: {
+            [theme.breakpoints.up("sm")]: {
+                width: drawerWidth,
+                flexShrink: 0,
+            },
+        },
+        drawerPaper: {
             width: drawerWidth,
-            flexShrink: 0,
         },
-    },
-    drawerPaper: {
-        width: drawerWidth,
-    },
-    activeDrawerLink: {
-        backgroundColor: fade(theme.palette.primary.main, .12),
-        "& *": {
-            color: theme.palette.primary.main
+        activeDrawerLink: {
+            backgroundColor: fade(theme.palette.primary.main, .12),
+            "& *": {
+                color: theme.palette.primary.main
+            },
         },
-    },
-    toolbar: theme.mixins.toolbar,
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing.unit * 3,
-    },
-});
+        toolbar: theme.mixins.toolbar,
+        content: {
+            flexGrow: 1,
+            padding: theme.spacing.unit * 3,
+        },
+    });
+};
 
 interface PopupProps extends WithStyles<typeof styles, true> {
 }
@@ -98,7 +103,10 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
     renderFeedback = () => {
         return (
             <Typography paragraph>
-                Hello World!
+                Lol, as if. I don't care about your opinion!
+
+                Just so you know, this has nothing to do with the fact that I simply haven't gotten around to build such a feature...
+                <b>Nononononon</b>
             </Typography>);
     };
 

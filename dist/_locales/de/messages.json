@@ -36,12 +36,27 @@
     "message": "Ungültige url"
   },
   "options__grobber__url__test_failed": {
-    "message": "Test nicht bestanden"
+    "message": "Test fehlgeschlagen"
+  },
+  "options__grobber__url__trailing_slash": {
+    "message": "Don't ask me to translate this, I have no idea what this means in German HAAALP?"
+  },
+  "options__grobber__url__version_mismatch": {
+    "message": "Falsche Version"
+  },
+  "options__grobber__url__no_grobber": {
+    "message": "Keine Grobber Antwort"
   },
   "player__skip_next": {
     "message": "Nächste Episode"
   },
   "player__skip_previous": {
     "message": "Vorherige Episode"
+  },
+  "episode__error": {
+    "message": "Episode nicht gefunden"
+  },
+  "episode__embedded_stream": {
+    "message": "Es konnte kein Video für die Episode gefunden werden.\nWichtig: Der Episoden-Fortschritt kann nicht automatisch übernommen werden!"
   }
 }

@@ -30,12 +30,12 @@ export default abstract class Service {
     insertNoReferrerPolicy() {
         const temp = document.createElement("template");
         temp.innerHTML = `<meta name="referrer" content="never">`;
-        this.state.injected(document.head.appendChild(temp.content.firstElementChild));
+        document.head.appendChild(temp.content.firstElementChild);
     }
 
-    async getAnimeUID(): Promise<string | null> {
+    async getAnimeUID(forceSearch?: boolean): Promise<string | null> {
         const animeInfo = await this.state.getAnimeInfo(await this.getAnimeIdentifier());
-        if (animeInfo.uid)
+        if (animeInfo.uid && !forceSearch)
             return animeInfo.uid;
 
         const query = await this.getAnimeSearchQuery();

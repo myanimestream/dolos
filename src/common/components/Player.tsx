@@ -32,7 +32,7 @@ export default class Player extends React.Component<PlayerProps> {
             }
         }
 
-        if (autoplay) this.player.play();
+        if (autoplay) Promise.resolve(this.player.play()).catch();
     }
 
     componentWillUnmount() {

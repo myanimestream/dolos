@@ -25,6 +25,11 @@ interface DebugState {
     checkingUrl: boolean;
 }
 
+interface GrobberUrlCheckResult {
+    valid: boolean;
+    hint?: "trailing_slash" | "version_mismatch" | "no_grobber";
+}
+
 export default class Debug extends SettingsTabContent<SettingsTabContentProps, DebugState> {
     changeGrobberUrl = AwesomeDebouncePromise(async (url: string) => {
         if (!url.match(/https?:\/\/.+/)) {
@@ -33,11 +38,14 @@ export default class Debug extends SettingsTabContent<SettingsTabContentProps, D
         }
 
         this.setState({checkingUrl: true});
-        if (await Debug.checkGrobberUrl(url)) {
+
+        const result = await Debug.checkGrobberUrl(url);
+        if (result.valid) {
             await this.change("grobberUrl", url);
             this.setState({invalidUrl: null});
         } else {
-            this.setState({invalidUrl: _("options__grobber__url__test_failed")});
+            const text = `options__grobber__url__${result.hint || "test_failed"}`;
+            this.setState({invalidUrl: _(text)});
         }
 
         this.setState({checkingUrl: false});
@@ -51,19 +59,29 @@ export default class Debug extends SettingsTabContent<SettingsTabContentProps, D
         };
     }
 
-    static async checkGrobberUrl(url: string): Promise<boolean> {
+    static async checkGrobberUrl(url: string): Promise<GrobberUrlCheckResult> {
         let resp;
 
         try {
             resp = await axios.get(url + "/dolos-info", {timeout: 1000});
         } catch (e) {
-            return false;
+            const result = {valid: false, hint: null};
+
+            if (url.endsWith("/")) {
+                result.hint = "trailing_slash";
+            }
+
+            return result;
         }
 
         const data = resp.data;
-        if (data.id !== "grobber") return false;
+        if (data.id !== "grobber") return {valid: false, hint: "no_grobber"};
 
-        return data.version.startsWith("3.0");
+        if (!data.version.startsWith("3.0")) {
+            return {valid: false, hint: "version_mismatch"};
+        }
+
+        return {valid: true};
     }
 
     render() {

@@ -1,9 +1,9 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import {Embed, PlayerSource, SkipButton} from "../components";
-import {Episode} from "../models";
+import {kitsuTheme} from "../../theme";
+import {reactRenderWithTeme} from "../../utils";
+import {Embed, SkipButton} from "../components";
+import {Episode, GrobberErrorType} from "../models";
 import ServicePage from "../service-page";
-import _ = chrome.i18n.getMessage;
 
 
 export default abstract class EpisodePage extends ServicePage {
@@ -20,37 +20,30 @@ export default abstract class EpisodePage extends ServicePage {
     abstract async showPrevEpisode(): Promise<any>;
 
     async getEpisode(): Promise<Episode | null> {
-        const [uid, epIndex] = await Promise.all([this.service.getAnimeUID(), this.getEpisodeIndex()]);
+        let [uid, epIndex] = await Promise.all([this.service.getAnimeUID(), this.getEpisodeIndex()]);
         if (!uid || (!epIndex && epIndex !== 0)) return null;
 
-        return await this.state.getEpisode(uid, epIndex);
+        try {
+            return await this.state.getEpisode(uid, epIndex);
+        } catch (e) {
+            if (e.name === GrobberErrorType.UidUnknown) {
+                console.warn("Grobber didn't recognise uid, updating...");
+                uid = await this.service.getAnimeUID(true);
+
+                try {
+                    return await this.state.getEpisode(uid, epIndex);
+                } catch (e) {
+                    console.error("didn't work rip", e);
+                }
+            }
+
+            return null;
+        }
     }
 
-    async buildEpisode(episode: Episode): Promise<Element> {
-        const sources: PlayerSource[] = [];
-        episode.stream.links.forEach(link => sources.push({url: link}));
-
+    async buildEmbed(): Promise<Element> {
         const el = document.createElement("div");
-
-        const epIndex = await this.getEpisodeIndex();
-
-        let prevEpPromise = epIndex > 0 ? this.prevEpisodeButton() : Promise.resolve(null);
-        let nextEpPromise = epIndex < episode.anime.episodes - 1 ? this.nextEpisodeButton() : Promise.resolve(null);
-
-        const [prevEpBtn, nextEpBtn] = await Promise.all([prevEpPromise, nextEpPromise]);
-
-        const config = await this.state.config;
-
-        ReactDOM.render(React.createElement(Embed, {
-            sources,
-            poster: episode.poster,
-            skipPrev: prevEpBtn,
-            skipNext: nextEpBtn,
-            options: {
-                title: _("player__video_title_format", [episode.anime.title, epIndex + 1]),
-                autoplay: config.autoplay
-            }
-        }), el);
+        reactRenderWithTeme(React.createElement(Embed, {episodePage: this}), kitsuTheme, el);
 
         return el;
     }
@@ -60,9 +53,6 @@ export default abstract class EpisodePage extends ServicePage {
     }
 
     async load() {
-        const episode = await this.getEpisode();
-        if (episode) {
-            await this.injectEmbed(await this.buildEpisode(episode));
-        }
+        await this.injectEmbed(await this.buildEmbed());
     }
 }

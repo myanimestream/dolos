@@ -75,15 +75,8 @@ export default class State {
         return Store.getStoredAnimeInfo(this.serviceId, identifier);
     }
 
-    async getEpisode(uid: string, index: number): Promise<Episode | null> {
-        let resp;
-        try {
-            resp = await this.request("/anime/episode/", {uid, episode: index});
-        } catch (e) {
-            console.error("Couldn't fetch episode data", e);
-            return null;
-        }
-
+    async getEpisode(uid: string, index: number): Promise<Episode> {
+        const resp = await this.request("/anime/episode/", {uid, episode: index});
         return episodeFromResp(resp);
     }
 }

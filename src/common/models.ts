@@ -1,10 +1,14 @@
 import {Language} from "../models";
 
+export enum GrobberErrorType {
+    UidUnknown = "UIDUnknown"
+}
+
 export class GrobberResponseError extends Error {
-    name: string;
+    name: GrobberErrorType;
     code: number;
 
-    constructor(msg: string, code: number, name: string) {
+    constructor(msg: string, code: number, name: GrobberErrorType) {
         super(msg);
         this.code = code;
         this.name = name;
@@ -32,6 +36,7 @@ export interface Episode {
     anime: AnimeInfo;
     embed: string;
     stream?: EpisodeStream;
+    source_urls: string[];
     streams: number;
     poster?: string;
 }
