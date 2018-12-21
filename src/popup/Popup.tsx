@@ -12,6 +12,7 @@ import {fade} from "@material-ui/core/styles/colorManipulator";
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import TemporaryTestIcon from "@material-ui/icons/BugReport";
@@ -175,10 +176,11 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
                     </AppBar>
                     <nav className={classes.drawer}>
                         <Hidden smUp implementation="css">
-                            <Drawer
+                            <SwipeableDrawer
                                 variant="temporary"
                                 anchor={theme.direction === "rtl" ? "right" : "left"}
                                 open={this.state.drawerOpen}
+                                onOpen={() => this.toggleDrawer()}
                                 onClick={() => this.toggleDrawer()}
                                 onClose={() => this.toggleDrawer()}
                                 classes={{
@@ -189,7 +191,7 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
                                 }}
                             >
                                 {drawer}
-                            </Drawer>
+                            </SwipeableDrawer>
                         </Hidden>
                         <Hidden xsDown implementation="css">
                             <Drawer
