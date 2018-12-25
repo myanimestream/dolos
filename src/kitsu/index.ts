@@ -2,9 +2,9 @@ import axios, {AxiosRequestConfig} from "axios";
 import {cacheInStateMemory, Service} from "../common";
 import {SkipButton} from "../common/components";
 import {EpisodePage} from "../common/pages";
-import {getAccessToken, setProgress, transitionTo} from "./inject";
+import {waitUntilExists} from "../utils";
 import UrlObserver from "./url-observer";
-import {waitUntilExists} from "./utils";
+import {getAccessToken, setProgress, transitionTo} from "./utils";
 
 class KitsuEpisodePage extends EpisodePage {
     async getEpisodeIndex(): Promise<number | null> {

@@ -15,15 +15,17 @@ import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import TemporaryTestIcon from "@material-ui/icons/BugReport";
 import FeedbackIcon from "@material-ui/icons/Feedback";
 import HelpIcon from "@material-ui/icons/Help";
+import HistoryIcon from "@material-ui/icons/History";
 import HomeIcon from "@material-ui/icons/Home";
 import MenuIcon from "@material-ui/icons/Menu";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import SettingsIcon from "@material-ui/icons/Settings";
 import * as React from "react";
 import {HashRouter, matchPath, NavLink, Redirect, Route, Switch, withRouter} from "react-router-dom";
+import Changelog from "./Changelog";
+import _ = chrome.i18n.getMessage;
 
 
 const styles = (theme: Theme) => {
@@ -101,6 +103,10 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
             </Typography>);
     };
 
+    renderChangelog = () => {
+        return <Changelog/>;
+    };
+
     renderFeedback = () => {
         return (
             <Typography paragraph>
@@ -123,7 +129,7 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
 
         const getLink = (target: string) => props => <NavLink to={target} activeClassName={classes.activeDrawerLink} {...props} />;
         const HomeLink = getLink("/home");
-        const TestLink = getLink("/test");
+        const ChangelogLink = getLink("/changelog");
 
         const FeedbackLink = getLink("/feedback");
         const HelpLink = getLink("/help");
@@ -133,27 +139,27 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
                 <List>
                     <ListItem button component={HomeLink}>
                         <ListItemIcon><HomeIcon/></ListItemIcon>
-                        <ListItemText primary="Home"/>
+                        <ListItemText primary={_("popup__nav__home")}/>
                     </ListItem>
-                    <ListItem button component={TestLink}>
-                        <ListItemIcon><TemporaryTestIcon/></ListItemIcon>
-                        <ListItemText primary="Test"/>
+                    <ListItem button component={ChangelogLink}>
+                        <ListItemIcon><HistoryIcon/></ListItemIcon>
+                        <ListItemText primary={_("popup__nav__changelog")}/>
                     </ListItem>
                 </List>
                 <Divider/>
                 <List>
                     <ListItem button onClick={() => chrome.runtime.openOptionsPage()}>
                         <ListItemIcon><SettingsIcon/></ListItemIcon>
-                        <ListItemText primary="Settings"/>
+                        <ListItemText primary={_("popup__nav__settings")}/>
                         <OpenInNewIcon fontSize="small"/>
                     </ListItem>
                     <ListItem button component={FeedbackLink}>
                         <ListItemIcon><FeedbackIcon/></ListItemIcon>
-                        <ListItemText primary="Send Feedback"/>
+                        <ListItemText primary={_("popup__nav__feedback")}/>
                     </ListItem>
                     <ListItem button component={HelpLink}>
                         <ListItemIcon><HelpIcon/></ListItemIcon>
-                        <ListItemText primary="Help"/>
+                        <ListItemText primary={_("popup__nav__help")}/>
                     </ListItem>
                 </List>
             </>
@@ -210,7 +216,7 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
                         <Switch>
                             <Redirect exact path="/" to="/home"/>
                             <Route path="/home" render={this.renderHome}/>
-                            <Route path="/test" render={() => <Typography>"rip?"</Typography>}/>
+                            <Route path="/changelog" render={this.renderChangelog}/>
 
                             <Route path="/feedback" render={this.renderFeedback}/>
                             <Route path="/help" render={this.renderHelp}/>

@@ -11,6 +11,23 @@ export async function artificialDelay<T>(delay: number, ...waiting: Promise<T>[]
     return res.slice(0, res.length - 1)
 }
 
+export function waitUntilExists(selector: string): Promise<Element> {
+    return new Promise(res => {
+        const check = (observer: MutationObserver) => {
+            const el = document.querySelector(selector);
+            if (el) {
+                observer.disconnect();
+                res(el);
+            }
+        };
+
+        const o = new MutationObserver((_, observer) => check(observer));
+        o.observe(document.body, {childList: true, subtree: true});
+
+        check(o);
+    });
+}
+
 export function reactRenderWithTeme(component: React.ReactNode, theme: Theme, renderTarget: Element) {
     // @ts-ignore
     const wrapped = React.createElement(MuiThemeProvider, {theme}, component);

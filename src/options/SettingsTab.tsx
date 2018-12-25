@@ -80,7 +80,7 @@ export default withStyles(styles)(
             return false;
         }
 
-        changeConfig(param: string, value: any) {
+        changeConfig(param: keyof Config, value: any) {
             const config = this.state.config;
 
             if (!(param in config))
@@ -105,7 +105,7 @@ export default withStyles(styles)(
             // @ts-ignore
             const content = React.createElement(this.props.content, {
                 config: this.state.config,
-                changeConfig: (param: string, value: any) => this.changeConfig(param, value)
+                changeConfig: (param: keyof Config, value: any) => this.changeConfig(param, value)
             });
 
             return (

@@ -1,7 +1,8 @@
 import axios from "axios";
-import {Service} from "../common";
+import {cacheInStateMemory, Service} from "../common";
 import {SkipButton} from "../common/components";
 import {EpisodePage} from "../common/pages";
+import {evaluateCode} from "../inject";
 
 class MalEpisodePage extends EpisodePage {
     async getEpisodeIndex(): Promise<number | null> {
@@ -50,17 +51,23 @@ class MalEpisodePage extends EpisodePage {
         location.assign(epIndex.toString());
     }
 
+    @cacheInStateMemory("csrfToken")
     getCSRFToken(): string {
         return document.querySelector(`meta[name="csrf_token"]`).getAttribute("content");
     }
 
+    @cacheInStateMemory("animeId")
     getMALAnimeId(): number {
         return parseInt(document.querySelector(`#myinfo_anime_id`).getAttribute("value"));
     }
 
+    @cacheInStateMemory("username")
+    async getUsername(): Promise<string | null> {
+        return await evaluateCode("MAL.USER_NAME") || null;
+    }
+
     async canSetAnimeProgress(): Promise<boolean> {
-        // TODO: don't neglect
-        return false;
+        return !!await this.getUsername();
     }
 
     async setAnimeProgress(progress: number) {

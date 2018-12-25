@@ -3,6 +3,9 @@
     "message": "Get the most out of your favourite anime site by turning it into a streaming site.",
     "description": "The description of the extension"
   },
+  "ext_tooltip": {
+    "message": "Nothing to see here, move on"
+  },
   "language__en": {
     "message": "English"
   },
@@ -14,6 +17,21 @@
   },
   "language__translation_type__subbed": {
     "message": "Subbed"
+  },
+  "popup__nav__home": {
+    "message": "Home"
+  },
+  "popup__nav__changelog": {
+    "message": "Changelog"
+  },
+  "popup__nav__settings": {
+    "message": "Settings"
+  },
+  "popup__nav__feedback": {
+    "message": "Send Feedback"
+  },
+  "popup__nav__help": {
+    "message": "Help"
   },
   "options__video": {
     "message": "Video"
@@ -41,6 +59,12 @@
   },
   "options__language__translation_type": {
     "message": "Translation Type"
+  },
+  "options__site_integration__title": {
+    "message": "Site Integration"
+  },
+  "options__site_integration__update_anime_progress": {
+    "message": "Update Anime progress"
   },
   "options__grobber__title": {
     "message": "Grobber Settings"

@@ -2,8 +2,8 @@
   "name": "dolos",
   "version": "0.0.1",
   "scripts": {
-    "build": "webpack --config webpack.prod.js",
-    "dev": "webpack --config webpack.dev.js",
+    "build:dev": "webpack --config webpack.dev.js",
+    "build:production": "webpack --config webpack.prod.js",
     "watch": "webpack -w --config webpack.dev.js",
     "lint": "tslint 'src/**/*.{ts, tsx}'"
   },
@@ -11,19 +11,19 @@
   "license": "MIT",
   "devDependencies": {
     "@types/chrome": "0.0.60",
-    "@types/react": "^16.7.13",
+    "@types/react": "^16.7.18",
     "@types/react-dom": "^16.0.4"
   },
   "dependencies": {
-    "@material-ui/core": "^3.6.2",
+    "@material-ui/core": "^3.7.1",
     "@material-ui/icons": "^3.0.1",
     "awesome-debounce-promise": "^1.0.0",
     "axios": "^0.18.0",
     "css-loader": "^0.28.11",
     "node-sass": "^4.11.0",
     "plyr": "^3.4.7",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
@@ -31,7 +31,7 @@
     "tslint-config-airbnb": "^5.11.1",
     "tslint-react": "^3.6.0",
     "typescript": "^2.7.2",
-    "webpack": "^4.27.1",
+    "webpack": "^4.28.2",
     "webpack-cli": "^3.1.1",
     "webpack-merge": "^4.1.5"
   }
