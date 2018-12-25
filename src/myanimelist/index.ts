@@ -1,3 +1,4 @@
+import axios from "axios";
 import {Service} from "../common";
 import {SkipButton} from "../common/components";
 import {EpisodePage} from "../common/pages";
@@ -47,6 +48,39 @@ class MalEpisodePage extends EpisodePage {
     async showPrevEpisode(epIndex?: number): Promise<any> {
         epIndex = (epIndex || epIndex === 0) ? epIndex : await this.getEpisodeIndex();
         location.assign(epIndex.toString());
+    }
+
+    getCSRFToken(): string {
+        return document.querySelector(`meta[name="csrf_token"]`).getAttribute("content");
+    }
+
+    getMALAnimeId(): number {
+        return parseInt(document.querySelector(`#myinfo_anime_id`).getAttribute("value"));
+    }
+
+    async canSetAnimeProgress(): Promise<boolean> {
+        // TODO: don't neglect
+        return false;
+    }
+
+    async setAnimeProgress(progress: number) {
+        const data = {
+            csrf_token: this.getCSRFToken(),
+            anime_id: this.getMALAnimeId(),
+            num_watched_episodes: progress
+        };
+
+        try {
+            const resp = await axios.post("/ownlist/anime/edit.json", JSON.stringify(data), {headers: {"Content-Type": "application/x-www-form-urlencoded"}});
+            if (resp.data !== null) {
+                console.warn("unknown response after setting progress", resp.data);
+            }
+
+            return true;
+        } catch (e) {
+            console.error("Couldn't set anime progress", e);
+            return false;
+        }
     }
 }
 

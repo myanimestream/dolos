@@ -7,6 +7,10 @@ import ServicePage from "../service-page";
 
 
 export default abstract class EpisodePage extends ServicePage {
+    abstract async canSetAnimeProgress(): Promise<boolean>;
+
+    abstract async setAnimeProgress(progress: number): Promise<boolean>;
+
     abstract async getEpisodeIndex(): Promise<number | null>;
 
     abstract async injectEmbed(embed: Element);
@@ -49,7 +53,25 @@ export default abstract class EpisodePage extends ServicePage {
     }
 
     async onEpisodeEnd() {
+        await this.onEpisodeWatched();
         await this.showNextEpisode();
+    }
+
+    async onEpisodeWatched() {
+        const [config, epIndex, canSetProgress] = await Promise.all([this.state.config, this.getEpisodeIndex(), this.canSetAnimeProgress()]);
+
+        if (!(config.updateAnimeProgress && canSetProgress)) {
+            return;
+        }
+
+        if (!(epIndex || epIndex === 0)) {
+            console.warn("Can't update anime progress, episodeIndex null!");
+            return;
+        }
+
+        if (!await this.setAnimeProgress(epIndex + 1)) {
+            //TODO show warning to user!
+        }
     }
 
     async load() {

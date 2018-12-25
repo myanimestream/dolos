@@ -12,6 +12,8 @@ export interface Config {
 
     language: Language;
     dubbed: boolean;
+
+    updateAnimeProgress: boolean;
 }
 
 export const DEFAULT_CONFIG: Config = {
@@ -21,7 +23,9 @@ export const DEFAULT_CONFIG: Config = {
     autoNext: true,
 
     language: Language.ENGLISH,
-    dubbed: false
+    dubbed: false,
+
+    updateAnimeProgress: true,
 };
 
 

@@ -80,3 +80,33 @@ export default class State {
         return episodeFromResp(resp);
     }
 }
+
+export interface HasState {
+    state: State
+}
+
+export function cacheInStateMemory(keyName?: string) {
+    return function (target: Object & HasState, propertyKey: string, descriptor: PropertyDescriptor) {
+        keyName = keyName || `${target.constructor.name}-${propertyKey}`;
+        const func = descriptor.value;
+        let returnPromise;
+
+        descriptor.value = function () {
+            const memory = this.state.memory;
+            let value;
+            if (keyName in memory) {
+                value = memory[keyName];
+            } else {
+                value = func.apply(this);
+                returnPromise = !!value.then;
+
+                Promise.resolve(value)
+                    .then(val => memory[keyName] = val)
+                    .catch(console.error);
+            }
+
+            if (returnPromise) return Promise.resolve(value);
+            else return value;
+        };
+    };
+}
