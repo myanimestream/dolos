@@ -85,5 +85,8 @@
   },
   "episode__embedded_stream": {
     "message": "Couldn't extract any sources for this episode.\nImportant: Your watch status won't automatically update!"
+  },
+  "episode__switch_embed": {
+    "message": "Switch Embed"
   }
 }

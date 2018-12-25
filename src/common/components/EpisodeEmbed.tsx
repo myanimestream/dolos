@@ -1,6 +1,10 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
+import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
+import Select from "@material-ui/core/Select";
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {CSSProperties, WithStyles} from "@material-ui/core/styles/withStyles";
@@ -44,6 +48,10 @@ const styles = (theme: Theme) => {
             height: "100%",
             border: "none",
         },
+        embedToolbar: {
+            width: "100%",
+            justifyContent: "space-between",
+        },
         flexCenterColumn,
         player: {
             position: "absolute",
@@ -61,17 +69,52 @@ interface EpisodeEmbedProps extends WithStyles<typeof styles> {
     episodePage: EpisodePage;
 }
 
+interface EmbedInfo {
+    name: string,
+    url: string,
+}
+
+const KNOWN_EMBEDS = {
+    "mp4upload.com": "Mp4Upload",
+    "stream.moe": "StreamMoe",
+};
+
 interface EpisodeEmbedState {
     noEpisode?: boolean;
     playerProps?: PlayerProps;
-    episodeEmbed?: string;
+    episodeEmbeds?: EmbedInfo[];
     skipButtons?: [SkipButton, SkipButton];
+
+    currentEmbedSelected: number;
+    embedSelectionOpen: boolean;
 }
 
 export default withStyles(styles)(class EpisodeEmbed extends React.Component<EpisodeEmbedProps, EpisodeEmbedState> {
     constructor(props: EpisodeEmbedProps) {
         super(props);
-        this.state = {};
+        this.state = {
+            currentEmbedSelected: 0,
+            embedSelectionOpen: false,
+        };
+    }
+
+    getEmbedInfos(urls: string[]): EmbedInfo[] {
+        const embeds: EmbedInfo[] = [];
+        const embedUrls = urls.filter(url => url.startsWith("https://")).sort().map(url => new URL(url));
+        const nameCounter = {};
+
+        for (const url of embedUrls) {
+            let name = KNOWN_EMBEDS[url.host] || url.host.replace(/\.\w+$/, "");
+            const count = (nameCounter[name] || 0) + 1;
+            nameCounter[name] = count;
+
+            embeds.push({
+                name: `${name} ${count}`,
+                url: url.href,
+            });
+        }
+
+        return embeds;
     }
 
     async componentDidMount() {
@@ -105,7 +148,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                 }
             });
         } else {
-            this.setState({episodeEmbed: episode.embed});
+            this.setState({episodeEmbeds: this.getEmbedInfos(episode.embeds)});
         }
 
         const loadSkipButtons = (async () => {
@@ -122,7 +165,10 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
 
     renderPlayer(): React.ReactElement<any> {
         const {classes} = this.props;
-        const {episodeEmbed, noEpisode, playerProps} = this.state;
+        const {
+            currentEmbedSelected, embedSelectionOpen, episodeEmbeds,
+            noEpisode, playerProps
+        } = this.state;
 
         if (noEpisode === true) {
             return (
@@ -133,18 +179,38 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
             );
         } else if (playerProps) {
             return (<Player {...playerProps as PlayerProps}/>);
-        } else if (episodeEmbed) {
+        } else if (episodeEmbeds) {
             return (
                 <>
-                    <Toolbar>
+                    <Toolbar className={classes.embedToolbar}>
                         <Tooltip title={_("episode__embedded_stream")} placement="bottom">
                         <span>
                             <Typography variant="h6" color="textSecondary" style={{display: "inline"}}>Embedded Stream </Typography>
                             <HelpOutlineIcon fontSize="small" color="secondary"/>
                         </span>
                         </Tooltip>
+
+                        <FormControl>
+                            <InputLabel htmlFor="embed-selection-control">{_("episode__switch_embed")}</InputLabel>
+                            <Select
+                                open={embedSelectionOpen}
+                                onOpen={() => this.setState({embedSelectionOpen: true})}
+                                onClose={() => this.setState({embedSelectionOpen: false})}
+                                value={currentEmbedSelected}
+                                onChange={event => this.setState({currentEmbedSelected: parseInt(event.target.value)})}
+                                inputProps={{
+                                    name: _("episode__switch_embed"),
+                                    id: "embed-selection-control"
+                                }}
+                            >
+                                {episodeEmbeds.map((embed, index) => (
+                                    <MenuItem value={index} key={embed.url}>{embed.name}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Toolbar>
-                    <iframe src={episodeEmbed} className={classes.embedIFrame} allowFullScreen/>
+
+                    <iframe src={episodeEmbeds[currentEmbedSelected].url} className={classes.embedIFrame} allowFullScreen/>
                 </>
             );
         } else {

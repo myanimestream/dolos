@@ -34,10 +34,8 @@ export function animeFromResp(resp: any): AnimeInfo {
 
 export interface Episode {
     anime: AnimeInfo;
-    embed: string;
+    embeds: string[];
     stream?: EpisodeStream;
-    source_urls: string[];
-    streams: number;
     poster?: string;
 }
 
