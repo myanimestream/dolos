@@ -1,21 +1,36 @@
+import {WithStyles} from "@material-ui/core/styles";
+import createStyles from "@material-ui/core/styles/createStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Plyr from "plyr/src/js/plyr.js";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+
+const styles = () => createStyles({
+    plyrContainer: {
+        width: "100%",
+        height: "100%",
+
+        "& .plyr": {
+            width: "100%",
+            height: "100%",
+        }
+    }
+});
 
 export interface PlayerSource {
     url: string;
     type?: string;
 }
 
-export interface PlayerProps {
+export interface PlayerProps extends WithStyles<typeof styles> {
     options?: any;
     eventListener?: { [key: string]: (event: CustomEvent) => any };
     poster?: string;
     sources: PlayerSource[];
 }
 
-export default class Player extends React.Component<PlayerProps> {
+export default withStyles(styles)(class Player extends React.Component<PlayerProps> {
     player?: Plyr;
 
     componentDidMount() {
@@ -24,7 +39,7 @@ export default class Player extends React.Component<PlayerProps> {
         const autoplay = options.autoplay;
         options.autoplay = false;
 
-        this.player = new Plyr(ReactDOM.findDOMNode(this), options);
+        this.player = new Plyr(ReactDOM.findDOMNode(this).firstChild, options);
 
         if (eventListener) {
             for (const [event, handler] of Object.entries(eventListener)) {
@@ -45,10 +60,14 @@ export default class Player extends React.Component<PlayerProps> {
     }
 
     render() {
+        const {classes} = this.props;
+
         return (
-            <video poster={this.props.poster} playsInline controls>
-                {this.renderSource()}
-            </video>
+            <div className={classes.plyrContainer}>
+                <video poster={this.props.poster} playsInline controls>
+                    {this.renderSource()}
+                </video>
+            </div>
         );
     }
-}
+});

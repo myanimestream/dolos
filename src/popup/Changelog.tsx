@@ -17,6 +17,9 @@ interface Changelog {
 }
 
 const CHANGELOG: Changelog = {
+    "0.0.5": [
+        <>Fixed styling issue with player which would lead to ugly borders</>
+    ],
     "0.0.4": [
         <>Added this changelog. <i>Oh and I won't translate this to other languages so you may f*ck right off!</i></>,
         <><b>Embed selection</b> for episodes without direct streams</>,

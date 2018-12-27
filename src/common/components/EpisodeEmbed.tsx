@@ -81,7 +81,7 @@ const KNOWN_EMBEDS = {
 
 interface EpisodeEmbedState {
     noEpisode?: boolean;
-    playerProps?: PlayerProps;
+    playerProps?: Partial<PlayerProps>;
     episodeEmbeds?: EmbedInfo[];
     skipButtons?: [SkipButton, SkipButton];
 
