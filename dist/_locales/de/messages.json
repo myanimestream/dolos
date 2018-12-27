@@ -65,10 +65,10 @@
   "options__grobber__url__no_grobber": {
     "message": "Keine Grobber Antwort"
   },
-  "player__skip_next": {
+  "episode__skip_next": {
     "message": "Nächste Episode"
   },
-  "player__skip_previous": {
+  "episode__skip_previous": {
     "message": "Vorherige Episode"
   },
   "episode__error": {
@@ -79,5 +79,11 @@
   },
   "episode__switch_embed": {
     "message": "Anbieter wechseln"
+  },
+  "episode__player_type_name__dolos": {
+    "message": "Dolos"
+  },
+  "episode__player_type_name__embed": {
+    "message": "Eingebettet"
   }
 }

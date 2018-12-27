@@ -14,11 +14,16 @@ import Typography from "@material-ui/core/Typography";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import MoodBadIcon from "@material-ui/icons/MoodBad";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
+import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
 import EpisodePage from "../pages/episode";
 import Player, {PlayerProps, PlayerSource} from "./Player";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
+import ListItemText from "@material-ui/core/ListItemText";
+import Button from "@material-ui/core/Button";
 import _ = chrome.i18n.getMessage;
 
 export interface SkipButton {
@@ -36,7 +41,10 @@ const styles = (theme: Theme) => {
 
     return createStyles({
         root: {
-            marginTop: 3 * theme.spacing.unit
+            marginTop: 3 * theme.spacing.unit,
+        },
+        buttonIconRight: {
+            marginLeft: theme.spacing.unit,
         },
         playerContainer: {
             position: "relative",
@@ -52,6 +60,19 @@ const styles = (theme: Theme) => {
             width: "100%",
             justifyContent: "space-between",
         },
+        embedSelect: {
+            "& $embedInfoAvatar": {
+                display: "none",
+            },
+            "& $embedInfoText": {
+                padding: 0,
+            }
+        },
+        embedInfoAvatar: {
+            width: 2 * theme.spacing.unit,
+            height: 2 * theme.spacing.unit
+        },
+        embedInfoText: {},
         flexCenterColumn,
         player: {
             position: "absolute",
@@ -61,6 +82,8 @@ const styles = (theme: Theme) => {
         },
         playerBar: {
             marginTop: theme.spacing.unit,
+            display: "flex",
+            justifyContent: "space-between",
         }
     })
 };
@@ -71,6 +94,7 @@ interface EpisodeEmbedProps extends WithStyles<typeof styles> {
 
 interface EmbedInfo {
     name: string,
+    icon?: string,
     url: string,
 }
 
@@ -79,10 +103,18 @@ const KNOWN_EMBEDS = {
     "stream.moe": "StreamMoe",
 };
 
+enum PlayerType {
+    NONE,
+    DOLOS,
+    EMBED
+}
+
 interface EpisodeEmbedState {
-    noEpisode?: boolean;
+    playersAvailable: PlayerType[];
+    currentPlayer: PlayerType;
     playerProps?: Partial<PlayerProps>;
     episodeEmbeds?: EmbedInfo[];
+
     skipButtons?: [SkipButton, SkipButton];
 
     currentEmbedSelected: number;
@@ -93,9 +125,35 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
     constructor(props: EpisodeEmbedProps) {
         super(props);
         this.state = {
+            currentPlayer: PlayerType.NONE,
+            playersAvailable: [],
             currentEmbedSelected: 0,
             embedSelectionOpen: false,
         };
+    }
+
+    static getPlayerTypeName(type: PlayerType): string | null {
+        switch (type) {
+            case PlayerType.DOLOS:
+                return _("episode__player_type_name__dolos");
+            case PlayerType.EMBED:
+                return _("episode__player_type_name__embed");
+        }
+    }
+
+    getNextPlayerType(): PlayerType {
+        switch (this.state.currentPlayer) {
+            case PlayerType.DOLOS:
+                return PlayerType.EMBED;
+            case PlayerType.EMBED:
+                return PlayerType.DOLOS;
+            default:
+                throw new Error(`Unhandled playertype: ${this.state.currentPlayer} cannot switch!`);
+        }
+    }
+
+    switchPlayerType() {
+        this.setState({currentPlayer: this.getNextPlayerType()});
     }
 
     getEmbedInfos(urls: string[]): EmbedInfo[] {
@@ -105,11 +163,14 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
 
         for (const url of embedUrls) {
             let name = KNOWN_EMBEDS[url.host] || url.host.replace(/\.\w+$/, "");
+            let icon = new URL("/favicon.ico", url).href;
+
             const count = (nameCounter[name] || 0) + 1;
             nameCounter[name] = count;
 
             embeds.push({
                 name: `${name} ${count}`,
+                icon,
                 url: url.href,
             });
         }
@@ -127,29 +188,36 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
         ]);
 
         if (!episode) {
-            this.setState({noEpisode: true});
             return;
         }
+
+        const updateState = {
+            playerProps: null,
+            episodeEmbeds: this.getEmbedInfos(episode.embeds),
+            playersAvailable: [PlayerType.EMBED],
+            currentPlayer: PlayerType.EMBED
+        };
 
         if (episode.stream && episode.stream.links) {
             const sources: PlayerSource[] = episode.stream.links.map(link => {
                 return {url: link};
             });
 
-            this.setState({
-                playerProps: {
-                    sources,
-                    poster: episode.poster,
-                    options: {
-                        title: _("player__video_title_format", [episode.anime.title, epIndex + 1]),
-                        autoplay: config.autoplay
-                    },
-                    eventListener: {"ended": () => episodePage.onEpisodeEnd()}
-                }
-            });
-        } else {
-            this.setState({episodeEmbeds: this.getEmbedInfos(episode.embeds)});
+            updateState.currentPlayer = PlayerType.DOLOS;
+            updateState.playersAvailable.push(PlayerType.DOLOS);
+            updateState.playerProps = {
+                sources,
+                poster: episode.poster,
+                options: {
+                    title: _("player__video_title_format", [episode.anime.title, epIndex + 1]),
+                    autoplay: config.autoplay
+                },
+                eventListener: {"ended": () => episodePage.onEpisodeEnd()}
+            };
         }
+
+        this.setState(updateState);
+
 
         const loadSkipButtons = (async () => {
             let prevEpPromise = epIndex > 0 ? episodePage.prevEpisodeButton() : Promise.resolve(null);
@@ -166,26 +234,28 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
     renderPlayer(): React.ReactElement<any> {
         const {classes} = this.props;
         const {
+            currentPlayer,
             currentEmbedSelected, embedSelectionOpen, episodeEmbeds,
-            noEpisode, playerProps
+            playerProps
         } = this.state;
 
-        if (noEpisode === true) {
+        if (currentPlayer === PlayerType.NONE) {
             return (
                 <div className={classes.flexCenterColumn}>
                     <MoodBadIcon fontSize="large" color="primary"/>
                     <Typography variant="h4" color="textPrimary">{_("episode__error")}</Typography>
                 </div>
             );
-        } else if (playerProps) {
+        } else if (currentPlayer === PlayerType.DOLOS) {
             return (<Player {...playerProps as PlayerProps}/>);
-        } else if (episodeEmbeds) {
+        } else if (currentPlayer === PlayerType.EMBED) {
             return (
                 <>
                     <Toolbar className={classes.embedToolbar}>
                         <Tooltip title={_("episode__embedded_stream")} placement="bottom">
                         <span>
-                            <Typography variant="h6" color="textSecondary" style={{display: "inline"}}>Embedded Stream </Typography>
+                            <Typography variant="h6" color="textSecondary"
+                                        style={{display: "inline"}}>Embedded Stream </Typography>
                             <HelpOutlineIcon fontSize="small" color="secondary"/>
                         </span>
                         </Tooltip>
@@ -193,6 +263,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                         <FormControl>
                             <InputLabel htmlFor="embed-selection-control">{_("episode__switch_embed")}</InputLabel>
                             <Select
+                                className={classes.embedSelect}
                                 open={embedSelectionOpen}
                                 onOpen={() => this.setState({embedSelectionOpen: true})}
                                 onClose={() => this.setState({embedSelectionOpen: false})}
@@ -204,13 +275,22 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                                 }}
                             >
                                 {episodeEmbeds.map((embed, index) => (
-                                    <MenuItem value={index} key={embed.url}>{embed.name}</MenuItem>
+                                    <MenuItem value={index} key={embed.url}>
+                                        {embed.icon &&
+                                        <ListItemAvatar>
+                                            <Avatar src={embed.icon} className={classes.embedInfoAvatar}
+                                                    onError={event => (event.target as Element).remove()}/>
+                                        </ListItemAvatar>
+                                        }
+                                        <ListItemText className={classes.embedInfoText}>{embed.name}</ListItemText>
+                                    </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                     </Toolbar>
 
-                    <iframe src={episodeEmbeds[currentEmbedSelected].url} className={classes.embedIFrame} allowFullScreen/>
+                    <iframe src={episodeEmbeds[currentEmbedSelected].url} className={classes.embedIFrame}
+                            allowFullScreen/>
                 </>
             );
         } else {
@@ -223,10 +303,11 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
         const [skipPrev, skipNext] = skipButtons || [null, null];
 
         return (
-            <>
-                <Tooltip title={_("player__skip_previous")}>
+            <span>
+                <Tooltip title={_("episode__skip_previous")}>
                         <span>
-                        <IconButton color="primary" aria-label={_("player__skip_previous")} disabled={!skipPrev} href={skipPrev && skipPrev.href}
+                        <IconButton color="primary" aria-label={_("episode__skip_previous")} disabled={!skipPrev}
+                                    href={skipPrev && skipPrev.href}
                                     onClick={skipPrev && skipPrev.onClick && ((e) => {
                                         e.preventDefault();
                                         skipPrev.onClick(e);
@@ -235,9 +316,10 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                         </IconButton>
                         </span>
                 </Tooltip>
-                <Tooltip title={_("player__skip_next")}>
+                <Tooltip title={_("episode__skip_next")}>
                         <span>
-                        <IconButton color="primary" aria-label={_("player__skip_next")} disabled={!skipNext} href={skipNext && skipNext.href}
+                        <IconButton color="primary" aria-label={_("episode__skip_next")} disabled={!skipNext}
+                                    href={skipNext && skipNext.href}
                                     onClick={skipNext && skipNext.onClick && ((e) => {
                                         e.preventDefault();
                                         skipNext.onClick(e);
@@ -246,12 +328,13 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                         </IconButton>
                         </span>
                 </Tooltip>
-            </>
+            </span>
         );
     }
 
     render() {
         const {classes} = this.props;
+        const {playersAvailable} = this.state;
 
         return (
             <div className={classes.root}>
@@ -260,8 +343,15 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                         {this.renderPlayer()}
                     </div>
                 </Paper>
+
                 <Paper className={classes.playerBar}>
                     {this.renderSkipButtons()}
+                    {playersAvailable.length > 1 &&
+                    <Button type="contained" color="primary" onClick={() => this.switchPlayerType()}>
+                        {EpisodeEmbed.getPlayerTypeName(this.getNextPlayerType())}
+                        <SwitchVideoIcon className={classes.buttonIconRight}/>
+                    </Button>
+                    }
                 </Paper>
             </div>
         );

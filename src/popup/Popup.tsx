@@ -24,7 +24,7 @@ import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import SettingsIcon from "@material-ui/icons/Settings";
 import * as React from "react";
 import {HashRouter, matchPath, NavLink, Redirect, Route, Switch, withRouter} from "react-router-dom";
-import Changelog from "./Changelog";
+import Changelog from "./ChangelogDisplay";
 import _ = chrome.i18n.getMessage;
 
 

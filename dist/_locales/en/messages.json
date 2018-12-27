@@ -98,10 +98,10 @@
       }
     }
   },
-  "player__skip_next": {
+  "episode__skip_next": {
     "message": "Next Episode"
   },
-  "player__skip_previous": {
+  "episode__skip_previous": {
     "message": "Previous Episode"
   },
   "episode__error": {
@@ -112,5 +112,11 @@
   },
   "episode__switch_embed": {
     "message": "Switch Embed"
+  },
+  "episode__player_type_name__dolos": {
+    "message": "Dolos"
+  },
+  "episode__player_type_name__embed": {
+    "message": "Embed"
   }
 }
