@@ -24,6 +24,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
+import embedProviders from "./embed-providers";
 import _ = chrome.i18n.getMessage;
 
 export interface SkipButton {
@@ -57,8 +58,9 @@ const styles = (theme: Theme) => {
             border: "none",
         },
         embedToolbar: {
-            width: "100%",
+            marginBottom: theme.spacing.unit,
             justifyContent: "space-between",
+            flexWrap: "wrap",
         },
         embedSelect: {
             "& $embedInfoAvatar": {
@@ -70,7 +72,8 @@ const styles = (theme: Theme) => {
         },
         embedInfoAvatar: {
             width: 2 * theme.spacing.unit,
-            height: 2 * theme.spacing.unit
+            height: 2 * theme.spacing.unit,
+            borderRadius: 0,
         },
         embedInfoText: {},
         flexCenterColumn,
@@ -98,11 +101,6 @@ interface EmbedInfo {
     url: string,
 }
 
-const KNOWN_EMBEDS = {
-    "mp4upload.com": "Mp4Upload",
-    "stream.moe": "StreamMoe",
-};
-
 enum PlayerType {
     NONE,
     DOLOS,
@@ -111,7 +109,7 @@ enum PlayerType {
 
 interface EpisodeEmbedState {
     playersAvailable: PlayerType[];
-    currentPlayer: PlayerType;
+    currentPlayer?: PlayerType;
     playerProps?: Partial<PlayerProps>;
     episodeEmbeds?: EmbedInfo[];
 
@@ -125,7 +123,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
     constructor(props: EpisodeEmbedProps) {
         super(props);
         this.state = {
-            currentPlayer: PlayerType.NONE,
+            currentPlayer: null,
             playersAvailable: [],
             currentEmbedSelected: 0,
             embedSelectionOpen: false,
@@ -162,8 +160,10 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
         const nameCounter = {};
 
         for (const url of embedUrls) {
-            let name = KNOWN_EMBEDS[url.host] || url.host.replace(/\.\w+$/, "");
-            let icon = new URL("/favicon.ico", url).href;
+            let providerInfo = embedProviders[url.host] || {};
+
+            let name = providerInfo.name || url.host.replace(/(^www\.)|(\.\w+$)/, "");
+            let icon = providerInfo.icon || new URL("/favicon.ico", url).href;
 
             const count = (nameCounter[name] || 0) + 1;
             nameCounter[name] = count;
@@ -188,6 +188,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
         ]);
 
         if (!episode) {
+            this.setState({currentPlayer: PlayerType.NONE});
             return;
         }
 
@@ -239,62 +240,84 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
             playerProps
         } = this.state;
 
+        const WithRatio = props => (
+            <Paper className={classes.playerContainer}>
+                <div className={classes.player}>
+                    {props.children}
+                </div>
+            </Paper>
+        );
+
         if (currentPlayer === PlayerType.NONE) {
             return (
-                <div className={classes.flexCenterColumn}>
-                    <MoodBadIcon fontSize="large" color="primary"/>
-                    <Typography variant="h4" color="textPrimary">{_("episode__error")}</Typography>
-                </div>
+                <WithRatio>
+                    <div className={classes.flexCenterColumn}>
+                        <MoodBadIcon fontSize="large" color="primary"/>
+                        <Typography variant="h4" color="textPrimary">{_("episode__error")}</Typography>
+                    </div>
+                </WithRatio>
             );
         } else if (currentPlayer === PlayerType.DOLOS) {
-            return (<Player {...playerProps as PlayerProps}/>);
+            return (
+                <WithRatio>
+                    <Player {...playerProps as PlayerProps}/>
+                </WithRatio>
+            );
         } else if (currentPlayer === PlayerType.EMBED) {
             return (
                 <>
-                    <Toolbar className={classes.embedToolbar}>
-                        <Tooltip title={_("episode__embedded_stream")} placement="bottom">
-                        <span>
-                            <Typography variant="h6" color="textSecondary"
-                                        style={{display: "inline"}}>Embedded Stream </Typography>
-                            <HelpOutlineIcon fontSize="small" color="secondary"/>
-                        </span>
-                        </Tooltip>
+                    <Paper>
+                        <Toolbar className={classes.embedToolbar}>
+                            <Tooltip title={_("episode__embedded_stream__warning")} placement="bottom">
+                                <span>
+                                    <Typography variant="h6" color="textSecondary"
+                                                style={{display: "inline"}}
+                                                noWrap
+                                    >
+                                        {_("episode__embedded_stream")}&nbsp;
+                                        <HelpOutlineIcon fontSize="small" color="secondary"/>
+                                    </Typography>
+                                </span>
+                            </Tooltip>
 
-                        <FormControl>
-                            <InputLabel htmlFor="embed-selection-control">{_("episode__switch_embed")}</InputLabel>
-                            <Select
-                                className={classes.embedSelect}
-                                open={embedSelectionOpen}
-                                onOpen={() => this.setState({embedSelectionOpen: true})}
-                                onClose={() => this.setState({embedSelectionOpen: false})}
-                                value={currentEmbedSelected}
-                                onChange={event => this.setState({currentEmbedSelected: parseInt(event.target.value)})}
-                                inputProps={{
-                                    name: _("episode__switch_embed"),
-                                    id: "embed-selection-control"
-                                }}
-                            >
-                                {episodeEmbeds.map((embed, index) => (
-                                    <MenuItem value={index} key={embed.url}>
-                                        {embed.icon &&
-                                        <ListItemAvatar>
-                                            <Avatar src={embed.icon} className={classes.embedInfoAvatar}
-                                                    onError={event => (event.target as Element).remove()}/>
-                                        </ListItemAvatar>
-                                        }
-                                        <ListItemText className={classes.embedInfoText}>{embed.name}</ListItemText>
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Toolbar>
+                            <FormControl>
+                                <InputLabel htmlFor="embed-selection-control">{_("episode__switch_embed")}</InputLabel>
+                                <Select
+                                    className={classes.embedSelect}
+                                    open={embedSelectionOpen}
+                                    onOpen={() => this.setState({embedSelectionOpen: true})}
+                                    onClose={() => this.setState({embedSelectionOpen: false})}
+                                    value={currentEmbedSelected}
+                                    onChange={event => this.setState({currentEmbedSelected: parseInt(event.target.value)})}
+                                    inputProps={{
+                                        name: _("episode__switch_embed"),
+                                        id: "embed-selection-control"
+                                    }}
+                                >
+                                    {episodeEmbeds.map((embed, index) => (
+                                        <MenuItem value={index} key={embed.url}>
+                                            {embed.icon &&
+                                            <ListItemAvatar>
+                                                <Avatar src={embed.icon} className={classes.embedInfoAvatar}
+                                                        onError={event => (event.target as Element).remove()}/>
+                                            </ListItemAvatar>
+                                            }
+                                            <ListItemText className={classes.embedInfoText}>{embed.name}</ListItemText>
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Toolbar>
+                    </Paper>
 
-                    <iframe src={episodeEmbeds[currentEmbedSelected].url} className={classes.embedIFrame}
-                            allowFullScreen/>
+                    <WithRatio>
+                        <iframe src={episodeEmbeds[currentEmbedSelected].url} className={classes.embedIFrame}
+                                allowFullScreen/>
+                    </WithRatio>
                 </>
             );
         } else {
-            return (<CircularProgress/>);
+            return (<WithRatio><CircularProgress/></WithRatio>);
         }
     }
 
@@ -338,19 +361,18 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
 
         return (
             <div className={classes.root}>
-                <Paper className={classes.playerContainer}>
-                    <div className={classes.player}>
-                        {this.renderPlayer()}
-                    </div>
-                </Paper>
+                {this.renderPlayer()}
 
                 <Paper className={classes.playerBar}>
                     {this.renderSkipButtons()}
+
                     {playersAvailable.length > 1 &&
-                    <Button type="contained" color="primary" onClick={() => this.switchPlayerType()}>
-                        {EpisodeEmbed.getPlayerTypeName(this.getNextPlayerType())}
-                        <SwitchVideoIcon className={classes.buttonIconRight}/>
-                    </Button>
+                    <Tooltip title={_("episode__switch_player_type")}>
+                        <Button type="contained" color="primary" onClick={() => this.switchPlayerType()}>
+                            {EpisodeEmbed.getPlayerTypeName(this.getNextPlayerType())}
+                            <SwitchVideoIcon className={classes.buttonIconRight}/>
+                        </Button>
+                    </Tooltip>
                     }
                 </Paper>
             </div>

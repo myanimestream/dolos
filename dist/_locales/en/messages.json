@@ -108,10 +108,16 @@
     "message": "Couldn't get episode, Sorry!"
   },
   "episode__embedded_stream": {
+    "message": "Embedded Stream"
+  },
+  "episode__embedded_stream__warning": {
     "message": "Couldn't extract any sources for this episode.\nImportant: Your watch status won't automatically update!"
   },
   "episode__switch_embed": {
     "message": "Switch Embed"
+  },
+  "episode__switch_player_type": {
+    "message": "Switch player type"
   },
   "episode__player_type_name__dolos": {
     "message": "Dolos"

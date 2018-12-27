@@ -75,10 +75,16 @@
     "message": "Episode nicht gefunden"
   },
   "episode__embedded_stream": {
+    "message": "Eingebetteter Player"
+  },
+  "episode__embedded_stream__warning": {
     "message": "Es konnte kein Video für die Episode gefunden werden.\nWichtig: Der Episoden-Fortschritt kann nicht automatisch übernommen werden!"
   },
   "episode__switch_embed": {
     "message": "Anbieter wechseln"
+  },
+  "episode__switch_player_type": {
+    "message": "Player wechseln"
   },
   "episode__player_type_name__dolos": {
     "message": "Dolos"
