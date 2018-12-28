@@ -1,4 +1,5 @@
 import AppBar from "@material-ui/core/AppBar";
+import Badge from "@material-ui/core/Badge";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
@@ -24,6 +25,8 @@ import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import SettingsIcon from "@material-ui/icons/Settings";
 import * as React from "react";
 import {HashRouter, matchPath, NavLink, Redirect, Route, Switch, withRouter} from "react-router-dom";
+import {getState} from "../background";
+import * as info from "../info";
 import Changelog from "./ChangelogDisplay";
 import _ = chrome.i18n.getMessage;
 
@@ -81,7 +84,8 @@ interface PopupProps extends WithStyles<typeof styles, true> {
 }
 
 interface PopupState {
-    drawerOpen: boolean
+    drawerOpen: boolean;
+    changelogBadgeVisible: boolean;
 }
 
 export default withStyles(styles, {withTheme: true})(class Popup extends React.Component<PopupProps, PopupState> {
@@ -89,7 +93,12 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
         super(props);
         this.state = {
             drawerOpen: false,
+            changelogBadgeVisible: false,
         }
+    }
+
+    async componentDidMount() {
+        (await getState()).updateOn("hasNewVersion", changelogBadgeVisible => this.setState({changelogBadgeVisible}));
     }
 
     toggleDrawer() {
@@ -122,11 +131,14 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
         return (
             <Typography paragraph>
                 There's no help yet, sorry boi!
-            </Typography>);
+                Version {info.getVersion()}
+            </Typography>
+        );
     };
 
     render() {
         const {classes, theme} = this.props;
+        const {changelogBadgeVisible} = this.state;
 
         const getLink = (target: string) => props => <NavLink to={target}
                                                               activeClassName={classes.activeDrawerLink} {...props} />;
@@ -144,8 +156,12 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
                         <ListItemText primary={_("popup__nav__home")}/>
                     </ListItem>
                     <ListItem button component={ChangelogLink}>
-                        <ListItemIcon><HistoryIcon/></ListItemIcon>
-                        <ListItemText primary={_("popup__nav__changelog")}/>
+                        <ListItemIcon>
+                            <HistoryIcon/>
+                        </ListItemIcon>
+                        <Badge color="primary" badgeContent={1} invisible={!changelogBadgeVisible}>
+                            <ListItemText primary={_("popup__nav__changelog")}/>
+                        </Badge>
                     </ListItem>
                 </List>
                 <Divider/>

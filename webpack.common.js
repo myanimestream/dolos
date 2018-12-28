@@ -4,7 +4,7 @@ module.exports = {
     entry: {
         popup: path.join(__dirname, "src/popup/index.tsx"),
         options: path.join(__dirname, "src/options/index.tsx"),
-        background: path.join(__dirname, "src/background.ts"),
+        background: path.join(__dirname, "src/background/index.ts"),
         // Content Scripts:
         kitsu: path.join(__dirname, "src/kitsu/index.ts"),
         myanimelist: path.join(__dirname, "src/myanimelist/index.ts"),

@@ -6,6 +6,9 @@
   "ext_tooltip": {
     "message": "Nothing to see here, move on"
   },
+  "ext_badge__new_version": {
+    "message": "new"
+  },
   "language__en": {
     "message": "English"
   },

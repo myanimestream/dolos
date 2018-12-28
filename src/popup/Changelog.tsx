@@ -8,7 +8,8 @@ interface Changelog {
 
 const CHANGELOG: Changelog = {
     "0.0.6": [
-        <>Embedded Players no longer reload upon opening the selection menu</>
+        <>Embedded Players no longer reload upon opening the selection menu</>,
+        <>Highlighting new version</>,
     ],
     "0.0.5": [
         <>Fixed styling issue with player which would lead to ugly borders</>,

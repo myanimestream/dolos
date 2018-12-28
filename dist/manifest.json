@@ -23,6 +23,12 @@
     "default_title": "__MSG_ext_tooltip__",
     "default_popup": "popup.html"
   },
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ],
+    "persistent": false
+  },
   "content_scripts": [
     {
       "run_at": "document_idle",
