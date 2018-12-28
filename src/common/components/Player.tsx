@@ -56,7 +56,8 @@ export default withStyles(styles)(class Player extends React.Component<PlayerPro
 
     renderSource(): React.ReactElement<any>[] {
         // currently plyr breaks when not supplying a video type, this defaulting to video/mp4
-        return this.props.sources.map((source, index) => <source key={index} src={source.url} type={source.type || "video/mp4"}/>);
+        return this.props.sources.map((source, index) => <source key={index} src={source.url}
+                                                                 type={source.type || "video/mp4"}/>);
     }
 
     render() {

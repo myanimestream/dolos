@@ -1,23 +1,22 @@
 import {waitUntilExists} from "./utils";
 
-const DELETE_AFTER = `
-document.scripts[document.scripts.length - 1]
-    .remove();
-`;
+const DELETE_AFTER = (() => document.scripts[document.scripts.length - 1].remove()).toString();
+
+const PUSH_RESULT = (
+    function pushResult(value: any, key: string) {
+        const el = document.createElement("div");
+        el.id = "{{uid}}";
+        el.setAttribute(key, JSON.stringify(value));
+        document.body.appendChild(el);
+    }
+).toString();
 
 const EVAL_TEMPLATE = `
-function pushResult(value, key) {
-    const el = document.createElement("div");
-    el.id = "{{uid}}";
-    el.setAttribute(key, JSON.stringify(value));
-    document.body.appendChild(el);
-}
+${PUSH_RESULT}
 
 const run = async () => {{{code}}};
-
 run().then(value => pushResult(value, "data-result"),
         reason => pushResult(reason, "data-error"));
-
 `;
 
 interface InjectOptions {
@@ -25,7 +24,7 @@ interface InjectOptions {
     deleteAfter?: boolean;
 }
 
-function formatCode(code: string, args: { [key: string]: any }): string {
+export function formatCode(code: string, args: { [key: string]: any }): string {
     for (const [key, value] of Object.entries(args))
         code = code.replace(`{{${key}}}`, value);
 

@@ -62,7 +62,11 @@ export default class State {
 
         let resp;
         try {
-            resp = await this.request("/anime/search/", {anime: query, language: config.language, dubbed: config.dubbed});
+            resp = await this.request("/anime/search/", {
+                anime: query,
+                language: config.language,
+                dubbed: config.dubbed
+            });
         } catch (e) {
             console.error("Couldn't search for anime", e);
             return null;
