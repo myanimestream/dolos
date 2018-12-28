@@ -2,6 +2,7 @@ import axios, {AxiosRequestConfig} from "axios";
 import {cacheInStateMemory, Service} from "../common";
 import {SkipButton} from "../common/components";
 import {EpisodePage} from "../common/pages";
+import "../logging";
 import {waitUntilExists} from "../utils";
 import UrlObserver from "./url-observer";
 import {getAccessToken, setProgress, transitionTo} from "./utils";

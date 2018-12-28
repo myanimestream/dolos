@@ -112,7 +112,8 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
             <Typography paragraph>
                 Lol, as if. I don't care about your opinion!
 
-                Just so you know, this has nothing to do with the fact that I simply haven't gotten around to build such a feature...
+                Just so you know, this has nothing to do with the fact that I simply haven't gotten around to build such
+                a feature...
                 <b>Nononononon</b>
             </Typography>);
     };
@@ -127,7 +128,8 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
     render() {
         const {classes, theme} = this.props;
 
-        const getLink = (target: string) => props => <NavLink to={target} activeClassName={classes.activeDrawerLink} {...props} />;
+        const getLink = (target: string) => props => <NavLink to={target}
+                                                              activeClassName={classes.activeDrawerLink} {...props} />;
         const HomeLink = getLink("/home");
         const ChangelogLink = getLink("/changelog");
 
@@ -172,7 +174,8 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
 
                     <AppBar position="fixed" className={classes.appBar}>
                         <Toolbar>
-                            <IconButton color="inherit" aria-label="Menu" className={classes.menuButton} onClick={() => this.toggleDrawer()}>
+                            <IconButton color="inherit" aria-label="Menu" className={classes.menuButton}
+                                        onClick={() => this.toggleDrawer()}>
                                 <MenuIcon/>
                             </IconButton>
                             <Typography variant="h6" color="inherit" className={classes.grow}>

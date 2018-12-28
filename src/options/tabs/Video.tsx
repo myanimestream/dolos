@@ -79,7 +79,8 @@ export default class Video extends SettingsTabContent {
                                     onChange={() => this.toggle("dubbed")}
                                     checked={config.dubbed}
                                 />
-                            } label={config.dubbed ? _("language__translation_type__dubbed") : _("language__translation_type__subbed")}
+                            }
+                                              label={config.dubbed ? _("language__translation_type__dubbed") : _("language__translation_type__subbed")}
                                               labelPlacement="start"
                             />
                         </ListItemSecondaryAction>

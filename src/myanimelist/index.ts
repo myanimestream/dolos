@@ -3,6 +3,7 @@ import {cacheInStateMemory, Service} from "../common";
 import {SkipButton} from "../common/components";
 import {EpisodePage} from "../common/pages";
 import {evaluateCode} from "../inject";
+import "../logging";
 
 class MalEpisodePage extends EpisodePage {
     async getEpisodeIndex(): Promise<number | null> {

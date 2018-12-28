@@ -2,14 +2,7 @@ import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
-export async function artificialDelay<T>(delay: number, ...waiting: Promise<T>[]): Promise<T[]> {
-    const timeout = new Promise(res => setTimeout(res, delay)) as Promise<T>;
-    waiting.push(timeout);
-
-    const res = await Promise.all(waiting);
-    return res.slice(0, res.length - 1)
-}
+import {SentryLogger} from "./logging";
 
 export function waitUntilExists(selector: string): Promise<Element> {
     return new Promise(res => {
@@ -28,7 +21,12 @@ export function waitUntilExists(selector: string): Promise<Element> {
     });
 }
 
-export function reactRenderWithTeme(component: React.ReactNode, theme: Theme, renderTarget: Element) {
+export function wrapSentryLogger(component: React.ReactNode): React.ReactNode {
+    // @ts-ignore
+    return React.createElement(SentryLogger, {}, component);
+}
+
+export function reactRenderWithTheme(component: React.ReactNode, theme: Theme, renderTarget: Element) {
     // @ts-ignore
     const wrapped = React.createElement(MuiThemeProvider, {theme}, component);
     ReactDOM.render(wrapped, renderTarget);

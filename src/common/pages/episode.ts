@@ -1,6 +1,6 @@
 import * as React from "react";
 import {kitsuTheme} from "../../theme";
-import {reactRenderWithTeme} from "../../utils";
+import {reactRenderWithTheme, wrapSentryLogger} from "../../utils";
 import {Embed, SkipButton} from "../components";
 import {Episode, GrobberErrorType} from "../models";
 import ServicePage from "../service-page";
@@ -47,7 +47,7 @@ export default abstract class EpisodePage extends ServicePage {
 
     async buildEmbed(): Promise<Element> {
         const el = document.createElement("div");
-        reactRenderWithTeme(React.createElement(Embed, {episodePage: this}), kitsuTheme, el);
+        reactRenderWithTheme(wrapSentryLogger(React.createElement(Embed, {episodePage: this})), kitsuTheme, el);
 
         return el;
     }

@@ -1,8 +1,8 @@
 import * as React from "react";
 import dolosTheme from "../theme";
-import {reactRenderWithTeme} from "../utils";
+import {reactRenderWithTheme, wrapSentryLogger} from "../utils";
 import Popup from "./Popup";
 
 chrome.tabs.query({active: true, currentWindow: true}, () => {
-    reactRenderWithTeme(<Popup/>, dolosTheme, document.getElementById("root"));
+    reactRenderWithTheme(wrapSentryLogger(<Popup/>), dolosTheme, document.getElementById("root"));
 });

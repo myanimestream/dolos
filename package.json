@@ -17,6 +17,7 @@
   "dependencies": {
     "@material-ui/core": "^3.7.1",
     "@material-ui/icons": "^3.0.1",
+    "@sentry/browser": "^4.4.2",
     "awesome-debounce-promise": "^1.0.0",
     "axios": "^0.18.0",
     "css-loader": "^0.28.11",

@@ -143,7 +143,8 @@ export default withStyles(styles)(class Settings extends React.Component<Setting
                 break;
         }
 
-        return (<SettingsTab getConfig={() => this.state.configPromise} saveConfig={this.saveConfig} content={content}/>);
+        return (
+            <SettingsTab getConfig={() => this.state.configPromise} saveConfig={this.saveConfig} content={content}/>);
     };
 
     render() {
@@ -210,7 +211,8 @@ export default withStyles(styles)(class Settings extends React.Component<Setting
                                 </Link>
                                 <Link className={classes.link} to="/debug">
                                     <ListItem button>
-                                        <ListItemIcon><BuildIcon color={props.location.pathname === "/debug" ? "primary" : "inherit"}/></ListItemIcon>
+                                        <ListItemIcon><BuildIcon
+                                            color={props.location.pathname === "/debug" ? "primary" : "inherit"}/></ListItemIcon>
                                         <ListItemText primary={_("options__debug")}/>
                                     </ListItem>
                                 </Link>
