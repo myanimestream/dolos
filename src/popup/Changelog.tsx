@@ -7,6 +7,9 @@ interface Changelog {
 }
 
 const CHANGELOG: Changelog = {
+    "0.0.6": [
+        <>Embedded Players no longer reload upon opening the selection menu</>
+    ],
     "0.0.5": [
         <>Fixed styling issue with player which would lead to ugly borders</>,
         <>Added button to player to switch between dolos player (if possible) and embedded players</>
