@@ -6,7 +6,7 @@ const getApp = ${(
         const {Namespace, Application} = window["Ember"];
         return Namespace.NAMESPACES.find(namespace => (namespace instanceof Application));
     }
-).toString()}
+).toString()};
 
 const getContainer = () => getApp().__container__;
 const getRouter = () => getContainer().lookup("router:main");
@@ -30,7 +30,11 @@ return await new Promise(${(
 `;
 
 export function transitionTo(view: string, ...args: any[]) {
-    injectCode(EMBER_BASE + `getRouter().transitionTo("${view}", ${args.map(arg => JSON.stringify(arg))})`, {deleteAfter: true});
+    injectCode(EMBER_BASE +
+        `getRouter().transitionTo("${view}", ${args.map(arg =>
+            JSON.stringify(arg)
+        )});`, {deleteAfter: true}
+    );
 }
 
 export async function getAccessToken(): Promise<string | null> {

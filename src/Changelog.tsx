@@ -7,6 +7,10 @@ interface Changelog {
 }
 
 const CHANGELOG: Changelog = {
+    "0.0.7": [
+        <>Fixed skip buttons not working on Kitsu</>,
+        <>Fixed loading animation not showing properly</>
+    ],
     "0.0.6": [
         <>Embedded Players no longer reload upon opening the selection menu</>,
         <>Highlighting new version</>,

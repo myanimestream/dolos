@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import * as React from "react";
 import {getState} from "../background";
-import CHANGELOG from "./Changelog";
+import CHANGELOG from "../Changelog";
 
 
 const styles = () => createStyles({

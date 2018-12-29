@@ -1,6 +1,6 @@
 import {waitUntilExists} from "./utils";
 
-const DELETE_AFTER = (() => document.scripts[document.scripts.length - 1].remove()).toString();
+const DELETE_AFTER = `(${(() => document.scripts[document.scripts.length - 1].remove()).toString()})();`;
 
 const PUSH_RESULT = (
     function pushResult(value: any, key: string) {
