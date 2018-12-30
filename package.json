@@ -1,6 +1,5 @@
 {
   "name": "dolos",
-  "version": "0.0.1",
   "scripts": {
     "build:dev": "webpack --config webpack.dev.js",
     "build:production": "webpack --config webpack.prod.js",
