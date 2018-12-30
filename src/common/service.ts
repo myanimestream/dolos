@@ -3,12 +3,12 @@ import {EpisodePage, OverviewPage} from "./pages";
 import State from "./state";
 
 export default abstract class Service {
-    OverviewPage: Type<OverviewPage>;
-    EpisodePage: Type<EpisodePage>;
+    OverviewPage: Type<OverviewPage<this>>;
+    EpisodePage: Type<EpisodePage<this>>;
 
-    state: State;
+    state: State<this>;
 
-    protected constructor(service_id: string, episodePage: Type<EpisodePage>,) {
+    protected constructor(service_id: string, episodePage: Type<EpisodePage<any>>,) {
         this.state = new State(service_id);
 
         this.OverviewPage = null;

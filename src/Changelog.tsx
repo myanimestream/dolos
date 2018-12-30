@@ -8,7 +8,8 @@ interface Changelog {
 
 const CHANGELOG: Changelog = {
     "0.0.8": [
-        <>Fixed being unable to change embedded player</>
+        <>Fixed being unable to change embedded player</>,
+        <>MyAnimeList Mobile support</>
     ],
     "0.0.7": [
         <>Fixed skip buttons not working on Kitsu</>,

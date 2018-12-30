@@ -50,7 +50,7 @@ const styles = (theme: Theme) => {
 };
 
 interface EpisodeEmbedProps extends WithStyles<typeof styles> {
-    episodePage: EpisodePage;
+    episodePage: EpisodePage<any>;
 }
 
 enum PlayerType {

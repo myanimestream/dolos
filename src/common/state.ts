@@ -2,11 +2,12 @@ import axios from "axios";
 import {Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
 import {Episode, episodeFromResp, GrobberResponseError, SearchResult} from "./models";
+import Service from "./service";
 import ServicePage from "./service-page";
 
-export default class State {
+export default class State<T extends Service> {
     serviceId: string;
-    page?: ServicePage;
+    page?: ServicePage<T>;
 
     memory: { [key: string]: any };
     injectedElements: Element[];
@@ -38,7 +39,7 @@ export default class State {
         await this.loadPage(null);
     }
 
-    async loadPage(page?: ServicePage) {
+    async loadPage(page?: ServicePage<T>) {
         if (this.page) await this.page.unload();
         this.page = page;
 
@@ -85,8 +86,8 @@ export default class State {
     }
 }
 
-export interface HasState {
-    state: State
+export interface HasState<T extends Service = any> {
+    state: State<T>
 }
 
 export function cacheInStateMemory(keyName?: string) {

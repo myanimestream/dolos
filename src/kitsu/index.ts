@@ -7,7 +7,7 @@ import {waitUntilExists} from "../utils";
 import UrlObserver from "./url-observer";
 import {getAccessToken, setProgress, transitionTo} from "./utils";
 
-class KitsuEpisodePage extends EpisodePage {
+class KitsuEpisodePage extends EpisodePage<Kitsu> {
     async getEpisodeIndex(): Promise<number | null> {
         return this.state.memory.episodeIndex;
     }

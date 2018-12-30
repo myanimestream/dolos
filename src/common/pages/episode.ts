@@ -3,10 +3,11 @@ import {kitsuTheme} from "../../theme";
 import {reactRenderWithTheme, wrapSentryLogger} from "../../utils";
 import {Embed, SkipButton} from "../components";
 import {Episode, GrobberErrorType} from "../models";
+import Service from "../service";
 import ServicePage from "../service-page";
 
 
-export default abstract class EpisodePage extends ServicePage {
+export default abstract class EpisodePage<T extends Service> extends ServicePage<T> {
     abstract async canSetAnimeProgress(): Promise<boolean>;
 
     abstract async setAnimeProgress(progress: number): Promise<boolean>;

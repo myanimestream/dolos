@@ -5,18 +5,28 @@ import {EpisodePage} from "../common/pages";
 import {evaluateCode} from "../inject";
 import "../logging";
 
-class MalEpisodePage extends EpisodePage {
+class MalEpisodePage extends EpisodePage<MyAnimeList> {
     async getEpisodeIndex(): Promise<number | null> {
         return this.state.memory.episodeIndex;
     }
 
     async injectEmbed(embed: Element): Promise<any> {
-        const target = document.querySelector(`td[style^="padding-left"]>div>div:last-child`);
+        let target: Element;
+
+        if (this.service.isMobileLayout()) {
+            target = document.querySelector(`h3[data-id="forum"`);
+            if (target) target = target.parentNode.insertBefore(document.createElement("div"), target);
+            else target = document.querySelector("div.Detail");
+        } else {
+            target = document.querySelector("div.contents-video-embed");
+
+            if (!target) target = document.querySelector(`td[style^="padding-left"]>div>div:last-child`);
+        }
+
         while (target.lastChild)
             target.removeChild(target.lastChild);
 
         target.appendChild(embed);
-
         this.state.injected(embed);
     }
 
@@ -122,7 +132,10 @@ class MyAnimeList extends Service {
         return title.match(/(.+) Episode \d+/)[1];
     }
 
-
+    @cacheInStateMemory("isMobileLayout")
+    isMobileLayout(): boolean {
+        return !!document.querySelector("a.footer-desktop-button");
+    }
 }
 
 (new MyAnimeList()).load();
