@@ -7,6 +7,9 @@ interface Changelog {
 }
 
 const CHANGELOG: Changelog = {
+    "0.0.8": [
+        <>Fixed being unable to change embedded player</>
+    ],
     "0.0.7": [
         <>Fixed skip buttons not working on Kitsu</>,
         <>Fixed loading animation not showing properly</>
