@@ -74,6 +74,12 @@
   "episode__skip_previous": {
     "message": "Vorherige Episode"
   },
+  "episode__bookmark_unseen": {
+    "message": "Markiere als gesehen"
+  },
+  "episode__bookmark_seen": {
+    "message": "Markiere als ungesehen"
+  },
   "episode__error": {
     "message": "Episode nicht gefunden"
   },

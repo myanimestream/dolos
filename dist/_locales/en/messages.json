@@ -107,6 +107,12 @@
   "episode__skip_previous": {
     "message": "Previous Episode"
   },
+  "episode__bookmark_unseen": {
+    "message": "Mark as watched"
+  },
+  "episode__bookmark_seen": {
+    "message": "Mark as unwatched"
+  },
   "episode__error": {
     "message": "Couldn't get episode, Sorry!"
   },

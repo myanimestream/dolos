@@ -5,7 +5,7 @@ import {EpisodePage} from "../common/pages";
 import "../logging";
 import {waitUntilExists} from "../utils";
 import UrlObserver from "./url-observer";
-import {getAccessToken, setProgress, transitionTo} from "./utils";
+import {getAccessToken, getProgress, setProgress, transitionTo} from "./utils";
 
 class KitsuEpisodePage extends EpisodePage<Kitsu> {
     async getEpisodeIndex(): Promise<number | null> {
@@ -127,13 +127,17 @@ class KitsuEpisodePage extends EpisodePage<Kitsu> {
     }
 
     async setAnimeProgress(progress: number): Promise<boolean> {
-        const [animeId, userId, token] = await Promise.all([
-            this.getAnimeId(), this.getUserId(), this.getAccessToken()
-        ]);
+        const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
+        if (!(animeId && userId)) return false;
 
-        if (!(animeId && userId && token)) return false;
+        return await setProgress(animeId, userId, progress);
+    }
 
-        await setProgress(animeId, userId, progress);
+    async getEpisodesWatched(): Promise<number | null> {
+        const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
+        if (!(animeId && userId)) return null;
+
+        return await getProgress(animeId, userId);
     }
 }
 

@@ -67,11 +67,6 @@ class MalEpisodePage extends EpisodePage<MyAnimeList> {
         return document.querySelector(`meta[name="csrf_token"]`).getAttribute("content");
     }
 
-    @cacheInStateMemory("animeId")
-    getMALAnimeId(): number {
-        return parseInt(document.querySelector(`#myinfo_anime_id`).getAttribute("value"));
-    }
-
     @cacheInStateMemory("username")
     async getUsername(): Promise<string | null> {
         return await evaluateCode("MAL.USER_NAME") || null;
@@ -84,21 +79,45 @@ class MalEpisodePage extends EpisodePage<MyAnimeList> {
     async setAnimeProgress(progress: number) {
         const data = {
             csrf_token: this.getCSRFToken(),
-            anime_id: this.getMALAnimeId(),
+            anime_id: this.service.getMALAnimeId(),
+            // 1: watching, 2: completed
+            status: 1,
             num_watched_episodes: progress
         };
 
-        try {
-            const resp = await axios.post("/ownlist/anime/edit.json", JSON.stringify(data), {headers: {"Content-Type": "application/x-www-form-urlencoded"}});
-            if (resp.data !== null) {
-                console.warn("unknown response after setting progress", resp.data);
-            }
+        // brute-force our way through this. First try to edit it
+        // and if it doesn't work (probably because entry doesn't exist yet) add a new one
 
-            return true;
-        } catch (e) {
-            console.error("Couldn't set anime progress", e);
-            return false;
+        const strategies = ["edit", "add"].map(strat => async () => {
+            const resp = await axios.post(
+                `/ownlist/anime/${strat}.json`, JSON.stringify(data),
+                {headers: {"Content-Type": "application/x-www-form-urlencoded"}}
+            );
+
+            if (resp.data !== null) console.warn("unknown response after setting progress", resp.data);
+        });
+
+        let lastException;
+        for (const strategy of strategies) {
+            try {
+                await strategy();
+                return true;
+            } catch (e) {
+                lastException = e;
+            }
         }
+        
+        console.error("Couldn't set anime progress", lastException);
+        return false;
+    }
+
+    async getEpisodesWatched(): Promise<number | null> {
+        const el = document.querySelector("#myinfo_watchedeps");
+        if (!el) return null;
+
+        const epsWatched = parseInt(el.getAttribute("value"));
+        if (epsWatched || epsWatched === 0) return epsWatched;
+        else return null;
     }
 }
 
@@ -113,12 +132,17 @@ class MyAnimeList extends Service {
 
         let match;
 
-        match = url.pathname.match(/\/anime\/(.+)\/episode\/(\d+)/);
+        match = url.pathname.match(/\/anime\/(\d+)\/(.+)\/episode\/(\d+)/);
         if (match) {
-            this.state.memory.animeIdentifier = match[1];
-            this.state.memory.episodeIndex = parseInt(match[2]) - 1;
+            this.state.memory.malAnimeId = parseInt(match[1]);
+            this.state.memory.animeIdentifier = match[2];
+            this.state.memory.episodeIndex = parseInt(match[3]) - 1;
             await this.showEpisodePage();
         }
+    }
+
+    getMALAnimeId(): Promise<number> {
+        return this.state.memory.malAnimeId;
     }
 
     async getAnimeIdentifier(): Promise<string | null> {

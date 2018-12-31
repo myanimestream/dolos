@@ -14,6 +14,19 @@ const getSession = () => getContainer().lookup("session:main");
 const getQueryCache = () => getContainer().lookup("service:query-cache");
 `;
 
+export function transitionTo(view: string, ...args: any[]) {
+    injectCode(EMBER_BASE +
+        `getRouter().transitionTo("${view}", ${args.map(arg =>
+            JSON.stringify(arg)
+        )});`, {deleteAfter: true}
+    );
+}
+
+export async function getAccessToken(): Promise<string | null> {
+    return await evaluateCode(EMBER_BASE + "return getSession().content.authenticated.access_token || null;");
+}
+
+
 const SET_PROGRESS = `
 return await new Promise(${(
     // @ts-ignore
@@ -29,18 +42,6 @@ return await new Promise(${(
 ).toString()});
 `;
 
-export function transitionTo(view: string, ...args: any[]) {
-    injectCode(EMBER_BASE +
-        `getRouter().transitionTo("${view}", ${args.map(arg =>
-            JSON.stringify(arg)
-        )});`, {deleteAfter: true}
-    );
-}
-
-export async function getAccessToken(): Promise<string | null> {
-    return await evaluateCode(EMBER_BASE + "return getSession().content.authenticated.access_token || null;");
-}
-
 export async function setProgress(animeId: string, userId: string, progress: number): Promise<boolean> {
     const result = await evaluateCode(EMBER_BASE + formatCode(SET_PROGRESS, {animeId, userId, progress}));
     if (result !== true) {
@@ -49,4 +50,23 @@ export async function setProgress(animeId: string, userId: string, progress: num
     }
 
     return true;
+}
+
+const GET_PROGRESS = `
+return await new Promise(${(
+    // @ts-ignore
+    res => getQueryCache()
+        .query("library-entry", {filter: {animeId: "{{animeId}}", userId: "{{userId}}"}})
+        .then(records => {
+            const entry = records.firstObject;
+            res(entry.progress);
+        })
+        .catch(reason => res(reason))
+).toString()});
+`;
+
+export async function getProgress(animeId: string, userId: string): Promise<number | null> {
+    const result = await evaluateCode(EMBER_BASE + formatCode(GET_PROGRESS, {animeId, userId}));
+    if (isNaN(result)) return null;
+    else return result;
 }

@@ -1,4 +1,4 @@
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import createMuiTheme, {Theme} from "@material-ui/core/styles/createMuiTheme";
 
 const mainTheme = createMuiTheme({
     typography: {
@@ -44,3 +44,15 @@ export const malTheme = createMuiTheme({
         },
     },
 });
+
+export function getThemeFor(service: string): Theme {
+    switch (service) {
+        case "kitsu":
+            return kitsuTheme;
+        case "mal":
+            return malTheme;
+
+        default:
+            return mainTheme;
+    }
+}

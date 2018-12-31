@@ -7,12 +7,15 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {CSSProperties, WithStyles} from "@material-ui/core/styles/withStyles";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
+import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import MoodBadIcon from "@material-ui/icons/MoodBad";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
+import * as rxjs from "rxjs";
 import EpisodePage from "../pages/episode";
 import embedProviders from "./embed-providers";
 import EmbedPlayer, {EmbedInfo} from "./EmbedPlayer";
@@ -66,15 +69,23 @@ interface EpisodeEmbedState {
     episodeEmbeds?: EmbedInfo[];
 
     skipButtons?: [SkipButton, SkipButton];
+    canSetProgress: boolean;
+    bookmarked: boolean;
 }
 
 export default withStyles(styles)(class EpisodeEmbed extends React.Component<EpisodeEmbedProps, EpisodeEmbedState> {
+    episodeBookmarkedSubscription?: rxjs.Subscription;
+
     constructor(props: EpisodeEmbedProps) {
         super(props);
         this.state = {
             currentPlayer: null,
             playersAvailable: [],
+            canSetProgress: false,
+            bookmarked: false,
         };
+
+        this.episodeBookmarkedSubscription = null;
     }
 
     static getPlayerTypeName(type: PlayerType): string | null {
@@ -125,8 +136,20 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
         return embeds;
     }
 
+    componentWillUnmount() {
+        if (this.episodeBookmarkedSubscription) this.episodeBookmarkedSubscription.unsubscribe();
+    }
+
     async componentDidMount() {
         const {episodePage} = this.props;
+
+
+        this.episodeBookmarkedSubscription = episodePage.episodeBookmarked$.subscribe({
+            next: (episodeBookmarked) => this.setState({bookmarked: episodeBookmarked})
+        });
+
+        const canSetProgress = await episodePage.canSetAnimeProgress();
+        this.setState({canSetProgress});
 
         const [config, epIndex, episode] = await Promise.all([
             episodePage.state.config,
@@ -243,6 +266,28 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
         );
     }
 
+    async toggleBookmark() {
+        const {episodePage} = this.props;
+        const {bookmarked} = this.state;
+
+        if (bookmarked) await episodePage.markEpisodeUnwatched();
+        else await episodePage.markEpisodeWatched();
+    }
+
+    renderBookmarkButton() {
+        const {bookmarked, canSetProgress} = this.state;
+
+        return (
+            <Tooltip title={_(`episode__bookmark_${bookmarked ? "seen" : "unseen"}`)}>
+                <span>
+                    <IconButton onClick={() => this.toggleBookmark()} color="primary" disabled={!canSetProgress}>
+                        {bookmarked ? <BookmarkIcon/> : <BookmarkBorderIcon/>}
+                    </IconButton>
+                </span>
+            </Tooltip>
+        );
+    }
+
     render() {
         const {classes} = this.props;
         const {playersAvailable} = this.state;
@@ -252,7 +297,10 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                 {this.renderPlayer()}
 
                 <Paper className={classes.playerBar}>
-                    {this.renderSkipButtons()}
+                    <span>
+                        {this.renderSkipButtons()}
+                        {this.renderBookmarkButton()}
+                    </span>
 
                     {playersAvailable.length > 1 &&
                     <Tooltip title={_("episode__switch_player_type")}>

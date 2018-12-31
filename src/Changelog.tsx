@@ -7,6 +7,12 @@ interface Changelog {
 }
 
 const CHANGELOG: Changelog = {
+    "0.0.9": [
+        <>Added a button to manually mark an episode as watched/unwatched</>,
+        <>Fixed a bug which would render Dolos unable to update the progress on Kitsu</>,
+        <>Fixed a similar bug for MyAnimeList which would break setting the progress on mobile</>,
+        <>Theme selection for website has been fixed</>
+    ],
     "0.0.8": [
         <>Fixed being unable to change embedded player</>,
         <>MyAnimeList Mobile support</>

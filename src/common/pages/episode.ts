@@ -1,5 +1,6 @@
 import * as React from "react";
-import {kitsuTheme} from "../../theme";
+import * as rxjs from "rxjs";
+import {getThemeFor} from "../../theme";
 import {reactRenderWithTheme, wrapSentryLogger} from "../../utils";
 import {Embed, SkipButton} from "../components";
 import {Episode, GrobberErrorType} from "../models";
@@ -8,9 +9,18 @@ import ServicePage from "../service-page";
 
 
 export default abstract class EpisodePage<T extends Service> extends ServicePage<T> {
+    episodeBookmarked$: rxjs.BehaviorSubject<boolean>;
+
+    constructor(service: T) {
+        super(service);
+        this.episodeBookmarked$ = new rxjs.BehaviorSubject(false);
+    }
+
     abstract async canSetAnimeProgress(): Promise<boolean>;
 
     abstract async setAnimeProgress(progress: number): Promise<boolean>;
+
+    abstract async getEpisodesWatched(): Promise<number | null>;
 
     abstract async getEpisodeIndex(): Promise<number | null>;
 
@@ -48,34 +58,58 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
 
     async buildEmbed(): Promise<Element> {
         const el = document.createElement("div");
-        reactRenderWithTheme(wrapSentryLogger(React.createElement(Embed, {episodePage: this})), kitsuTheme, el);
+        reactRenderWithTheme(
+            wrapSentryLogger(React.createElement(Embed, {episodePage: this})),
+            getThemeFor(this.state.serviceId),
+            el
+        );
 
         return el;
     }
 
     async onEpisodeEnd() {
-        await this.onEpisodeWatched();
+        const config = await this.state.config;
+
+        if (config.updateAnimeProgress)
+            await this.markEpisodeWatched();
+
         await this.showNextEpisode();
     }
 
-    async onEpisodeWatched() {
-        const [config, epIndex, canSetProgress] = await Promise.all([this.state.config, this.getEpisodeIndex(), this.canSetAnimeProgress()]);
-
-        if (!(config.updateAnimeProgress && canSetProgress)) {
-            return;
-        }
+    async markEpisodeWatched() {
+        const [epIndex, canSetProgress] = await Promise.all([this.getEpisodeIndex(), this.canSetAnimeProgress()]);
+        if (!canSetProgress) return;
 
         if (!(epIndex || epIndex === 0)) {
             console.warn("Can't update anime progress, episodeIndex null!");
             return;
         }
 
-        if (!await this.setAnimeProgress(epIndex + 1)) {
+        if (await this.setAnimeProgress(epIndex + 1))
+            this.episodeBookmarked$.next(true);
+        else {
             //TODO show warning to user!
         }
     }
 
+    async markEpisodeUnwatched() {
+        const [epIndex, canSetProgress] = await Promise.all([this.getEpisodeIndex(), this.canSetAnimeProgress()]);
+        if (!canSetProgress) return;
+
+        if (!(epIndex || epIndex === 0)) {
+            console.warn("Can't update anime progress, episodeIndex null!");
+            return;
+        }
+
+        if (await this.setAnimeProgress(epIndex))
+            this.episodeBookmarked$.next(false);
+    }
+
     async load() {
+        const [epIndex, epsWatched] = await Promise.all([this.getEpisodeIndex(), this.getEpisodesWatched()]);
+        if (epsWatched >= epIndex + 1)
+            this.episodeBookmarked$.next(true);
+
         await this.injectEmbed(await this.buildEmbed());
     }
 }

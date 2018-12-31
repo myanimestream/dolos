@@ -2,14 +2,14 @@ import {waitUntilExists} from "./utils";
 
 const DELETE_AFTER = `(${(() => document.scripts[document.scripts.length - 1].remove()).toString()})();`;
 
-const PUSH_RESULT = (
-    function pushResult(value: any, key: string) {
+const PUSH_RESULT = `const pushResult = ${(
+    (value: any, key: string) => {
         const el = document.createElement("div");
         el.id = "{{uid}}";
         el.setAttribute(key, JSON.stringify(value));
         document.body.appendChild(el);
     }
-).toString();
+).toString()};`;
 
 const EVAL_TEMPLATE = `
 ${PUSH_RESULT}
