@@ -9,8 +9,8 @@ import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import * as React from "react";
-import {getState} from "../background";
 import CHANGELOG from "../Changelog";
+import {getBackgroundWindow} from "../utils";
 
 
 const styles = () => createStyles({
@@ -46,7 +46,8 @@ export default withStyles(styles)(class ChangelogDisplay extends React.Component
     }
 
     async componentDidMount() {
-        (await getState()).hasNewVersion = false;
+        const background = await getBackgroundWindow();
+        background.hasNewVersion$.next(false);
     }
 
 

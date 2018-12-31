@@ -2,7 +2,22 @@ import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import * as rxjs from "rxjs";
 import {SentryLogger} from "./logging";
+
+interface BackgroundWindow extends Window {
+    hasNewVersion$: rxjs.Subject<boolean>;
+}
+
+export async function getBackgroundWindow(): Promise<BackgroundWindow> {
+    // @ts-ignore
+    return await new Promise((res, rej) =>
+        chrome.runtime.getBackgroundPage(window => {
+            if (window) res(window);
+            else rej(new Error("background page not found"));
+        })
+    );
+}
 
 export function waitUntilExists(selector: string): Promise<Element> {
     return new Promise(res => {

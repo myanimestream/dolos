@@ -1,5 +1,4 @@
-import "./background-state";
-import "./events";
+if (!chrome.browserAction) throw new Error("Background imported in non-background page context!");
 
-export {BackgroundStateType} from "./background-state";
-export * from "./utils";
+import "./events";
+import "./telemetry";

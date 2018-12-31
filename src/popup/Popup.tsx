@@ -25,8 +25,9 @@ import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import SettingsIcon from "@material-ui/icons/Settings";
 import * as React from "react";
 import {HashRouter, matchPath, NavLink, Redirect, Route, Switch, withRouter} from "react-router-dom";
-import {getState} from "../background";
+import * as rxjs from "rxjs";
 import * as info from "../info";
+import {getBackgroundWindow} from "../utils";
 import Changelog from "./ChangelogDisplay";
 import _ = chrome.i18n.getMessage;
 
@@ -89,6 +90,8 @@ interface PopupState {
 }
 
 export default withStyles(styles, {withTheme: true})(class Popup extends React.Component<PopupProps, PopupState> {
+    hasNewVersionSub?: rxjs.Subscription;
+
     constructor(props: PopupProps) {
         super(props);
         this.state = {
@@ -97,8 +100,13 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
         }
     }
 
+    componentWillUnmount() {
+        if (this.hasNewVersionSub) this.hasNewVersionSub.unsubscribe();
+    }
+
     async componentDidMount() {
-        (await getState()).updateOn("hasNewVersion", changelogBadgeVisible => this.setState({changelogBadgeVisible}));
+        const background = await getBackgroundWindow();
+        background.hasNewVersion$.subscribe(changelogBadgeVisible => this.setState({changelogBadgeVisible}));
     }
 
     toggleDrawer() {

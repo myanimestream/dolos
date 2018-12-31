@@ -35,7 +35,7 @@ export default withStyles(styles)(class Player extends React.Component<PlayerPro
 
     componentDidMount() {
         const {eventListener, options} = this.props;
-        // normal autoplay doesn't fire ended event!
+        // normal autoplay only works when muted and doesn't fire "ended" event!
         const autoplay = options.autoplay;
         options.autoplay = false;
 

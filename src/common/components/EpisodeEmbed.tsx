@@ -210,26 +210,34 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
             playerProps
         } = this.state;
 
-        if (currentPlayer === PlayerType.NONE) {
-            return (
-                <WithRatio ratio={16 / 9}>
-                    <div className={classes.flexCenterColumn}>
-                        <MoodBadIcon fontSize="large" color="primary"/>
-                        <Typography variant="h4" color="textPrimary">{_("episode__error")}</Typography>
-                    </div>
-                </WithRatio>
-            );
-        } else if (currentPlayer === PlayerType.DOLOS) {
-            return (
-                <Player {...playerProps as PlayerProps}/>
-            );
-        } else if (currentPlayer === PlayerType.EMBED) {
-            return (
-                <EmbedPlayer embeds={episodeEmbeds}/>
-            );
-        } else {
-            return (<WithRatio ratio={16 / 9}><CircularProgress/></WithRatio>);
-        }
+        const view = () => {
+            switch (currentPlayer) {
+                case PlayerType.DOLOS:
+                    return (
+                        <Player {...playerProps as PlayerProps}/>
+                    );
+                case PlayerType.EMBED:
+                    return (
+                        <EmbedPlayer embeds={episodeEmbeds}/>
+                    );
+                case PlayerType.NONE:
+                    return (
+                        <WithRatio ratio={16 / 9}>
+                            <div className={classes.flexCenterColumn}>
+                                <MoodBadIcon fontSize="large" color="primary"/>
+                                <Typography variant="h4" color="textPrimary">{_("episode__error")}</Typography>
+                            </div>
+                        </WithRatio>
+                    );
+
+                default:
+                    return (
+                        <WithRatio ratio={16 / 9}><CircularProgress/></WithRatio>
+                    );
+            }
+        };
+
+        return view();
     }
 
     renderSkipButtons() {
