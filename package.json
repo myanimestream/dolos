@@ -14,7 +14,7 @@
     "@types/react-dom": "^16.0.4"
   },
   "dependencies": {
-    "@material-ui/core": "^3.7.1",
+    "@material-ui/core": "^3.8.1",
     "@material-ui/icons": "^3.0.1",
     "@sentry/browser": "^4.4.2",
     "awesome-debounce-promise": "^1.0.0",
@@ -32,7 +32,7 @@
     "tslint-config-airbnb": "^5.11.1",
     "tslint-react": "^3.6.0",
     "typescript": "^2.7.2",
-    "webpack": "^4.28.2",
+    "webpack": "^4.28.3",
     "webpack-cli": "^3.1.1",
     "webpack-merge": "^4.1.5"
   }

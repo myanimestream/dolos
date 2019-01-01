@@ -1,0 +1,27 @@
+language: node_js
+node_js: node
+os: linux
+sudo: false
+addons:
+  apt:
+    packages:
+      - zip
+cache:
+  npm: true
+matrix:
+  fast_finish: true
+install: travis_retry npm install --production
+script: npm build:production
+before_deploy: bash tools/deploy.sh
+deploy:
+  provider: releases
+  api_key:
+    secure: R7Rp3uiNoLS4OKqvyZI9IbBIwI3GX+q8lMnekSJiil/tVyvBhURPcU5nPSSd/RjnwODlE9/rJjoqTpj+VIEUpOM/QH1qbm9OvFnzm/j0sJNFo2EuZlQpr7tQuiV/9ntVh35S2ChRx/JzvrdHnUI0iy/SFb5HijcRoGowzToNrYRWIFQwM2vhP1hRnhkfUVNrneBgCvppTohjUhF3itI81X4bUplEzNsDf9HnHQDCkNlz1uFAXT1+jN3VhmHfSydL1ABVS7lgtn40XdDTJDFDOCqJYa9oYKJDZvrDY6XhclHGXD
+    yxR93F0uxswMyl2VrNr7BYZ0Hx3yjPcANMIjbaVzk5Pgi0iwgWNkZwZvj0P5r8nebwjXE5P0dSv+rGt1j3wrtEiMKHtt2KqoRGDaSPa3R+6U1sahdThBNPN2UJTwBbvr1Aq90eXF+XSwUk4sJPcanQt6SBXMEo1hB1oFOaCZ0CzXgKZlMmNryEnKjnp2xqSSpgxw6aVfmUr/X87Vnz6f+eV+IndlOOqj4MBnTMxpC87CzL3OVNOFoAkC5GPwS/Wncfqn3zUmIuYIRHiCcgkWhP0Dn5cmGng+xiGR9tyR1GiYL/1Nrx05Ws
+    Pm3jscdM14FuuoOHPRaxzmxowafbIfWVXH1qqF96XasDvY6i3DCwx1LaCUUPqH+ASe/rnY4=
+  file:
+    - "build/mas-firefox.xpi"
+    - "build/mas-chrome.zip"
+  skip_cleanup: true
+  on:
+    tags: true
