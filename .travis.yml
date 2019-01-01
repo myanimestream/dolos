@@ -12,7 +12,7 @@ cache:
 matrix:
   fast_finish: true
 install: travis_retry npm install --production
-script: npm build:production
+script: npm run build:production
 before_deploy: bash tools/deploy.sh
 deploy:
   provider: releases
@@ -22,5 +22,5 @@ deploy:
     - "build/mas-firefox.xpi"
     - "build/mas-chrome.zip"
   skip_cleanup: true
-  on:
-    tags: true
+#  on:
+#    tags: true
