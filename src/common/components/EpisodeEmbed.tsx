@@ -16,6 +16,7 @@ import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
 import * as rxjs from "rxjs";
+import {ReactGA} from "../../logging";
 import EpisodePage from "../pages/episode";
 import embedProviders from "./embed-providers";
 import EmbedPlayer, {EmbedInfo} from "./EmbedPlayer";
@@ -109,7 +110,15 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
     }
 
     switchPlayerType() {
-        this.setState({currentPlayer: this.getNextPlayerType()});
+        const nextPlayerType = this.getNextPlayerType();
+
+        ReactGA.event({
+            category: "EpisodeEmbed",
+            action: "Switched Player Type",
+            label: EpisodeEmbed.getPlayerTypeName(nextPlayerType)
+        });
+
+        this.setState({currentPlayer: nextPlayerType});
     }
 
     getEmbedInfos(urls: string[]): EmbedInfo[] {
@@ -277,6 +286,12 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
     async toggleBookmark() {
         const {episodePage} = this.props;
         const {bookmarked} = this.state;
+
+        ReactGA.event({
+            category: "EpisodeEmbed",
+            action: "Toggled Bookmark",
+            label: (!bookmarked ? "watched" : "unwatched")
+        });
 
         if (bookmarked) await episodePage.markEpisodeUnwatched();
         else await episodePage.markEpisodeWatched();

@@ -14,6 +14,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import * as React from "react";
+import {ReactGA} from "../../logging";
 import StableIFrame from "./StableIFrame";
 import WithRatio from "./WithRatio";
 import _ = chrome.i18n.getMessage;
@@ -70,6 +71,19 @@ export default withStyles(styles)(class EmbedPlayer extends React.Component<Embe
         };
     }
 
+
+    setCurrentEmbed(embedIndex: number) {
+        const embed = this.props.embeds[embedIndex];
+
+        ReactGA.event({
+            category: "EmbedPlayer",
+            action: "Switched Embed",
+            label: embed.name
+        });
+
+        this.setState({currentEmbedSelected: embedIndex});
+    }
+
     render() {
         const {classes, embeds} = this.props;
         const {currentEmbedSelected, embedSelectionOpen} = this.state;
@@ -98,7 +112,7 @@ export default withStyles(styles)(class EmbedPlayer extends React.Component<Embe
                                 onOpen={() => this.setState({embedSelectionOpen: true})}
                                 onClose={() => this.setState({embedSelectionOpen: false})}
                                 value={currentEmbedSelected}
-                                onChange={event => this.setState({currentEmbedSelected: parseInt(event.target.value)})}
+                                onChange={event => this.setCurrentEmbed(parseInt(event.target.value))}
                                 inputProps={{
                                     name: _("episode__switch_embed"),
                                     id: "embed-selection-control"
