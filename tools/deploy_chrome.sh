@@ -23,7 +23,6 @@ curl -s \
 -H "x-goog-api-version: 2" \
 -X PUT \
 -T mas-chrome.zip \
--v \
 https://www.googleapis.com/upload/chromewebstore/v1.1/items/$CHROME_APP_ID
 
 echo "[CHROME] publishing..."
@@ -32,5 +31,4 @@ curl -s \
 -H "x-goog-api-version: 2" \
 -H "Content-Length: 0" \
 -X POST \
--v \
 https://www.googleapis.com/chromewebstore/v1.1/items/$CHROME_APP_ID/publish
