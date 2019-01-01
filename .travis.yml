@@ -22,5 +22,5 @@ deploy:
     - "build/mas-firefox.xpi"
     - "build/mas-chrome.zip"
   skip_cleanup: true
-#  on:
-#    tags: true
+  on:
+    tags: true
