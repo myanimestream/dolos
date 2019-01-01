@@ -8,12 +8,11 @@
   },
   "author": "siku2",
   "license": "MIT",
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
     "@types/chrome": "0.0.60",
     "@types/react": "^16.7.18",
-    "@types/react-dom": "^16.0.4"
-  },
-  "dependencies": {
+    "@types/react-dom": "^16.0.4",
     "@material-ui/core": "^3.8.1",
     "@material-ui/icons": "^3.0.1",
     "@sentry/browser": "^4.4.2",
