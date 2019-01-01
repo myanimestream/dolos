@@ -36,6 +36,12 @@
   "popup__nav__help": {
     "message": "Help"
   },
+  "popup__feedback__github_issues__text": {
+    "message": "If you have any suggestions or bugs you would like to report please feel free to create a new Issue over at Dolos' GitHub repository."
+  },
+  "popup__feedback__github_issues__action": {
+    "message": "Open"
+  },
   "options__video": {
     "message": "Video"
   },

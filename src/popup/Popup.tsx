@@ -1,5 +1,10 @@
+import {Card} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Badge from "@material-ui/core/Badge";
+import Button from "@material-ui/core/Button";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
@@ -26,11 +31,11 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import * as React from "react";
 import {HashRouter, matchPath, NavLink, Redirect, Route, Switch, withRouter} from "react-router-dom";
 import * as rxjs from "rxjs";
+import GitHubIcon from "../assets/GitHubIcon";
 import * as info from "../info";
 import {getBackgroundWindow} from "../utils";
 import Changelog from "./ChangelogDisplay";
 import _ = chrome.i18n.getMessage;
-
 
 const styles = (theme: Theme) => {
     const drawerWidth = 240;
@@ -41,7 +46,7 @@ const styles = (theme: Theme) => {
 
     return createStyles({
         root: {
-            ...grow,
+            display: "flex",
             minWidth: 300,
             minHeight: 400,
         },
@@ -78,6 +83,9 @@ const styles = (theme: Theme) => {
             flexGrow: 1,
             padding: theme.spacing.unit * 3,
         },
+        buttonIconLeft: {
+            marginRight: theme.spacing.unit,
+        }
     });
 };
 
@@ -125,14 +133,27 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
     };
 
     renderFeedback = () => {
-        return (
-            <Typography paragraph>
-                Lol, as if. I don't care about your opinion!
+        const {classes} = this.props;
 
-                Just so you know, this has nothing to do with the fact that I simply haven't gotten around to build such
-                a feature...
-                <b>Nononononon</b>
-            </Typography>);
+        return (
+            <Card>
+                <CardActionArea>
+                    <CardContent>
+                        <Typography gutterBottom variant="h5">GitHub Issues</Typography>
+                        <Typography>{_("popup__feedback__github_issues__text")}</Typography>
+                    </CardContent>
+                </CardActionArea>
+                <CardActions>
+
+                    <Button variant="contained" color="primary"
+                            onClick={() => window.open("https://github.com/MyAnimeStream/dolos/issues")}
+                    >
+                        <GitHubIcon className={classes.buttonIconLeft}/>
+                        {_("popup__feedback__github_issues__action")}
+                    </Button>
+                </CardActions>
+            </Card>
+        );
     };
 
     renderHelp = () => {

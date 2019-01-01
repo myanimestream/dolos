@@ -9,9 +9,9 @@ import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import * as React from "react";
-import CHANGELOG from "../Changelog";
+import * as ReactMarkdown from "react-markdown";
+import CHANGELOG from "../changelog";
 import {getBackgroundWindow} from "../utils";
-
 
 const styles = () => createStyles({
     changelogEntry: {
@@ -71,7 +71,10 @@ export default withStyles(styles)(class ChangelogDisplay extends React.Component
                                 {changes.map((change, index) => (
                                     <ListItem key={index}>
                                         <ListItemText className={classes.changelogEntry}
-                                                      primaryTypographyProps={{variant: "body1"}}>{change}</ListItemText>
+                                                      primaryTypographyProps={{variant: "body1"}}
+                                        >
+                                            <ReactMarkdown source={change}/>
+                                        </ListItemText>
                                     </ListItem>
                                 ))}
                             </List>

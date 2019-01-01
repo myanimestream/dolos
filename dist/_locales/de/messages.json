@@ -23,6 +23,12 @@
   "popup__nav__help": {
     "message": "Hilfe"
   },
+  "popup__feedback__github_issues__text": {
+    "message": "Solltest du irgendwelche Vorschläge oder Fehler, die du gerne Melden möchtest, haben, bitte erstelle ein neues GitHub Issue in dem Repository von Dolos."
+  },
+  "popup__feedback__github_issues__action": {
+    "message": "Öffnen"
+  },
   "options__video": {
     "message": "Video"
   },
