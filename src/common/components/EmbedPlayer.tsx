@@ -14,7 +14,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import * as React from "react";
-import {ReactGA} from "../../logging";
 import StableIFrame from "./StableIFrame";
 import WithRatio from "./WithRatio";
 import _ = chrome.i18n.getMessage;
@@ -74,13 +73,6 @@ export default withStyles(styles)(class EmbedPlayer extends React.Component<Embe
 
     setCurrentEmbed(embedIndex: number) {
         const embed = this.props.embeds[embedIndex];
-
-        ReactGA.event({
-            category: "EmbedPlayer",
-            action: "Switched Embed",
-            label: embed.name
-        });
-
         this.setState({currentEmbedSelected: embedIndex});
     }
 

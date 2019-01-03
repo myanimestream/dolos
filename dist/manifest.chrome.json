@@ -14,7 +14,7 @@
   "permissions": [
     "storage"
   ],
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true

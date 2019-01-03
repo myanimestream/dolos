@@ -11,7 +11,7 @@ cache:
   npm: true
 matrix:
   fast_finish: true
-install: travis_retry npm install --production
+install: travis_retry npm install
 script: npm run build:production
 before_deploy: bash tools/deploy.sh
 deploy:
