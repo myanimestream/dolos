@@ -9,7 +9,6 @@ cd "build/firefox"
 echo $(cat "manifest.webextension.json") > "manifest.json"
 
 echo "[FIREFOX] signing..."
-npm i web-ext
 npx web-ext sign --api-key "${FIREFOX_API_KEY}" --api-secret "${FIREFOX_API_SECRET}" --artifacts-dir "artifact"
 
 file="$(ls  artifact/*.xpi | tail -n1)"
