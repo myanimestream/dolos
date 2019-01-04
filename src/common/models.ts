@@ -1,17 +1,26 @@
 import {Language} from "../models";
 
+export class GrobberRequestError extends Error {
+    request: XMLHttpRequest;
+
+    constructor(request: XMLHttpRequest) {
+        super(`Grobber Request Error: ${request.statusText}`);
+        this.request = request;
+    }
+}
+
 export enum GrobberErrorType {
     UidUnknown = "UIDUnknown"
 }
 
 export class GrobberResponseError extends Error {
     name: GrobberErrorType;
-    code: number;
+    clientError: boolean;
 
-    constructor(msg: string, code: number, name: GrobberErrorType) {
+    constructor(name: GrobberErrorType, msg: string, clientError: boolean) {
         super(msg);
-        this.code = code;
         this.name = name;
+        this.clientError = clientError
     }
 }
 

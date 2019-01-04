@@ -1,7 +1,7 @@
 import axios from "axios";
 import {Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
-import {Episode, episodeFromResp, GrobberResponseError, SearchResult} from "./models";
+import {Episode, episodeFromResp, GrobberRequestError, GrobberResponseError, SearchResult} from "./models";
 import Service from "./service";
 import ServicePage from "./service-page";
 
@@ -50,12 +50,22 @@ export default class State<T extends Service> {
     async request(endpoint: string, params?: Object): Promise<any> {
         const config = await this.config;
         const requestConfig = {params};
-        const resp = await axios.get(config.grobberUrl + endpoint, requestConfig);
 
-        const data = resp.data;
-        if (!data.success) throw new GrobberResponseError(data.msg, data.code, data.name);
+        try {
+            const resp = await axios.get(config.grobberUrl + endpoint, requestConfig);
+            return resp.data;
+        } catch (error) {
+            if (error.response) {
+                const data = error.response.data;
+                throw new GrobberResponseError(data.name, data.msg, data.client_error);
+            } else if (error.request) {
+                throw new GrobberRequestError(error.request);
+            } else {
+                // who knows where this came from, but let's throw it back out there
+                throw error;
+            }
+        }
 
-        return data;
     }
 
     async searchAnime(query: string): Promise<SearchResult[] | null> {

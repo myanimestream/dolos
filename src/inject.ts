@@ -31,7 +31,7 @@ export function formatCode(code: string, args: { [key: string]: any }): string {
     return code;
 }
 
-export function injectCode(code: string, options?: InjectOptions): Element {
+export function injectCode(code: string, options?: Partial<InjectOptions>): Element {
     options = options || {};
 
     code = `(async () => {${code}})();`;
@@ -56,7 +56,7 @@ export async function evaluateCode(code: string): Promise<any> {
     const uid = getUid();
     if (!code.includes("return")) code = `return ${code}`;
 
-    injectCode(formatCode(EVAL_TEMPLATE, {uid, code}));
+    injectCode(formatCode(EVAL_TEMPLATE, {uid, code}), {deleteAfter: true});
 
     const el = await waitUntilExists(`#${uid}`);
 
