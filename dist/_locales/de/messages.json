@@ -86,6 +86,9 @@
   "episode__bookmark_seen": {
     "message": "Markiere als ungesehen"
   },
+  "episode__bookmark_failed": {
+    "message": "Fortschritt konnte nicht gespeichert werden"
+  },
   "episode__error": {
     "message": "Episode nicht gefunden"
   },

@@ -20,6 +20,7 @@ import EpisodePage from "../pages/episode";
 import embedProviders from "./embed-providers";
 import EmbedPlayer, {EmbedInfo} from "./EmbedPlayer";
 import Player, {PlayerProps, PlayerSource} from "./Player";
+import SnackbarQueue from "./SnackbarQueue";
 import WithRatio from "./WithRatio";
 import _ = chrome.i18n.getMessage;
 
@@ -143,7 +144,6 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
 
     async componentDidMount() {
         const {episodePage} = this.props;
-
 
         this.episodeBookmarkedSubscription = episodePage.episodeBookmarked$.subscribe({
             next: (episodeBookmarked) => this.setState({bookmarked: episodeBookmarked})
@@ -297,7 +297,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
     }
 
     render() {
-        const {classes} = this.props;
+        const {classes, episodePage} = this.props;
         const {playersAvailable} = this.state;
 
         return (
@@ -319,6 +319,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                     </Tooltip>
                     }
                 </Paper>
+                <SnackbarQueue snackbarMessage$={episodePage.snackbarMessage$}/>
             </div>
         );
     }

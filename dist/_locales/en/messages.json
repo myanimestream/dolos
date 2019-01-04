@@ -119,6 +119,9 @@
   "episode__bookmark_seen": {
     "message": "Mark as unwatched"
   },
+  "episode__bookmark_failed": {
+    "message": "Couldn't update anime progress"
+  },
   "episode__error": {
     "message": "Couldn't get episode, Sorry!"
   },

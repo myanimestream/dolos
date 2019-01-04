@@ -5,6 +5,9 @@ interface Changelog {
 }
 
 const CHANGELOG: Changelog = {
+    "0.0.12": [
+        `Showing a warning when marking episode as (un)watched failed`
+    ],
     "0.0.11": [
         `Fixed Popup for Firefox`,
         `Feedback option is now somewhat viable`

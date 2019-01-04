@@ -67,7 +67,7 @@ class KitsuEpisodePage extends EpisodePage<Kitsu> {
             return (await axios.request(config)).data
         } catch (e) {
             if (silent) {
-                console.error("Silent error in Kitsu API request: ", e);
+                console.error("Silent error in Kitsu API request:", endpoint, e);
                 return null;
             } else throw e;
         }

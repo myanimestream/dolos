@@ -3,17 +3,21 @@ import * as rxjs from "rxjs";
 import {getThemeFor} from "../../theme";
 import {reactRenderWithTheme, wrapSentryLogger} from "../../utils";
 import {Embed, SkipButton} from "../components";
+import {SnackbarMessage} from "../components/SnackbarQueue";
 import {Episode, GrobberErrorType} from "../models";
 import Service from "../service";
 import ServicePage from "../service-page";
+import _ = chrome.i18n.getMessage;
 
 
 export default abstract class EpisodePage<T extends Service> extends ServicePage<T> {
     episodeBookmarked$: rxjs.BehaviorSubject<boolean>;
+    snackbarMessage$: rxjs.Subject<SnackbarMessage>;
 
     constructor(service: T) {
         super(service);
         this.episodeBookmarked$ = new rxjs.BehaviorSubject(false);
+        this.snackbarMessage$ = new rxjs.Subject();
     }
 
     abstract async canSetAnimeProgress(): Promise<boolean>;
@@ -85,11 +89,8 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
             return;
         }
 
-        if (await this.setAnimeProgress(epIndex + 1))
-            this.episodeBookmarked$.next(true);
-        else {
-            //TODO show warning to user!
-        }
+        if (await this.setAnimeProgress(epIndex + 1)) this.episodeBookmarked$.next(true);
+        else this.snackbarMessage$.next({message: _("episode__bookmark_failed"), type: "error"});
     }
 
     async markEpisodeUnwatched() {
@@ -101,8 +102,8 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
             return;
         }
 
-        if (await this.setAnimeProgress(epIndex))
-            this.episodeBookmarked$.next(false);
+        if (await this.setAnimeProgress(epIndex)) this.episodeBookmarked$.next(false);
+        else this.snackbarMessage$.next({message: _("episode__bookmark_failed"), type: "error"});
     }
 
     async load() {

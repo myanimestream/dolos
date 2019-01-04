@@ -11,7 +11,7 @@
   "manifest_version": 2,
   "name": "MyAnimeStream",
   "short_name": "MAS",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "__MSG_ext_description__",
   "default_locale": "en",
   "icons": {
@@ -20,7 +20,6 @@
     "48": "icon48.png",
     "128": "icon128.png"
   },
-  "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true
