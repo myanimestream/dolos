@@ -105,7 +105,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
             case PlayerType.EMBED:
                 return PlayerType.DOLOS;
             default:
-                throw new Error(`Unhandled playertype: ${this.state.currentPlayer} cannot switch!`);
+                throw new Error(`Unhandled player type: ${this.state.currentPlayer} cannot switch!`);
         }
     }
 
