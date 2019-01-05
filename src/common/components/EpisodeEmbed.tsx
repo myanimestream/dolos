@@ -149,7 +149,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
             next: (episodeBookmarked) => this.setState({bookmarked: episodeBookmarked})
         });
 
-        const canSetProgress = await episodePage.canSetAnimeProgress();
+        const canSetProgress = await episodePage.animePage.canSetAnimeProgress();
         this.setState({canSetProgress});
 
         const [config, epIndex, episode] = await Promise.all([
