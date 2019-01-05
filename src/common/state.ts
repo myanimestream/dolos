@@ -1,7 +1,15 @@
 import axios from "axios";
 import {Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
-import {Episode, episodeFromResp, GrobberRequestError, GrobberResponseError, SearchResult} from "./models";
+import {
+    animeFromResp,
+    AnimeInfo,
+    Episode,
+    episodeFromResp,
+    GrobberRequestError,
+    GrobberResponseError,
+    SearchResult
+} from "./models";
 import Service from "./service";
 import ServicePage from "./service-page";
 
@@ -20,6 +28,7 @@ export default class State<T extends Service> {
         this.injectedElements = [];
     }
 
+    // noinspection JSMethodCanBeStatic
     get config(): Promise<Config> {
         return Store.getConfig();
     }
@@ -86,8 +95,13 @@ export default class State<T extends Service> {
         return resp.anime;
     }
 
-    async getAnimeInfo(identifier: string): Promise<StoredAnimeInfo> {
+    async getStoredAnimeInfo(identifier: string): Promise<StoredAnimeInfo> {
         return Store.getStoredAnimeInfo(this.serviceId, identifier);
+    }
+
+    async getAnimeInfo(uid: string): Promise<AnimeInfo> {
+        const resp = await this.request("/anime/", {uid});
+        return animeFromResp(resp);
     }
 
     async getEpisode(uid: string, index: number): Promise<Episode> {

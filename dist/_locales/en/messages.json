@@ -107,6 +107,31 @@
       }
     }
   },
+  "anime__continue_watching": {
+    "message": "Continue"
+  },
+  "anime__continue_watching__loading": {
+    "message": "Loading"
+  },
+  "anime__continue_watching__available": {
+    "message": "Watch Episode $EPISODE_NUMBER$",
+    "placeholders": {
+      "episode_number": {
+        "content": "$1"
+      }
+    }
+  },
+  "anime__continue_watching__unavailable": {
+    "message": "Episode $EPISODE_NUMBER$ unavailable",
+    "placeholders": {
+      "episode_number": {
+        "content": "$1"
+      }
+    }
+  },
+  "anime__continue_watching__unknown": {
+    "message": "Progress unknown"
+  },
   "episode__skip_next": {
     "message": "Next Episode"
   },

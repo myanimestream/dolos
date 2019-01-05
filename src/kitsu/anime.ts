@@ -2,7 +2,15 @@ import {cacheInStateMemory} from "../common";
 import {AnimePage} from "../common/pages";
 import {waitUntilExists} from "../utils";
 import Kitsu from "./index";
-import {getAccessToken, getAnime, getProgress, KitsuAnimeInfo, kitsuAPIRequest, setProgress} from "./utils";
+import {
+    getAccessToken,
+    getAnime,
+    getProgress,
+    KitsuAnimeInfo,
+    kitsuAPIRequest,
+    setProgress,
+    transitionTo
+} from "./utils";
 
 export default class KitsuAnimePage extends AnimePage<Kitsu> {
     async getAnimeIdentifier(): Promise<string | null> {
@@ -26,8 +34,12 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
                 "filter[slug]": await this.getAnimeIdentifier()
             }
         }, true);
+        if (!resp) return null;
 
-        return resp && resp.data[0].id;
+        const results = resp.data;
+        if (!results) return null;
+
+        return results[0].id;
     }
 
     @cacheInStateMemory("kitsuAnime")
@@ -78,6 +90,15 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return await setProgress(animeId, userId, progress);
     }
 
+    async getEpisodeURL(episode: number): Promise<string> {
+        const slug = await this.getAnimeIdentifier();
+        return new URL(`/anime/${slug}/episodes/${episode + 1}`, location.origin).toString();
+    }
+
+    async showEpisode(episodeIndex: number) {
+        transitionTo("anime.show.episodes.show", episodeIndex + 1);
+    }
+
     async getEpisodesWatched(): Promise<number | null> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
         if (!(animeId && userId)) return null;
@@ -88,5 +109,14 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
     async getEpisodeCount(): Promise<number | null> {
         const anime = await getAnime();
         return anime ? anime.episodeCount : null;
+    }
+
+    async injectContinueWatchingButton(element: Element) {
+        element.setAttribute("style", "margin-top: 16px");
+
+        (await waitUntilExists("span.media-poster"))
+            .insertAdjacentElement("afterend", element);
+
+        this.state.injected(element);
     }
 }

@@ -74,6 +74,31 @@
   "options__grobber__url__no_grobber": {
     "message": "Keine Grobber Antwort"
   },
+  "anime__continue_watching": {
+    "message": "Fortfahren"
+  },
+  "anime__continue_watching__loading": {
+    "message": "Wird geladen"
+  },
+  "anime__continue_watching__available": {
+    "message": "Episode $EPISODE_NUMBER$ ansehen",
+    "placeholders": {
+      "episode_number": {
+        "content": "$1"
+      }
+    }
+  },
+  "anime__continue_watching__unavailable": {
+    "message": "Episode $EPISODE_NUMBER$ nicht verfügbar",
+    "placeholders": {
+      "episode_number": {
+        "content": "$1"
+      }
+    }
+  },
+  "anime__continue_watching__unknown": {
+    "message": "Fortschritt unbekannt"
+  },
   "episode__skip_next": {
     "message": "Nächste Episode"
   },

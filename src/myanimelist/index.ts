@@ -15,7 +15,14 @@ export default class MyAnimeList extends Service {
 
         let match;
 
-        match = url.pathname.match(/\/anime\/(\d+)\/(.+)\/episode\/(\d+)/);
+        match = url.pathname.match(/\/anime\/(\d+)\/([^\/]+)(?:\/)?$/);
+        if (match) {
+            this.state.memory.malAnimeId = parseInt(match[1]);
+            this.state.memory.animeIdentifier = match[2];
+            await this.showAnimePage();
+        }
+
+        match = url.pathname.match(/\/anime\/(\d+)\/([^\/]+)\/episode\/(\d+)(?:\/)?$/);
         if (match) {
             this.state.memory.malAnimeId = parseInt(match[1]);
             this.state.memory.animeIdentifier = match[2];
