@@ -9,7 +9,6 @@ import ServicePage from "../service-page";
 
 
 export default abstract class AnimePage<T extends Service> extends ServicePage<T> {
-
     constructor(service: T) {
         super(service);
     }

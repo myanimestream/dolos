@@ -16,7 +16,7 @@ ${PUSH_RESULT}
 
 const run = async () => {{{code}}};
 run().then(value => pushResult(value, "data-result"),
-        reason => pushResult(reason, "data-error"));
+        reason => pushResult(reason.toString(), "data-error"));
 `;
 
 interface InjectOptions {

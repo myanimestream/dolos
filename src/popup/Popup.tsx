@@ -29,7 +29,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import SettingsIcon from "@material-ui/icons/Settings";
 import * as React from "react";
-import {HashRouter, matchPath, NavLink, Redirect, Route, Switch, withRouter} from "react-router-dom";
+import {NavLink, Redirect, Route, RouteComponentProps, Switch, withRouter} from "react-router-dom";
 import * as rxjs from "rxjs";
 import GitHubIcon from "../assets/GitHubIcon";
 import * as info from "../info";
@@ -89,7 +89,7 @@ const styles = (theme: Theme) => {
     });
 };
 
-interface PopupProps extends WithStyles<typeof styles, true> {
+interface PopupProps extends WithStyles<typeof styles, true>, RouteComponentProps<any> {
 }
 
 interface PopupState {
@@ -97,123 +97,128 @@ interface PopupState {
     changelogBadgeVisible: boolean;
 }
 
-export default withStyles(styles, {withTheme: true})(class Popup extends React.Component<PopupProps, PopupState> {
-    hasNewVersionSub?: rxjs.Subscription;
+export default withStyles(styles, {withTheme: true})(withRouter(
+    class Popup extends React.Component<PopupProps, PopupState> {
+        hasNewVersionSub?: rxjs.Subscription;
 
-    constructor(props: PopupProps) {
-        super(props);
-        this.state = {
-            drawerOpen: false,
-            changelogBadgeVisible: false,
+        constructor(props: PopupProps) {
+            super(props);
+            this.state = {
+                drawerOpen: false,
+                changelogBadgeVisible: false,
+            }
         }
-    }
 
-    componentWillUnmount() {
-        if (this.hasNewVersionSub) this.hasNewVersionSub.unsubscribe();
-    }
+        componentWillUnmount() {
+            if (this.hasNewVersionSub) this.hasNewVersionSub.unsubscribe();
+        }
 
-    async componentDidMount() {
-        const background = await getBackgroundWindow();
-        background.hasNewVersion$.subscribe(changelogBadgeVisible => this.setState({changelogBadgeVisible}));
-    }
+        async componentDidMount() {
+            const {history} = this.props;
 
-    toggleDrawer() {
-        this.setState({drawerOpen: !this.state.drawerOpen});
-    }
+            const background = await getBackgroundWindow();
+            this.hasNewVersionSub = background.hasNewVersion$.subscribe(changelogBadgeVisible => {
+                if (changelogBadgeVisible) history.push("/changelog");
+                this.setState({changelogBadgeVisible});
+            });
+        }
 
-    renderHome = () => {
-        return (
-            <Typography paragraph>
-                Hello World!
-            </Typography>);
-    };
+        toggleDrawer() {
+            this.setState({drawerOpen: !this.state.drawerOpen});
+        }
 
-    renderChangelog = () => {
-        return <Changelog/>;
-    };
+        renderHome = () => {
+            return (
+                <Typography paragraph>
+                    Hello World!
+                </Typography>);
+        };
 
-    renderFeedback = () => {
-        const {classes} = this.props;
+        renderChangelog = () => {
+            return <Changelog/>;
+        };
 
-        return (
-            <Card>
-                <CardActionArea>
-                    <CardContent>
-                        <Typography gutterBottom variant="h5">GitHub Issues</Typography>
-                        <Typography>{_("popup__feedback__github_issues__text")}</Typography>
-                    </CardContent>
-                </CardActionArea>
-                <CardActions>
+        renderFeedback = () => {
+            const {classes} = this.props;
 
-                    <Button variant="contained" color="primary"
-                            onClick={() => window.open("https://github.com/MyAnimeStream/dolos/issues")}
-                    >
-                        <GitHubIcon className={classes.buttonIconLeft}/>
-                        {_("popup__feedback__github_issues__action")}
-                    </Button>
-                </CardActions>
-            </Card>
-        );
-    };
+            return (
+                <Card>
+                    <CardActionArea>
+                        <CardContent>
+                            <Typography gutterBottom variant="h5">GitHub Issues</Typography>
+                            <Typography>{_("popup__feedback__github_issues__text")}</Typography>
+                        </CardContent>
+                    </CardActionArea>
+                    <CardActions>
 
-    renderHelp = () => {
-        return (
-            <Typography paragraph>
-                There's no help yet, sorry boi!
-                Version {info.getVersion()}
-            </Typography>
-        );
-    };
+                        <Button variant="contained" color="primary"
+                                onClick={() => window.open("https://github.com/MyAnimeStream/dolos/issues")}
+                        >
+                            <GitHubIcon className={classes.buttonIconLeft}/>
+                            {_("popup__feedback__github_issues__action")}
+                        </Button>
+                    </CardActions>
+                </Card>
+            );
+        };
 
-    render() {
-        const {classes, theme} = this.props;
-        const {changelogBadgeVisible} = this.state;
+        renderHelp = () => {
+            return (
+                <Typography paragraph>
+                    There's no help yet, sorry boi!
+                    Version {info.getVersion()}
+                </Typography>
+            );
+        };
 
-        const getLink = (target: string) => props => <NavLink to={target}
-                                                              activeClassName={classes.activeDrawerLink} {...props} />;
-        const HomeLink = getLink("/home");
-        const ChangelogLink = getLink("/changelog");
+        render() {
+            const {classes, theme} = this.props;
+            const {changelogBadgeVisible} = this.state;
 
-        const FeedbackLink = getLink("/feedback");
-        const HelpLink = getLink("/help");
+            const getLink = (target: string) => props => <NavLink to={target}
+                                                                  activeClassName={classes.activeDrawerLink} {...props} />;
+            const HomeLink = getLink("/home");
+            const ChangelogLink = getLink("/changelog");
 
-        const drawer = (
-            <>
-                <List>
-                    <ListItem button component={HomeLink}>
-                        <ListItemIcon><HomeIcon/></ListItemIcon>
-                        <ListItemText primary={_("popup__nav__home")}/>
-                    </ListItem>
-                    <ListItem button component={ChangelogLink}>
-                        <ListItemIcon>
-                            <HistoryIcon/>
-                        </ListItemIcon>
-                        <Badge color="primary" badgeContent={1} invisible={!changelogBadgeVisible}>
-                            <ListItemText primary={_("popup__nav__changelog")}/>
-                        </Badge>
-                    </ListItem>
-                </List>
-                <Divider/>
-                <List>
-                    <ListItem button onClick={() => chrome.runtime.openOptionsPage()}>
-                        <ListItemIcon><SettingsIcon/></ListItemIcon>
-                        <ListItemText primary={_("popup__nav__settings")}/>
-                        <OpenInNewIcon fontSize="small"/>
-                    </ListItem>
-                    <ListItem button component={FeedbackLink}>
-                        <ListItemIcon><FeedbackIcon/></ListItemIcon>
-                        <ListItemText primary={_("popup__nav__feedback")}/>
-                    </ListItem>
-                    <ListItem button component={HelpLink}>
-                        <ListItemIcon><HelpIcon/></ListItemIcon>
-                        <ListItemText primary={_("popup__nav__help")}/>
-                    </ListItem>
-                </List>
-            </>
-        );
+            const FeedbackLink = getLink("/feedback");
+            const HelpLink = getLink("/help");
 
-        return (
-            <HashRouter>
+            const drawer = (
+                <>
+                    <List>
+                        <ListItem button component={HomeLink}>
+                            <ListItemIcon><HomeIcon/></ListItemIcon>
+                            <ListItemText primary={_("popup__nav__home")}/>
+                        </ListItem>
+                        <ListItem button component={ChangelogLink}>
+                            <ListItemIcon>
+                                <HistoryIcon/>
+                            </ListItemIcon>
+                            <Badge color="primary" badgeContent={1} invisible={!changelogBadgeVisible}>
+                                <ListItemText primary={_("popup__nav__changelog")}/>
+                            </Badge>
+                        </ListItem>
+                    </List>
+                    <Divider/>
+                    <List>
+                        <ListItem button onClick={() => chrome.runtime.openOptionsPage()}>
+                            <ListItemIcon><SettingsIcon/></ListItemIcon>
+                            <ListItemText primary={_("popup__nav__settings")}/>
+                            <OpenInNewIcon fontSize="small"/>
+                        </ListItem>
+                        <ListItem button component={FeedbackLink}>
+                            <ListItemIcon><FeedbackIcon/></ListItemIcon>
+                            <ListItemText primary={_("popup__nav__feedback")}/>
+                        </ListItem>
+                        <ListItem button component={HelpLink}>
+                            <ListItemIcon><HelpIcon/></ListItemIcon>
+                            <ListItemText primary={_("popup__nav__help")}/>
+                        </ListItem>
+                    </List>
+                </>
+            );
+
+            return (
                 <div className={classes.root}>
                     <CssBaseline/>
 
@@ -271,7 +276,7 @@ export default withStyles(styles, {withTheme: true})(class Popup extends React.C
                         </Switch>
                     </main>
                 </div>
-            </HashRouter>
-        )
+            )
+        }
     }
-});
+));

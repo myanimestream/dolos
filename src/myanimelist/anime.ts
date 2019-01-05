@@ -63,11 +63,13 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
     }
 
     async setAnimeProgress(progress: number) {
+        // 1: watching, 2: completed
+        const status = progress >= await this.getEpisodeCount() ? 2 : 1;
+
         const data = {
             csrf_token: this.service.getCSRFToken(),
             anime_id: this.getMALAnimeId(),
-            // 1: watching, 2: completed
-            status: 1,
+            status,
             num_watched_episodes: progress
         };
 

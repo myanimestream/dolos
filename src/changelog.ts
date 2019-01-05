@@ -7,7 +7,8 @@ interface Changelog {
 const CHANGELOG: Changelog = {
     "0.0.12": [
         `Showing a warning when marking episode as (un)watched failed`,
-        `Continue watching button`
+        `Continue watching button`,
+        `Opening changelog directly when there's a new version`
     ],
     "0.0.11": [
         `Fixed Popup for Firefox`,
