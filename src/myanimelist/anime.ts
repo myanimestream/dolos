@@ -1,6 +1,7 @@
 import axios from "axios";
 import {cacheInStateMemory} from "../common";
 import {AnimePage} from "../common/pages";
+import {waitUntilExists} from "../utils";
 import MyAnimeList from "./index";
 
 interface MALAnime {
@@ -19,7 +20,7 @@ function malAnimeFromData(data: any): MALAnime {
         inOwnlist: data["in_ownlist"],
         status: data["status"],
         score: parseInt(data["score"]),
-        completedEpisodeNum: parseInt(data["completed_episode_num"]),
+        completedEpisodeNum: parseInt(data["completed_episode_num"]) || 0,
     };
 }
 
@@ -28,6 +29,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         return this.state.memory.malAnimeId;
     }
 
+    @cacheInStateMemory("malAnime")
     async getMALAnime(): Promise<MALAnime | null> {
         try {
             const resp = await axios.get("/ownlist/get_list_item", {
@@ -48,11 +50,12 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         return this.state.memory.animeIdentifier;
     }
 
+    @cacheInStateMemory("animeSearchQuery")
     async getAnimeSearchQuery(): Promise<string | null> {
         const title = document.querySelector("meta[property=\"og:title\"]")
             .getAttribute("content");
 
-        return title.match(/(.+) Episode \d+/)[1];
+        return title.match(/(.+?)(?: Episode \d+)?$/)[1];
     }
 
     async canSetAnimeProgress(): Promise<boolean> {
@@ -96,13 +99,14 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
 
     async getEpisodeURL(episode: number): Promise<string> {
         const [animeId, slug] = await Promise.all([this.getMALAnimeId(), this.getAnimeIdentifier()]);
-        return new URL(`/anime/${animeId}/${slug}/episodes/${episode + 1}`, location.origin).toString();
+        return new URL(`/anime/${animeId}/${slug}/episode/${episode + 1}`, location.origin).toString();
     }
 
     async showEpisode(episodeIndex: number) {
         location.assign(await this.getEpisodeURL(episodeIndex));
     }
 
+    @cacheInStateMemory("episodesWatched")
     async getEpisodesWatched(): Promise<number | null> {
         if (this.service.isMobileLayout()) {
             const anime = await this.getMALAnime();
@@ -115,22 +119,42 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
 
         const epsWatched = parseInt(el.getAttribute("value"));
         if (epsWatched || epsWatched === 0) return epsWatched;
+        else if (isNaN(epsWatched)) return 0;
         else return null;
     }
 
     @cacheInStateMemory("totalEpisodes")
     async getEpisodeCount(): Promise<number | null> {
+        if (this.service.isMobileLayout()) {
+            const anime = await this.getMALAnime();
+
+            return anime ? anime.episodeNum : null;
+        }
+
         const eps = parseInt(document.querySelector("span#curEps").innerHTML);
         return isNaN(eps) ? null : eps;
     }
 
     async injectContinueWatchingButton(element: Element) {
         if (this.service.isMobileLayout()) {
-            element.setAttribute("style", "margin-top: 8px; display: flex; justify-content: center;");
+            element.setAttribute("style", "margin-top: 8px;" +
+                "display: flex;" +
+                "justify-content: center;");
+
             document.querySelector("div.status-unit")
                 .insertAdjacentElement("afterend", element);
         } else {
-            element.setAttribute("style", "display: inline-block; margin-left: 8px");
+            element.setAttribute("style", "display: inline-block;" +
+                "margin-left: 8px;");
+
+            // this is such a hack, but it works and I certainly won't complain about it
+            // wait for the actual a element and style it
+            // (because evil MAL applies its own styles to a tags [which are ugly btw])
+            waitUntilExists("a", element).then(el =>
+                el.setAttribute("style", "color: #fff !important;" +
+                    "text-decoration: none !important")
+            );
+
             document.querySelector("div.user-status-block").appendChild(element);
         }
 

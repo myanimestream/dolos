@@ -11,7 +11,7 @@ import _ = chrome.i18n.getMessage;
 
 
 export default abstract class EpisodePage<T extends Service> extends ServicePage<T> {
-    animePage: AnimePage<T>;
+    private _animePage: AnimePage<T>;
 
     episodeBookmarked$: rxjs.BehaviorSubject<boolean>;
     snackbarMessage$: rxjs.Subject<SnackbarMessage>;
@@ -19,10 +19,19 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
 
     constructor(service: T) {
         super(service);
-        this.animePage = this.buildAnimePage();
 
         this.episodeBookmarked$ = new rxjs.BehaviorSubject(false);
         this.snackbarMessage$ = new rxjs.Subject();
+    }
+
+    get animePage(): AnimePage<T> {
+        if (!this._animePage) this._animePage = this.buildAnimePage();
+
+        return this._animePage;
+    }
+
+    set animePage(page: AnimePage<T>) {
+        this._animePage = page;
     }
 
     abstract buildAnimePage(): AnimePage<T>;

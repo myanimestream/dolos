@@ -64,10 +64,8 @@ export async function evaluateCode(code: string): Promise<any> {
     if (error) throw Error(error);
 
     const result = el.getAttribute("data-result");
-    if (result === "undefined") throw Error("Can't evaluate expressions that return undefined, " +
-        "please use null or a similar JSON-compatible data type");
+    const value = (result === "undefined") ? undefined : JSON.parse(result);
 
-    const value = JSON.parse(result);
     el.remove();
 
     return value;

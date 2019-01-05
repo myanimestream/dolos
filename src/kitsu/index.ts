@@ -19,22 +19,23 @@ export default class Kitsu extends Service {
     }
 
     async route(url: URL) {
-        await this.state.reload();
-
         let match;
 
-        match = url.pathname.match(/\/anime\/([^\/]+)(?:\/[^\/]+)?(?:\/)?$/);
+        match = url.pathname.match(/\/anime\/([^\/]+)(?:\/episodes\/(\d+))?(?:\/)?/);
+
         if (match) {
             this.state.memory.animeIdentifier = match[1];
             await this.showAnimePage();
+
+            if (match[2]) {
+                this.state.memory.episodeIndex = parseInt(match[2]) - 1;
+                await this.showEpisodePage();
+            }
+
+            return;
         }
 
-        match = url.pathname.match(/\/anime\/([^\/]+)\/episodes\/(\d+)(?:\/)?$/);
-        if (match) {
-            this.state.memory.animeIdentifier = match[1];
-            this.state.memory.episodeIndex = parseInt(match[2]) - 1;
-            await this.showEpisodePage();
-        }
+        await this.state.reload();
     }
 }
 

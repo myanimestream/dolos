@@ -43,16 +43,27 @@ export default class State<T extends Service> {
     }
 
     async reload() {
-        this.removeInjected();
+        this.resetPage();
+    }
+
+    resetMemory() {
         this.memory = {};
-        await this.loadPage(null);
+    }
+
+    resetPage() {
+        this.removeInjected();
+        this.resetMemory();
+        this.page = null;
     }
 
     async loadPage(page?: ServicePage<T>) {
-        if (this.page) await this.page.unload();
-        this.page = page;
+        if (this.page) {
+            await this.page.transitionTo(page);
+        } else if (page) {
+            await page.load();
+        }
 
-        if (page) page.load().catch(reason => console.error("Something went wrong while loading service page", reason, page));
+        this.page = page;
     }
 
 

@@ -37,7 +37,7 @@ export const malTheme = createMuiTheme({
     },
     palette: {
         primary: {
-            main: "#2e51a2",
+            main: "#1d439b",
         },
         secondary: {
             main: "#4f74c8",

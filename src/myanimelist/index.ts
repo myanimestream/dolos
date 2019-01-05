@@ -11,8 +11,6 @@ export default class MyAnimeList extends Service {
     }
 
     async route(url: URL) {
-        await this.state.reload();
-
         let match;
 
         match = url.pathname.match(/\/anime\/(\d+)\/([^\/]+)(?:\/)?$/);

@@ -1,5 +1,6 @@
 import {SkipButton} from "../common/components";
 import {EpisodePage} from "../common/pages";
+import ServicePage from "../common/service-page";
 import {waitUntilExists} from "../utils";
 import KitsuAnimePage from "./anime";
 import Kitsu from "./index";
@@ -8,6 +9,12 @@ import {transitionTo} from "./utils";
 export default class KitsuEpisodePage extends EpisodePage<Kitsu> {
     buildAnimePage(): KitsuAnimePage {
         return new KitsuAnimePage(this.service);
+    }
+
+    async transitionTo(page?: ServicePage<Kitsu>) {
+        if (page instanceof KitsuAnimePage) return null;
+
+        return super.transitionTo(page);
     }
 
     async getEpisodeIndex(): Promise<number | null> {

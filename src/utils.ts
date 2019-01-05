@@ -19,10 +19,12 @@ export async function getBackgroundWindow(): Promise<BackgroundWindow> {
     );
 }
 
-export function waitUntilExists(selector: string): Promise<Element> {
+export function waitUntilExists(selector: string, target?: Node & ParentNode): Promise<Element> {
+    target = target || document;
+
     return new Promise(res => {
         const check = (observer: MutationObserver) => {
-            const el = document.querySelector(selector);
+            const el = target.querySelector(selector);
             if (el) {
                 observer.disconnect();
                 res(el);
@@ -30,7 +32,7 @@ export function waitUntilExists(selector: string): Promise<Element> {
         };
 
         const o = new MutationObserver((_, observer) => check(observer));
-        o.observe(document.body, {childList: true, subtree: true});
+        o.observe(target, {childList: true, subtree: true});
 
         check(o);
     });
