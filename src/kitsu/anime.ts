@@ -24,8 +24,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
             return;
         }
 
-        console.log("using normal transition");
-        return super.transitionTo(page);
+        await super.transitionTo(page);
     }
 
     async getAnimeIdentifier(): Promise<string | null> {
@@ -115,7 +114,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         transitionTo("anime.show.episodes.show", episodeIndex + 1);
     }
 
-    @cacheInStateMemory("episodesWatched")
+    @cacheInStateMemory("episodesWatched", "episode")
     async getEpisodesWatched(): Promise<number | null> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
         if (!(animeId && userId)) return null;

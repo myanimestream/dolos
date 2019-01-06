@@ -17,15 +17,18 @@ export default class State<T extends Service> {
     serviceId: string;
     page?: ServicePage<T>;
 
-    memory: { [key: string]: any };
-    injectedElements: Element[];
+    memory: Readonly<{ [key: string]: any }>;
+    injectedElements: { [key: string]: Element[] };
+    private memoryNamespace: { [key: string]: string[] };
 
     constructor(service_id: string) {
         this.serviceId = service_id;
         this.page = null;
 
         this.memory = {};
-        this.injectedElements = [];
+        this.memoryNamespace = {};
+
+        this.injectedElements = {};
     }
 
     // noinspection JSMethodCanBeStatic
@@ -33,21 +36,57 @@ export default class State<T extends Service> {
         return Store.getConfig();
     }
 
-    injected(el: Element) {
-        this.injectedElements.push(el);
+    injected(el: Element, ns?: string) {
+        const elements = this.injectedElements[ns];
+
+        if (elements) elements.push(el);
+        else this.injectedElements[ns] = [el];
     }
 
-    removeInjected() {
-        this.injectedElements.forEach(el => el.remove());
-        this.injectedElements = [];
+    remember(key: string, value: any, ns?: string) {
+        // @ts-ignore
+        this.memory[key] = value;
+
+        if (ns) {
+            const keys = this.memoryNamespace[ns];
+            if (keys) keys.push(key);
+            else this.memoryNamespace[ns] = [key];
+        }
+    }
+
+    removeInjected(ns?: string) {
+        if (ns) {
+            const elements = this.injectedElements[ns];
+            if (elements) {
+                elements.forEach(el => el.remove());
+                this.injectedElements[ns] = [];
+            }
+        } else {
+            Object.values(this.injectedElements)
+                .forEach(elements =>
+                    elements.forEach(el => el.remove())
+                );
+
+            this.injectedElements = {};
+        }
     }
 
     async reload() {
         this.resetPage();
     }
 
-    resetMemory() {
-        this.memory = {};
+    resetMemory(ns?: string) {
+        if (ns) {
+            const keys = this.memoryNamespace[ns];
+            if (keys) {
+                // @ts-ignore
+                keys.forEach(key => delete this.memory[key]);
+                this.memoryNamespace[ns] = [];
+            }
+        } else {
+            this.memory = {};
+            this.memoryNamespace = {};
+        }
     }
 
     resetPage() {
@@ -125,7 +164,7 @@ export interface HasState<T extends Service = any> {
     state: State<T>
 }
 
-export function cacheInStateMemory(keyName?: string) {
+export function cacheInStateMemory(keyName?: string, namespace?: string) {
     return function (target: Object & HasState, propertyKey: string, descriptor: PropertyDescriptor) {
         keyName = keyName || `${target.constructor.name}-${propertyKey}`;
         const func = descriptor.value;
@@ -141,7 +180,7 @@ export function cacheInStateMemory(keyName?: string) {
                 returnPromise = !!value.then;
 
                 Promise.resolve(value)
-                    .then(val => memory[keyName] = val)
+                    .then(val => this.state.remember(keyName, val, namespace))
                     .catch(console.error);
             }
 

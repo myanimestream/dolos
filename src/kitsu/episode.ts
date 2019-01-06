@@ -12,9 +12,13 @@ export default class KitsuEpisodePage extends EpisodePage<Kitsu> {
     }
 
     async transitionTo(page?: ServicePage<Kitsu>) {
-        if (page instanceof KitsuAnimePage) return null;
+        if (page instanceof KitsuAnimePage) {
+            this.state.resetMemory("episode");
+            this.state.removeInjected("episode");
+            return;
+        }
 
-        return super.transitionTo(page);
+        await super.transitionTo(page);
     }
 
     async getEpisodeIndex(): Promise<number | null> {
@@ -24,7 +28,7 @@ export default class KitsuEpisodePage extends EpisodePage<Kitsu> {
     async injectEmbed(embed: Element): Promise<any> {
         (await waitUntilExists(".media-container .unit-summary"))
             .insertAdjacentElement("afterend", embed);
-        this.state.injected(embed);
+        this.state.injected(embed, "episode");
     }
 
     async nextEpisodeButton(): Promise<SkipButton | null> {
