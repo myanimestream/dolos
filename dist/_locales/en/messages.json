@@ -9,6 +9,21 @@
   "ext_badge__new_version": {
     "message": "new"
   },
+  "sentry__event_id": {
+    "message": "Event id: "
+  },
+  "sentry__title": {
+    "message": "Oopsie Woopsie"
+  },
+  "sentry__description": {
+    "message": "There seems to have been a bug which caused Dolos to break. We would appreciate if you could report this error to us!"
+  },
+  "sentry__report": {
+    "message": "Report"
+  },
+  "sentry__copy_event_id": {
+    "message": "Copy event id"
+  },
   "language__en": {
     "message": "English"
   },
@@ -107,6 +122,23 @@
       }
     }
   },
+  "anime__episode_count": {
+    "message": "Episodes: $EPISODES$",
+    "placeholders": {
+      "episodes": {
+        "content": "$1"
+      }
+    }
+  },
+  "anime__search__title": {
+    "message": "Anime Search"
+  },
+  "anime__search__search_placeholder": {
+    "message": "Search Anime"
+  },
+  "anime__search__no_results": {
+    "message": "No results found"
+  },
   "anime__continue_watching": {
     "message": "Continue"
   },
@@ -167,5 +199,8 @@
   },
   "episode__player_type_name__embed": {
     "message": "Embed"
+  },
+  "episode__menu__search_anime": {
+    "message": "Search Anime"
   }
 }

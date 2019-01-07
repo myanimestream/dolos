@@ -2,7 +2,7 @@ import * as React from "react";
 import * as rxjs from "rxjs";
 import {getThemeFor} from "../../theme";
 import {reactRenderWithTheme, wrapSentryLogger} from "../../utils";
-import {Embed, SkipButton, SnackbarMessage} from "../components";
+import {EpisodeEmbed, SkipButton, SnackbarMessage} from "../components";
 import {Episode, GrobberErrorType} from "../models";
 import Service from "../service";
 import ServicePage from "../service-page";
@@ -73,7 +73,7 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
     async buildEmbed(): Promise<Element> {
         const el = document.createElement("div");
         reactRenderWithTheme(
-            wrapSentryLogger(React.createElement(Embed, {episodePage: this})),
+            wrapSentryLogger(React.createElement(EpisodeEmbed, {episodePage: this})),
             getThemeFor(this.state.serviceId),
             el
         );

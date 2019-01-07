@@ -1,6 +1,8 @@
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -10,18 +12,20 @@ import Typography from "@material-ui/core/Typography";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import MoodBadIcon from "@material-ui/icons/MoodBad";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
 import * as rxjs from "rxjs";
-import EpisodePage from "../pages/episode";
-import embedProviders from "./embed-providers";
-import EmbedPlayer, {EmbedInfo} from "./EmbedPlayer";
-import Player, {PlayerProps, PlayerSource} from "./Player";
-import SnackbarQueue from "./SnackbarQueue";
-import WithRatio from "./WithRatio";
+import {EpisodePage} from "../../pages";
+import embedProviders from "../embed-providers";
+import EmbedPlayer, {EmbedInfo} from "../EmbedPlayer";
+import Player, {PlayerProps, PlayerSource} from "../Player";
+import SnackbarQueue from "../SnackbarQueue";
+import WithRatio from "../WithRatio";
+import AnimeSearchResultDialog from "./AnimeSearchResultDialog";
 import _ = chrome.i18n.getMessage;
 
 export interface SkipButton {
@@ -72,6 +76,9 @@ interface EpisodeEmbedState {
     skipButtons?: [SkipButton, SkipButton];
     canSetProgress: boolean;
     bookmarked: boolean;
+
+    menuAnchorElement?: HTMLElement;
+    searchDialogOpen: boolean;
 }
 
 export default withStyles(styles)(class EpisodeEmbed extends React.Component<EpisodeEmbedProps, EpisodeEmbedState> {
@@ -84,6 +91,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
             playersAvailable: [],
             canSetProgress: false,
             bookmarked: false,
+            searchDialogOpen: false,
         };
 
         this.episodeBookmarkedSubscription = null;
@@ -296,9 +304,58 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
         );
     }
 
+    renderSwitchPlayerTypeButton() {
+        const {classes} = this.props;
+        const {playersAvailable} = this.state;
+
+        if (playersAvailable.length > 1) {
+            return (
+                <Tooltip title={_("episode__switch_player_type")}>
+                    <Button type="contained" color="primary" onClick={() => this.switchPlayerType()}>
+                        {EpisodeEmbed.getPlayerTypeName(this.getNextPlayerType())}
+                        <SwitchVideoIcon className={classes.buttonIconRight}/>
+                    </Button>
+                </Tooltip>
+            );
+        }
+    }
+
+
+    renderMenuButton() {
+        const {episodePage} = this.props;
+        const {menuAnchorElement, searchDialogOpen} = this.state;
+
+        return (
+            <div>
+                <IconButton
+                    aria-label="More"
+                    aria-owns={open ? "episode-embed-menu" : undefined}
+                    aria-haspopup="true"
+                    color="primary"
+                    onClick={(event: React.MouseEvent<HTMLElement>) => this.setState({menuAnchorElement: event.currentTarget})}
+                >
+                    <MoreVertIcon/>
+                </IconButton>
+                <Menu
+                    id="episode-embed-menu"
+                    anchorEl={menuAnchorElement}
+                    open={!!menuAnchorElement}
+                    onClose={() => this.setState({menuAnchorElement: null})}
+                >
+                    <MenuItem onClick={() => this.setState({searchDialogOpen: true})}>
+                        {_("episode__menu__search_anime")}
+                    </MenuItem>
+                </Menu>
+
+                {searchDialogOpen &&
+                <AnimeSearchResultDialog open={searchDialogOpen} animePage={episodePage.animePage}/>
+                }
+            </div>
+        );
+    }
+
     render() {
         const {classes, episodePage} = this.props;
-        const {playersAvailable} = this.state;
 
         return (
             <div className={classes.root}>
@@ -310,14 +367,10 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                         {this.renderBookmarkButton()}
                     </span>
 
-                    {playersAvailable.length > 1 &&
-                    <Tooltip title={_("episode__switch_player_type")}>
-                        <Button type="contained" color="primary" onClick={() => this.switchPlayerType()}>
-                            {EpisodeEmbed.getPlayerTypeName(this.getNextPlayerType())}
-                            <SwitchVideoIcon className={classes.buttonIconRight}/>
-                        </Button>
-                    </Tooltip>
-                    }
+                    <span style={{display: "flex"}}>
+                        {this.renderSwitchPlayerTypeButton()}
+                        {this.renderMenuButton()}
+                    </span>
                 </Paper>
                 <SnackbarQueue snackbarMessage$={episodePage.snackbarMessage$}/>
             </div>

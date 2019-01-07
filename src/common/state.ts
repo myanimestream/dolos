@@ -127,7 +127,7 @@ export default class State<T extends Service> {
 
     }
 
-    async searchAnime(query: string): Promise<SearchResult[] | null> {
+    async searchAnime(query: string, results?: number): Promise<SearchResult[] | null> {
         const config = await this.config;
 
         let resp;
@@ -135,7 +135,8 @@ export default class State<T extends Service> {
             resp = await this.request("/anime/search/", {
                 anime: query,
                 language: config.language,
-                dubbed: config.dubbed
+                dubbed: config.dubbed,
+                results: results || 1
             });
         } catch (e) {
             console.error("Couldn't search for anime", e);

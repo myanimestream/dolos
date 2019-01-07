@@ -14,6 +14,8 @@ export interface Config {
     dubbed: boolean;
 
     updateAnimeProgress: boolean;
+
+    minCertaintyForSearchResult: number;
 }
 
 export const DEFAULT_CONFIG: Config = {
@@ -26,6 +28,8 @@ export const DEFAULT_CONFIG: Config = {
     dubbed: false,
 
     updateAnimeProgress: true,
+
+    minCertaintyForSearchResult: .4,
 };
 
 
@@ -34,5 +38,4 @@ export interface StoredAnimeInfo {
     episodesAvailable?: number;
 }
 
-export const DEFAULT_STORED_ANIME_INFO: StoredAnimeInfo = {
-};
+export const DEFAULT_STORED_ANIME_INFO: StoredAnimeInfo = {};

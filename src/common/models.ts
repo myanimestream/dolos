@@ -30,8 +30,9 @@ export interface SearchResult {
 }
 
 export interface AnimeInfo {
-    title: string;
     uid: string;
+    title: string;
+    thumbnail: string;
     episodes: number;
     language: Language;
     dubbed: boolean;

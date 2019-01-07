@@ -16,9 +16,7 @@ import AwesomeDebouncePromise from "awesome-debounce-promise";
 import axios from "axios";
 import * as React from "react";
 import {SettingsTabContent, SettingsTabContentProps} from "../SettingsTab";
-
-
-const _ = chrome.i18n.getMessage;
+import _ = chrome.i18n.getMessage;
 
 interface DebugState {
     invalidUrl?: string;

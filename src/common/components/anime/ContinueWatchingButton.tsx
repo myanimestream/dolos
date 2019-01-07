@@ -5,7 +5,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import PlayCircleIcon from "@material-ui/icons/PlayCircleFilled";
 import * as React from "react";
-import AnimePage from "../pages/anime";
+import {AnimePage} from "../../pages";
 import _ = chrome.i18n.getMessage;
 
 const styles = (theme: Theme) => createStyles({

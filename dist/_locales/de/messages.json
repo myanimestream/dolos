@@ -5,6 +5,15 @@
   "ext_badge__new_version": {
     "message": "neu"
   },
+  "sentry__description": {
+    "message": "Es scheint ein Fehler unterlaufen zu sein. Wir sind dankbar, wenn du uns diesen Fehler meldest!"
+  },
+  "sentry__report": {
+    "message": "Melden"
+  },
+  "sentry__copy_event_id": {
+    "message": "Kopiere Event ID"
+  },
   "language__en": {
     "message": "Englisch"
   },
@@ -71,6 +80,23 @@
   "options__grobber__url__no_grobber": {
     "message": "Keine Grobber Antwort"
   },
+  "anime__episode_count": {
+    "message": "Episoden: $EPISODES$",
+    "placeholders": {
+      "episodes": {
+        "content": "$1"
+      }
+    }
+  },
+  "anime__search__title": {
+    "message": "Anime Suche"
+  },
+  "anime__search__search_placeholder": {
+    "message": "Suche Anime"
+  },
+  "anime__search__no_results": {
+    "message": "Keine Treffer gefunden"
+  },
   "anime__continue_watching": {
     "message": "Fortfahren"
   },
@@ -131,5 +157,8 @@
   },
   "episode__player_type_name__embed": {
     "message": "Eingebettet"
+  },
+  "episode__menu__search_anime": {
+    "message": "Suche Anime"
   }
 }
