@@ -5,9 +5,11 @@ interface Changelog {
 }
 
 const CHANGELOG: Changelog = {
-    "0.0.13": [
+    "0.1.0": [
         `Error reporting is now beautiful (it always has though)`,
-        `Feel like Dolos didn't choose the correct Anime? Now you can correct it!`
+        `Feel like Dolos didn't choose the correct Anime? Now you can correct it!`,
+        `ContinueWatching button updates with episodes watched. This only affects Kitsu`,
+        `Fixed issues related to Dolos not being able to retrieve the Anime from Kitsu `
     ],
     "0.0.12": [
         `Showing a warning when marking episode as (un)watched failed`,

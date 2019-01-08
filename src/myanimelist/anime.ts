@@ -58,11 +58,11 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         return title.match(/(.+?)(?: Episode \d+)?$/)[1];
     }
 
-    async canSetAnimeProgress(): Promise<boolean> {
+    async canSetEpisodesWatched(): Promise<boolean> {
         return !!await this.service.getUsername();
     }
 
-    async setAnimeProgress(progress: number) {
+    async _setEpisodesWatched(progress: number) {
         const episodeCount = await this.getEpisodeCount();
         // 1: watching, 2: completed
         const status = !isNaN(episodeCount) && progress >= episodeCount ? 2 : 1;

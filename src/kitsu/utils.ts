@@ -125,7 +125,7 @@ export interface KitsuAnimeInfo {
 
 export async function getAnime(): Promise<KitsuAnimeInfo | null> {
     try {
-        const result = await evaluateCode(EMBER_BASE + `getContainer().lookup("controller:anime/show").media || null`);
+        const result = await evaluateCode(EMBER_BASE + `return getContainer().lookup("controller:anime/show").media || null`);
         return result as KitsuAnimeInfo;
     } catch (e) {
         console.warn("Couldn't get anime info from kitsu", e);

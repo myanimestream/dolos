@@ -93,12 +93,12 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return resp && resp.data[0].id;
     }
 
-    async canSetAnimeProgress(): Promise<boolean> {
+    async canSetEpisodesWatched(): Promise<boolean> {
         // is the user logged-in?
         return !!await this.getUserId()
     }
 
-    async setAnimeProgress(progress: number): Promise<boolean> {
+    async _setEpisodesWatched(progress: number): Promise<boolean> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
         if (!(animeId && userId)) return false;
 

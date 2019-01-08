@@ -153,6 +153,9 @@
       }
     }
   },
+  "anime__continue_watching__completed": {
+    "message": "Already completed"
+  },
   "anime__continue_watching__unavailable": {
     "message": "Episode $EPISODE_NUMBER$ unavailable",
     "placeholders": {
@@ -163,6 +166,9 @@
   },
   "anime__continue_watching__unknown": {
     "message": "Progress unknown"
+  },
+  "anime__continue_watching__anime_unknown": {
+    "message": "Couldn't load Anime"
   },
   "episode__skip_next": {
     "message": "Next Episode"

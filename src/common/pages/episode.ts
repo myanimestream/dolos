@@ -12,6 +12,7 @@ import _ = chrome.i18n.getMessage;
 
 export default abstract class EpisodePage<T extends Service> extends ServicePage<T> {
     private _animePage: AnimePage<T>;
+    private epsWatchedSub: rxjs.Subscription;
 
     episodeBookmarked$: rxjs.BehaviorSubject<boolean>;
     snackbarMessage$: rxjs.Subject<SnackbarMessage>;
@@ -93,7 +94,7 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
     }
 
     async markEpisodeWatched() {
-        const [epIndex, canSetProgress] = await Promise.all([this.getEpisodeIndex(), this.animePage.canSetAnimeProgress()]);
+        const [epIndex, canSetProgress] = await Promise.all([this.getEpisodeIndex(), this.animePage.canSetEpisodesWatched()]);
         if (!canSetProgress) return;
 
         if (!(epIndex || epIndex === 0)) {
@@ -101,12 +102,12 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
             return;
         }
 
-        if (await this.animePage.setAnimeProgress(epIndex + 1)) this.episodeBookmarked$.next(true);
-        else this.snackbarMessage$.next({message: _("episode__bookmark_failed"), type: "error"});
+        if (!await this.animePage.setEpisodesWatched(epIndex + 1))
+            this.snackbarMessage$.next({message: _("episode__bookmark_failed"), type: "error"});
     }
 
     async markEpisodeUnwatched() {
-        const [epIndex, canSetProgress] = await Promise.all([this.getEpisodeIndex(), this.animePage.canSetAnimeProgress()]);
+        const [epIndex, canSetProgress] = await Promise.all([this.getEpisodeIndex(), this.animePage.canSetEpisodesWatched()]);
         if (!canSetProgress) return;
 
         if (!(epIndex || epIndex === 0)) {
@@ -114,15 +115,19 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
             return;
         }
 
-        if (await this.animePage.setAnimeProgress(epIndex)) this.episodeBookmarked$.next(false);
+        if (await this.animePage.setEpisodesWatched(epIndex)) this.episodeBookmarked$.next(false);
         else this.snackbarMessage$.next({message: _("episode__bookmark_failed"), type: "error"});
     }
 
     async load() {
-        const [epIndex, epsWatched] = await Promise.all([this.getEpisodeIndex(), this.animePage.getEpisodesWatched()]);
-        if (epsWatched >= epIndex + 1)
-            this.episodeBookmarked$.next(true);
+        const [epIndex, epsWatched$] = await Promise.all([this.getEpisodeIndex(), this.animePage.getEpisodesWatched$()]);
+        this.epsWatchedSub = epsWatched$.subscribe(epsWatched => this.episodeBookmarked$.next(epsWatched >= epIndex + 1));
 
         await this.injectEmbed(await this.buildEmbed());
+    }
+
+    async unload() {
+        if (this.epsWatchedSub) this.epsWatchedSub.unsubscribe();
+        await super.unload()
     }
 }

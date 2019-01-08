@@ -111,6 +111,9 @@
       }
     }
   },
+  "anime__continue_watching__completed": {
+    "message": "Bereits gesehen"
+  },
   "anime__continue_watching__unavailable": {
     "message": "Episode $EPISODE_NUMBER$ nicht verfügbar",
     "placeholders": {
@@ -121,6 +124,9 @@
   },
   "anime__continue_watching__unknown": {
     "message": "Fortschritt unbekannt"
+  },
+  "anime__continue_watching__anime_unknown": {
+    "message": "Anime konnte nicht geladen werden"
   },
   "episode__skip_next": {
     "message": "Nächste Episode"

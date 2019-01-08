@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as rxjs from "rxjs";
 import {StoredAnimeInfo} from "../../models";
 import {getThemeFor} from "../../theme";
 import {reactRenderWithTheme} from "../../utils";
@@ -6,12 +7,11 @@ import {ContinueWatchingButton} from "../components";
 import {AnimeInfo, GrobberErrorType} from "../models";
 import Service from "../service";
 import ServicePage from "../service-page";
+import {cacheInStateMemory} from "../state";
 
 
 export default abstract class AnimePage<T extends Service> extends ServicePage<T> {
-    constructor(service: T) {
-        super(service);
-    }
+    private _episodesWatched$?: rxjs.BehaviorSubject<number | null>;
 
     abstract async getAnimeSearchQuery(): Promise<string | null>;
 
@@ -36,6 +36,7 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return uid;
     }
 
+    @cacheInStateMemory("anime", "anime")
     async getAnime(): Promise<AnimeInfo | null> {
         let uid = await this.getAnimeUID();
         if (!uid) return null;
@@ -58,9 +59,9 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         }
     }
 
-    abstract async canSetAnimeProgress(): Promise<boolean>;
+    abstract async canSetEpisodesWatched(): Promise<boolean>;
 
-    abstract async setAnimeProgress(progress: number): Promise<boolean>;
+    abstract async _setEpisodesWatched(progress: number): Promise<boolean>;
 
     abstract async getEpisodeURL(episodeIndex: number): Promise<string>;
 
@@ -71,6 +72,22 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
     abstract async getEpisodeCount(): Promise<number | null>;
 
     abstract async injectContinueWatchingButton(element: Element);
+
+    async setEpisodesWatched(progress: number): Promise<boolean> {
+        const success = await this._setEpisodesWatched(progress);
+        if (success) (await this.getEpisodesWatched$()).next(progress);
+
+        return success;
+    }
+
+    async getEpisodesWatched$(): Promise<rxjs.BehaviorSubject<number | null>> {
+        if (!this._episodesWatched$) {
+            const episodesWatched = await this.getEpisodesWatched();
+            this._episodesWatched$ = new rxjs.BehaviorSubject(episodesWatched);
+        }
+
+        return this._episodesWatched$;
+    }
 
     async showContinueWatchingButton() {
         const el = document.createElement("div");

@@ -5,6 +5,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import PlayCircleIcon from "@material-ui/icons/PlayCircleFilled";
 import * as React from "react";
+import {Subscription} from "rxjs";
 import {AnimePage} from "../../pages";
 import _ = chrome.i18n.getMessage;
 
@@ -26,6 +27,8 @@ interface ContinueWatchingButtonProps extends WithStyles<typeof styles> {
 }
 
 export default withStyles(styles)(class ContinueWatchingButton extends React.Component<ContinueWatchingButtonProps, ContinueWatchingButtonState> {
+    private episodesWatchedSub?: Subscription;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -36,8 +39,25 @@ export default withStyles(styles)(class ContinueWatchingButton extends React.Com
 
     async componentDidMount() {
         const {animePage} = this.props;
+        this.episodesWatchedSub = (await animePage.getEpisodesWatched$())
+            .subscribe((epsWatched) => this.handleEpisodesWatchedChanged(epsWatched));
+    }
 
-        const [anime, epsWatched] = await Promise.all([animePage.getAnime(), animePage.getEpisodesWatched()]);
+    componentWillUnmount(): void {
+        if (this.episodesWatchedSub) this.episodesWatchedSub.unsubscribe();
+    }
+
+    async handleEpisodesWatchedChanged(epsWatched: number) {
+        const {animePage} = this.props;
+        const anime = await animePage.getAnime();
+
+        if (!anime) {
+            this.setState({
+                tooltip: _("anime__continue_watching__anime_unknown"),
+                disabled: true,
+            });
+            return;
+        }
 
         if (!(epsWatched || epsWatched === 0)) {
             this.setState({
@@ -48,7 +68,9 @@ export default withStyles(styles)(class ContinueWatchingButton extends React.Com
             return;
         }
 
-        if (anime && anime.episodes > epsWatched) {
+        const totalEpisodes = await animePage.getEpisodeCount();
+
+        if (anime.episodes > epsWatched) {
             const href = await animePage.getEpisodeURL(epsWatched);
 
             this.setState({
@@ -56,6 +78,11 @@ export default withStyles(styles)(class ContinueWatchingButton extends React.Com
                 onClick: () => animePage.showEpisode(epsWatched),
                 tooltip: _("anime__continue_watching__available", [epsWatched + 1]),
                 disabled: false,
+            })
+        } else if (epsWatched === totalEpisodes) {
+            this.setState({
+                tooltip: _("anime__continue_watching__completed"),
+                disabled: true,
             })
         } else {
             this.setState({
