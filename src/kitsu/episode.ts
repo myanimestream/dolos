@@ -22,7 +22,7 @@ export default class KitsuEpisodePage extends EpisodePage<Kitsu> {
     }
 
     async getEpisodeIndex(): Promise<number | null> {
-        return this.state.memory.episodeIndex;
+        return this.memory.episodeIndex;
     }
 
     async injectEmbed(embed: Element): Promise<any> {

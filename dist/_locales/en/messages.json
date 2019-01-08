@@ -139,6 +139,12 @@
   "anime__search__no_results": {
     "message": "No results found"
   },
+  "anime__search__pick": {
+    "message": "Pick"
+  },
+  "anime__search__abort": {
+    "message": "Abort"
+  },
   "anime__continue_watching": {
     "message": "Continue"
   },

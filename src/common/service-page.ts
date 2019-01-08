@@ -1,11 +1,13 @@
+import Memory from "./memory";
 import Service from "./service";
 import State from "./state";
 
-export default abstract class ServicePage<T extends Service> {
+export default abstract class ServicePage<T extends Service> extends Memory {
     service: T;
     state: State<T>;
 
     constructor(service: T) {
+        super();
         this.service = service;
         this.state = service.state;
     }
@@ -14,6 +16,12 @@ export default abstract class ServicePage<T extends Service> {
 
     async unload() {
         this.state.resetPage();
+        this.resetMemory();
+    }
+
+    async reload() {
+        await this.unload();
+        await this.load();
     }
 
     async transitionTo(page?: ServicePage<T>) {

@@ -20,15 +20,16 @@ const styles = (theme: Theme) => createStyles({
 interface AnimeCardProps extends WithStyles<typeof styles> {
     animeInfo: AnimeInfo;
     current?: boolean;
+    onClick?: React.ReactEventHandler;
 }
 
 export default withStyles(styles)(
     class AnimeCard extends React.Component<AnimeCardProps> {
         render(): React.ReactNode {
-            const {classes, animeInfo, current} = this.props;
+            const {classes, animeInfo, current, onClick} = this.props;
 
             return (
-                <Card className={classes.animeCard}>
+                <Card className={classes.animeCard} raised={current} onClick={onClick}>
                     <CardActionArea>
                         <CardMedia
                             className={classes.thumbnail}

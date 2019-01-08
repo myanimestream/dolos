@@ -128,6 +128,7 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
 
     async unload() {
         if (this.epsWatchedSub) this.epsWatchedSub.unsubscribe();
+        await this.animePage.unload();
         await super.unload()
     }
 }

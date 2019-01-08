@@ -4,10 +4,10 @@ import {StoredAnimeInfo} from "../../models";
 import {getThemeFor} from "../../theme";
 import {reactRenderWithTheme} from "../../utils";
 import {ContinueWatchingButton} from "../components";
+import {cacheInMemory} from "../memory";
 import {AnimeInfo, GrobberErrorType} from "../models";
 import Service from "../service";
 import ServicePage from "../service-page";
-import {cacheInStateMemory} from "../state";
 
 
 export default abstract class AnimePage<T extends Service> extends ServicePage<T> {
@@ -36,7 +36,7 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return uid;
     }
 
-    @cacheInStateMemory("anime", "anime")
+    @cacheInMemory("anime", "anime")
     async getAnime(): Promise<AnimeInfo | null> {
         let uid = await this.getAnimeUID();
         if (!uid) return null;

@@ -97,6 +97,12 @@
   "anime__search__no_results": {
     "message": "Keine Treffer gefunden"
   },
+  "anime__search__pick": {
+    "message": "Auswählen"
+  },
+  "anime__search__abort": {
+    "message": "Abbrechen"
+  },
   "anime__continue_watching": {
     "message": "Fortfahren"
   },

@@ -1,6 +1,7 @@
 import {Type} from "../utils";
 import {EpisodePage, OverviewPage} from "./pages";
 import AnimePage from "./pages/anime";
+import ServicePage from "./service-page";
 import State from "./state";
 
 export default abstract class Service {
@@ -33,13 +34,30 @@ export default abstract class Service {
         document.head.appendChild(temp.content.firstElementChild);
     }
 
+    buildServicePage<T extends ServicePage<any>>(cls: Type<T>, memory?: { [key: string]: any }): T {
+        const page = new cls(this);
+        if (memory) {
+            for (let [key, value] of Object.entries(memory)) {
+                let namespaces = [];
 
-    async showAnimePage() {
-        await this.state.loadPage(new this.AnimePage(this));
+                if (Array.isArray(value)) {
+                    [value, ...namespaces] = value;
+                }
+
+                page.remember(key, value, ...namespaces);
+            }
+        }
+
+        return page;
     }
 
 
-    async showEpisodePage() {
-        await this.state.loadPage(new this.EpisodePage(this));
+    async showAnimePage(memory?: { [key: string]: any }) {
+        await this.state.loadPage(this.buildServicePage(this.AnimePage, memory));
+    }
+
+
+    async showEpisodePage(memory?: { [key: string]: any }) {
+        await this.state.loadPage(this.buildServicePage(this.EpisodePage, memory));
     }
 }

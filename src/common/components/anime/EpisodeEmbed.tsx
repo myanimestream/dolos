@@ -347,9 +347,11 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                     </MenuItem>
                 </Menu>
 
-                {searchDialogOpen &&
-                <AnimeSearchResultDialog open={searchDialogOpen} animePage={episodePage.animePage}/>
-                }
+                <AnimeSearchResultDialog
+                    open={searchDialogOpen}
+                    onClose={() => this.setState({searchDialogOpen: false})}
+                    animePage={episodePage.animePage}
+                />
             </div>
         );
     }

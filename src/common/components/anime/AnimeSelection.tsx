@@ -13,21 +13,31 @@ const styles = (theme: Theme) => createStyles({
     },
 });
 
-interface AnimeSelectionProps extends WithStyles<typeof styles> {
+interface AnimeSelectionProps extends WithStyles<typeof styles, true> {
     anime: AnimeInfo[];
     currentUID?: string;
+    onSelect?: (AnimeInfo) => void;
 }
 
-export default withStyles(styles)(
+export default withStyles(styles, {withTheme: true})(
     class AnimeSelection extends React.Component<AnimeSelectionProps> {
+        onSelect(anime: AnimeInfo) {
+            const {onSelect} = this.props;
+            if (onSelect) onSelect(anime);
+        }
+
         render(): React.ReactNode {
-            const {classes, anime, currentUID} = this.props;
+            const {classes, theme, anime, currentUID} = this.props;
 
             return (
-                <GridList cellHeight="auto" cols={3}>
+                <GridList cellHeight="auto" cols={3} spacing={2 * theme.spacing.unit}>
                     {anime.map(anime => (
                         <GridListTile key={anime.uid} classes={{tile: classes.listTile}}>
-                            <AnimeCard animeInfo={anime} current={currentUID === anime.uid}/>
+                            <AnimeCard
+                                animeInfo={anime}
+                                current={currentUID === anime.uid}
+                                onClick={() => this.onSelect(anime)}
+                            />
                         </GridListTile>
                     ))}
                 </GridList>

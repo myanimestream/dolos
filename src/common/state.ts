@@ -1,6 +1,7 @@
 import axios from "axios";
 import {Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
+import Memory from "./memory";
 import {
     animeFromResp,
     AnimeInfo,
@@ -13,20 +14,16 @@ import {
 import Service from "./service";
 import ServicePage from "./service-page";
 
-export default class State<T extends Service> {
+export default class State<T extends Service> extends Memory {
     serviceId: string;
     page?: ServicePage<T>;
 
-    memory: Readonly<{ [key: string]: any }>;
     injectedElements: { [key: string]: Element[] };
-    private memoryNamespace: { [key: string]: string[] };
 
     constructor(service_id: string) {
+        super();
         this.serviceId = service_id;
         this.page = null;
-
-        this.memory = {};
-        this.memoryNamespace = {};
 
         this.injectedElements = {};
     }
@@ -41,17 +38,6 @@ export default class State<T extends Service> {
 
         if (elements) elements.push(el);
         else this.injectedElements[ns] = [el];
-    }
-
-    remember(key: string, value: any, ns?: string) {
-        // @ts-ignore
-        this.memory[key] = value;
-
-        if (ns) {
-            const keys = this.memoryNamespace[ns];
-            if (keys) keys.push(key);
-            else this.memoryNamespace[ns] = [key];
-        }
     }
 
     removeInjected(ns?: string) {
@@ -73,20 +59,6 @@ export default class State<T extends Service> {
 
     async reload() {
         this.resetPage();
-    }
-
-    resetMemory(ns?: string) {
-        if (ns) {
-            const keys = this.memoryNamespace[ns];
-            if (keys) {
-                // @ts-ignore
-                keys.forEach(key => delete this.memory[key]);
-                this.memoryNamespace[ns] = [];
-            }
-        } else {
-            this.memory = {};
-            this.memoryNamespace = {};
-        }
     }
 
     resetPage() {
@@ -165,7 +137,7 @@ export interface HasState<T extends Service = any> {
     state: State<T>
 }
 
-export function cacheInStateMemory(keyName?: string, namespace?: string) {
+export function cacheInStateMemory(keyName?: string, ...namespaces: string[]) {
     return function (target: Object & HasState, propertyKey: string, descriptor: PropertyDescriptor) {
         keyName = keyName || `${target.constructor.name}-${propertyKey}`;
         const func = descriptor.value;
@@ -173,6 +145,7 @@ export function cacheInStateMemory(keyName?: string, namespace?: string) {
 
         descriptor.value = function () {
             const memory = this.state.memory;
+
             let value;
             if (keyName in memory) {
                 value = memory[keyName];
@@ -181,7 +154,7 @@ export function cacheInStateMemory(keyName?: string, namespace?: string) {
                 returnPromise = !!value.then;
 
                 Promise.resolve(value)
-                    .then(val => this.state.remember(keyName, val, namespace))
+                    .then(val => this.state.remember(keyName, val, ...namespaces))
                     .catch(console.error);
             }
 

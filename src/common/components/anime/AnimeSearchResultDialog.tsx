@@ -1,6 +1,8 @@
 import {Typography} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/es/DialogTitle";
 import InputBase from "@material-ui/core/InputBase";
@@ -70,6 +72,7 @@ const styles = (theme: Theme) => createStyles({
 
 interface AnimeSearchResultDialogProps extends WithStyles<typeof styles>, WithMobileDialog {
     open: boolean;
+    onClose?: (anime?: AnimeInfo) => void;
     animePage: AnimePage<any>;
 }
 
@@ -78,6 +81,7 @@ interface AnimeSearchResultDialogState {
     results?: AnimeInfo[];
     searchQuery?: string;
     currentAnimeUID?: string;
+    currentAnime?: AnimeInfo;
 }
 
 export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>()(
@@ -93,7 +97,7 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
             };
         }
 
-        async componentDidMount() {
+        async handleDialogEnter() {
             const {animePage} = this.props;
 
             (async () => {
@@ -132,6 +136,13 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
             this.setState({loading: false, results});
         }
 
+        handleSelect(anime: AnimeInfo) {
+            const {currentAnimeUID} = this.state;
+            if (anime.uid == currentAnimeUID) return;
+
+            this.setState({currentAnimeUID: anime.uid, currentAnime: anime});
+        }
+
         renderContent(): React.ReactNode {
             const {loading, results, currentAnimeUID} = this.state;
 
@@ -141,7 +152,8 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
                 );
             } else if (results && results.length > 0) {
                 return (
-                    <AnimeSelection anime={results} currentUID={currentAnimeUID}/>
+                    <AnimeSelection anime={results} currentUID={currentAnimeUID}
+                                    onSelect={(anime) => this.handleSelect(anime)}/>
                 );
             } else {
                 return (
@@ -151,13 +163,15 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
         }
 
         render(): React.ReactNode {
-            const {classes, open, fullScreen} = this.props;
-            const {searchQuery} = this.state;
+            const {classes, open, onClose, fullScreen} = this.props;
+            const {searchQuery, currentAnime} = this.state;
 
             return (
                 <Dialog
                     fullScreen={fullScreen}
                     open={open}
+                    onEnter={() => this.handleDialogEnter()}
+                    onBackdropClick={() => onClose(null)}
                     scroll="paper"
                     aria-labelledby="anime-search-result-dialog-title"
                 >
@@ -184,8 +198,18 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
                         )}
                     </Toolbar>
                     <DialogContent className={classes.content}>
-                        {open && this.renderContent()}
+                        {this.renderContent()}
                     </DialogContent>
+                    <DialogActions>
+                        {currentAnime && (
+                            <Button onClick={() => onClose(currentAnime)} variant="contained" color="primary">
+                                {_("anime__search__pick")}
+                            </Button>
+                        )}
+                        <Button onClick={() => onClose(null)} variant="contained" color="secondary">
+                            {_("anime__search__abort")}
+                        </Button>
+                    </DialogActions>
                 </Dialog>
             );
         }

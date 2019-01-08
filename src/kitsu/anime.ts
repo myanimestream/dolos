@@ -1,4 +1,5 @@
 import {cacheInStateMemory} from "../common";
+import {cacheInMemory} from "../common/memory";
 import {AnimePage} from "../common/pages";
 import ServicePage from "../common/service-page";
 import {waitUntilExists} from "../utils";
@@ -16,9 +17,12 @@ import {
 
 export default class KitsuAnimePage extends AnimePage<Kitsu> {
     async transitionTo(page?: ServicePage<Kitsu>) {
-        if (page instanceof KitsuAnimePage) return;
-
-        if (page instanceof KitsuEpisodePage) {
+        if (page instanceof KitsuAnimePage) {
+            const animeID = await this.getAnimeIdentifier();
+            const otherAnimeID = await page.getAnimeIdentifier();
+            // if we didn't transition to some other anime we can just keep the current page
+            if (animeID === otherAnimeID) return;
+        } else if (page instanceof KitsuEpisodePage) {
             page.animePage = this;
             await page.load();
             return;
@@ -28,10 +32,10 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
     }
 
     async getAnimeIdentifier(): Promise<string | null> {
-        return this.state.memory.animeIdentifier;
+        return this.memory.animeIdentifier;
     }
 
-    @cacheInStateMemory("animeSearchQuery")
+    @cacheInMemory("animeSearchQuery", "anime")
     async getAnimeSearchQuery(): Promise<string | null> {
         return (await waitUntilExists("meta[property=\"og:title\"]")).getAttribute("content");
     }
@@ -41,7 +45,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return await getAccessToken();
     }
 
-    @cacheInStateMemory("animeId")
+    @cacheInMemory("animeId", "anime")
     async getAnimeId(): Promise<string | null> {
         const resp = await kitsuAPIRequest("GET", "/anime", null, {
             params: {
@@ -57,7 +61,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return results[0].id;
     }
 
-    @cacheInStateMemory("kitsuAnime")
+    @cacheInMemory("kitsuAnime", "anime")
     async getKitsuAnimeInfo(): Promise<KitsuAnimeInfo | null> {
         return await getAnime();
     }
@@ -77,7 +81,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return resp && resp.data[0].id;
     }
 
-    @cacheInStateMemory("libraryEntryId")
+    @cacheInMemory("libraryEntryId", "anime")
     async getLibraryEntryId(): Promise<string | null> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
         if (!(animeId && userId)) return null;
@@ -95,7 +99,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
 
     async canSetEpisodesWatched(): Promise<boolean> {
         // is the user logged-in?
-        return !!await this.getUserId()
+        return !!await this.getUserId();
     }
 
     async _setEpisodesWatched(progress: number): Promise<boolean> {
@@ -114,7 +118,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         transitionTo("anime.show.episodes.show", episodeIndex + 1);
     }
 
-    @cacheInStateMemory("episodesWatched", "episode")
+    @cacheInMemory("episodesWatched", "episode")
     async getEpisodesWatched(): Promise<number | null> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
         if (!(animeId && userId)) return null;
@@ -122,7 +126,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return await getProgress(animeId, userId);
     }
 
-    @cacheInStateMemory("episodeCount")
+    @cacheInMemory("episodeCount", "anime")
     async getEpisodeCount(): Promise<number | null> {
         const anime = await getAnime();
         return anime ? anime.episodeCount : null;
