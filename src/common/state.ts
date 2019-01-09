@@ -1,7 +1,7 @@
 import axios from "axios";
 import {Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
-import Memory from "./memory";
+import {ElementMemory} from "./memory";
 import {
     animeFromResp,
     AnimeInfo,
@@ -14,18 +14,14 @@ import {
 import Service from "./service";
 import ServicePage from "./service-page";
 
-export default class State<T extends Service> extends Memory {
+export default class State<T extends Service> extends ElementMemory {
     serviceId: string;
     page?: ServicePage<T>;
-
-    injectedElements: { [key: string]: Element[] };
 
     constructor(service_id: string) {
         super();
         this.serviceId = service_id;
         this.page = null;
-
-        this.injectedElements = {};
     }
 
     // noinspection JSMethodCanBeStatic
@@ -33,45 +29,35 @@ export default class State<T extends Service> extends Memory {
         return Store.getConfig();
     }
 
-    injected(el: Element, ns?: string) {
-        const elements = this.injectedElements[ns];
-
-        if (elements) elements.push(el);
-        else this.injectedElements[ns] = [el];
-    }
-
-    removeInjected(ns?: string) {
-        if (ns) {
-            const elements = this.injectedElements[ns];
-            if (elements) {
-                elements.forEach(el => el.remove());
-                this.injectedElements[ns] = [];
-            }
-        } else {
-            Object.values(this.injectedElements)
-                .forEach(elements =>
-                    elements.forEach(el => el.remove())
-                );
-
-            this.injectedElements = {};
+    async reload() {
+        this.resetState();
+        const page = this.page;
+        if (page) {
+            await page.reload();
         }
     }
 
-    async reload() {
-        this.resetPage();
-    }
-
-    resetPage() {
+    resetState() {
         this.removeInjected();
         this.resetMemory();
-        this.page = null;
     }
 
     async loadPage(page?: ServicePage<T>) {
         if (this.page) {
-            await this.page.transitionTo(page);
+            try {
+                const override = await this.page.transitionTo(page);
+                if (override) page = override;
+            } catch (e) {
+                console.error("Couldn't transition from page", this.page, "to", page);
+                throw e;
+            }
         } else if (page) {
-            await page.load();
+            try {
+                await page.load();
+            } catch (e) {
+                console.error("Couldn't load page", page);
+                throw e;
+            }
         }
 
         this.page = page;
@@ -123,13 +109,21 @@ export default class State<T extends Service> extends Memory {
     }
 
     async getAnimeInfo(uid: string): Promise<AnimeInfo> {
+        const memoryKey = `anime-cache.${uid}`;
+        const cachedAnime = this.memory[memoryKey];
+        if (cachedAnime) return cachedAnime;
+
         const resp = await this.request("/anime/", {uid});
-        return animeFromResp(resp);
+        const anime = animeFromResp(resp);
+        this.remember(memoryKey, anime);
+        return anime;
     }
 
     async getEpisode(uid: string, index: number): Promise<Episode> {
         const resp = await this.request("/anime/episode/", {uid, episode: index});
-        return episodeFromResp(resp);
+        const episode = episodeFromResp(resp);
+        this.remember(`anime-cache.${uid}`, episode.anime);
+        return episode;
     }
 }
 
@@ -137,7 +131,7 @@ export interface HasState<T extends Service = any> {
     state: State<T>
 }
 
-export function cacheInStateMemory(keyName?: string, ...namespaces: string[]) {
+export function cacheInStateMemory(keyName?: string) {
     return function (target: Object & HasState, propertyKey: string, descriptor: PropertyDescriptor) {
         keyName = keyName || `${target.constructor.name}-${propertyKey}`;
         const func = descriptor.value;
@@ -154,7 +148,7 @@ export function cacheInStateMemory(keyName?: string, ...namespaces: string[]) {
                 returnPromise = !!value.then;
 
                 Promise.resolve(value)
-                    .then(val => this.state.remember(keyName, val, ...namespaces))
+                    .then(val => this.state.remember(keyName, val))
                     .catch(console.error);
             }
 

@@ -35,7 +35,6 @@ export const DEFAULT_CONFIG: Config = {
 
 export interface StoredAnimeInfo {
     uid?: string;
-    episodesAvailable?: number;
 }
 
 export const DEFAULT_STORED_ANIME_INFO: StoredAnimeInfo = {};

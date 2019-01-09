@@ -37,15 +37,8 @@ export default abstract class Service {
     buildServicePage<T extends ServicePage<any>>(cls: Type<T>, memory?: { [key: string]: any }): T {
         const page = new cls(this);
         if (memory) {
-            for (let [key, value] of Object.entries(memory)) {
-                let namespaces = [];
-
-                if (Array.isArray(value)) {
-                    [value, ...namespaces] = value;
-                }
-
-                page.remember(key, value, ...namespaces);
-            }
+            for (let [key, value] of Object.entries(memory))
+                page.remember(key, value);
         }
 
         return page;

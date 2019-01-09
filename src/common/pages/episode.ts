@@ -3,6 +3,7 @@ import * as rxjs from "rxjs";
 import {getThemeFor} from "../../theme";
 import {reactRenderWithTheme, wrapSentryLogger} from "../../utils";
 import {EpisodeEmbed, SkipButton, SnackbarMessage} from "../components";
+import {cacheInMemory} from "../memory";
 import {Episode, GrobberErrorType} from "../models";
 import Service from "../service";
 import ServicePage from "../service-page";
@@ -49,6 +50,12 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
 
     abstract async showPrevEpisode(): Promise<any>;
 
+    async setAnimeUID(uid: string) {
+        await this.animePage.setAnimeUID(uid);
+        await this.reload();
+    }
+
+    @cacheInMemory("episode")
     async getEpisode(): Promise<Episode | null> {
         let [uid, epIndex] = await Promise.all([this.animePage.getAnimeUID(), this.getEpisodeIndex()]);
         if (!uid || (!epIndex && epIndex !== 0)) return null;
@@ -63,7 +70,7 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
                 try {
                     return await this.state.getEpisode(uid, epIndex);
                 } catch (e) {
-                    console.error("didn't work rip", e);
+                    console.error("couldn't get episode after updating uid", e);
                 }
             }
 
@@ -119,16 +126,32 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         else this.snackbarMessage$.next({message: _("episode__bookmark_failed"), type: "error"});
     }
 
-    async load() {
+    async _load() {
+        await this.animePage.load();
+
         const [epIndex, epsWatched$] = await Promise.all([this.getEpisodeIndex(), this.animePage.getEpisodesWatched$()]);
         this.epsWatchedSub = epsWatched$.subscribe(epsWatched => this.episodeBookmarked$.next(epsWatched >= epIndex + 1));
 
         await this.injectEmbed(await this.buildEmbed());
     }
 
-    async unload() {
+    async _unload() {
         if (this.epsWatchedSub) this.epsWatchedSub.unsubscribe();
         await this.animePage.unload();
-        await super.unload()
+        await super._unload()
+    }
+
+    async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | void> {
+        if (page instanceof AnimePage) {
+            this.resetPage();
+            return await this.animePage.transitionTo(page);
+        } else if (page instanceof EpisodePage) {
+            page.animePage = this.animePage;
+            this.resetPage();
+            await page.load();
+            return;
+        }
+
+        await super.transitionTo(page);
     }
 }

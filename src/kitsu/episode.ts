@@ -1,6 +1,6 @@
 import {SkipButton} from "../common/components";
+import {cacheInMemory} from "../common/memory";
 import {EpisodePage} from "../common/pages";
-import ServicePage from "../common/service-page";
 import {waitUntilExists} from "../utils";
 import KitsuAnimePage from "./anime";
 import Kitsu from "./index";
@@ -11,24 +11,17 @@ export default class KitsuEpisodePage extends EpisodePage<Kitsu> {
         return new KitsuAnimePage(this.service);
     }
 
-    async transitionTo(page?: ServicePage<Kitsu>) {
-        if (page instanceof KitsuAnimePage) {
-            this.state.resetMemory("episode");
-            this.state.removeInjected("episode");
-            return;
-        }
-
-        await super.transitionTo(page);
-    }
-
+    @cacheInMemory("episodeIndex")
     async getEpisodeIndex(): Promise<number | null> {
-        return this.memory.episodeIndex;
+        const match = location.pathname.match(/\/anime\/([^\/]+)\/episodes\/(\d+)?(?:\/)?/);
+        if (!match) return null;
+        return parseInt(match[2]) - 1;
     }
 
     async injectEmbed(embed: Element): Promise<any> {
         (await waitUntilExists(".media-container .unit-summary"))
             .insertAdjacentElement("afterend", embed);
-        this.state.injected(embed, "episode");
+        this.injected(embed, "episode");
     }
 
     async nextEpisodeButton(): Promise<SkipButton | null> {

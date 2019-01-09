@@ -8,6 +8,7 @@ import {cacheInMemory} from "../memory";
 import {AnimeInfo, GrobberErrorType} from "../models";
 import Service from "../service";
 import ServicePage from "../service-page";
+import EpisodePage from "./episode";
 
 
 export default abstract class AnimePage<T extends Service> extends ServicePage<T> {
@@ -18,7 +19,11 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
     abstract async getAnimeIdentifier(): Promise<string | null>;
 
     async getStoredAnimeInfo(): Promise<StoredAnimeInfo> {
-        return await this.state.getStoredAnimeInfo(await this.getAnimeIdentifier());
+        const identifier = await this.getAnimeIdentifier();
+        if (!identifier)
+            throw new Error("No anime identifier returned!");
+
+        return await this.state.getStoredAnimeInfo(identifier);
     }
 
     async getAnimeUID(forceSearch?: boolean): Promise<string | null> {
@@ -36,7 +41,13 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return uid;
     }
 
-    @cacheInMemory("anime", "anime")
+    async setAnimeUID(uid: string) {
+        const animeInfo = await this.getStoredAnimeInfo();
+        animeInfo.uid = uid;
+        await this.reload();
+    }
+
+    @cacheInMemory("anime")
     async getAnime(): Promise<AnimeInfo | null> {
         let uid = await this.getAnimeUID();
         if (!uid) return null;
@@ -101,7 +112,20 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         await this.injectContinueWatchingButton(el);
     }
 
-    async load() {
+    async _load() {
         await this.showContinueWatchingButton();
+    }
+
+    async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | void> {
+        if (page instanceof AnimePage) {
+            const [thisID, otherID] = await Promise.all([this.getAnimeIdentifier(), page.getAnimeIdentifier()]);
+            if (thisID === otherID) return this;
+        } else if (page instanceof EpisodePage) {
+            page.animePage = this;
+            await page.load();
+            return;
+        }
+
+        await super.transitionTo(page);
     }
 }

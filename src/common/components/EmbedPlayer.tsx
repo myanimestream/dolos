@@ -72,13 +72,14 @@ export default withStyles(styles)(class EmbedPlayer extends React.Component<Embe
 
 
     setCurrentEmbed(embedIndex: number) {
-        const embed = this.props.embeds[embedIndex];
         this.setState({currentEmbedSelected: embedIndex});
     }
 
     render() {
         const {classes, embeds} = this.props;
         const {currentEmbedSelected, embedSelectionOpen} = this.state;
+
+        const currentEmbed = embeds[currentEmbedSelected];
 
         return (
             <>
@@ -127,8 +128,10 @@ export default withStyles(styles)(class EmbedPlayer extends React.Component<Embe
                 </Paper>
 
                 <WithRatio ratio={16 / 9}>
-                    <StableIFrame src={embeds[currentEmbedSelected].url} className={classes.embedIFrame}
-                                  allowFullScreen/>
+                    {currentEmbed && (
+                        <StableIFrame src={currentEmbed.url} className={classes.embedIFrame}
+                                      allowFullScreen/>
+                    )}
                 </WithRatio>
             </>
         );

@@ -9,7 +9,9 @@ export default class MalEpisodePage extends EpisodePage<MyAnimeList> {
     }
 
     async getEpisodeIndex(): Promise<number | null> {
-        return this.state.memory.episodeIndex;
+        const match = location.pathname.match(/\/anime\/(\d+)\/([^\/]+)\/episode\/(\d+)?(?:\/)?$/);
+        if (!match) return null;
+        return parseInt(match[3]) - 1;
     }
 
     async injectEmbed(embed: Element): Promise<any> {
@@ -29,7 +31,7 @@ export default class MalEpisodePage extends EpisodePage<MyAnimeList> {
             target.removeChild(target.lastChild);
 
         target.appendChild(embed);
-        this.state.injected(embed);
+        this.injected(embed);
     }
 
     async nextEpisodeButton(): Promise<SkipButton | null> {

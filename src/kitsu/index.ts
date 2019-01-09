@@ -24,16 +24,17 @@ export default class Kitsu extends Service {
         match = url.pathname.match(/\/anime\/([^\/]+)(?:\/episodes\/(\d+))?(?:\/)?/);
 
         if (match) {
-            await this.showAnimePage({animeIdentifier: [match[1], "anime"]});
-
             if (match[2]) {
-                await this.showEpisodePage({episodeIndex: [parseInt(match[2]) - 1, "episode"]});
+                await this.showEpisodePage({episodeIndex: parseInt(match[2]) - 1});
+            } else {
+                await this.showAnimePage({animeIdentifier: match[1]});
             }
 
+            console.log(this.state);
             return;
         }
 
-        await this.state.reload();
+        await this.state.loadPage(null);
     }
 }
 

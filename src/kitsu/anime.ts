@@ -1,9 +1,7 @@
 import {cacheInStateMemory} from "../common";
 import {cacheInMemory} from "../common/memory";
 import {AnimePage} from "../common/pages";
-import ServicePage from "../common/service-page";
-import {waitUntilExists} from "../utils";
-import KitsuEpisodePage from "./episode";
+import {waitUntilExists, waitWithTimeout} from "../utils";
 import Kitsu from "./index";
 import {
     getAccessToken,
@@ -16,26 +14,13 @@ import {
 } from "./utils";
 
 export default class KitsuAnimePage extends AnimePage<Kitsu> {
-    async transitionTo(page?: ServicePage<Kitsu>) {
-        if (page instanceof KitsuAnimePage) {
-            const animeID = await this.getAnimeIdentifier();
-            const otherAnimeID = await page.getAnimeIdentifier();
-            // if we didn't transition to some other anime we can just keep the current page
-            if (animeID === otherAnimeID) return;
-        } else if (page instanceof KitsuEpisodePage) {
-            page.animePage = this;
-            await page.load();
-            return;
-        }
-
-        await super.transitionTo(page);
-    }
-
+    @cacheInMemory("animeIdentifier")
     async getAnimeIdentifier(): Promise<string | null> {
-        return this.memory.animeIdentifier;
+        const match = location.pathname.match(/\/anime\/([^\/]+)(?:\/)?/);
+        return match[1];
     }
 
-    @cacheInMemory("animeSearchQuery", "anime")
+    @cacheInMemory("animeSearchQuery")
     async getAnimeSearchQuery(): Promise<string | null> {
         return (await waitUntilExists("meta[property=\"og:title\"]")).getAttribute("content");
     }
@@ -45,7 +30,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return await getAccessToken();
     }
 
-    @cacheInMemory("animeId", "anime")
+    @cacheInMemory("animeId")
     async getAnimeId(): Promise<string | null> {
         const resp = await kitsuAPIRequest("GET", "/anime", null, {
             params: {
@@ -61,9 +46,20 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return results[0].id;
     }
 
-    @cacheInMemory("kitsuAnime", "anime")
+    async _retryGetKitsuAnimeInfo(retryInterval: number): Promise<KitsuAnimeInfo> {
+        let anime;
+        while (true) {
+            anime = await getAnime();
+            if (anime) break;
+            else await new Promise(res => setTimeout(() => res(), retryInterval));
+        }
+
+        return anime;
+    }
+
+    @cacheInMemory("kitsuAnime")
     async getKitsuAnimeInfo(): Promise<KitsuAnimeInfo | null> {
-        return await getAnime();
+        return await waitWithTimeout(this._retryGetKitsuAnimeInfo(100), 2500);
     }
 
     @cacheInStateMemory("userId")
@@ -81,7 +77,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return resp && resp.data[0].id;
     }
 
-    @cacheInMemory("libraryEntryId", "anime")
+    @cacheInMemory("libraryEntryId")
     async getLibraryEntryId(): Promise<string | null> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
         if (!(animeId && userId)) return null;
@@ -118,7 +114,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         transitionTo("anime.show.episodes.show", episodeIndex + 1);
     }
 
-    @cacheInMemory("episodesWatched", "episode")
+    @cacheInMemory("episodesWatched")
     async getEpisodesWatched(): Promise<number | null> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
         if (!(animeId && userId)) return null;
@@ -126,9 +122,9 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return await getProgress(animeId, userId);
     }
 
-    @cacheInMemory("episodeCount", "anime")
+    @cacheInMemory("episodeCount")
     async getEpisodeCount(): Promise<number | null> {
-        const anime = await getAnime();
+        const anime = await this.getKitsuAnimeInfo();
         return anime ? anime.episodeCount : null;
     }
 
@@ -138,6 +134,6 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         (await waitUntilExists("span.media-poster"))
             .insertAdjacentElement("afterend", element);
 
-        this.state.injected(element);
+        this.injected(element);
     }
 }

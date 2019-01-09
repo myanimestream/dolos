@@ -1,5 +1,5 @@
 import axios from "axios";
-import {cacheInStateMemory} from "../common";
+import {cacheInMemory} from "../common/memory";
 import {AnimePage} from "../common/pages";
 import {waitUntilExists} from "../utils";
 import MyAnimeList from "./index";
@@ -25,11 +25,13 @@ function malAnimeFromData(data: any): MALAnime {
 }
 
 export default class MalAnimePage extends AnimePage<MyAnimeList> {
-    getMALAnimeId(): Promise<number> {
-        return this.state.memory.malAnimeId;
+    @cacheInMemory("malAnimeID")
+    async getMALAnimeId(): Promise<number> {
+        const match = location.pathname.match(/\/anime\/(\d+)/);
+        return parseInt(match[1]);
     }
 
-    @cacheInStateMemory("malAnime")
+    @cacheInMemory("malAnime")
     async getMALAnime(): Promise<MALAnime | null> {
         try {
             const resp = await axios.get("/ownlist/get_list_item", {
@@ -46,11 +48,14 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         }
     }
 
+    @cacheInMemory("animeIdentifier")
     async getAnimeIdentifier(): Promise<string | null> {
-        return this.state.memory.animeIdentifier;
+        const match = location.pathname.match(/\/anime\/(\d+)\/([^\/]+)/);
+        if (!match) return null;
+        return match[2];
     }
 
-    @cacheInStateMemory("animeSearchQuery")
+    @cacheInMemory("animeSearchQuery")
     async getAnimeSearchQuery(): Promise<string | null> {
         const title = document.querySelector("meta[property=\"og:title\"]")
             .getAttribute("content");
@@ -109,7 +114,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         location.assign(await this.getEpisodeURL(episodeIndex));
     }
 
-    @cacheInStateMemory("episodesWatched")
+    @cacheInMemory("episodesWatched")
     async getEpisodesWatched(): Promise<number | null> {
         if (this.service.isMobileLayout()) {
             const anime = await this.getMALAnime();
@@ -126,7 +131,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         else return null;
     }
 
-    @cacheInStateMemory("totalEpisodes")
+    @cacheInMemory("totalEpisodes")
     async getEpisodeCount(): Promise<number | null> {
         if (this.service.isMobileLayout()) {
             const anime = await this.getMALAnime();
@@ -144,11 +149,11 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
                 "display: flex;" +
                 "justify-content: center;");
 
-            document.querySelector("div.status-unit")
-                .insertAdjacentElement("afterend", element);
+            const statusUnit = document.querySelector("div.status-unit");
+            if (statusUnit)
+                statusUnit.insertAdjacentElement("afterend", element);
         } else {
-            element.setAttribute("style", "display: inline-block;" +
-                "margin-left: 8px;");
+            element.setAttribute("style", "margin-top: 8px;");
 
             // this is such a hack, but it works and I certainly won't complain about it
             // wait for the actual a element and style it
@@ -158,9 +163,11 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
                     "text-decoration: none !important")
             );
 
-            document.querySelector("div.user-status-block").appendChild(element);
+            const sidebar = document.querySelector("div div h2").parentElement;
+            const thumbnail = sidebar.querySelector("div:first-child");
+            thumbnail.insertAdjacentElement("afterend", element);
         }
 
-        this.state.injected(element);
+        this.injected(element);
     }
 }

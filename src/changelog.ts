@@ -9,7 +9,9 @@ const CHANGELOG: Changelog = {
         `Error reporting is now beautiful (it always has though)`,
         `Feel like Dolos didn't choose the correct Anime? Now you can correct it!`,
         `ContinueWatching button updates with episodes watched. This only affects Kitsu`,
-        `Fixed issues related to Dolos not being able to retrieve the Anime from Kitsu `
+        `Fixed issues related to Dolos not being able to retrieve the Anime from Kitsu `,
+        `Moved the Continue button to the left on MyAnimeList, because let's be honest, that's where it belongs`,
+        `Handling the case of there being no streams to play. RIP in advance!`
     ],
     "0.0.12": [
         `Showing a warning when marking episode as (un)watched failed`,

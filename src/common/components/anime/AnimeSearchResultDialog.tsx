@@ -174,6 +174,7 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
                     onBackdropClick={() => onClose(null)}
                     scroll="paper"
                     aria-labelledby="anime-search-result-dialog-title"
+                    style={{zIndex: 10000}}
                 >
                     <Toolbar>
                         <DialogTitle id="anime-search-result-dialog-title">
@@ -201,14 +202,14 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
                         {this.renderContent()}
                     </DialogContent>
                     <DialogActions>
+                        <Button onClick={() => onClose(null)} color="primary">
+                            {_("anime__search__abort")}
+                        </Button>
                         {currentAnime && (
                             <Button onClick={() => onClose(currentAnime)} variant="contained" color="primary">
                                 {_("anime__search__pick")}
                             </Button>
                         )}
-                        <Button onClick={() => onClose(null)} variant="contained" color="secondary">
-                            {_("anime__search__abort")}
-                        </Button>
                     </DialogActions>
                 </Dialog>
             );

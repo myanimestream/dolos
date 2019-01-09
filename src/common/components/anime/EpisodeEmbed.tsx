@@ -19,6 +19,7 @@ import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
 import * as rxjs from "rxjs";
+import {AnimeInfo} from "../../models";
 import {EpisodePage} from "../../pages";
 import embedProviders from "../embed-providers";
 import EmbedPlayer, {EmbedInfo} from "../EmbedPlayer";
@@ -69,6 +70,7 @@ enum PlayerType {
 
 interface EpisodeEmbedState {
     playersAvailable: PlayerType[];
+    failReason?: "episode_unavailable" | "no_streams"
     currentPlayer?: PlayerType;
     playerProps?: Partial<PlayerProps>;
     episodeEmbeds?: EmbedInfo[];
@@ -124,13 +126,23 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
 
     getEmbedInfos(urls: string[]): EmbedInfo[] {
         const embeds: EmbedInfo[] = [];
-        const embedUrls = urls.filter(url => url.startsWith("https://")).sort().map(url => new URL(url));
+        let embedRawURLs = urls.filter(url => url.startsWith("https://"));
+        if (embedRawURLs.length < 3) {
+            // maybe they support https anyway, who knows?
+            embedRawURLs = urls;
+        }
+
+        const embedURLs = embedRawURLs.map(rawUrl => {
+            const url = new URL(rawUrl);
+            url.protocol = "https:";
+            return url;
+        });
+
         const nameCounter = {};
+        for (const url of embedURLs) {
+            let providerInfo = embedProviders[url.hostname] || {};
 
-        for (const url of embedUrls) {
-            let providerInfo = embedProviders[url.host] || {};
-
-            let name = providerInfo.name || url.host.replace(/(^www\.)|(\.\w+$)/, "");
+            let name = providerInfo.name || url.hostname.replace(/(^www\.)|(\.\w+$)/, "");
             let icon = providerInfo.icon || new URL("/favicon.ico", url).href;
 
             const count = (nameCounter[name] || 0) + 1;
@@ -167,18 +179,28 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
         ]);
 
         if (!episode) {
-            this.setState({currentPlayer: PlayerType.NONE});
+            this.setState({currentPlayer: PlayerType.NONE, failReason: "episode_unavailable"});
             return;
         }
 
         const updateState = {
             playerProps: null,
-            episodeEmbeds: this.getEmbedInfos(episode.embeds),
-            playersAvailable: [PlayerType.EMBED],
-            currentPlayer: PlayerType.EMBED
+            episodeEmbeds: null,
+            playersAvailable: [],
+            currentPlayer: null,
+            failReason: null,
         };
 
-        if (episode.stream && episode.stream.links) {
+        if (episode.embeds.length > 0) {
+            const embedInfos = this.getEmbedInfos(episode.embeds);
+            if (embedInfos.length > 0) {
+                updateState.currentPlayer = PlayerType.EMBED;
+                updateState.playersAvailable.push(PlayerType.EMBED);
+                updateState.episodeEmbeds = embedInfos;
+            }
+        }
+
+        if (episode.stream && episode.stream.links.length > 0) {
             const sources: PlayerSource[] = episode.stream.links.map(link => {
                 return {url: link};
             });
@@ -196,12 +218,15 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
             };
         }
 
+        if (updateState.currentPlayer === PlayerType.NONE)
+            updateState.failReason = "no_streams";
+
         this.setState(updateState);
 
 
         const loadSkipButtons = (async () => {
-            let prevEpPromise = epIndex > 0 ? episodePage.prevEpisodeButton() : Promise.resolve(null);
-            let nextEpPromise = epIndex < episode.anime.episodes - 1 ? episodePage.nextEpisodeButton() : Promise.resolve(null);
+            const prevEpPromise = epIndex > 0 ? episodePage.prevEpisodeButton() : Promise.resolve(null);
+            const nextEpPromise = epIndex < episode.anime.episodes - 1 ? episodePage.nextEpisodeButton() : Promise.resolve(null);
 
             const skipButtons = await Promise.all([prevEpPromise, nextEpPromise]) as [SkipButton, SkipButton];
 
@@ -215,6 +240,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
         const {classes} = this.props;
         const {
             currentPlayer,
+            failReason,
             episodeEmbeds,
             playerProps
         } = this.state;
@@ -230,11 +256,13 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                         <EmbedPlayer embeds={episodeEmbeds}/>
                     );
                 case PlayerType.NONE:
+                    const msgName = failReason ? `episode__error__${failReason}` : "episode__error__general";
+
                     return (
                         <WithRatio ratio={16 / 9}>
                             <div className={classes.flexCenterColumn}>
                                 <MoodBadIcon fontSize="large" color="primary"/>
-                                <Typography variant="h4" color="textPrimary">{_("episode__error")}</Typography>
+                                <Typography variant="h4" color="textPrimary">{_(msgName)}</Typography>
                             </div>
                         </WithRatio>
                     );
@@ -320,6 +348,15 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
         }
     }
 
+    async handleSearchDialogClose(anime?: AnimeInfo) {
+        // close dialog AND the menu because it's served its purpose
+        this.setState({searchDialogOpen: false, menuAnchorElement: null});
+        if (!anime) return;
+
+        const {episodePage} = this.props;
+        await episodePage.setAnimeUID(anime.uid);
+    }
+
 
     renderMenuButton() {
         const {episodePage} = this.props;
@@ -349,7 +386,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
 
                 <AnimeSearchResultDialog
                     open={searchDialogOpen}
-                    onClose={() => this.setState({searchDialogOpen: false})}
+                    onClose={(anime) => this.handleSearchDialogClose(anime)}
                     animePage={episodePage.animePage}
                 />
             </div>

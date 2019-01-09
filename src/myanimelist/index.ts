@@ -13,20 +13,21 @@ export default class MyAnimeList extends Service {
     async route(url: URL) {
         let match;
 
-        match = url.pathname.match(/\/anime\/(\d+)\/([^\/]+)(?:\/)?$/);
+        match = url.pathname.match(/\/anime\/(\d+)\/([^\/]+)(?:\/episode\/(\d+))?(?:\/)?$/);
         if (match) {
-            this.state.remember("malAnimeId", parseInt(match[1]));
-            this.state.remember("animeIdentifier", match[2]);
-            await this.showAnimePage();
+            if (match[3]) {
+                await this.showEpisodePage({episodeIndex: parseInt(match[3]) - 1});
+            } else {
+                await this.showAnimePage({
+                    malAnimeId: parseInt(match[1]),
+                    animeIdentifier: match[2],
+                });
+            }
+
+            return;
         }
 
-        match = url.pathname.match(/\/anime\/(\d+)\/([^\/]+)\/episode\/(\d+)(?:\/)?$/);
-        if (match) {
-            this.state.remember("malAnimeId", parseInt(match[1]));
-            this.state.remember("animeIdentifier", match[2]);
-            this.state.remember("episodeIndex", parseInt(match[3]) - 1);
-            await this.showEpisodePage();
-        }
+        await this.state.loadPage(null);
     }
 
     @cacheInStateMemory("username")

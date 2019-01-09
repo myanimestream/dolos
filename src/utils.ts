@@ -38,6 +38,11 @@ export function waitUntilExists(selector: string, target?: Node & ParentNode): P
     });
 }
 
+export async function waitWithTimeout<T>(promise: PromiseLike<T>, timeout: number): Promise<T | null> {
+    const timeoutPromise: Promise<null> = new Promise(res => setTimeout(() => res(null), timeout));
+    return await Promise.race([promise, timeoutPromise]);
+}
+
 export function wrapSentryLogger(component: React.ReactNode): React.ReactNode {
     // @ts-ignore
     return React.createElement(SentryLogger, {}, component);
