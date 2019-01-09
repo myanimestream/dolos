@@ -4,7 +4,7 @@ import {evaluateCode, formatCode, injectCode} from "../inject";
 export async function kitsuAPIRequest(method: string, endpoint: string, auth?: string, config?: AxiosRequestConfig, silent?: boolean): Promise<any | null> {
     config = config || {};
     config.method = method;
-    config.url = "/api/edge" + endpoint;
+    config.url = "https://kitsu.io/api/edge" + endpoint;
     config.headers = {
         "Accept": "application/vnd.api+json",
         "Content-Type": "application/vnd.api+json",

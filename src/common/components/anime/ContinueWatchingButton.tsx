@@ -47,7 +47,7 @@ export default withStyles(styles)(class ContinueWatchingButton extends React.Com
         if (this.episodesWatchedSub) this.episodesWatchedSub.unsubscribe();
     }
 
-    async handleEpisodesWatchedChanged(epsWatched: number) {
+    async handleEpisodesWatchedChanged(epsWatched?: number) {
         const {animePage} = this.props;
         const anime = await animePage.getAnime();
 
@@ -68,8 +68,6 @@ export default withStyles(styles)(class ContinueWatchingButton extends React.Com
             return;
         }
 
-        const totalEpisodes = await animePage.getEpisodeCount();
-
         if (anime.episodes > epsWatched) {
             const href = await animePage.getEpisodeURL(epsWatched);
 
@@ -78,17 +76,20 @@ export default withStyles(styles)(class ContinueWatchingButton extends React.Com
                 onClick: () => animePage.showEpisode(epsWatched),
                 tooltip: _("anime__continue_watching__available", [epsWatched + 1]),
                 disabled: false,
-            })
-        } else if (epsWatched === totalEpisodes) {
-            this.setState({
-                tooltip: _("anime__continue_watching__completed"),
-                disabled: true,
-            })
+            });
         } else {
-            this.setState({
-                tooltip: _("anime__continue_watching__unavailable", [epsWatched + 1]),
-                disabled: true,
-            })
+            const totalEpisodes = await animePage.getEpisodeCount();
+            if (epsWatched === totalEpisodes) {
+                this.setState({
+                    tooltip: _("anime__continue_watching__completed"),
+                    disabled: true,
+                });
+            } else {
+                this.setState({
+                    tooltip: _("anime__continue_watching__unavailable", [epsWatched + 1]),
+                    disabled: true,
+                });
+            }
         }
     }
 

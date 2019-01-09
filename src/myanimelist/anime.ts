@@ -34,7 +34,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
     @cacheInMemory("malAnime")
     async getMALAnime(): Promise<MALAnime | null> {
         try {
-            const resp = await axios.get("/ownlist/get_list_item", {
+            const resp = await axios.get("https://myanimelist.net/ownlist/get_list_item", {
                 params: {
                     id: await this.getMALAnimeID(),
                     list: "anime"
@@ -84,7 +84,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
 
         const strategies = ["edit", "add"].map(strat => async () => {
             const resp = await axios.post(
-                `/ownlist/anime/${strat}.json`, JSON.stringify(data),
+                `https://myanimelist.net/ownlist/anime/${strat}.json`, JSON.stringify(data),
                 {headers: {"Content-Type": "application/x-www-form-urlencoded"}}
             );
 

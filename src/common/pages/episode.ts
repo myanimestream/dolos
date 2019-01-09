@@ -96,8 +96,9 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         if (config.updateAnimeProgress)
             await this.markEpisodeWatched();
 
-        if (epIndex + 1 < totalEpisodes)
-            await this.showNextEpisode();
+        if (config.autoNext)
+            if (epIndex + 1 < totalEpisodes || totalEpisodes === null)
+                await this.showNextEpisode();
     }
 
     async markEpisodeWatched() {

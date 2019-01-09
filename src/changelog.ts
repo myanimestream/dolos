@@ -5,6 +5,11 @@ interface Changelog {
 }
 
 const CHANGELOG: Changelog = {
+    "0.1.1": [
+        `Firefox Bugs have been fixed which means that it's now on the same level as the Chrome extension.`,
+        `If Dolos doesn't know how many episodes there are, it will just hope for the best and continue to the next episode anyway.`,
+        `Oh and while we're at it, Dolos now respects the **auto next** setting`
+    ],
     "0.1.0": [
         `Error reporting is now beautiful (I... yes. Just accept it)`,
         `Feel like Dolos didn't choose the correct Anime? Now **you can pick it yourself!**`,
