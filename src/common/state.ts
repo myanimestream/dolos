@@ -1,4 +1,5 @@
 import axios from "axios";
+import AsyncLock from "../lock";
 import {Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
 import {ElementMemory} from "./memory";
@@ -18,10 +19,14 @@ export default class State<T extends Service> extends ElementMemory {
     serviceId: string;
     page?: ServicePage<T>;
 
+    private animeInfoLock: AsyncLock;
+
     constructor(service_id: string) {
         super();
         this.serviceId = service_id;
         this.page = null;
+
+        this.animeInfoLock = new AsyncLock();
     }
 
     // noinspection JSMethodCanBeStatic
@@ -109,21 +114,26 @@ export default class State<T extends Service> extends ElementMemory {
     }
 
     async getAnimeInfo(uid: string): Promise<AnimeInfo> {
-        const memoryKey = `anime-cache.${uid}`;
-        const cachedAnime = this.memory[memoryKey];
-        if (cachedAnime) return cachedAnime;
+        return await this.animeInfoLock.withLock(async () => {
+            const memoryKey = `anime-cache.${uid}`;
+            const cachedAnime = this.memory[memoryKey];
+            if (cachedAnime) return cachedAnime;
 
-        const resp = await this.request("/anime/", {uid});
-        const anime = animeFromResp(resp);
-        this.remember(memoryKey, anime);
-        return anime;
+            const resp = await this.request("/anime/", {uid});
+            const anime = animeFromResp(resp);
+            this.remember(memoryKey, anime);
+            return anime;
+        }, uid);
     }
 
     async getEpisode(uid: string, index: number): Promise<Episode> {
-        const resp = await this.request("/anime/episode/", {uid, episode: index});
-        const episode = episodeFromResp(resp);
-        this.remember(`anime-cache.${uid}`, episode.anime);
-        return episode;
+        // only get the lock if it isn't already locked
+        return await this.animeInfoLock.maybeWithLock(async () => {
+            const resp = await this.request("/anime/episode/", {uid, episode: index});
+            const episode = episodeFromResp(resp);
+            this.remember(`anime-cache.${uid}`, episode.anime);
+            return episode;
+        }, uid);
     }
 }
 
