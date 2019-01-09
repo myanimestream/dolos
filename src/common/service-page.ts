@@ -20,7 +20,6 @@ export default abstract class ServicePage<T extends Service> extends ElementMemo
 
     async load() {
         if (this.loaded) return;
-        console.log("loading", this);
 
         await this._load();
         this.loaded = true;
@@ -32,7 +31,6 @@ export default abstract class ServicePage<T extends Service> extends ElementMemo
 
     async unload() {
         if (!this.loaded) return;
-        console.log("unloading", this);
 
         await this._unload();
         this.loaded = false;

@@ -30,7 +30,6 @@ export default class Kitsu extends Service {
                 await this.showAnimePage({animeIdentifier: match[1]});
             }
 
-            console.log(this.state);
             return;
         }
 

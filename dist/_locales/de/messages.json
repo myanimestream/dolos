@@ -149,8 +149,14 @@
   "episode__bookmark_failed": {
     "message": "Fortschritt konnte nicht gespeichert werden"
   },
-  "episode__error": {
-    "message": "Episode nicht gefunden"
+  "episode__error__general": {
+    "message": "Episode nicht gefunden!"
+  },
+  "episode__error__episode_unavailable": {
+    "message": "Episode nicht verfügbar!"
+  },
+  "episode__error__no_streams": {
+    "message": "Keinen Stream für die Episode gefunden!"
   },
   "episode__embedded_stream": {
     "message": "Eingebetteter Player"

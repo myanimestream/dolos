@@ -191,8 +191,14 @@
   "episode__bookmark_failed": {
     "message": "Couldn't update anime progress"
   },
-  "episode__error": {
+  "episode__error__general": {
     "message": "Couldn't get episode, Sorry!"
+  },
+  "episode__error__episode_unavailable": {
+    "message": "Episode unavailable!"
+  },
+  "episode__error__no_streams": {
+    "message": "Couldn't find a stream!"
   },
   "episode__embedded_stream": {
     "message": "Embedded Stream"

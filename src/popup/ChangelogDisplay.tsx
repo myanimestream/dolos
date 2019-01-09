@@ -1,9 +1,7 @@
+import Divider from "@material-ui/core/Divider";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
@@ -14,11 +12,9 @@ import CHANGELOG from "../changelog";
 import {getBackgroundWindow} from "../utils";
 
 const styles = () => createStyles({
-    changelogEntry: {
-        "& svg": {
-            transform: "translateY(25%)"
-        }
-    }
+    expansionPanelDetails: {
+        flexDirection: "column",
+    },
 });
 
 interface ChangelogDisplayState {
@@ -66,18 +62,17 @@ export default withStyles(styles)(class ChangelogDisplay extends React.Component
                             <Typography color="primary" variant="h6">Version {version}</Typography>
                         </ExpansionPanelSummary>
 
-                        <ExpansionPanelDetails>
-                            <List dense>
-                                {changes.map((change, index) => (
-                                    <ListItem key={index}>
-                                        <ListItemText className={classes.changelogEntry}
-                                                      primaryTypographyProps={{variant: "body1"}}
-                                        >
-                                            <ReactMarkdown source={change}/>
-                                        </ListItemText>
-                                    </ListItem>
-                                ))}
-                            </List>
+                        <ExpansionPanelDetails className={classes.expansionPanelDetails}>
+                            {changes.map((change, index) => (
+                                <div key={index}>
+                                    <Typography component="div" paragraph>
+                                        <ReactMarkdown source={change}/>
+                                    </Typography>
+                                    {index < changes.length - 1 && (
+                                        <Divider/>
+                                    )}
+                                </div>
+                            ))}
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                 ))
