@@ -26,7 +26,7 @@ function malAnimeFromData(data: any): MALAnime {
 
 export default class MalAnimePage extends AnimePage<MyAnimeList> {
     @cacheInMemory("malAnimeID")
-    async getMALAnimeId(): Promise<number> {
+    getMALAnimeID(): number {
         const match = location.pathname.match(/\/anime\/(\d+)/);
         return parseInt(match[1]);
     }
@@ -36,7 +36,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         try {
             const resp = await axios.get("/ownlist/get_list_item", {
                 params: {
-                    id: await this.getMALAnimeId(),
+                    id: await this.getMALAnimeID(),
                     list: "anime"
                 }
             });
@@ -74,7 +74,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
 
         const data = {
             csrf_token: this.service.getCSRFToken(),
-            anime_id: this.getMALAnimeId(),
+            anime_id: this.getMALAnimeID(),
             status,
             num_watched_episodes: progress
         };
@@ -106,7 +106,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
     }
 
     async getEpisodeURL(episode: number): Promise<string> {
-        const [animeId, slug] = await Promise.all([this.getMALAnimeId(), this.getAnimeIdentifier()]);
+        const [animeId, slug] = await Promise.all([this.getMALAnimeID(), this.getAnimeIdentifier()]);
         return new URL(`/anime/${animeId}/${slug}/episode/${episode + 1}`, location.origin).toString();
     }
 

@@ -132,7 +132,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
             embedRawURLs = urls;
         }
 
-        const embedURLs = embedRawURLs.map(rawUrl => {
+        const embedURLs = embedRawURLs.sort().map(rawUrl => {
             const url = new URL(rawUrl);
             url.protocol = "https:";
             return url;

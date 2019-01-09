@@ -13,13 +13,13 @@ export default class MyAnimeList extends Service {
     async route(url: URL) {
         let match;
 
-        match = url.pathname.match(/\/anime\/(\d+)\/([^\/]+)(?:\/episode\/(\d+))?(?:\/)?$/);
+        match = url.pathname.match(/\/anime\/(\d+)\/([^\/]+)(?:\/episode\/(\d+))?/);
         if (match) {
             if (match[3]) {
                 await this.showEpisodePage({episodeIndex: parseInt(match[3]) - 1});
             } else {
                 await this.showAnimePage({
-                    malAnimeId: parseInt(match[1]),
+                    malAnimeID: parseInt(match[1]),
                     animeIdentifier: match[2],
                 });
             }
