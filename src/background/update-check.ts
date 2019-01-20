@@ -5,31 +5,36 @@ import Store from "dolos/store";
 
 export interface NewEpisodeEvent {
     anime: AnimeInfo;
-    previousEpisodes: number;
+    previousEpisodes: number | null;
 }
 
 async function checkAnimeUpdate() {
     const activeUIDs = await Store.getSubscribedAnimeUIDs();
-
-    console.log(Object.keys(activeUIDs), activeUIDs.ownKeys());
+    activeUIDs["a-tobeheroine-masteranime-en"] = null;
+    activeUIDs["a-boogiepopwawarawanai_28_2019_29_-nineanime-en"] = null;
 
     console.log("checking", activeUIDs.ownKeys().length, "animes!"); // rem
-    console.log(GrobberClient);
-    const animeInfos = await Promise.all((activeUIDs.ownKeys().map(GrobberClient.getAnimeInfo)));
+    // @ts-ignore
+    const animeInfos = await Promise.all((activeUIDs.ownKeys().map((uid: string) => GrobberClient.getAnimeInfo(uid))));
 
     for (const anime of animeInfos) {
         const uid = anime.uid;
         const previousAnime = activeUIDs[uid];
-        if (!previousAnime) {
+
+        if (previousAnime === undefined) {
             console.warn("Couldn't find matching anime for", anime);
             continue;
         }
 
-        if (anime.episodes != previousAnime.episodes) {
+        if (!previousAnime || anime.episodes != previousAnime.episodes) {
+            activeUIDs[uid] = anime;
+
             const event = {
                 anime,
-                previousEpisodes: previousAnime.episodes,
+                previousEpisodes: previousAnime && previousAnime.episodes,
             };
+
+            console.log(event);
             hasNewEpisode$.next(event);
         }
     }

@@ -178,5 +178,13 @@
   },
   "episode__menu__search_anime": {
     "message": "Suche Anime"
+  },
+  "notification__new_episodes": {
+    "message": "Neue Episoden verfügbar: $EPISODES$",
+    "placeholders": {
+      "episodes": {
+        "content": "$1"
+      }
+    }
   }
 }

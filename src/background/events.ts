@@ -1,3 +1,5 @@
+import axios from "axios";
+import {GrobberClient} from "dolos/grobber";
 import * as state from "./observables";
 import {performUpdateCheck} from "./update-check";
 import Alarm = chrome.alarms.Alarm;
@@ -21,12 +23,42 @@ chrome.alarms.onAlarm.addListener((alarm: Alarm) => {
     }
 });
 
-state.hasNewVersion$.subscribe(
-    val => chrome.browserAction.setBadgeText({text: val ? _("ext_badge__new_version") : ""})
-);
-
 chrome.alarms.create("UpdateCheck", {
     periodInMinutes: 60,
 });
 // since the alarm doesn't trigger immediately and the delay can't be set to 0 perform a check right away!
 performUpdateCheck();
+
+state.hasNewVersion$.subscribe(
+    val => chrome.browserAction.setBadgeText({text: val ? _("ext_badge__new_version") : ""})
+);
+
+async function getBlobURL(url: string): Promise<string> {
+    const resp = await axios.get(url, {responseType: "blob"});
+    return URL.createObjectURL(resp.data);
+}
+
+state.hasNewEpisode$.subscribe(async e => {
+    const anime = e.anime;
+    const epDiff = anime.episodes - (e.previousEpisodes || 0);
+    const nextEpisodeIndex = e.previousEpisodes || anime.episodes - 1;
+
+    const getEpisodePoster = async () => {
+        const episode = await GrobberClient.getEpisode(anime.uid, nextEpisodeIndex);
+        const poster = episode.poster;
+        if (poster) return await getBlobURL(poster);
+        else return;
+    };
+
+    const [thumbnail, poster] = await Promise.all([getBlobURL(anime.thumbnail), getEpisodePoster()]);
+
+    chrome.notifications.create({
+        type: "image",
+        title: anime.title,
+        iconUrl: thumbnail,
+        imageUrl: poster,
+        message: _("notification__new_episodes", [epDiff]),
+        contextMessage: _("ext_name"),
+        buttons: [{title: "Watch"}, {title: "Unsubscribe"}],
+    });
+});

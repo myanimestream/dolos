@@ -1,4 +1,7 @@
 {
+  "ext_name": {
+    "message": "MyAnimeStream"
+  },
   "ext_description": {
     "message": "Get the most out of your favourite anime site by turning it into a streaming site.",
     "description": "The description of the extension"
@@ -220,5 +223,13 @@
   },
   "episode__menu__search_anime": {
     "message": "Search Anime"
+  },
+  "notification__new_episodes": {
+    "message": "New Episodes available: $EPISODES$",
+    "placeholders": {
+      "episodes": {
+        "content": "$1"
+      }
+    }
   }
 }

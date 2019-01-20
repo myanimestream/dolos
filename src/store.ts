@@ -9,8 +9,6 @@ type StoreProxy<T = {}> = {
 type StoreProxyObject<T = any> = StoreProxy<T> & StoreObject<T>;
 
 class StoreObject<T = any> {
-    [key: string]: any;
-
     _store: Store;
     _key: string;
     _container: T;
@@ -42,6 +40,7 @@ class StoreObject<T = any> {
                 },
                 set(target: StoreObject<T>, p: keyof T, value: any): boolean {
                     if (p in target) {
+                        // @ts-ignore
                         target[p as any] = value;
                         return true;
                     }

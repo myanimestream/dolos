@@ -92,6 +92,7 @@ export class Client extends Memory {
     }
 
     async getAnimeInfo(uid: string): Promise<AnimeInfo> {
+        console.log(this, uid);
         return await this.performAnimeRequest(
             "/anime/",
             [["uid", uid]],
