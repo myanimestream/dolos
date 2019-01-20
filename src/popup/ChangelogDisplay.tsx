@@ -17,12 +17,15 @@ const styles = () => createStyles({
     },
 });
 
+interface ChangelogDisplayProps extends WithStyles<typeof styles> {
+}
+
 interface ChangelogDisplayState {
     panelsOpen: Set<string>;
 }
 
-export default withStyles(styles)(class ChangelogDisplay extends React.Component<WithStyles<typeof styles>, ChangelogDisplayState> {
-    constructor(props) {
+export default withStyles(styles)(class ChangelogDisplay extends React.Component<ChangelogDisplayProps, ChangelogDisplayState> {
+    constructor(props: ChangelogDisplayProps) {
         super(props);
         this.state = {
             panelsOpen: new Set([Object.keys(CHANGELOG)[0]]),

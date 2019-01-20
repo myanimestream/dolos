@@ -1,3 +1,4 @@
+import {AnimeInfo} from "dolos/grobber";
 import {Config, DEFAULT_CONFIG, DEFAULT_STORED_ANIME_INFO, StoredAnimeInfo} from "./models";
 import StorageChange = chrome.storage.StorageChange;
 
@@ -5,9 +6,11 @@ type StoreProxy<T = {}> = {
     [P in keyof T]: T[P];
 };
 
-type StoreProxyObject<T = {}> = StoreProxy<T> & StoreObject<T>;
+type StoreProxyObject<T = any> = StoreProxy<T> & StoreObject<T>;
 
-class StoreObject<T = {}> {
+class StoreObject<T = any> {
+    [key: string]: any;
+
     _store: Store;
     _key: string;
     _container: T;
@@ -21,10 +24,13 @@ class StoreObject<T = {}> {
     static create<T>(store: Store, key: string, data: T): StoreProxyObject<T> {
         // @ts-ignore
         return new Proxy(
-            new StoreObject<T>(store, key, data || {} as T),
+            new StoreObject<T>(store, key, data),
             {
                 has(target: StoreObject<T>, p: keyof T): boolean {
                     return target.has(p);
+                },
+                ownKeys(target: StoreObject<T>): string[] {
+                    return target.ownKeys();
                 },
                 get(target: StoreObject<T>, p: keyof T): any {
                     if (p in target) {
@@ -41,12 +47,9 @@ class StoreObject<T = {}> {
                     }
 
                     target.set(p, value)
-                        .catch(reason => console.error("Couldn't set storeobject property", p, "for", target, reason));
+                        .catch(reason => console.error("Couldn't set StoreObject property", p, "for", target, reason));
                     return true;
                 },
-                ownKeys(target: StoreObject<T>): (keyof T)[] {
-                    return target.ownKeys();
-                }
             }
         );
     }
@@ -64,8 +67,8 @@ class StoreObject<T = {}> {
         await this._store.set(this._key, this._container);
     }
 
-    ownKeys(): (keyof T)[] {
-        return Object.keys(this._container) as (keyof T)[];
+    ownKeys(): string[] {
+        return Object.keys(this._container);
     }
 
     // noinspection JSUnusedGlobalSymbols
@@ -73,8 +76,11 @@ class StoreObject<T = {}> {
         Object.assign(this._container, newValue);
     }
 
-    setDefaults(defaults: { [key: string]: any }) {
-        this._container = Object.assign({}, defaults, this._container);
+    setDefaults(defaults: T) {
+        if (Array.isArray(defaults))
+            this._container = defaults;
+        else
+            this._container = Object.assign({}, defaults, this._container);
     }
 }
 
@@ -93,7 +99,7 @@ export class Store {
         }
     };
 
-    getRaw(keys?: string | string[] | Object): Promise<{ [key: string]: any }> {
+    getRaw(keys: string | string[] | Object): Promise<{ [key: string]: any }> {
         return new Promise(res => {
             chrome.storage.sync.get(keys, res);
         });
@@ -103,13 +109,13 @@ export class Store {
         return new Promise(resolve => chrome.storage.sync.set(items, resolve));
     }
 
-    async get(key: string): Promise<StoreProxyObject> {
+    async get<T>(key: string, defaultValue?: T): Promise<StoreProxyObject<T>> {
         if (!(key in this._cache)) {
             const value = (await this.getRaw(key))[key];
-            this._cache[key] = StoreObject.create(this, key, value);
+            this._cache[key] = StoreObject.create(this, key, value || defaultValue);
         }
 
-        return this._cache[key];
+        return this._cache[key] as StoreProxyObject<T>;
     }
 
     async set(key: string, value: any) {
@@ -117,7 +123,7 @@ export class Store {
     }
 
     async getConfig(): Promise<StoreProxyObject<Config>> {
-        const config = await this.get("config");
+        const config = await this.get("config", {});
         config.setDefaults(DEFAULT_CONFIG);
 
         return config as StoreProxyObject<Config>;
@@ -136,11 +142,15 @@ export class Store {
 
     async getStoredAnimeInfo(service_id: string, identifier: string, config?: StoreProxyObject<Config>): Promise<StoreProxyObject<StoredAnimeInfo>> {
         let key = await this.buildIdentifier(service_id, identifier, config);
-        const info = await this.get(key);
+        const info = await this.get(key, {});
 
         info.setDefaults(DEFAULT_STORED_ANIME_INFO);
 
         return info as StoreProxyObject<StoredAnimeInfo>;
+    }
+
+    async getSubscribedAnimeUIDs(): Promise<StoreProxyObject<{ [key: string]: AnimeInfo | null }>> {
+        return await this.get("subscribed-anime", {});
     }
 }
 

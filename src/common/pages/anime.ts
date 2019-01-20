@@ -12,11 +12,11 @@ import EpisodePage from "./episode";
 
 
 export default abstract class AnimePage<T extends Service> extends ServicePage<T> {
-    private _episodesWatched$?: rxjs.BehaviorSubject<number | null>;
+    private _episodesWatched$?: rxjs.BehaviorSubject<number | undefined>;
 
-    abstract async getAnimeSearchQuery(): Promise<string | null>;
+    abstract async getAnimeSearchQuery(): Promise<string | undefined>;
 
-    abstract async getAnimeIdentifier(): Promise<string | null>;
+    abstract async getAnimeIdentifier(): Promise<string | undefined>;
 
     async getStoredAnimeInfo(): Promise<StoredAnimeInfo> {
         const identifier = await this.getAnimeIdentifier();
@@ -26,14 +26,17 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return await this.state.getStoredAnimeInfo(identifier);
     }
 
-    async getAnimeUID(forceSearch?: boolean): Promise<string | null> {
+    async getAnimeUID(forceSearch?: boolean): Promise<string | undefined> {
         const animeInfo = await this.getStoredAnimeInfo();
         if (animeInfo.uid && !forceSearch)
             return animeInfo.uid;
 
         const query = await this.getAnimeSearchQuery();
+        if (!query)
+            return;
+
         const results = await GrobberClient.searchAnime(query);
-        if (!results) return null;
+        if (!results) return;
 
         const uid = results[0].anime.uid;
         animeInfo.uid = uid;
@@ -48,9 +51,9 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
     }
 
     @cacheInMemory("anime")
-    async getAnime(): Promise<AnimeInfo | null> {
+    async getAnime(): Promise<AnimeInfo | undefined> {
         let uid = await this.getAnimeUID();
-        if (!uid) return null;
+        if (!uid) return;
 
         try {
             return await GrobberClient.getAnimeInfo(uid);
@@ -58,6 +61,8 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
             if (e.name === GrobberErrorType.UidUnknown) {
                 console.warn("Grobber didn't recognise uid, updating...");
                 uid = await this.getAnimeUID(true);
+                if (!uid)
+                    return;
 
                 try {
                     return await GrobberClient.getAnimeInfo(uid);
@@ -66,7 +71,7 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
                 }
             }
 
-            return null;
+            return;
         }
     }
 
@@ -76,13 +81,13 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
 
     abstract async getEpisodeURL(episodeIndex: number): Promise<string>;
 
-    abstract async showEpisode(episodeIndex: number);
+    abstract async showEpisode(episodeIndex: number): Promise<void>;
 
-    abstract async getEpisodesWatched(): Promise<number | null>;
+    abstract async getEpisodesWatched(): Promise<number | undefined>;
 
-    abstract async getEpisodeCount(): Promise<number | null>;
+    abstract async getEpisodeCount(): Promise<number | undefined>;
 
-    abstract async injectContinueWatchingButton(element: Element);
+    abstract async injectContinueWatchingButton(element: Element): Promise<void>;
 
     async setEpisodesWatched(progress: number): Promise<boolean> {
         const success = await this._setEpisodesWatched(progress);
@@ -91,7 +96,7 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return success;
     }
 
-    async getEpisodesWatched$(): Promise<rxjs.BehaviorSubject<number | null>> {
+    async getEpisodesWatched$(): Promise<rxjs.BehaviorSubject<number | undefined>> {
         if (!this._episodesWatched$) {
             const episodesWatched = await this.getEpisodesWatched();
             this._episodesWatched$ = new rxjs.BehaviorSubject(episodesWatched);

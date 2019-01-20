@@ -31,7 +31,7 @@ import _ = chrome.i18n.getMessage;
 
 export interface SkipButton {
     href?: string;
-    onClick?: (e?: React.MouseEvent<HTMLElement>) => any;
+    onClick?: (e?: React.MouseEvent<HTMLElement>) => void;
 }
 
 const styles = (theme: Theme) => {
@@ -89,14 +89,11 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
     constructor(props: EpisodeEmbedProps) {
         super(props);
         this.state = {
-            currentPlayer: null,
             playersAvailable: [],
             canSetProgress: false,
             bookmarked: false,
             searchDialogOpen: false,
         };
-
-        this.episodeBookmarkedSubscription = null;
     }
 
     static getPlayerTypeName(type: PlayerType): string | null {
@@ -106,6 +103,8 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
             case PlayerType.EMBED:
                 return _("episode__player_type_name__embed");
         }
+
+        return null;
     }
 
     getNextPlayerType(): PlayerType {
@@ -145,8 +144,8 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
             let name = providerInfo.name || url.hostname.replace(/(^www\.)|(\.\w+$)/, "");
             let icon = providerInfo.icon || new URL("/favicon.ico", url).href;
 
-            const count = (nameCounter[name] || 0) + 1;
-            nameCounter[name] = count;
+            // @ts-ignore
+            const count = nameCounter[name] = (nameCounter[name] || 0) + 1;
 
             embeds.push({
                 name: `${name} ${count}`,
@@ -183,18 +182,15 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
             return;
         }
 
-        const updateState = {
-            playerProps: null,
-            episodeEmbeds: null,
+        const updateState: Partial<EpisodeEmbedState> = {
             playersAvailable: [],
-            currentPlayer: null,
-            failReason: null,
         };
 
         if (episode.embeds.length > 0) {
             const embedInfos = this.getEmbedInfos(episode.embeds);
             if (embedInfos.length > 0) {
                 updateState.currentPlayer = PlayerType.EMBED;
+                // @ts-ignore
                 updateState.playersAvailable.push(PlayerType.EMBED);
                 updateState.episodeEmbeds = embedInfos;
             }
@@ -206,12 +202,16 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
             });
 
             updateState.currentPlayer = PlayerType.DOLOS;
+            // @ts-ignore
             updateState.playersAvailable.push(PlayerType.DOLOS);
             updateState.playerProps = {
                 sources,
                 poster: episode.poster,
                 options: {
-                    title: _("player__video_title_format", [episode.anime.title, epIndex + 1]),
+                    title: _("player__video_title_format", [
+                        episode.anime.title,
+                        epIndex !== undefined ? epIndex + 1 : "?"
+                    ]),
                     autoplay: config.autoplay
                 },
                 eventListener: {"ended": () => episodePage.onEpisodeEnd()}
@@ -221,10 +221,12 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
         if (updateState.currentPlayer === PlayerType.NONE)
             updateState.failReason = "no_streams";
 
-        this.setState(updateState);
+        this.setState(updateState as EpisodeEmbedState);
 
 
         const loadSkipButtons = (async () => {
+            if (epIndex === undefined) return;
+
             const prevEpPromise = epIndex > 0 ? episodePage.prevEpisodeButton() : Promise.resolve(null);
             const nextEpPromise = epIndex < episode.anime.episodes - 1 ? episodePage.nextEpisodeButton() : Promise.resolve(null);
 
@@ -253,6 +255,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                     );
                 case PlayerType.EMBED:
                     return (
+                        // @ts-ignore
                         <EmbedPlayer embeds={episodeEmbeds}/>
                     );
                 case PlayerType.NONE:
@@ -279,7 +282,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
 
     renderSkipButtons() {
         const {skipButtons} = this.state;
-        const [skipPrev, skipNext] = skipButtons || [null, null];
+        const [skipPrev, skipNext] = skipButtons || [undefined, undefined];
 
         return (
             <span>
@@ -289,6 +292,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                                     href={skipPrev && skipPrev.href}
                                     onClick={skipPrev && skipPrev.onClick && ((e) => {
                                         e.preventDefault();
+                                        // @ts-ignore
                                         skipPrev.onClick(e);
                                     })}>
                             <SkipPreviousIcon/>
@@ -301,6 +305,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                                     href={skipNext && skipNext.href}
                                     onClick={skipNext && skipNext.onClick && ((e) => {
                                         e.preventDefault();
+                                        // @ts-ignore
                                         skipNext.onClick(e);
                                     })}>
                             <SkipNextIcon/>
@@ -346,11 +351,13 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                 </Tooltip>
             );
         }
+
+        return;
     }
 
     async handleSearchDialogClose(anime?: AnimeInfo) {
         // close dialog AND the menu because it's served its purpose
-        this.setState({searchDialogOpen: false, menuAnchorElement: null});
+        this.setState({searchDialogOpen: false, menuAnchorElement: undefined});
         if (!anime) return;
 
         const {episodePage} = this.props;
@@ -377,7 +384,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
                     id="episode-embed-menu"
                     anchorEl={menuAnchorElement}
                     open={!!menuAnchorElement}
-                    onClose={() => this.setState({menuAnchorElement: null})}
+                    onClose={() => this.setState({menuAnchorElement: undefined})}
                 >
                     <MenuItem onClick={() => this.setState({searchDialogOpen: true})}>
                         {_("episode__menu__search_anime")}

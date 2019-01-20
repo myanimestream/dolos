@@ -5,6 +5,7 @@
     }
   },
   "permissions": [
+    "alarms",
     "storage",
     "<all_urls>"
   ],

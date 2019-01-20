@@ -67,7 +67,7 @@ interface SnackbarQueueState {
 export default withStyles(styles)(class SnackbarQueue extends React.Component<SnackbarQueueProps, SnackbarQueueState> {
     snackbarMessageSub?: rxjs.Subscription;
 
-    constructor(props) {
+    constructor(props: SnackbarQueueProps) {
         super(props);
         this.state = {
             open: false,
@@ -100,7 +100,8 @@ export default withStyles(styles)(class SnackbarQueue extends React.Component<Sn
         const {open, snackbarMessage} = this.state;
         if (!snackbarMessage) return false;
 
-        const Icon = iconVariant[snackbarMessage.type];
+        const Icon = snackbarMessage.type ? iconVariant[snackbarMessage.type] : undefined;
+        const snackbarClassName = snackbarMessage.type ? classes[snackbarMessage.type] : undefined;
 
         return (
             <Snackbar
@@ -117,7 +118,7 @@ export default withStyles(styles)(class SnackbarQueue extends React.Component<Sn
 
                 ContentProps={{
                     "aria-describedby": "message-id",
-                    className: classes[snackbarMessage.type]
+                    className: snackbarClassName
                 }}
 
                 message={

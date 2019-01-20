@@ -16,7 +16,7 @@ export default abstract class ServicePage<T extends Service> extends ElementMemo
         this.loaded = false;
     }
 
-    abstract async _load();
+    abstract async _load(): Promise<void>;
 
     async load() {
         if (this.loaded) return;

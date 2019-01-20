@@ -1,11 +1,12 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import * as React from "react";
 
 import {Config} from "../models";
 
-const styles = theme => createStyles({
+const styles = (theme: Theme) => createStyles({
     root: {
         display: "flex",
         flexDirection: "column",
@@ -20,7 +21,7 @@ const styles = theme => createStyles({
 interface SettingsTabProps extends WithStyles<typeof styles> {
     getConfig: () => Promise<Config>;
     content: typeof SettingsTabContent;
-    saveConfig: (Config) => Promise<void>;
+    saveConfig: (config: Config) => Promise<void>;
 }
 
 interface SettingsTabState {
@@ -49,11 +50,15 @@ export default withStyles(styles)(
 
             const editConfig = new Proxy({}, {
                 get(target: {}, p: PropertyKey): any {
+                    // @ts-ignore
                     if (p in target) return target[p];
+                    // @ts-ignore
                     else return config[p];
                 },
                 set(target: {}, p: PropertyKey, value: any): boolean {
+                    // @ts-ignore
                     if (value === config[p]) delete target[p];
+                    // @ts-ignore
                     else target[p] = value;
 
                     return true;
@@ -71,9 +76,14 @@ export default withStyles(styles)(
         }
 
         getDirty(): boolean {
+            const config = this.state.config;
             const original = this.state.originalConfig;
 
-            for (const [key, value] of Object.entries(this.state.config))
+            if (config === undefined || original === undefined)
+                throw new Error("not ready yet");
+
+            for (const [key, value] of Object.entries(config))
+                // @ts-ignore
                 if (original[key] != value)
                     return true;
 
@@ -82,12 +92,16 @@ export default withStyles(styles)(
 
         changeConfig(param: keyof Config, value: any) {
             const config = this.state.config;
+            const original = this.state.originalConfig;
+
+            if (config === undefined || original === undefined)
+                throw new Error("not ready yet");
 
             if (!(param in config))
                 return;
 
             config[param] = value;
-            this.state.originalConfig[param] = value;
+            original[param] = value;
 
             let isDirty = this.getDirty();
             this.setState({config, saved: !isDirty, showSave: isDirty});
@@ -118,7 +132,7 @@ export default withStyles(styles)(
 
 export interface SettingsTabContentProps {
     config: Config;
-    changeConfig: (string, any) => void;
+    changeConfig: (key: string, value: any) => void;
 }
 
 export class SettingsTabContent<P extends SettingsTabContentProps = SettingsTabContentProps, S = {}> extends React.Component<P, S> {

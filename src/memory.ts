@@ -7,7 +7,7 @@ export interface Namespace<VT = any> {
 
 export function enterParentNamespace<T>(start: Namespace<T>, namespace: string | string[]): [Namespace<T>, string] {
     const parts = Array.isArray(namespace) ? namespace : namespace.split(".");
-    const key = parts.pop();
+    const key = parts.pop() as string;
     return [enterNamespace(start, parts), key];
 }
 
@@ -39,6 +39,7 @@ export function flattenNamespace<T>(ns: Namespace<T>): { [key: string]: T } {
 
         for (const [key, value] of Object.entries(target))
             if (key === "__value")
+            // @ts-ignore
                 result[prefix + key] = value;
             else
                 stack.push([`${prefix}${key}.`, value]);
@@ -55,22 +56,22 @@ export const NamespaceTraps: ProxyHandler<Namespace> = {
     get<T>(target: Namespace<T>, p: PropertyKey, receiver?: any): T {
         if (typeof p === "string")
             return Reflect.get(enterNamespace(target, p), "__value");
-        else Reflect.get(target, p, receiver);
+        else return Reflect.get(target, p, receiver);
     },
     set<T>(target: Namespace<T>, p: PropertyKey, value: T, receiver?: any): boolean {
         if (typeof p === "string")
             return Reflect.set(enterNamespace(target, p), "__value", value);
-        else Reflect.set(target, p, value, receiver);
+        else return Reflect.set(target, p, value, receiver);
     },
     deleteProperty(target: Namespace, p: PropertyKey): boolean {
         if (typeof p === "string")
             return Reflect.deleteProperty(enterNamespace(target, p), "__value");
-        else Reflect.deleteProperty(target, p);
+        else return Reflect.deleteProperty(target, p);
     },
     has(target: Namespace, p: PropertyKey): boolean {
         if (typeof p === "string")
             return Reflect.has(enterNamespace(target, p), "__value");
-        else Reflect.has(target, p);
+        else return Reflect.has(target, p);
     },
     ownKeys(target: Namespace): PropertyKey[] {
         const keys = Reflect.ownKeys(target);
@@ -155,11 +156,11 @@ export class ElementMemory extends Memory implements HasElementMemory {
     }
 }
 
-export function cacheInMemory(keyName?: string) {
+export function cacheInMemory(name?: string) {
     return function (target: Object & HasMemory, propertyKey: string, descriptor: PropertyDescriptor) {
-        keyName = keyName || `${target.constructor.name}-${propertyKey}`;
+        const keyName: string = name || `${target.constructor.name}-${propertyKey}`;
         const func = descriptor.value;
-        let returnPromise;
+        let returnPromise: boolean;
 
         descriptor.value = function () {
             const memory = this.memory;

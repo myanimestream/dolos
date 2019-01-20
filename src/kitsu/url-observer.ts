@@ -6,7 +6,7 @@ export default class UrlObserver {
 
     callback?: (old: string, updated: string) => void;
 
-    constructor(interval: number, callback?: (old?: string, updated?: string) => any) {
+    constructor(interval: number, callback?: (old: string, updated: string) => any) {
         this.interval = interval;
         this.callback = callback;
         this._observing = false;
@@ -31,6 +31,7 @@ export default class UrlObserver {
     }
 
     onUrlChange(old: string, updated: string) {
-        this.callback(old, updated);
+        if (this.callback)
+            this.callback(old, updated);
     }
 }

@@ -12,7 +12,7 @@ export default class AsyncLock {
             return key.some(k => this.isLocked(k));
         }
 
-        return !!this.locked[key];
+        return this.locked[key || ""];
     }
 
     async acquire(key?: string | string[]) {
@@ -22,7 +22,7 @@ export default class AsyncLock {
         }
 
         await this.waitForLock(key);
-        this.locked[key] = true;
+        this.locked[key || ""] = true;
     }
 
     release(key?: string | string[]) {
@@ -32,7 +32,7 @@ export default class AsyncLock {
         }
 
         if (!this.isLocked(key)) throw new Error("Lock isn't locked");
-        this.locked[key] = false;
+        this.locked[key || ""] = false;
         this.shiftQueue(key);
     }
 
@@ -45,14 +45,9 @@ export default class AsyncLock {
         }
     }
 
-    async maybeWithLock<T>(callback: (lock?: AsyncLock) => PromiseLike<T>, key?: string | string[]): Promise<T> {
-        if (this.isLocked(key)) return await Promise.resolve(callback(this));
-        else return await this.withLock(callback, key);
-    }
-
     private getQueue(key?: string): (() => void)[] {
-        let queue = this.queues[key];
-        if (!queue) queue = this.queues[key] = [];
+        let queue = this.queues[key || ""];
+        if (!queue) queue = this.queues[key || ""] = [];
 
         return queue;
     }

@@ -27,7 +27,7 @@ export default class MyAnimeList extends Service {
             return;
         }
 
-        await this.state.loadPage(null);
+        await this.state.loadPage();
     }
 
     @cacheInStateMemory("username")
@@ -37,7 +37,13 @@ export default class MyAnimeList extends Service {
 
     @cacheInStateMemory("csrfToken")
     getCSRFToken(): string {
-        return document.querySelector(`meta[name="csrf_token"]`).getAttribute("content");
+        const el = document.querySelector(`meta[name="csrf_token"]`);
+        if (!el) throw new Error("CSRF_TOKEN holder not found");
+
+        const token = el.getAttribute("content");
+        if (!token) throw new Error("token not found");
+
+        return token;
     }
 
     @cacheInStateMemory("isMobileLayout")

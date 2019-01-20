@@ -9,6 +9,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListSubheader from "@material-ui/core/ListSubheader";
+import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -30,7 +31,7 @@ const _ = chrome.i18n.getMessage;
 
 const drawerWidth = 240;
 
-const styles = theme => createStyles({
+const styles = (theme: Theme) => createStyles({
     root: {
         display: "flex",
     },
@@ -128,7 +129,7 @@ export default withStyles(styles)(class Settings extends React.Component<Setting
         this.setState({configPromise: Promise.resolve(config)});
     };
 
-    getSettingsTab = props => {
+    getSettingsTab = (props: React.ComponentProps<any>) => {
         let content;
 
         switch (props.match.path) {
@@ -142,6 +143,8 @@ export default withStyles(styles)(class Settings extends React.Component<Setting
                 content = Debug;
                 break;
         }
+
+        if (!content) return;
 
         return (
             <SettingsTab getConfig={() => this.state.configPromise} saveConfig={this.saveConfig} content={content}/>);

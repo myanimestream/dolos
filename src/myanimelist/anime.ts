@@ -26,8 +26,9 @@ function malAnimeFromData(data: any): MALAnime {
 
 export default class MalAnimePage extends AnimePage<MyAnimeList> {
     @cacheInMemory("malAnimeID")
-    getMALAnimeID(): number {
+    getMALAnimeID(): number | undefined {
         const match = location.pathname.match(/\/anime\/(\d+)/);
+        if (!match) return;
         return parseInt(match[1]);
     }
 
@@ -49,26 +50,35 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
     }
 
     @cacheInMemory("animeIdentifier")
-    async getAnimeIdentifier(): Promise<string | null> {
+    async getAnimeIdentifier(): Promise<string | undefined> {
         const match = location.pathname.match(/\/anime\/(\d+)\/([^\/]+)/);
-        if (!match) return null;
+        if (!match) return;
         return match[2];
     }
 
     @cacheInMemory("animeSearchQuery")
-    async getAnimeSearchQuery(): Promise<string | null> {
-        const title = document.querySelector("meta[property=\"og:title\"]")
-            .getAttribute("content");
+    async getAnimeSearchQuery(): Promise<string | undefined> {
+        const el = document.querySelector("meta[property=\"og:title\"]");
+        if (!el) return;
 
-        return title.match(/(.+?)(?: Episode \d+)?$/)[1];
+        const title = el.getAttribute("content");
+        if (!title) return;
+
+        const match = title.match(/(.+?)(?: Episode \d+)?$/);
+        if (!match) return;
+
+        return match[1];
     }
 
     async canSetEpisodesWatched(): Promise<boolean> {
         return !!await this.service.getUsername();
     }
 
-    async _setEpisodesWatched(progress: number) {
+    async _setEpisodesWatched(progress: number): Promise<boolean> {
         const episodeCount = await this.getEpisodeCount();
+        if (episodeCount === undefined)
+            return false;
+
         // 1: watching, 2: completed
         const status = !isNaN(episodeCount) && progress >= episodeCount ? 2 : 1;
 
@@ -115,32 +125,38 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
     }
 
     @cacheInMemory("episodesWatched")
-    async getEpisodesWatched(): Promise<number | null> {
+    async getEpisodesWatched(): Promise<number | undefined> {
         if (this.service.isMobileLayout()) {
             const anime = await this.getMALAnime();
 
-            return anime ? anime.completedEpisodeNum : null;
+            return anime ? anime.completedEpisodeNum : undefined;
         }
 
         const el = document.querySelector("#myinfo_watchedeps");
-        if (!el) return null;
+        if (!el) return;
 
-        const epsWatched = parseInt(el.getAttribute("value"));
+        const value = el.getAttribute("value");
+        if (!value) return;
+
+        const epsWatched = parseInt(value);
         if (epsWatched || epsWatched === 0) return epsWatched;
         else if (isNaN(epsWatched)) return 0;
-        else return null;
+        else return;
     }
 
     @cacheInMemory("totalEpisodes")
-    async getEpisodeCount(): Promise<number | null> {
+    async getEpisodeCount(): Promise<number | undefined> {
         if (this.service.isMobileLayout()) {
             const anime = await this.getMALAnime();
 
-            return anime ? anime.episodeNum : null;
+            return anime ? anime.episodeNum : undefined;
         }
 
-        const eps = parseInt(document.querySelector("span#curEps").innerHTML);
-        return isNaN(eps) ? null : eps;
+        const el = document.querySelector("span#curEps");
+        if (!el) return;
+
+        const eps = parseInt(el.innerHTML);
+        return isNaN(eps) ? undefined : eps;
     }
 
     async injectContinueWatchingButton(element: Element) {
@@ -163,8 +179,15 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
                     "text-decoration: none !important")
             );
 
-            const sidebar = document.querySelector("div div h2").parentElement;
+            const title = document.querySelector("div div h2");
+            if (!title) throw new Error("Couldn't find title element");
+
+            const sidebar = title.parentElement;
+            if (!sidebar) throw new Error("Couldn't find sidebar");
+
             const thumbnail = sidebar.querySelector("div:first-child");
+            if (!thumbnail) throw new Error("Couldn't find thumbnail element");
+
             thumbnail.insertAdjacentElement("afterend", element);
         }
 

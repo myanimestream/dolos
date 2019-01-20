@@ -12,9 +12,9 @@ export default class KitsuEpisodePage extends EpisodePage<Kitsu> {
     }
 
     @cacheInMemory("episodeIndex")
-    async getEpisodeIndex(): Promise<number | null> {
+    async getEpisodeIndex(): Promise<number | undefined> {
         const match = location.pathname.match(/\/anime\/([^\/]+)\/episodes\/(\d+)?(?:\/)?/);
-        if (!match) return null;
+        if (!match) return;
         return parseInt(match[2]) - 1;
     }
 
@@ -24,10 +24,10 @@ export default class KitsuEpisodePage extends EpisodePage<Kitsu> {
         this.injected(embed, "episode");
     }
 
-    async nextEpisodeButton(): Promise<SkipButton | null> {
+    async nextEpisodeButton(): Promise<SkipButton | undefined> {
         const epIndex = await this.getEpisodeIndex();
         if (!epIndex && epIndex !== 0)
-            return null;
+            return;
 
         return {
             href: (epIndex + 2).toString(),
@@ -35,15 +35,22 @@ export default class KitsuEpisodePage extends EpisodePage<Kitsu> {
         };
     }
 
-    async showNextEpisode(epIndex?: number): Promise<any> {
-        epIndex = (epIndex || epIndex === 0) ? epIndex : await this.getEpisodeIndex() + 2;
+    async showNextEpisode(epIndex?: number): Promise<void> {
+        if (epIndex === undefined) {
+            const currEpIdx = await this.getEpisodeIndex();
+            if (currEpIdx === undefined)
+                throw new Error("Couldn't get next episode index");
+
+            epIndex = currEpIdx + 2
+        }
+
         transitionTo("anime.show.episodes.show", epIndex);
     }
 
-    async prevEpisodeButton(): Promise<SkipButton | null> {
+    async prevEpisodeButton(): Promise<SkipButton | undefined> {
         const epIndex = await this.getEpisodeIndex();
         if (!epIndex && epIndex !== 0)
-            return null;
+            return;
 
         return {
             href: epIndex.toString(),
@@ -51,7 +58,7 @@ export default class KitsuEpisodePage extends EpisodePage<Kitsu> {
         };
     }
 
-    async showPrevEpisode(epIndex?: number): Promise<any> {
+    async showPrevEpisode(epIndex?: number): Promise<void> {
         epIndex = (epIndex || epIndex === 0) ? epIndex : await this.getEpisodeIndex();
         transitionTo("anime.show.episodes.show", epIndex);
     }

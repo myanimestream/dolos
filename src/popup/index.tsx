@@ -8,6 +8,7 @@ chrome.tabs.query({active: true, currentWindow: true}, () => {
     reactRenderWithTheme(
         wrapSentryLogger(<HashRouter><Popup/></HashRouter>),
         dolosTheme,
+        // @ts-ignore
         document.getElementById("root")
     );
 });

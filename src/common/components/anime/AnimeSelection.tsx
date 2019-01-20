@@ -16,7 +16,7 @@ const styles = (theme: Theme) => createStyles({
 interface AnimeSelectionProps extends WithStyles<typeof styles, true> {
     anime: AnimeInfo[];
     currentUID?: string;
-    onSelect?: (AnimeInfo) => void;
+    onSelect?: (anime: AnimeInfo) => void;
 }
 
 export default withStyles(styles, {withTheme: true})(

@@ -33,7 +33,7 @@ export default class Kitsu extends Service {
             return;
         }
 
-        await this.state.loadPage(null);
+        await this.state.loadPage();
     }
 }
 

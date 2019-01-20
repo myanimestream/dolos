@@ -15,14 +15,15 @@ import {
 
 export default class KitsuAnimePage extends AnimePage<Kitsu> {
     @cacheInMemory("animeIdentifier")
-    async getAnimeIdentifier(): Promise<string | null> {
+    async getAnimeIdentifier(): Promise<string | undefined> {
         const match = location.pathname.match(/\/anime\/([^\/]+)(?:\/)?/);
+        if (!match) return;
         return match[1];
     }
 
     @cacheInMemory("animeSearchQuery")
-    async getAnimeSearchQuery(): Promise<string | null> {
-        return (await waitUntilExists("meta[property=\"og:title\"]")).getAttribute("content");
+    async getAnimeSearchQuery(): Promise<string | undefined> {
+        return (await waitUntilExists("meta[property=\"og:title\"]")).getAttribute("content") || undefined;
     }
 
     @cacheInStateMemory("accessToken")
@@ -31,17 +32,17 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
     }
 
     @cacheInMemory("animeId")
-    async getAnimeId(): Promise<string | null> {
-        const resp = await kitsuAPIRequest("GET", "/anime", null, {
+    async getAnimeId(): Promise<string | undefined> {
+        const resp = await kitsuAPIRequest("GET", "/anime", undefined, {
             params: {
                 "fields[anime]": "id",
                 "filter[slug]": await this.getAnimeIdentifier()
             }
         }, true);
-        if (!resp) return null;
+        if (!resp) return;
 
         const results = resp.data;
-        if (!results) return null;
+        if (!results) return;
 
         return results[0].id;
     }
@@ -82,7 +83,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
         if (!(animeId && userId)) return null;
 
-        const resp = await kitsuAPIRequest("GET", "/library-entries", null, {
+        const resp = await kitsuAPIRequest("GET", "/library-entries", undefined, {
             params: {
                 "fields[anime]": "id",
                 "filter[userId]": userId,
@@ -115,17 +116,17 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
     }
 
     @cacheInMemory("episodesWatched")
-    async getEpisodesWatched(): Promise<number | null> {
+    async getEpisodesWatched(): Promise<number | undefined> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
-        if (!(animeId && userId)) return null;
+        if (!(animeId && userId)) return;
 
         return await getProgress(animeId, userId);
     }
 
     @cacheInMemory("episodeCount")
-    async getEpisodeCount(): Promise<number | null> {
+    async getEpisodeCount(): Promise<number | undefined> {
         const anime = await this.getKitsuAnimeInfo();
-        return anime ? anime.episodeCount : null;
+        return anime ? anime.episodeCount : undefined;
     }
 
     async injectContinueWatchingButton(element: Element) {

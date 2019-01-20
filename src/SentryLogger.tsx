@@ -7,7 +7,7 @@ import withTheme, {WithTheme} from "@material-ui/core/styles/withTheme";
 import Typography from "@material-ui/core/Typography";
 import * as Sentry from "@sentry/browser";
 import * as React from "react";
-import {CopyToClipboard} from "react-copy-to-clipboard";
+import * as CopyToClipboard from "react-copy-to-clipboard";
 import _ = chrome.i18n.getMessage;
 
 
@@ -21,16 +21,17 @@ interface SentryLoggerState {
 
 export default withTheme()(
     class SentryLogger extends React.Component<SentryLoggerProps, SentryLoggerState> {
-        constructor(props) {
+        constructor(props: SentryLoggerProps) {
             super(props);
             this.state = {};
         }
 
-        componentDidCatch(error, errorInfo) {
+        componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
             this.setState({error});
 
             Sentry.withScope(scope => {
                 Object.keys(errorInfo).forEach(key => {
+                    // @ts-ignore
                     scope.setExtra(key, errorInfo[key]);
                 });
 
@@ -62,7 +63,7 @@ export default withTheme()(
                         <Button size="small" color="primary" onClick={() => Sentry.showReportDialog()}>
                             {_("sentry__report")}
                         </Button>
-                        <CopyToClipboard text={eventId}>
+                        <CopyToClipboard text={eventId || "?"}>
                             <Button size="small" color="primary">
                                 {_("sentry__copy_event_id")}
                             </Button>

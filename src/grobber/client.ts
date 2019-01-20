@@ -126,10 +126,11 @@ export class Client extends Memory {
         return null;
     }
 
-    private async performAnimeRequest(endpoint: string, paramsList: [string, any][], respHandler: (any) => any): Promise<any> {
+    private async performAnimeRequest(endpoint: string, paramsList: [string, any][], respHandler: (resp: any) => any): Promise<any> {
         const [lockKeys, memoryKey] = buildKeys(paramsList);
 
         const params = paramsList.reduce((prev, [key, value]) => {
+            // @ts-ignore
             prev[key] = value;
             return prev
         }, {});

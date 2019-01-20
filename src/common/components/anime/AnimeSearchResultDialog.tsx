@@ -13,6 +13,7 @@ import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import Toolbar from "@material-ui/core/Toolbar";
 import withMobileDialog, {InjectedProps as WithMobileDialog} from "@material-ui/core/withMobileDialog";
 import SearchIcon from "@material-ui/icons/Search";
+// @ts-ignore
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import {AnimeInfo, GrobberClient} from "dolos/grobber";
 import * as React from "react";
@@ -90,7 +91,7 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
             await this.search(query);
         }, 500);
 
-        constructor(props) {
+        constructor(props: AnimeSearchResultDialogProps) {
             super(props);
             this.state = {
                 loading: true,
@@ -120,7 +121,7 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
 
             this.setState({loading: true, searchQuery: query});
 
-            let results = null;
+            let results: AnimeInfo[] | undefined;
             const config = await state.config;
             const searchResults = await GrobberClient.searchAnime(query, 10);
             if (searchResults) {
@@ -171,7 +172,7 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
                     fullScreen={fullScreen}
                     open={open}
                     onEnter={() => this.handleDialogEnter()}
-                    onBackdropClick={() => onClose(null)}
+                    onBackdropClick={() => onClose && onClose()}
                     scroll="paper"
                     aria-labelledby="anime-search-result-dialog-title"
                     style={{zIndex: 10000}}
@@ -202,11 +203,12 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
                         {this.renderContent()}
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => onClose(null)} color="primary">
+                        <Button onClick={() => onClose && onClose()} color="primary">
                             {_("anime__search__abort")}
                         </Button>
                         {currentAnime && (
-                            <Button onClick={() => onClose(currentAnime)} variant="contained" color="primary">
+                            <Button onClick={() => onClose && onClose(currentAnime)} variant="contained"
+                                    color="primary">
                                 {_("anime__search__pick")}
                             </Button>
                         )}

@@ -12,6 +12,7 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 import CheckIcon from "@material-ui/icons/Check";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import WifiIcon from "@material-ui/icons/Wifi";
+// @ts-ignore
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import axios from "axios";
 import * as React from "react";
@@ -40,7 +41,7 @@ export default class Debug extends SettingsTabContent<SettingsTabContentProps, D
         const result = await Debug.checkGrobberUrl(url);
         if (result.valid) {
             await this.change("grobberUrl", url);
-            this.setState({invalidUrl: null});
+            this.setState({invalidUrl: undefined});
         } else {
             const text = `options__grobber__url__${result.hint || "test_failed"}`;
             this.setState({invalidUrl: _(text)});
@@ -49,10 +50,9 @@ export default class Debug extends SettingsTabContent<SettingsTabContentProps, D
         this.setState({checkingUrl: false});
     }, 500);
 
-    constructor(props) {
+    constructor(props: SettingsTabContentProps) {
         super(props);
         this.state = {
-            invalidUrl: null,
             checkingUrl: false,
         };
     }
@@ -63,7 +63,7 @@ export default class Debug extends SettingsTabContent<SettingsTabContentProps, D
         try {
             resp = await axios.get(url + "/dolos-info", {timeout: 1000});
         } catch (e) {
-            const result = {valid: false, hint: null};
+            const result: GrobberUrlCheckResult = {valid: false};
 
             if (url.endsWith("/")) {
                 result.hint = "trailing_slash";

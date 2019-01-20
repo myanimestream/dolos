@@ -29,7 +29,7 @@ interface ContinueWatchingButtonProps extends WithStyles<typeof styles> {
 export default withStyles(styles)(class ContinueWatchingButton extends React.Component<ContinueWatchingButtonProps, ContinueWatchingButtonState> {
     private episodesWatchedSub?: Subscription;
 
-    constructor(props) {
+    constructor(props: ContinueWatchingButtonProps) {
         super(props);
         this.state = {
             tooltip: _("anime__continue_watching__loading"),
@@ -105,7 +105,8 @@ export default withStyles(styles)(class ContinueWatchingButton extends React.Com
                         color="primary"
                         onClick={event => {
                             event.preventDefault();
-                            onClick();
+                            if (onClick)
+                                onClick();
                         }}
                         fullWidth
                         {...{href, disabled}}

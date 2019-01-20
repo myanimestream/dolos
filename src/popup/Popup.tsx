@@ -175,8 +175,8 @@ export default withStyles(styles, {withTheme: true})(withRouter(
             const {classes, theme} = this.props;
             const {changelogBadgeVisible} = this.state;
 
-            const getLink = (target: string) => props => <NavLink to={target}
-                                                                  activeClassName={classes.activeDrawerLink} {...props} />;
+            const getLink = (target: string) => (props: {}) => <NavLink to={target}
+                                                                        activeClassName={classes.activeDrawerLink} {...props} />;
             const HomeLink = getLink("/home");
             const ChangelogLink = getLink("/changelog");
 

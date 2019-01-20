@@ -28,8 +28,9 @@ export async function kitsuAPIRequest(method: string, endpoint: string, auth?: s
 const EMBER_BASE = `
 const getApp = ${(
     () => {
+        // @ts-ignore
         const {Namespace, Application} = window["Ember"];
-        return Namespace.NAMESPACES.find(namespace => (namespace instanceof Application));
+        return Namespace.NAMESPACES.find((namespace: any) => (namespace instanceof Application));
     }
 ).toString()};
 
@@ -55,13 +56,13 @@ return await new Promise(${(
     // @ts-ignore
     res => getQueryCache()
         .query("library-entry", {filter: {animeId: "{{animeId}}", userId: "{{userId}}"}})
-        .then(records => {
+        .then((records: any) => {
             const entry = records.firstObject;
             entry.set("progress", "{{progress}}");
             return entry.save();
         })
         .then(() => res(true))
-        .catch(reason => res(reason))
+        .catch((reason: any) => res(reason))
 ).toString()});
 `;
 
@@ -80,17 +81,17 @@ return await new Promise(${(
     // @ts-ignore
     res => getQueryCache()
         .query("library-entry", {filter: {animeId: "{{animeId}}", userId: "{{userId}}"}})
-        .then(records => {
+        .then((records: any) => {
             const entry = records.firstObject;
             res(entry.progress);
         })
-        .catch(reason => res(reason))
+        .catch((reason: any) => res(reason))
 ).toString()});
 `;
 
-export async function getProgress(animeId: string, userId: string): Promise<number | null> {
+export async function getProgress(animeId: string, userId: string): Promise<number | undefined> {
     const result = await evaluateCode(EMBER_BASE + formatCode(GET_PROGRESS, {animeId, userId}));
-    if (isNaN(result)) return null;
+    if (isNaN(result)) return;
     else return result;
 }
 

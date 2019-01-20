@@ -1,6 +1,9 @@
 import {waitUntilExists} from "./utils";
 
-const DELETE_AFTER = `(${(() => document.currentScript.remove()).toString()})();`;
+const DELETE_AFTER = `(${(() => {
+    const script = document.currentScript;
+    if (script) script.remove();
+}).toString()})();`;
 
 const PUSH_RESULT = `const pushResult = ${(
     (value: any, key: string) => {
@@ -64,6 +67,9 @@ export async function evaluateCode(code: string): Promise<any> {
     if (error) throw Error(error);
 
     const result = el.getAttribute("data-result");
+    if (result === null)
+        throw new Error("No result passed!");
+
     const value = (result === "undefined") ? undefined : JSON.parse(result);
 
     el.remove();

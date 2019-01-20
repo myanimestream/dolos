@@ -14,12 +14,11 @@ export default abstract class Service {
     protected constructor(service_id: string, animePage: Type<AnimePage<any>>, episodePage: Type<EpisodePage<any>>,) {
         this.state = new State(service_id);
 
-        this.OverviewPage = null;
         this.AnimePage = animePage;
         this.EpisodePage = episodePage;
     }
 
-    abstract async route(url: URL);
+    abstract async route(url: URL): Promise<void>;
 
     async load(noRoute?: boolean) {
         this.insertNoReferrerPolicy();
@@ -31,7 +30,8 @@ export default abstract class Service {
     insertNoReferrerPolicy() {
         const temp = document.createElement("template");
         temp.innerHTML = `<meta name="referrer" content="never">`;
-        document.head.appendChild(temp.content.firstElementChild);
+        const node = temp.content.firstElementChild;
+        document.head.appendChild(node as Node);
     }
 
     buildServicePage<T extends ServicePage<any>>(cls: Type<T>, memory?: { [key: string]: any }): T {

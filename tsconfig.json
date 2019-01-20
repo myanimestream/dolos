@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "downlevelIteration": true,
+    "forceConsistentCasingInFileNames": true,
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -13,7 +19,7 @@
       "dom"
     ],
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "baseUrl": ".",
     "paths": {
       "dolos/*": [

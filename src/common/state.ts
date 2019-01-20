@@ -11,7 +11,6 @@ export default class State<T extends Service> extends ElementMemory {
     constructor(service_id: string) {
         super();
         this.serviceId = service_id;
-        this.page = null;
     }
 
     // noinspection JSMethodCanBeStatic
@@ -62,14 +61,16 @@ export interface HasState<T extends Service = any> {
     state: State<T>
 }
 
-export function cacheInStateMemory(keyName?: string) {
+export function cacheInStateMemory(name?: string) {
     return function (target: Object & HasState, propertyKey: string, descriptor: PropertyDescriptor) {
-        keyName = keyName || `${target.constructor.name}-${propertyKey}`;
+        const keyName = name || `${target.constructor.name}-${propertyKey}`;
         const func = descriptor.value;
-        let returnPromise;
+        let returnPromise: boolean;
 
         descriptor.value = function () {
             const memory = this.state.memory;
+            if (memory === undefined)
+                throw new Error("No memory found");
 
             let value;
             if (keyName in memory) {

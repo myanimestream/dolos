@@ -1,6 +1,7 @@
 import {WithStyles} from "@material-ui/core/styles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
+// @ts-ignore
 import Plyr from "plyr/src/js/plyr.js";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
@@ -39,7 +40,11 @@ export default withStyles(styles)(class Player extends React.Component<PlayerPro
         const autoplay = options.autoplay;
         options.autoplay = false;
 
-        this.player = new Plyr(ReactDOM.findDOMNode(this).firstChild, options);
+        const domNode = ReactDOM.findDOMNode(this);
+        if (!domNode)
+            throw new Error("Couldn't find dom node");
+
+        this.player = new Plyr(domNode.firstChild, options);
 
         if (eventListener) {
             for (const [event, handler] of Object.entries(eventListener)) {

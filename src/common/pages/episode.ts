@@ -37,17 +37,17 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
 
     abstract buildAnimePage(): AnimePage<T>;
 
-    abstract async getEpisodeIndex(): Promise<number | null>;
+    abstract async getEpisodeIndex(): Promise<number | undefined>;
 
-    abstract async injectEmbed(embed: Element);
+    abstract async injectEmbed(embed: Element): Promise<void>;
 
-    abstract async nextEpisodeButton(): Promise<SkipButton | null>;
+    abstract async nextEpisodeButton(): Promise<SkipButton | undefined>;
 
-    abstract async showNextEpisode(): Promise<any>;
+    abstract async showNextEpisode(): Promise<void>;
 
-    abstract async prevEpisodeButton(): Promise<SkipButton | null>;
+    abstract async prevEpisodeButton(): Promise<SkipButton | undefined>;
 
-    abstract async showPrevEpisode(): Promise<any>;
+    abstract async showPrevEpisode(): Promise<void>;
 
     async setAnimeUID(uid: string) {
         await this.animePage.setAnimeUID(uid);
@@ -55,9 +55,9 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
     }
 
     @cacheInMemory("episode")
-    async getEpisode(): Promise<Episode | null> {
+    async getEpisode(): Promise<Episode | undefined> {
         let [uid, epIndex] = await Promise.all([this.animePage.getAnimeUID(), this.getEpisodeIndex()]);
-        if (!uid || (!epIndex && epIndex !== 0)) return null;
+        if (!uid || (!epIndex && epIndex !== 0)) return;
 
         try {
             return await GrobberClient.getEpisode(uid, epIndex);
@@ -65,6 +65,8 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
             if (e.name === GrobberErrorType.UidUnknown) {
                 console.warn("Grobber didn't recognise uid, updating...");
                 uid = await this.animePage.getAnimeUID(true);
+                if (uid === undefined)
+                    return;
 
                 try {
                     return await GrobberClient.getEpisode(uid, epIndex);
@@ -73,7 +75,7 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
                 }
             }
 
-            return null;
+            return;
         }
     }
 
@@ -92,11 +94,14 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         const [config, epIndex, totalEpisodes] = await Promise.all([
             this.state.config, this.getEpisodeIndex(), this.animePage.getEpisodeCount()]);
 
+        if (epIndex === undefined)
+            return;
+
         if (config.updateAnimeProgress)
             await this.markEpisodeWatched();
 
         if (config.autoNext)
-            if (epIndex + 1 < totalEpisodes || totalEpisodes === null)
+            if (totalEpisodes === undefined || epIndex + 1 < totalEpisodes)
                 await this.showNextEpisode();
     }
 
@@ -128,7 +133,10 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
 
     async _load() {
         const [epIndex, epsWatched$] = await Promise.all([this.getEpisodeIndex(), this.animePage.getEpisodesWatched$()]);
-        this.epsWatchedSub = epsWatched$.subscribe(epsWatched => this.episodeBookmarked$.next(epsWatched >= epIndex + 1));
+        this.epsWatchedSub = epsWatched$.subscribe(epsWatched => {
+            if (epsWatched !== undefined && epIndex !== undefined)
+                this.episodeBookmarked$.next(epsWatched >= epIndex + 1);
+        });
 
         await this.injectEmbed(await this.buildEmbed());
 
