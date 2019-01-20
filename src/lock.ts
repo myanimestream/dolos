@@ -7,7 +7,11 @@ export default class AsyncLock {
         this.queues = {};
     }
 
-    isLocked(key?: string): boolean {
+    isLocked(key?: string | string[]): boolean {
+        if (Array.isArray(key)) {
+            return key.some(k => this.isLocked(k));
+        }
+
         return !!this.locked[key];
     }
 
@@ -42,9 +46,7 @@ export default class AsyncLock {
     }
 
     async maybeWithLock<T>(callback: (lock?: AsyncLock) => PromiseLike<T>, key?: string | string[]): Promise<T> {
-        let locked = Array.isArray(key) ? key.some(k => this.isLocked(k)) : this.isLocked(key);
-
-        if (locked) return await Promise.resolve(callback(this));
+        if (this.isLocked(key)) return await Promise.resolve(callback(this));
         else return await this.withLock(callback, key);
     }
 

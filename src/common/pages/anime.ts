@@ -1,11 +1,11 @@
+import {AnimeInfo, GrobberClient, GrobberErrorType} from "dolos/grobber";
+import {StoredAnimeInfo} from "dolos/models";
+import {getThemeFor} from "dolos/theme";
+import {reactRenderWithTheme} from "dolos/utils";
 import * as React from "react";
 import * as rxjs from "rxjs";
-import {StoredAnimeInfo} from "../../models";
-import {getThemeFor} from "../../theme";
-import {reactRenderWithTheme} from "../../utils";
+import {cacheInMemory} from "../../memory";
 import {ContinueWatchingButton} from "../components";
-import {cacheInMemory} from "../memory";
-import {AnimeInfo, GrobberErrorType} from "../models";
 import Service from "../service";
 import ServicePage from "../service-page";
 import EpisodePage from "./episode";
@@ -32,7 +32,7 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
             return animeInfo.uid;
 
         const query = await this.getAnimeSearchQuery();
-        const results = await this.state.searchAnime(query);
+        const results = await GrobberClient.searchAnime(query);
         if (!results) return null;
 
         const uid = results[0].anime.uid;
@@ -53,14 +53,14 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         if (!uid) return null;
 
         try {
-            return await this.state.getAnimeInfo(uid);
+            return await GrobberClient.getAnimeInfo(uid);
         } catch (e) {
             if (e.name === GrobberErrorType.UidUnknown) {
                 console.warn("Grobber didn't recognise uid, updating...");
                 uid = await this.getAnimeUID(true);
 
                 try {
-                    return await this.state.getAnimeInfo(uid);
+                    return await GrobberClient.getAnimeInfo(uid);
                 } catch (e) {
                     console.error("didn't work rip", e);
                 }

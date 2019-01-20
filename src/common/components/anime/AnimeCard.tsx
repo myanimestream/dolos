@@ -6,8 +6,8 @@ import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
+import {AnimeInfo} from "dolos/grobber";
 import * as React from "react";
-import {AnimeInfo} from "../../models";
 import _ = chrome.i18n.getMessage;
 
 const styles = (theme: Theme) => createStyles({

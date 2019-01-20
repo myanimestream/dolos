@@ -63,7 +63,7 @@ export interface EpisodeStream {
     poster?: string;
 }
 
-export function streamFromResponse(resp: any): Episode {
+export function streamFromResponse(resp: any): EpisodeStream {
     const stream = resp.stream;
     stream.episode = episodeFromResp(resp);
     return stream;

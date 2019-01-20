@@ -1,6 +1,6 @@
 import {cacheInStateMemory} from "../common";
-import {cacheInMemory} from "../common/memory";
 import {AnimePage} from "../common/pages";
+import {cacheInMemory} from "../memory";
 import {waitUntilExists, waitWithTimeout} from "../utils";
 import Kitsu from "./index";
 import {

@@ -1,6 +1,6 @@
 import {SkipButton} from "../common/components";
-import {cacheInMemory} from "../common/memory";
 import {EpisodePage} from "../common/pages";
+import {cacheInMemory} from "../memory";
 import {waitUntilExists} from "../utils";
 import KitsuAnimePage from "./anime";
 import Kitsu from "./index";

@@ -3,8 +3,8 @@ import GridListTile from "@material-ui/core/GridListTile";
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
+import {AnimeInfo} from "dolos/grobber";
 import * as React from "react";
-import {AnimeInfo} from "../../models";
 import AnimeCard from "./AnimeCard";
 
 const styles = (theme: Theme) => createStyles({

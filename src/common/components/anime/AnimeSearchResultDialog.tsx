@@ -14,8 +14,8 @@ import Toolbar from "@material-ui/core/Toolbar";
 import withMobileDialog, {InjectedProps as WithMobileDialog} from "@material-ui/core/withMobileDialog";
 import SearchIcon from "@material-ui/icons/Search";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
+import {AnimeInfo, GrobberClient} from "dolos/grobber";
 import * as React from "react";
-import {AnimeInfo} from "../../models";
 import AnimePage from "../../pages/anime";
 import AnimeSelection from "./AnimeSelection";
 import _ = chrome.i18n.getMessage;
@@ -122,7 +122,7 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
 
             let results = null;
             const config = await state.config;
-            const searchResults = await state.searchAnime(query, 10);
+            const searchResults = await GrobberClient.searchAnime(query, 10);
             if (searchResults) {
                 let consideration = searchResults
                     .filter(res => res.certainty >= config.minCertaintyForSearchResult);

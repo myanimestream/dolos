@@ -142,7 +142,6 @@ export class Store {
 
         return info as StoreProxyObject<StoredAnimeInfo>;
     }
-
 }
 
 const DEFAULT_STORE = new Store();

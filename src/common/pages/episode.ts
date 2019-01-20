@@ -1,10 +1,10 @@
+import {Episode, GrobberClient, GrobberErrorType} from "dolos/grobber";
+import {cacheInMemory} from "dolos/memory";
+import {getThemeFor} from "dolos/theme";
+import {reactRenderWithTheme, wrapSentryLogger} from "dolos/utils";
 import * as React from "react";
 import * as rxjs from "rxjs";
-import {getThemeFor} from "../../theme";
-import {reactRenderWithTheme, wrapSentryLogger} from "../../utils";
 import {EpisodeEmbed, SkipButton, SnackbarMessage} from "../components";
-import {cacheInMemory} from "../memory";
-import {Episode, GrobberErrorType} from "../models";
 import Service from "../service";
 import ServicePage from "../service-page";
 import AnimePage from "./anime";
@@ -12,12 +12,9 @@ import _ = chrome.i18n.getMessage;
 
 
 export default abstract class EpisodePage<T extends Service> extends ServicePage<T> {
-    private _animePage: AnimePage<T>;
-    private epsWatchedSub: rxjs.Subscription;
-
     episodeBookmarked$: rxjs.BehaviorSubject<boolean>;
     snackbarMessage$: rxjs.Subject<SnackbarMessage>;
-
+    private epsWatchedSub: rxjs.Subscription;
 
     constructor(service: T) {
         super(service);
@@ -25,6 +22,8 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         this.episodeBookmarked$ = new rxjs.BehaviorSubject(false);
         this.snackbarMessage$ = new rxjs.Subject();
     }
+
+    private _animePage: AnimePage<T>;
 
     get animePage(): AnimePage<T> {
         if (!this._animePage) this._animePage = this.buildAnimePage();
@@ -61,14 +60,14 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         if (!uid || (!epIndex && epIndex !== 0)) return null;
 
         try {
-            return await this.state.getEpisode(uid, epIndex);
+            return await GrobberClient.getEpisode(uid, epIndex);
         } catch (e) {
             if (e.name === GrobberErrorType.UidUnknown) {
                 console.warn("Grobber didn't recognise uid, updating...");
                 uid = await this.animePage.getAnimeUID(true);
 
                 try {
-                    return await this.state.getEpisode(uid, epIndex);
+                    return await GrobberClient.getEpisode(uid, epIndex);
                 } catch (e) {
                     console.error("couldn't get episode after updating uid", e);
                 }
@@ -128,12 +127,12 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
     }
 
     async _load() {
-        await this.animePage.load();
-
         const [epIndex, epsWatched$] = await Promise.all([this.getEpisodeIndex(), this.animePage.getEpisodesWatched$()]);
         this.epsWatchedSub = epsWatched$.subscribe(epsWatched => this.episodeBookmarked$.next(epsWatched >= epIndex + 1));
 
         await this.injectEmbed(await this.buildEmbed());
+
+        await this.animePage.load();
     }
 
     async _unload() {

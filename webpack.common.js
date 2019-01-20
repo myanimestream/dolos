@@ -37,6 +37,9 @@ module.exports = {
         ]
     },
     resolve: {
+        alias: {
+            "dolos": path.join(__dirname, "src"),
+        },
         extensions: [".ts", ".tsx", ".js"]
     }
 };

@@ -1,4 +1,4 @@
-import {ElementMemory} from "./memory";
+import {ElementMemory} from "dolos/memory";
 import Service from "./service";
 import State from "./state";
 

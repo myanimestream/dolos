@@ -1,17 +1,6 @@
-import axios from "axios";
-import AsyncLock from "../lock";
+import {ElementMemory} from "../memory";
 import {Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
-import {ElementMemory} from "./memory";
-import {
-    animeFromResp,
-    AnimeInfo,
-    Episode,
-    episodeFromResp,
-    GrobberRequestError,
-    GrobberResponseError,
-    SearchResult
-} from "./models";
 import Service from "./service";
 import ServicePage from "./service-page";
 
@@ -19,14 +8,10 @@ export default class State<T extends Service> extends ElementMemory {
     serviceId: string;
     page?: ServicePage<T>;
 
-    private animeInfoLock: AsyncLock;
-
     constructor(service_id: string) {
         super();
         this.serviceId = service_id;
         this.page = null;
-
-        this.animeInfoLock = new AsyncLock();
     }
 
     // noinspection JSMethodCanBeStatic
@@ -68,72 +53,8 @@ export default class State<T extends Service> extends ElementMemory {
         this.page = page;
     }
 
-
-    async request(endpoint: string, params?: Object): Promise<any> {
-        const config = await this.config;
-        const requestConfig = {params};
-
-        try {
-            const resp = await axios.get(config.grobberUrl + endpoint, requestConfig);
-            return resp.data;
-        } catch (error) {
-            if (error.response) {
-                const data = error.response.data;
-                throw new GrobberResponseError(data.name, data.msg, data.client_error);
-            } else if (error.request) {
-                throw new GrobberRequestError(error.request);
-            } else {
-                // who knows where this came from, but let's throw it back out there
-                throw error;
-            }
-        }
-
-    }
-
-    async searchAnime(query: string, results?: number): Promise<SearchResult[] | null> {
-        const config = await this.config;
-
-        let resp;
-        try {
-            resp = await this.request("/anime/search/", {
-                anime: query,
-                language: config.language,
-                dubbed: config.dubbed,
-                results: results || 1
-            });
-        } catch (e) {
-            console.error("Couldn't search for anime", e);
-            return null;
-        }
-
-        return resp.anime;
-    }
-
     async getStoredAnimeInfo(identifier: string): Promise<StoredAnimeInfo> {
         return Store.getStoredAnimeInfo(this.serviceId, identifier);
-    }
-
-    async getAnimeInfo(uid: string): Promise<AnimeInfo> {
-        return await this.animeInfoLock.withLock(async () => {
-            const memoryKey = `anime-cache.${uid}`;
-            const cachedAnime = this.memory[memoryKey];
-            if (cachedAnime) return cachedAnime;
-
-            const resp = await this.request("/anime/", {uid});
-            const anime = animeFromResp(resp);
-            this.remember(memoryKey, anime);
-            return anime;
-        }, uid);
-    }
-
-    async getEpisode(uid: string, index: number): Promise<Episode> {
-        // only get the lock if it isn't already locked
-        return await this.animeInfoLock.maybeWithLock(async () => {
-            const resp = await this.request("/anime/episode/", {uid, episode: index});
-            const episode = episodeFromResp(resp);
-            this.remember(`anime-cache.${uid}`, episode.anime);
-            return episode;
-        }, uid);
     }
 }
 

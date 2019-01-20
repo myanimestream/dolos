@@ -1,6 +1,6 @@
 import axios from "axios";
-import {cacheInMemory} from "../common/memory";
 import {AnimePage} from "../common/pages";
+import {cacheInMemory} from "../memory";
 import {waitUntilExists} from "../utils";
 import MyAnimeList from "./index";
 
