@@ -39,7 +39,7 @@ jobs:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - dist
+            - dist/
 
   documentation:
     executor: node/node
@@ -83,8 +83,8 @@ workflows:
       - deploy:
           requires:
             - build
-#          filters:
-#            branches:
-#              ignore: /.*/
-#            tags:
-#              only: /^v.*/
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
