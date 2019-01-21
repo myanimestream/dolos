@@ -13,9 +13,9 @@ jobs:
           steps:
             - run: npm install
       - persist_to_workspace:
-          root: node_modules
+          root: .
           paths:
-            - node_modules
+            - node_modules/
 
   build:
     executor: node/node
