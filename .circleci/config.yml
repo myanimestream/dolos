@@ -12,7 +12,8 @@ jobs:
       - checkout
       - node/install-package-manager:
           npm: true
-      - node/with-cache: {}
+      - node/with-cache:
+          steps: []
 
   build:
     docker:
@@ -59,5 +60,4 @@ workflows:
           requires:
             - build
           filters:
-            tags:
-              only: /^v.*/s
+            tags: only: /^v.*/s
