@@ -13,7 +13,7 @@ jobs:
           npm: true
       - node/with-cache:
           steps:
-            - run: npm install --production
+            - run: npm install --unsafe-perm
       - persist_to_workspace:
           root: node_modules
           paths:
