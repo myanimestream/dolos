@@ -5,36 +5,49 @@ orbs:
 
 jobs:
   install:
-    docker:
-      - image: circleci/node:7.10
+    executor: node/node
 
     steps:
       - checkout
       - node/install-package-manager:
           npm: true
       - node/with-cache:
-          steps: []
+          steps:
+            - npm install
+      - persist_to_workspace:
+          root: node_modules
+          paths:
+            - node_modules
 
   build:
-    docker:
-      - image: circleci/node:7.10
+    executor: node/node
 
     steps:
       - checkout
+      - attach_workspace:
+          at: node_modules
       - run: npm run build:production
+      - persist_to_workspace:
+        root: dist
+        paths:
+          - dist
 
   documentation:
-    docker:
-      - image: circleci/node:7.10
+    executor: node/node
 
     steps:
+      - checkout
+      - attach_workspace:
+          at: node_modules
       - run: npm run docs
 
   deploy:
-    docker:
-      - image: circleci/node:7.10
+    executor: node/node
 
     steps:
+      - checkout
+      - attach_workspace:
+          at: node_modules
       - run:
           name: Deploy
           command: bash tools/deploy.sh
