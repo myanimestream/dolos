@@ -3,22 +3,29 @@ version: 2.1
 orbs:
   node: circleci/node@0.0.7
 
+executors:
+  default:
+    docker:
+      - image: circleci/node
+
 jobs:
   install:
-    executor: node/node
+    executor: default
 
     steps:
       - checkout
       - node/install-package-manager:
           npm: true
-      - run: npm install --unsafe-perm
+      - node/with-cache:
+          steps:
+            - run: npm install
       - persist_to_workspace:
           root: node_modules
           paths:
             - node_modules
 
   build:
-    executor: node/node
+    executor: default
 
     steps:
       - checkout
@@ -31,7 +38,7 @@ jobs:
             - dist
 
   documentation:
-    executor: node/node
+    executor: default
 
     steps:
       - checkout
@@ -40,7 +47,7 @@ jobs:
       - run: npm run docs
 
   deploy:
-    executor: node/node
+    executor: default
 
     steps:
       - checkout
