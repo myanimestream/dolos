@@ -3,6 +3,17 @@ version: 2.1
 orbs:
   node: circleci/node@0.0.7
 
+references:
+  workspace_root: &workspace_root
+                    /tmp/workspace
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+  attach_node_modules: &attach_node_modules
+    steps:
+      - *attach_workspace
+      - run: mv /tmp/workspace/node_modules .
+
 jobs:
   install:
     executor: node/node
@@ -11,9 +22,9 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm install --dev
+            - run: npm install
       - persist_to_workspace:
-          root: .
+          root: *workspace_root
           paths:
             - node_modules/
 
@@ -22,8 +33,7 @@ jobs:
 
     steps:
       - checkout
-      - attach_workspace:
-          at: node_modules
+      - *attach_node_modules
       - run: npm run build:production
       - persist_to_workspace:
           root: dist
@@ -35,8 +45,8 @@ jobs:
 
     steps:
       - checkout
-      - attach_workspace:
-          at: .
+      - *attach_node_modules
+      - run: mv
       - run: npm run docs
 
   deploy:
@@ -44,8 +54,7 @@ jobs:
 
     steps:
       - checkout
-      - attach_workspace:
-          at: .
+      - *attach_node_modules
       - run:
           name: Deploy
           command: bash tools/deploy.sh
