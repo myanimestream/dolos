@@ -22,6 +22,7 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm install
+      - run: mv node_modules/ /tmp/workspace/
       - persist_to_workspace:
           root: *workspace_root
           paths:
