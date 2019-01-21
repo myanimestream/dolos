@@ -17,6 +17,7 @@ jobs:
     executor: node/node
 
     steps:
+      - *attach_workspace
       - checkout
       - node/with-cache:
           steps:
