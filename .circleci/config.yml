@@ -9,10 +9,8 @@ references:
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
-  attach_node_modules: &attach_node_modules
-    steps:
-      - *attach_workspace
-      - run: mv /tmp/workspace/node_modules .
+  copy_node_modules: &copy_node_modules
+    run: mv /tmp/workspace/node_modules .
 
 jobs:
   install:
@@ -33,7 +31,8 @@ jobs:
 
     steps:
       - checkout
-      - *attach_node_modules
+      - *attach_workspace
+      - *copy_node_modules
       - run: npm run build:production
       - persist_to_workspace:
           root: dist
@@ -45,7 +44,8 @@ jobs:
 
     steps:
       - checkout
-      - *attach_node_modules
+      - *attach_workspace
+      - *copy_node_modules
       - run: mv
       - run: npm run docs
 
@@ -54,7 +54,8 @@ jobs:
 
     steps:
       - checkout
-      - *attach_node_modules
+      - *attach_workspace
+      - *copy_node_modules
       - run:
           name: Deploy
           command: bash tools/deploy.sh
