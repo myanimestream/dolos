@@ -19,59 +19,59 @@ interface SentryLoggerState {
     eventId?: string;
 }
 
-export default withTheme()(
-    class SentryLogger extends React.Component<SentryLoggerProps, SentryLoggerState> {
-        constructor(props: SentryLoggerProps) {
-            super(props);
-            this.state = {};
-        }
-
-        componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-            this.setState({error});
-
-            Sentry.withScope(scope => {
-                Object.keys(errorInfo).forEach(key => {
-                    // @ts-ignore
-                    scope.setExtra(key, errorInfo[key]);
-                });
-
-                const eventId = Sentry.captureException(error);
-                this.setState({eventId});
-            });
-        }
-
-        render() {
-            const {error, eventId} = this.state;
-            const {theme} = this.props;
-
-            if (error) return (
-                <Card>
-                    <CardActionArea>
-                        <CardContent>
-                            <Typography gutterBottom variant="h5">{_("sentry__title")}</Typography>
-                            <Typography>{_("sentry__description")}</Typography>
-                            {eventId && <>
-                                <Typography>
-                                    {_("sentry__event_id")}
-                                    <span style={{color: theme.palette.error.main}}> {eventId}</span>
-                                </Typography>
-                            </>}
-
-                        </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                        <Button size="small" color="primary" onClick={() => Sentry.showReportDialog()}>
-                            {_("sentry__report")}
-                        </Button>
-                        <CopyToClipboard text={eventId || "?"}>
-                            <Button size="small" color="primary">
-                                {_("sentry__copy_event_id")}
-                            </Button>
-                        </CopyToClipboard>
-                    </CardActions>
-                </Card>
-            );
-            else return this.props.children;
-        }
+class SentryLogger extends React.Component<SentryLoggerProps, SentryLoggerState> {
+    constructor(props: SentryLoggerProps) {
+        super(props);
+        this.state = {};
     }
-);
+
+    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+        this.setState({error});
+
+        Sentry.withScope(scope => {
+            Object.keys(errorInfo).forEach(key => {
+                // @ts-ignore
+                scope.setExtra(key, errorInfo[key]);
+            });
+
+            const eventId = Sentry.captureException(error);
+            this.setState({eventId});
+        });
+    }
+
+    render() {
+        const {error, eventId} = this.state;
+        const {theme} = this.props;
+
+        if (error) return (
+            <Card>
+                <CardActionArea>
+                    <CardContent>
+                        <Typography gutterBottom variant="h5">{_("sentry__title")}</Typography>
+                        <Typography>{_("sentry__description")}</Typography>
+                        {eventId && <>
+                            <Typography>
+                                {_("sentry__event_id")}
+                                <span style={{color: theme.palette.error.main}}> {eventId}</span>
+                            </Typography>
+                        </>}
+
+                    </CardContent>
+                </CardActionArea>
+                <CardActions>
+                    <Button size="small" color="primary" onClick={() => Sentry.showReportDialog()}>
+                        {_("sentry__report")}
+                    </Button>
+                    <CopyToClipboard text={eventId || "?"}>
+                        <Button size="small" color="primary">
+                            {_("sentry__copy_event_id")}
+                        </Button>
+                    </CopyToClipboard>
+                </CardActions>
+            </Card>
+        );
+        else return this.props.children;
+    }
+}
+
+export default withTheme()(SentryLogger);

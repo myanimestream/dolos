@@ -1,0 +1,57 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@0.0.7
+
+jobs:
+  install:
+    docker:
+      - image: circleci/node:7.10
+
+    steps:
+      - checkout
+      - node/install-package-manager:
+          npm: true
+      - node/with-cache:
+
+  build:
+    docker:
+      - image: circleci/node:7.10
+
+    steps:
+      - checkout
+      - run: npm run build:production
+
+  documentation:
+    docker:
+      - image: circleci/node:7.10
+
+    steps:
+      - run: npm run docs
+
+  deploy:
+    docker:
+      - image: circleci/node:7.10
+
+    steps:
+      - run:
+          name: Deploy
+          command: bash tools/deploy.sh
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - install
+      - build:
+          requires:
+            - install
+      - documentation
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+            tags:
+              only: /^v.*/s

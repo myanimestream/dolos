@@ -24,7 +24,7 @@ interface ChangelogDisplayState {
     panelsOpen: Set<string>;
 }
 
-export default withStyles(styles)(class ChangelogDisplay extends React.Component<ChangelogDisplayProps, ChangelogDisplayState> {
+class ChangelogDisplay extends React.Component<ChangelogDisplayProps, ChangelogDisplayState> {
     constructor(props: ChangelogDisplayProps) {
         super(props);
         this.state = {
@@ -56,7 +56,7 @@ export default withStyles(styles)(class ChangelogDisplay extends React.Component
 
         return (
             <>
-                {Object.entries(CHANGELOG).map(([version, changes]) => (
+                {Array.from(CHANGELOG.entries()).map(([version, changes]) => (
                     <ExpansionPanel key={version}
                                     expanded={panelsOpen.has(version)}
                                     onChange={() => this.togglePanel(version)}
@@ -83,4 +83,6 @@ export default withStyles(styles)(class ChangelogDisplay extends React.Component
             </>
         );
     }
-});
+}
+
+export default withStyles(styles)(ChangelogDisplay);

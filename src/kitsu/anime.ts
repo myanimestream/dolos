@@ -59,7 +59,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
     }
 
     @cacheInMemory("kitsuAnime")
-    async getKitsuAnimeInfo(): Promise<KitsuAnimeInfo | null> {
+    async getKitsuAnimeInfo(): Promise<KitsuAnimeInfo | undefined> {
         return await waitWithTimeout(this._retryGetKitsuAnimeInfo(100), 2500);
     }
 

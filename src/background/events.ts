@@ -1,5 +1,6 @@
 import axios from "axios";
 import {GrobberClient} from "dolos/grobber";
+import {BrowserNotification, NotificationButtonEvent} from "./notifications";
 import * as state from "./observables";
 import {performUpdateCheck} from "./update-check";
 import Alarm = chrome.alarms.Alarm;
@@ -52,13 +53,18 @@ state.hasNewEpisode$.subscribe(async e => {
 
     const [thumbnail, poster] = await Promise.all([getBlobURL(anime.thumbnail), getEpisodePoster()]);
 
-    chrome.notifications.create({
+    const notification = await BrowserNotification.create({
         type: "image",
         title: anime.title,
         iconUrl: thumbnail,
         imageUrl: poster,
         message: _("notification__new_episodes", [epDiff]),
         contextMessage: _("ext_name"),
-        buttons: [{title: "Watch"}, {title: "Unsubscribe"}],
+        buttons: [
+            {title: _("notification__new_episodes__watch"), iconUrl: "img/play_arrow.svg"},
+            {title: _("notification__new_episodes__unsubscribe"), iconUrl: "img/notifications_off.svg"}
+        ],
     });
+
+    notification.onButtonClicked.addEventListener((event: NotificationButtonEvent) => console.log(event));
 });

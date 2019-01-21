@@ -3,7 +3,8 @@
   "scripts": {
     "build:dev": "webpack --config webpack.dev.js",
     "build:production": "webpack --config webpack.prod.js",
-    "watch": "webpack -w --config webpack.dev.js"
+    "watch": "webpack -w --config webpack.dev.js",
+    "docs": "typedoc --out docs/ --name \"Dolos Documentation\" src/"
   },
   "author": "siku2",
   "license": "MIT",
@@ -16,6 +17,7 @@
     "ts-loader": "^4.0.1",
     "tslint-config-airbnb": "^5.11.1",
     "tslint-react": "^3.6.0",
+    "typedoc": "^0.14.2",
     "typescript": "^2.7.2",
     "web-ext": "^2.9.3",
     "webpack": "^4.28.4",
