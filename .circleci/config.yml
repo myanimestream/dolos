@@ -11,9 +11,7 @@ jobs:
       - checkout
       - node/install-package-manager:
           npm: true
-      - node/with-cache:
-          steps:
-            - run: npm install --unsafe-perm
+      - run: npm install --unsafe-perm
       - persist_to_workspace:
           root: node_modules
           paths:
