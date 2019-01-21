@@ -36,7 +36,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: node_modules
+          at: .
       - run: npm run docs
 
   deploy:
@@ -45,7 +45,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: node_modules
+          at: .
       - run:
           name: Deploy
           command: bash tools/deploy.sh
