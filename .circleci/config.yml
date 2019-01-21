@@ -37,7 +37,7 @@ jobs:
       - *copy_node_modules
       - run: npm run build:production
       - persist_to_workspace:
-          root: dist
+          root: *workspace_root
           paths:
             - dist
 
@@ -58,6 +58,7 @@ jobs:
       - checkout
       - *attach_workspace
       - *copy_node_modules
+      - run: mv /tmp/workspace/dist .
       - run:
           name: Deploy
           command: bash tools/deploy.sh
@@ -75,15 +76,15 @@ workflows:
       - documentation:
           requires:
             - install
-          filters:
-            branches:
-              only: master
+      #          filters:
+      #            branches:
+      #              only: master
 
       - deploy:
           requires:
             - build
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
+#          filters:
+#            branches:
+#              ignore: /.*/
+#            tags:
+#              only: /^v.*/
