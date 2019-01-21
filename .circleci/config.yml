@@ -12,7 +12,7 @@ jobs:
       - checkout
       - node/install-package-manager:
           npm: true
-      - node/with-cache:
+      - node/with-cache: {}
 
   build:
     docker:
@@ -43,15 +43,21 @@ workflows:
   main:
     jobs:
       - install
+
       - build:
           requires:
             - install
-      - documentation
+
+      - documentation:
+          requires:
+            - install
+          filters:
+            branches:
+              only: master
+
       - deploy:
           requires:
             - build
           filters:
-            branches:
-              only:
             tags:
               only: /^v.*/s
