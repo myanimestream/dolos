@@ -13,7 +13,7 @@ jobs:
           npm: true
       - node/with-cache:
           steps:
-            - run: sudo npm install
+            - run: npm install --production
       - persist_to_workspace:
           root: node_modules
           paths:
