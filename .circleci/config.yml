@@ -36,6 +36,7 @@ jobs:
       - *attach_workspace
       - *copy_node_modules
       - run: npm run build:production
+      - run: mv dist/ /tmp/workspace/
       - persist_to_workspace:
           root: *workspace_root
           paths:
@@ -48,7 +49,6 @@ jobs:
       - checkout
       - *attach_workspace
       - *copy_node_modules
-      - run: mv
       - run: npm run docs
 
   deploy:
