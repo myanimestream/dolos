@@ -28,9 +28,9 @@ jobs:
           at: node_modules
       - run: npm run build:production
       - persist_to_workspace:
-        root: dist
-        paths:
-          - dist
+          root: dist
+          paths:
+            - dist
 
   documentation:
     executor: node/node
