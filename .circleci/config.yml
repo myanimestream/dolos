@@ -64,7 +64,7 @@ jobs:
             git fetch upstream
             git reset upstream/gh-pages
 
-            git add --all --force apiary.apib
+            git add --all --force docs
             git commit --all --message "chore: deploy ${rev}"
             git push --quiet upstream HEAD:gh-pages > /dev/null 2>&1
 
