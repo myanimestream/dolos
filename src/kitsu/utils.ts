@@ -1,10 +1,18 @@
 /**
+ * Exposes functions related to internal Ember data.
+ *
  * @module kitsu
  */
 
 import axios, {AxiosRequestConfig} from "axios";
 import {evaluateCode, formatCode, injectCode} from "../inject";
 
+/**
+ * Perform a request to the Kitsu API.
+ *
+ * @param auth - Authorization header value
+ * @param silent - ignore errors and return null
+ */
 export async function kitsuAPIRequest(method: string, endpoint: string, auth?: string, config?: AxiosRequestConfig, silent?: boolean): Promise<any | null> {
     config = config || {};
     config.method = method;
@@ -29,6 +37,13 @@ export async function kitsuAPIRequest(method: string, endpoint: string, auth?: s
 }
 
 
+/**
+ * Code mix-in to get access to various Ember elements.
+ * This code grants access to the following methods:
+ * - `getApp(): Ember.Application` - Returns the Ember Application.
+ * - `getContainer(): Ember.Container` - Returns the App's container
+ * - `getQueryCache(): `kitsu.services.QueryCache - Get the query cache service
+ */
 const EMBER_BASE = `
 const getApp = ${(
     () => {
@@ -42,19 +57,27 @@ const getContainer = () => getApp().__container__;
 const getQueryCache = () => getContainer().lookup("service:query-cache");
 `;
 
+/**
+ * Transition to the given ember view.
+ */
 export function transitionTo(view: string, ...args: any[]) {
     injectCode(EMBER_BASE +
         `getContainer().lookup("router:main").transitionTo("${view}", ${args.map(arg =>
             JSON.stringify(arg)
-        )});`, {deleteAfter: true}
-    );
+        )});`);
 }
 
 export async function getAccessToken(): Promise<string | null> {
     return await evaluateCode(EMBER_BASE + `return getContainer().lookup("session:main").content.authenticated.access_token || null;`);
 }
 
-
+/**
+ * Code mix-in to set the Anime progress.
+ * Requires the `getQueryCache` function from [[EMBER_BASE]] to be loaded.
+ * The variables `animeId`, `userId`, and `progress` need to be set using [[formatCode]].
+ *
+ * @see [[setProgress]]
+ */
 const SET_PROGRESS = `
 return await new Promise(${(
     // @ts-ignore
@@ -80,6 +103,13 @@ export async function setProgress(animeId: string, userId: string, progress: num
     return true;
 }
 
+/**
+ * Code mix-in to get the Anime progress.
+ * Requires the `getQueryCache` function from [[EMBER_BASE]] to be loaded.
+ * The variables `animeId`, and `userId` need to be set using [[formatCode]].
+ *
+ * @see [[getProgress]]
+ */
 const GET_PROGRESS = `
 return await new Promise(${(
     // @ts-ignore
@@ -99,6 +129,9 @@ export async function getProgress(animeId: string, userId: string): Promise<numb
     else return result;
 }
 
+/**
+ * The Anime info used by Kitsu.
+ */
 export interface KitsuAnimeInfo {
     abbreviatedTitles: string[];
     ageRating: string;
