@@ -1,7 +1,0 @@
-{
-  "out": "docs/",
-  "name": "Dolos Documentation",
-  "plugin": [
-    "typedoc-plugin-external-module-name"
-  ]
-}
