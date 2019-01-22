@@ -1,3 +1,7 @@
+/**
+ * @module kitsu
+ */
+
 import {SkipButton} from "../common/components";
 import {EpisodePage} from "../common/pages";
 import {cacheInMemory} from "../memory";

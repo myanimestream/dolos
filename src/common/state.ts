@@ -1,9 +1,16 @@
+/**
+ * @module common
+ */
+
 import {ElementMemory} from "../memory";
 import {Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
 import Service from "./service";
 import ServicePage from "./service-page";
 
+/**
+ * State handler for services.
+ */
 export default class State<T extends Service> extends ElementMemory {
     serviceId: string;
     page?: ServicePage<T>;
@@ -61,6 +68,10 @@ export interface HasState<T extends Service = any> {
     state: State<T>
 }
 
+/**
+ * Decorator which caches the result of a method in the state cache so that it's globally available.
+ * @see [[cacheInMemory]]
+ */
 export function cacheInStateMemory(name?: string) {
     return function (target: Object & HasState, propertyKey: string, descriptor: PropertyDescriptor) {
         const keyName = name || `${target.constructor.name}-${propertyKey}`;

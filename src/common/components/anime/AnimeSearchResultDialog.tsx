@@ -1,3 +1,7 @@
+/**
+ * @module common.components.anime
+ */
+
 import {Typography} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -21,6 +25,7 @@ import AnimePage from "../../pages/anime";
 import AnimeSelection from "./AnimeSelection";
 import _ = chrome.i18n.getMessage;
 
+/** @ignore */
 const styles = (theme: Theme) => createStyles({
     grow: {
         flexGrow: 1,

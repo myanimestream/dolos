@@ -1,3 +1,7 @@
+/**
+ * @module common.components.anime
+ */
+
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
@@ -7,6 +11,7 @@ import {AnimeInfo} from "dolos/grobber";
 import * as React from "react";
 import AnimeCard from "./AnimeCard";
 
+/** @ignore */
 const styles = (theme: Theme) => createStyles({
     listTile: {
         overflow: "visible",

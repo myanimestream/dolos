@@ -1,3 +1,7 @@
+/**
+ * @module options
+ */
+
 import {WithStyles} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";

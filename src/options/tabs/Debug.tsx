@@ -1,3 +1,7 @@
+/**
+ * @module options.tabs
+ */
+
 import CircularProgress from "@material-ui/core/CircularProgress";
 import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";

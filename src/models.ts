@@ -1,3 +1,8 @@
+/**
+ * @module models
+ */
+
+/** @ignore */
 export enum Language {
     ENGLISH = "en",
     GERMAN = "de",

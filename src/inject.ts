@@ -1,3 +1,8 @@
+/**
+ * @module inject
+ */
+
+/** @ignore */
 import {waitUntilExists} from "./utils";
 
 const DELETE_AFTER = `(${(() => {

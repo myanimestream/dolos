@@ -1,3 +1,7 @@
+/**
+ * @module popup
+ */
+
 import {Card} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Badge from "@material-ui/core/Badge";

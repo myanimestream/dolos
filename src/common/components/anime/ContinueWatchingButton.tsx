@@ -1,3 +1,7 @@
+/**
+ * @module common.components.anime
+ */
+
 import {Tooltip} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
@@ -9,6 +13,7 @@ import {Subscription} from "rxjs";
 import {AnimePage} from "../../pages";
 import _ = chrome.i18n.getMessage;
 
+/** @ignore */
 const styles = (theme: Theme) => createStyles({
     buttonIconLeft: {
         marginRight: theme.spacing.unit,

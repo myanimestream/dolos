@@ -1,3 +1,7 @@
+/**
+ * @module common.components.anime
+ */
+
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from "@material-ui/core/IconButton";
@@ -34,6 +38,7 @@ export interface SkipButton {
     onClick?: (e?: React.MouseEvent<HTMLElement>) => void;
 }
 
+/** @ignore */
 const styles = (theme: Theme) => {
     const flexCenterColumn: CSSProperties = {
         display: "flex",

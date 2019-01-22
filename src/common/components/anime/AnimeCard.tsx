@@ -1,3 +1,7 @@
+/**
+ * @module common.components.anime
+ */
+
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -10,6 +14,7 @@ import {AnimeInfo} from "dolos/grobber";
 import * as React from "react";
 import _ = chrome.i18n.getMessage;
 
+/** @ignore */
 const styles = (theme: Theme) => createStyles({
     animeCard: {},
     thumbnail: {

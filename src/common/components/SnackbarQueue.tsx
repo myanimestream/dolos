@@ -1,3 +1,7 @@
+/**
+ * @module common.components
+ */
+
 import amber from "@material-ui/core/colors/amber";
 import green from "@material-ui/core/colors/green";
 import IconButton from "@material-ui/core/IconButton";
@@ -31,6 +35,7 @@ const iconVariant = {
     info: InfoIcon,
 };
 
+/** @ignore */
 const styles = (theme: Theme) => createStyles({
     success: {
         backgroundColor: green[600],

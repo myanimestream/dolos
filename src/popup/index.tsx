@@ -1,3 +1,9 @@
+/**
+ * @module popup
+ * @preferred
+ */
+
+/** @ignore */
 import * as React from "react";
 import {HashRouter} from "react-router-dom";
 import dolosTheme from "../theme";

@@ -50,7 +50,7 @@ jobs:
       - checkout
       - *attach_workspace
       - *copy_node_modules
-      - run: npm run docs
+      - run: npm run docs -- --gaID $GA_ID
       - run:
           name: Committing Documentation
           command: |

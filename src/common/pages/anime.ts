@@ -1,3 +1,7 @@
+/**
+ * @module common.pages
+ */
+
 import {AnimeInfo, GrobberClient, GrobberErrorType} from "dolos/grobber";
 import {StoredAnimeInfo} from "dolos/models";
 import {getThemeFor} from "dolos/theme";
@@ -10,14 +14,30 @@ import Service from "../service";
 import ServicePage from "../service-page";
 import EpisodePage from "./episode";
 
-
+/**
+ * AnimePage reflects a page that is dedicated to a specific Anime.
+ *
+ * It displays a continue watching button.
+ */
 export default abstract class AnimePage<T extends Service> extends ServicePage<T> {
     private _episodesWatched$?: rxjs.BehaviorSubject<number | undefined>;
 
+    /**
+     * Get the search query to be used for Grobber's search endpoint.
+     * @return `undefined` if there is no search query.
+     */
     abstract async getAnimeSearchQuery(): Promise<string | undefined>;
 
+    /**
+     * Get a unique identifier for this anime.
+     */
     abstract async getAnimeIdentifier(): Promise<string | undefined>;
 
+    /**
+     * Get the information stored in the browser storage.
+     *
+     * @throws if [[AnimePage.getAnimeIdentifier]] didn't return an identifier
+     */
     async getStoredAnimeInfo(): Promise<StoredAnimeInfo> {
         const identifier = await this.getAnimeIdentifier();
         if (!identifier)
@@ -26,6 +46,14 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return await this.state.getStoredAnimeInfo(identifier);
     }
 
+    /**
+     * Get the UID of the Anime.
+     * This method will return the stored UID (if available) unless `forceSearch` is true.
+     *
+     * @param forceSearch - Ignore the stored UID.
+     *
+     * @return `undefined` if there were no results or the [[AnimePage.getAnimeSearchQuery]] was empty
+     */
     async getAnimeUID(forceSearch?: boolean): Promise<string | undefined> {
         const animeInfo = await this.getStoredAnimeInfo();
         if (animeInfo.uid && !forceSearch)
@@ -44,12 +72,19 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return uid;
     }
 
+    /**
+     * Set the UID associated with the [[AnimePage.getAnimeIdentifier]] identifier.
+     * **This will cause the [[AnimePage]] to be reloaded!**
+     */
     async setAnimeUID(uid: string) {
         const animeInfo = await this.getStoredAnimeInfo();
         animeInfo.uid = uid;
         await this.reload();
     }
 
+    /**
+     * Get the [[AnimeInfo]] for this page.
+     */
     @cacheInMemory("anime")
     async getAnime(): Promise<AnimeInfo | undefined> {
         let uid = await this.getAnimeUID();
@@ -75,18 +110,33 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         }
     }
 
+    /**
+     * Sanity check whether it should be possible to set the "progress" of an Anime.
+     */
     abstract async canSetEpisodesWatched(): Promise<boolean>;
 
+    /**
+     * @private
+     *
+     * Internal progress setting. **Do not use this method**!
+     * @see [[AnimePage.setEpisodesWatched]] instead!
+     */
     abstract async _setEpisodesWatched(progress: number): Promise<boolean>;
 
     abstract async getEpisodeURL(episodeIndex: number): Promise<string>;
 
+    /**
+     * Navigate the user to the episode with the given index.
+     */
     abstract async showEpisode(episodeIndex: number): Promise<void>;
 
     abstract async getEpisodesWatched(): Promise<number | undefined>;
 
     abstract async getEpisodeCount(): Promise<number | undefined>;
 
+    /**
+     * Inject the continue watching button.
+     */
     abstract async injectContinueWatchingButton(element: Element): Promise<void>;
 
     async setEpisodesWatched(progress: number): Promise<boolean> {
@@ -105,6 +155,9 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return this._episodesWatched$;
     }
 
+    /**
+     * Build and inject a continue watching button into the site.
+     */
     async showContinueWatchingButton() {
         const el = document.createElement("div");
 

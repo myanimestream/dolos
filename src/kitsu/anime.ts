@@ -1,3 +1,7 @@
+/**
+ * @module kitsu
+ */
+
 import {cacheInStateMemory} from "../common";
 import {AnimePage} from "../common/pages";
 import {cacheInMemory} from "../memory";

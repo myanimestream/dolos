@@ -19,8 +19,10 @@ You may also download the Chrome extension from the Chrome web store [here][chro
 I haven't gotten around to this yet, so please install the `.xpi` file from the release manually.
 The downside is, that the extension won't automatically update to newer versions.
 
-## License
-[![FOSSA Status][fossa-details]][fossa-url]
+## Documentation
+You can find the documentation [here][dolos-docs].
+
+[dolos-docs]: https://myanimestream.github.io/dolos/docs/
 
 [react]: https://reactjs.org/
 [material-ui]: https://material-ui.com/
@@ -32,5 +34,4 @@ The downside is, that the extension won't automatically update to newer versions
 [travis-shield]: https://travis-ci.org/MyAnimeStream/dolos.svg?branch=master
 [travis-url]: https://travis-ci.org/MyAnimeStream/dolos
 [fossa-shield]: https://app.fossa.io/api/projects/git%2Bgithub.com%2FMyAnimeStream%2Fdolos.svg?type=shield
-[fossa-details]: https://app.fossa.io/api/projects/git%2Bgithub.com%2FMyAnimeStream%2Fdolos.svg?type=large
 [fossa-url]: https://app.fossa.io/projects/git%2Bgithub.com%2FMyAnimeStream%2Fdolos

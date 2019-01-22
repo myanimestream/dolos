@@ -2,6 +2,8 @@
  * A module to make working with notifications easier.
  *
  * It mainly provides the [[BrowserNotification]] class which can be used to manage notifications.
+ *
+ * @module background
  */
 
 /**

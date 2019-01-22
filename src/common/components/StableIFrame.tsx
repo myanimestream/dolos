@@ -1,3 +1,7 @@
+/**
+ * @module common.components
+ */
+
 import * as React from "react";
 import {IframeHTMLAttributes} from "react";
 

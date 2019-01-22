@@ -2,6 +2,8 @@
  * The changelog of Dolos.
  * This file only contains the changelog itself.
  * You can find the display logic in [[ChangelogDisplay]]
+ *
+ * @module changelog
  */
 
 /**

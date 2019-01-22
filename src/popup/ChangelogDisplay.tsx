@@ -1,3 +1,7 @@
+/**
+ * @module popup
+ */
+
 import Divider from "@material-ui/core/Divider";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";

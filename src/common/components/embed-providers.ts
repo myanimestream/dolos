@@ -1,3 +1,7 @@
+/**
+ * @module common.components
+ */
+
 export interface EmbedProvider {
     name?: string,
     icon?: string

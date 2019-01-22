@@ -1,3 +1,7 @@
+/**
+ * @module background
+ */
+
 import {hasNewEpisode$} from "dolos/background/observables";
 import {AnimeInfo, GrobberClient} from "dolos/grobber";
 import AsyncLock from "dolos/lock";

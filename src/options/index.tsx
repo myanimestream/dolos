@@ -1,3 +1,9 @@
+/**
+ * @module options
+ * @preferred
+ */
+
+/** @ignore */
 import * as React from "react";
 import dolosTheme from "../theme";
 import {reactRenderWithTheme, wrapSentryLogger} from "../utils";

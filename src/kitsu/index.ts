@@ -1,3 +1,9 @@
+/**
+ * @module kitsu
+ * @preferred
+ */
+
+/** @ignore */
 import {Service} from "../common";
 import "../logging";
 import KitsuAnimePage from "./anime";

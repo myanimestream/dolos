@@ -1,3 +1,7 @@
+/**
+ * @module myanimelist
+ */
+
 import axios from "axios";
 import {AnimePage} from "../common/pages";
 import {cacheInMemory} from "../memory";

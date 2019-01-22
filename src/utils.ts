@@ -1,7 +1,10 @@
 /**
  * Utility functions for Dolos.
+ *
+ * @module utils
  */
 
+/** @ignore */
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import {NewEpisodeEvent} from "dolos/background/update-check";
@@ -10,6 +13,9 @@ import * as ReactDOM from "react-dom";
 import * as rxjs from "rxjs";
 import {SentryLogger} from "./logging";
 
+/**
+ * BackgroundWindow interface with all of its attributes.
+ */
 interface BackgroundWindow extends Window {
     hasNewVersion$: rxjs.BehaviorSubject<boolean>;
     hasNewEpisode$: rxjs.Subject<NewEpisodeEvent>;

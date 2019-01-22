@@ -1,3 +1,7 @@
+/**
+ * @module background
+ */
+
 import axios from "axios";
 import {GrobberClient} from "dolos/grobber";
 import {BrowserNotification, NotificationButtonEvent} from "./notifications";

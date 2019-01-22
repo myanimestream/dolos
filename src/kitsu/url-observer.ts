@@ -1,3 +1,7 @@
+/**
+ * @module kitsu
+ */
+
 export default class UrlObserver {
     _observing: boolean;
 

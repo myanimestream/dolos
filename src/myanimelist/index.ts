@@ -1,9 +1,16 @@
+/**
+ * Service for [myanimelist.net](https://myanimelist.net).
+ *
+ * @module myanimelist
+ * @preferred
+ */
+
+/** @ignore */
 import {cacheInStateMemory, Service} from "../common";
 import {evaluateCode} from "../inject";
 import "../logging";
 import MalAnimePage from "./anime";
 import MalEpisodePage from "./episode";
-
 
 export default class MyAnimeList extends Service {
     constructor() {

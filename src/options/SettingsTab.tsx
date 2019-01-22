@@ -1,3 +1,7 @@
+/**
+ * @module options
+ */
+
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import createStyles from "@material-ui/core/styles/createStyles";

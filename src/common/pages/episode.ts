@@ -1,3 +1,7 @@
+/**
+ * @module common.pages
+ */
+
 import {Episode, GrobberClient, GrobberErrorType} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
 import {getThemeFor} from "dolos/theme";

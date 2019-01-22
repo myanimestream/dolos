@@ -1,3 +1,7 @@
+/**
+ * @module myanimelist
+ */
+
 import {SkipButton} from "../common/components";
 import {EpisodePage} from "../common/pages";
 import MalAnimePage from "./anime";

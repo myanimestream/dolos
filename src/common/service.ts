@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+
 import {Type} from "../utils";
 import {EpisodePage, OverviewPage} from "./pages";
 import AnimePage from "./pages/anime";

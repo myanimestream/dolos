@@ -1,8 +1,13 @@
+/**
+ * @module common.components
+ */
+
 import Paper from "@material-ui/core/Paper";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import * as React from "react";
 
+/** @ignore */
 const styles = () => createStyles({
     ratioSpacer: {
         position: "relative",

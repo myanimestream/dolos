@@ -1,3 +1,7 @@
+/**
+ * @module grobber
+ */
+
 import {Language} from "../models";
 
 export class GrobberRequestError extends Error {

@@ -1,3 +1,7 @@
+/**
+ * @module common.components
+ */
+
 import Avatar from "@material-ui/core/Avatar";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -19,6 +23,7 @@ import WithRatio from "./WithRatio";
 import _ = chrome.i18n.getMessage;
 
 
+/** @ignore */
 const styles = (theme: Theme) => createStyles({
     embedIFrame: {
         width: "100%",

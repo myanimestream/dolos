@@ -1,6 +1,13 @@
+/**
+ * @module assets
+ */
+
 import SvgIcon, {SvgIconProps} from "@material-ui/core/SvgIcon";
 import * as React from "react";
 
+/**
+ * Material UI SvgIcon for GitHub's logo
+ */
 export default class GitHubIcon extends React.Component<SvgIconProps> {
     render() {
         return (

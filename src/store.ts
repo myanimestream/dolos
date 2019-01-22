@@ -1,3 +1,14 @@
+/**
+ * Interacting with the browser storage has never been this *bearable*.
+ *
+ * Get objects from the storage which **update automatically** when their
+ * stored version does and likewise update the stored version by simply
+ * changing the value of a property.
+ *
+ * @module store
+ */
+
+/** @ignore */
 import {AnimeInfo} from "dolos/grobber";
 import {Config, DEFAULT_CONFIG, DEFAULT_STORED_ANIME_INFO, StoredAnimeInfo} from "./models";
 import StorageChange = chrome.storage.StorageChange;

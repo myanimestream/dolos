@@ -1,3 +1,8 @@
+/**
+ * @module memory
+ */
+
+/** @ignore */
 export interface Namespace<VT = any> {
     // @ts-ignore
     __value?: VT;

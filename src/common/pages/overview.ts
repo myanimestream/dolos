@@ -1,3 +1,7 @@
+/**
+ * @module common.pages
+ */
+
 import Service from "../service";
 import ServicePage from "../service-page";
 

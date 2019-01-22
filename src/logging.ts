@@ -1,3 +1,8 @@
+/**
+ * @module logging
+ */
+
+/** @ignore */
 import * as Sentry from "@sentry/browser";
 import {getVersion} from "./info";
 

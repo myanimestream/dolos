@@ -1,5 +1,15 @@
+/**
+ * Material UI themes for dolos.
+ *
+ * @module theme
+ */
+
+/** @ignore */
 import createMuiTheme, {Theme} from "@material-ui/core/styles/createMuiTheme";
 
+/**
+ * Theme used for "extension pages" such as options and popup.
+ */
 const mainTheme = createMuiTheme({
     typography: {
         useNextVariants: true,
@@ -17,6 +27,9 @@ const mainTheme = createMuiTheme({
 
 export default mainTheme;
 
+/**
+ * Theme applied to Kitsu elements
+ */
 export const kitsuTheme = createMuiTheme({
     typography: {
         useNextVariants: true,
@@ -31,6 +44,9 @@ export const kitsuTheme = createMuiTheme({
     },
 });
 
+/**
+ * Theme applied to MyAnimeList elements
+ */
 export const malTheme = createMuiTheme({
     typography: {
         useNextVariants: true,
@@ -45,6 +61,11 @@ export const malTheme = createMuiTheme({
     },
 });
 
+/**
+ * Get the correct theme for a [[Service]] or the [[mainTheme]] if there is none.
+ *
+ * @param service - Service id as seen in [[State.serviceId]]
+ */
 export function getThemeFor(service: string): Theme {
     switch (service) {
         case "kitsu":

@@ -1,3 +1,7 @@
+/**
+ * @module options.tabs
+ */
+
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";

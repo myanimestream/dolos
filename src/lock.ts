@@ -1,3 +1,8 @@
+/**
+ * @module lock
+ */
+
+/** @ignore */
 export default class AsyncLock {
     private readonly locked: { [key: string]: boolean };
     private readonly queues: { [key: string]: (() => void)[] };

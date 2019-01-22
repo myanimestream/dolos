@@ -1,3 +1,7 @@
+/**
+ * @module common.components
+ */
+
 import {WithStyles} from "@material-ui/core/styles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -7,6 +11,7 @@ import "plyr/src/sass/plyr.scss";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+/** @ignore */
 const styles = () => createStyles({
     plyrContainer: {
         width: "100%",

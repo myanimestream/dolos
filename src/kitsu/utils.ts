@@ -1,3 +1,7 @@
+/**
+ * @module kitsu
+ */
+
 import axios, {AxiosRequestConfig} from "axios";
 import {evaluateCode, formatCode, injectCode} from "../inject";
 

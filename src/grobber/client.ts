@@ -1,3 +1,7 @@
+/**
+ * @module grobber
+ */
+
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import AsyncLock from "dolos/lock";
 import {Memory} from "dolos/memory";
@@ -35,6 +39,10 @@ function buildKeys(params: [any, any][]): [string[], string] {
     return [lockKeys, memoryKey];
 }
 
+/**
+ * A client for interacting with the Grobber API.
+ * Uses an internal cache.
+ */
 export class Client extends Memory {
     axiosClient: AxiosInstance;
 
@@ -100,6 +108,13 @@ export class Client extends Memory {
         );
     }
 
+    /**
+     * Get an Episode.
+     *
+     * @param episode - **Index**
+     *
+     * @throws [[GrobberRequestError]] - When there was an error with the request.
+     */
     async getEpisode(uid: string, episode: number): Promise<Episode> {
         return await this.performAnimeRequest(
             "/anime/episode/",

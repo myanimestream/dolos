@@ -1,3 +1,10 @@
+/**
+ * A bunch of functions related to metadata.
+ *
+ * @module info
+ */
+
+/** @ignore */
 import Manifest = chrome.runtime.Manifest;
 
 export function getManifest(): Manifest {
