@@ -65,7 +65,7 @@ jobs:
 
             git add --force docs
             git commit --message "chore: deploy ${rev}"
-            git push --quiet upstream HEAD:gh-pages > /dev/null 2>&1
+            git push upstream HEAD:gh-pages > /dev/null 2>&1
 
   deploy:
     executor: node/node
