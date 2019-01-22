@@ -61,11 +61,10 @@ jobs:
             git config user.name "$GH_USERNAME"
 
             git remote add upstream "https://$GITHUB_TOKEN@github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git"
-            git fetch upstream
-            git reset upstream/gh-pages
+            git checkout -b upstream/gh-pages
 
-            git add --all --force docs
-            git commit --all --message "chore: deploy ${rev}"
+            git add --force docs
+            git commit --message "chore: deploy ${rev}"
             git push --quiet upstream HEAD:gh-pages > /dev/null 2>&1
 
   deploy:
