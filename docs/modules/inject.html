@@ -68,6 +68,50 @@
 		<div class="col-8 col-content">
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Because extension content scripts run in their own sand-boxed environment they can&#39;t easily access
+							the page&#39;s Javascript namespace.
+						But this module helps you do exactly that.</p>
+					</div>
+					<p>You can use <a href="inject.html#injectcode">injectCode</a> to simply run code in the page&#39;s context and <a href="inject.html#evaluatecode">evaluateCode</a> if you need
+					to pass a value back.</p>
+					<h3 id="using-real-functions-in-your-code">Using real functions in your code</h3>
+					<p>The code needs to be written in Javascript that can be executed by the browser. It isn&#39;t processed in any way.
+					If possible, write an actual function which you then convert to a string to leverage the power of TypeScript.</p>
+					<dl class="tsd-comment-tags">
+						<dt>example</dt>
+						<dd><pre><code class="language-typescript">
+<span class="hljs-comment">// write the function like you would for any other function, this way it'll</span>
+<span class="hljs-comment">// be compiled to the targeted javascript version</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span>(<span class="hljs-params">value: <span class="hljs-built_in">any</span></span>): <span class="hljs-title">string</span> </span>{
+    <span class="hljs-keyword">return</span> value.toString();
+}
+
+<span class="hljs-keyword">const</span> code = <span class="hljs-string">`
+     // test now holds the compiled test function code
+     const test = <span class="hljs-subst">${test.toString()}</span>;
+     return test(5);
+`</span>;
+
+<span class="hljs-comment">// returns "5"</span>
+<span class="hljs-keyword">await</span> evaluateCode(code);</code></pre>
+							<h3 id="getting-something-from-the-page">Getting something from the page</h3>
+							<p>Let&#39;s say you want to access the variable <code>USER_NAME</code> which the page conveniently exposes to the global scope,
+							you can simply grab it using <a href="inject.html#evaluatecode">evaluateCode</a>.</p>
+						</dd>
+						<dt>example</dt>
+						<dd><pre><code class="language-typescript">
+<span class="hljs-keyword">const</span> username = <span class="hljs-keyword">await</span> evaluateCode(<span class="hljs-string">`USER_NAME`</span>);</code></pre>
+							<h3 id="running-code">Running code</h3>
+							<p>If you have to call a function in the page to perform some action, say,
+								changing the colour of the background (called &quot;changeBackgroundColour&quot;), you can use <a href="inject.html#injectcode">injectCode</a>
+							to simply run it.</p>
+						</dd>
+						<dt>example</dt>
+						<dd><pre><code class="language-typescript">
+injectCode(<span class="hljs-string">`changeBackgroundColour("green");`</span>);</code></pre>
+						</dd>
+					</dl>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -108,9 +152,19 @@
 					<div class="tsd-signature tsd-kind-icon">DELETE_<wbr>AFTER<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;(${(() &#x3D;&gt; {const script &#x3D; document.currentScript;if (script) script.remove();}).toString()})();&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/inject.ts#L8">inject.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/inject.ts#L64">inject.ts:64</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Code mix-in which when executed immediately removes the current script element from the DOM.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>see</dt>
+							<dd><p><a href="inject.html#injectcode">injectCode</a> with <a href="../interfaces/inject.injectoptions.html#keepafterexecution">InjectOptions.keepAfterExecution</a> set to <code>false</code></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="eval_template" class="tsd-anchor"></a>
@@ -118,9 +172,23 @@
 					<div class="tsd-signature tsd-kind-icon">EVAL_<wbr>TEMPLATE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;${PUSH_RESULT}const run &#x3D; async () &#x3D;&gt; {{{code}}};run().then(value &#x3D;&gt; pushResult(value, &quot;data-result&quot;),reason &#x3D;&gt; pushResult(reason.toString(), &quot;data-error&quot;));&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/inject.ts#L22">inject.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/inject.ts#L97">inject.ts:97</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Code mix-in to evaluate some code and expose the return value in the DOM.
+							It relies on <a href="inject.html#push_result">PUSH_RESULT</a>.</p>
+						</div>
+						<p>Requires <code>code</code>, and <code>uid</code> to be set using <a href="inject.html#formatcode">formatCode</a>.</p>
+						<p>Works by wrapping <code>code</code> in an async function and
+						pushing the result after finishing.</p>
+						<dl class="tsd-comment-tags">
+							<dt>see</dt>
+							<dd><p><a href="inject.html#evaluatecode">evaluateCode</a></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="push_result" class="tsd-anchor"></a>
@@ -128,9 +196,21 @@
 					<div class="tsd-signature tsd-kind-icon">PUSH_<wbr>RESULT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;const pushResult &#x3D; ${((value: any, key: string) &#x3D;&gt; {const el &#x3D; document.createElement(&quot;div&quot;);el.id &#x3D; &quot;{{uid}}&quot;;el.setAttribute(key, JSON.stringify(value));document.body.appendChild(el);}).toString()};&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/inject.ts#L13">inject.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/inject.ts#L77">inject.ts:77</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Code mix-in which exposes the <code>pushResult(value: any, key: string)</code> function
+							to &quot;expose&quot; a value in an element so that it can be accessed from the extension context.</p>
+						</div>
+						<p>Requires the variable <code>uid</code> to be set using <a href="inject.html#formatcode">formatCode</a>.</p>
+						<dl class="tsd-comment-tags">
+							<dt>see</dt>
+							<dd><p><a href="inject.html#evaluatecode">evaluateCode</a></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -145,13 +225,35 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/inject.ts#L63">inject.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/inject.ts#L182">inject.ts:182</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Evaluate <code>code</code> in the context of the page window and return its result.
+										This function can be used to get access to Javascript variables
+									because extensions don&#39;t have access to the page&#39;s Window object.</p>
+								</div>
+								<p>The return value needs to be <strong>JSON serializable</strong>!</p>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="inject.html#injectcode">injectCode</a> if you only need to execute code without getting the result.</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p>Any errors that occurred during execution of the code</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>code: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Supports both sync and async code. If you don&#39;t use an explicit return statement your
+										code will be prefixed with <code>return</code>. This can be used to create simple eval statements:</p>
+										<pre><code class="language-typescript"><span class="hljs-comment">// title holds the document title (note: there's no need to use evaluateCode for this)</span>
+<span class="hljs-keyword">const</span> title = <span class="hljs-keyword">await</span> evaluateCode(<span class="hljs-string">`document.title`</span>);</code></pre>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -168,9 +270,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/inject.ts#L35">inject.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/inject.ts#L127">inject.ts:127</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A simple formatter that can be used to format template code.</p>
+								</div>
+								<p>The code uses <code>{{name}}</code> syntax to indicate templates which can be replaced by providing <code>{name: &quot;value&quot;}</code>
+								to the function.</p>
+								<p>This function is very basic and shouldn&#39;t be used for more complex templates!</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -199,9 +309,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/inject.ts#L59">inject.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/inject.ts#L160">inject.ts:160</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Generate a random id.
+									This function is used to communicate between the windows by giving each evaluation context its own id.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -216,9 +332,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/inject.ts#L42">inject.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/inject.ts#L139">inject.ts:139</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Inject javascript code to be run in the context of the page&#39;s Window.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -229,6 +350,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Element</span></h4>
+							<p>script tag that the code was injected to.</p>
 						</li>
 					</ul>
 				</section>

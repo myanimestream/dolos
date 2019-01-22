@@ -68,6 +68,9 @@
 		<div class="col-8 col-content">
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Service for <a href="https://kitsu.io">kitsu.io</a>.</p>
+					</div>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -119,9 +122,20 @@
 					<div class="tsd-signature tsd-kind-icon">EMBER_<wbr>BASE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;const getApp &#x3D; ${(() &#x3D;&gt; {// @ts-ignoreconst {Namespace, Application} &#x3D; window[&quot;Ember&quot;];return Namespace.NAMESPACES.find((namespace: any) &#x3D;&gt; (namespace instanceof Application));}).toString()};const getContainer &#x3D; () &#x3D;&gt; getApp().__container__;const getQueryCache &#x3D; () &#x3D;&gt; getContainer().lookup(&quot;service:query-cache&quot;);&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/kitsu/utils.ts#L32">kitsu/utils.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/utils.ts#L47">kitsu/utils.ts:47</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Code mix-in to get access to various Ember elements.
+							This code grants access to the following methods:</p>
+							<ul>
+								<li><code>getApp(): Ember.Application</code> - Returns the Ember Application.</li>
+								<li><code>getContainer(): Ember.Container</code> - Returns the App&#39;s container</li>
+								<li><code>getQueryCache():</code>kitsu.services.QueryCache - Get the query cache service</li>
+							</ul>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="get_progress" class="tsd-anchor"></a>
@@ -129,9 +143,21 @@
 					<div class="tsd-signature tsd-kind-icon">GET_<wbr>PROGRESS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;return await new Promise(${(// @ts-ignoreres &#x3D;&gt; getQueryCache().query(&quot;library-entry&quot;, {filter: {animeId: &quot;{{animeId}}&quot;, userId: &quot;{{userId}}&quot;}}).then((records: any) &#x3D;&gt; {const entry &#x3D; records.firstObject;res(entry.progress);}).catch((reason: any) &#x3D;&gt; res(reason))).toString()});&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/kitsu/utils.ts#L83">kitsu/utils.ts:83</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/utils.ts#L113">kitsu/utils.ts:113</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Code mix-in to get the Anime progress.
+								Requires the <code>getQueryCache</code> function from <a href="kitsu.html#ember_base">EMBER_BASE</a> to be loaded.
+							The variables <code>animeId</code>, and <code>userId</code> need to be set using <a href="inject.html#formatcode">formatCode</a>.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>see</dt>
+							<dd><p><a href="kitsu.html#getprogress">getProgress</a></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="set_progress" class="tsd-anchor"></a>
@@ -139,9 +165,21 @@
 					<div class="tsd-signature tsd-kind-icon">SET_<wbr>PROGRESS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;return await new Promise(${(// @ts-ignoreres &#x3D;&gt; getQueryCache().query(&quot;library-entry&quot;, {filter: {animeId: &quot;{{animeId}}&quot;, userId: &quot;{{userId}}&quot;}}).then((records: any) &#x3D;&gt; {const entry &#x3D; records.firstObject;entry.set(&quot;progress&quot;, &quot;{{progress}}&quot;);return entry.save();}).then(() &#x3D;&gt; res(true)).catch((reason: any) &#x3D;&gt; res(reason))).toString()});&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/kitsu/utils.ts#L58">kitsu/utils.ts:58</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/utils.ts#L81">kitsu/utils.ts:81</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Code mix-in to set the Anime progress.
+								Requires the <code>getQueryCache</code> function from <a href="kitsu.html#ember_base">EMBER_BASE</a> to be loaded.
+							The variables <code>animeId</code>, <code>userId</code>, and <code>progress</code> need to be set using <a href="inject.html#formatcode">formatCode</a>.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>see</dt>
+							<dd><p><a href="kitsu.html#setprogress">setProgress</a></p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -156,7 +194,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/kitsu/utils.ts#L53">kitsu/utils.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/utils.ts#L70">kitsu/utils.ts:70</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -173,7 +211,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/kitsu/utils.ts#L131">kitsu/utils.ts:131</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/utils.ts#L164">kitsu/utils.ts:164</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/kitsu.kitsuanimeinfo.html" class="tsd-signature-type">KitsuAnimeInfo</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -190,7 +228,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/kitsu/utils.ts#L96">kitsu/utils.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/utils.ts#L126">kitsu/utils.ts:126</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -216,9 +254,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/kitsu/utils.ts#L8">kitsu/utils.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/utils.ts#L16">kitsu/utils.ts:16</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Perform a request to the Kitsu API.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -229,12 +272,18 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> auth: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Authorization header value</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> config: <span class="tsd-signature-type">AxiosRequestConfig</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> silent: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>ignore errors and return null</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -251,7 +300,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/kitsu/utils.ts#L73">kitsu/utils.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/utils.ts#L96">kitsu/utils.ts:96</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -280,9 +329,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/3d7c7dd/src/kitsu/utils.ts#L45">kitsu/utils.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/utils.ts#L63">kitsu/utils.ts:63</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Transition to the given ember view.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
