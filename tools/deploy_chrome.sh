@@ -4,12 +4,12 @@ set -e
 
 echo "[CHROME] bundling..."
 
-mkdir -p "build/chrome"
-cp -af "dist/." "build/chrome/"
-cd "build/chrome"
+mkdir -p "temp/chrome"
+cp -af "dist/." "temp/chrome/"
+cd "temp/chrome"
 echo $(cat "manifest.chrome.json") > "manifest.json"
-zip -r9 "../mas-chrome.zip" *
-cd ..
+zip -r9 "../../build/mas-chrome.zip" *
+cd ../..
 
 echo "[CHROME] getting access token..."
 CHROME_AUTH=$(curl -s "https://www.googleapis.com/oauth2/v4/token" -d \

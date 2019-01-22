@@ -6,7 +6,7 @@ VERSION=$(cat "dist/manifest.json" | jq -r ".version")
 RELEASE="dolos@${VERSION}"
 
 echo "Deploying version ${RELEASE}"
-
+mkdir "build"
 tools/deploy_chrome.sh
 tools/deploy_firefox.sh
 
