@@ -60,7 +60,7 @@ jobs:
             git config user.email "$GH_EMAIL"
             git config user.name "$GH_USERNAME"
 
-            git remote add upstream "https://$GITHUB_TOKEN@github.com/$CIRCLE_PROJECT_REPONAME.git"
+            git remote add upstream "https://$GITHUB_TOKEN@github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git"
             git fetch upstream
             git reset upstream/gh-pages
 
