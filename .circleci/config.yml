@@ -62,10 +62,11 @@ jobs:
 
             git remote add upstream "https://$GITHUB_TOKEN@github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git"
             git checkout -b upstream/gh-pages
+            git pull
 
             git add --force docs
             git commit --message "chore: deploy ${rev}"
-            git push upstream HEAD:gh-pages
+            git push --quiet upstream HEAD:gh-pages > /dev/null 2>&1
 
   deploy:
     executor: node/node
