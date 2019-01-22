@@ -119,7 +119,7 @@
 					<div class="tsd-signature tsd-kind-icon">EMBER_<wbr>BASE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;const getApp &#x3D; ${(() &#x3D;&gt; {// @ts-ignoreconst {Namespace, Application} &#x3D; window[&quot;Ember&quot;];return Namespace.NAMESPACES.find((namespace: any) &#x3D;&gt; (namespace instanceof Application));}).toString()};const getContainer &#x3D; () &#x3D;&gt; getApp().__container__;const getQueryCache &#x3D; () &#x3D;&gt; getContainer().lookup(&quot;service:query-cache&quot;);&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4f84ed0/src/kitsu/utils.ts#L32">kitsu/utils.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/8194a2b/src/kitsu/utils.ts#L32">kitsu/utils.ts:32</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -129,7 +129,7 @@
 					<div class="tsd-signature tsd-kind-icon">GET_<wbr>PROGRESS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;return await new Promise(${(// @ts-ignoreres &#x3D;&gt; getQueryCache().query(&quot;library-entry&quot;, {filter: {animeId: &quot;{{animeId}}&quot;, userId: &quot;{{userId}}&quot;}}).then((records: any) &#x3D;&gt; {const entry &#x3D; records.firstObject;res(entry.progress);}).catch((reason: any) &#x3D;&gt; res(reason))).toString()});&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4f84ed0/src/kitsu/utils.ts#L83">kitsu/utils.ts:83</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/8194a2b/src/kitsu/utils.ts#L83">kitsu/utils.ts:83</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -139,7 +139,7 @@
 					<div class="tsd-signature tsd-kind-icon">SET_<wbr>PROGRESS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;return await new Promise(${(// @ts-ignoreres &#x3D;&gt; getQueryCache().query(&quot;library-entry&quot;, {filter: {animeId: &quot;{{animeId}}&quot;, userId: &quot;{{userId}}&quot;}}).then((records: any) &#x3D;&gt; {const entry &#x3D; records.firstObject;entry.set(&quot;progress&quot;, &quot;{{progress}}&quot;);return entry.save();}).then(() &#x3D;&gt; res(true)).catch((reason: any) &#x3D;&gt; res(reason))).toString()});&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4f84ed0/src/kitsu/utils.ts#L58">kitsu/utils.ts:58</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/8194a2b/src/kitsu/utils.ts#L58">kitsu/utils.ts:58</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -156,7 +156,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4f84ed0/src/kitsu/utils.ts#L53">kitsu/utils.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/8194a2b/src/kitsu/utils.ts#L53">kitsu/utils.ts:53</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -173,7 +173,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4f84ed0/src/kitsu/utils.ts#L131">kitsu/utils.ts:131</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/8194a2b/src/kitsu/utils.ts#L131">kitsu/utils.ts:131</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/kitsu.kitsuanimeinfo.html" class="tsd-signature-type">KitsuAnimeInfo</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -190,7 +190,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4f84ed0/src/kitsu/utils.ts#L96">kitsu/utils.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/8194a2b/src/kitsu/utils.ts#L96">kitsu/utils.ts:96</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -216,7 +216,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4f84ed0/src/kitsu/utils.ts#L8">kitsu/utils.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/8194a2b/src/kitsu/utils.ts#L8">kitsu/utils.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -251,7 +251,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4f84ed0/src/kitsu/utils.ts#L73">kitsu/utils.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/8194a2b/src/kitsu/utils.ts#L73">kitsu/utils.ts:73</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -280,7 +280,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4f84ed0/src/kitsu/utils.ts#L45">kitsu/utils.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/8194a2b/src/kitsu/utils.ts#L45">kitsu/utils.ts:45</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
