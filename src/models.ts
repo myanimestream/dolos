@@ -3,6 +3,8 @@
  */
 
 /** @ignore */
+import {AnimeInfo} from "dolos/grobber";
+
 export enum Language {
     ENGLISH = "en",
     GERMAN = "de",
@@ -43,3 +45,16 @@ export interface StoredAnimeInfo {
 }
 
 export const DEFAULT_STORED_ANIME_INFO: StoredAnimeInfo = {};
+
+export interface AnimeSubscriptionInfo {
+    serviceID: string;
+    identifier: string;
+    episodesWatched: number;
+    animeURL: string;
+    nextEpisodeURL: string;
+    anime: AnimeInfo;
+}
+
+export interface SubscribedAnimes {
+    [identifer: string]: AnimeSubscriptionInfo;
+}

@@ -99,8 +99,12 @@ export class Client extends Memory {
         return resp.anime;
     }
 
+    /**
+     * Get the Anime info for the given uid.
+     *
+     * @throws [[GrobberRequestError]] - When there was an error with the request.
+     */
     async getAnimeInfo(uid: string): Promise<AnimeInfo> {
-        console.log(this, uid);
         return await this.performAnimeRequest(
             "/anime/",
             [["uid", uid]],

@@ -2,55 +2,65 @@
  * @module background
  */
 
-import {hasNewEpisode$} from "dolos/background/observables";
 import {AnimeInfo, GrobberClient} from "dolos/grobber";
 import AsyncLock from "dolos/lock";
+import {AnimeSubscriptionInfo, SubscribedAnimes} from "dolos/models";
 import Store from "dolos/store";
+import {hasNewEpisode$} from "./observables";
 
-export interface NewEpisodeEvent {
-    anime: AnimeInfo;
-    previousEpisodes: number | null;
+/** Event emitted if there is a new episode */
+export interface NewEpisodeEvent extends AnimeSubscriptionInfo {
+    subscribedAnimes: SubscribedAnimes;
+    unseenEpisodes: number;
 }
 
+/**
+ * Check all Anime stored in [[Store.getSubscribedAnimes]] for updates.
+ * Emits [[NewEpisodeEvent]] through [[hasNewEpisode$]] if a new episode was found.
+ */
 async function checkAnimeUpdate() {
-    const activeUIDs = await Store.getSubscribedAnimeUIDs();
-    activeUIDs["a-tobeheroine-masteranime-en"] = null;
-    activeUIDs["a-boogiepopwawarawanai_28_2019_29_-nineanime-en"] = null;
+    const subscribedAnimes = await Store.getSubscribedAnimes();
 
-    console.log("checking", activeUIDs.ownKeys().length, "animes!"); // rem
-    // @ts-ignore
-    const animeInfos = await Promise.all((activeUIDs.ownKeys().map((uid: string) => GrobberClient.getAnimeInfo(uid))));
+    // there's absolutely no rush, so let's do it sequentially!
+    for (const animeSubscription of Object.values(subscribedAnimes)) {
+        const oldAnime = animeSubscription.anime;
+        const uid = oldAnime.uid;
 
-    for (const anime of animeInfos) {
-        const uid = anime.uid;
-        const previousAnime = activeUIDs[uid];
-
-        if (previousAnime === undefined) {
-            console.warn("Couldn't find matching anime for", anime);
+        let newAnime: AnimeInfo;
+        try {
+            newAnime = await GrobberClient.getAnimeInfo(uid);
+        } catch (e) {
+            console.error("Couldn't get anime info", e);
             continue;
         }
 
-        if (!previousAnime || anime.episodes != previousAnime.episodes) {
-            activeUIDs[uid] = anime;
+        if (newAnime.episodes >= oldAnime.episodes) {
+            animeSubscription.anime = newAnime;
 
-            const event = {
-                anime,
-                previousEpisodes: previousAnime && previousAnime.episodes,
+            const event: NewEpisodeEvent = {
+                ...animeSubscription,
+                subscribedAnimes,
+                unseenEpisodes: newAnime.episodes - animeSubscription.episodesWatched,
             };
-
-            console.log(event);
             hasNewEpisode$.next(event);
         }
     }
-
-    console.log("done"); // rem
 }
 
 const updateLock = new AsyncLock();
 
+/**
+ * Check for updates for subscribed Media.
+ * There can only be one check running at a given time.
+ *
+ * Performs:
+ * - [[checkAnimeUpdate]]
+ */
 export function performUpdateCheck() {
+    // don't check if there's already one ongoing
+    if (updateLock.isLocked()) return;
+
     updateLock.withLock(async () => {
-        console.log("HEEEY UPDATE TIME"); // rem
         await checkAnimeUpdate();
     }).catch(console.error);
 }

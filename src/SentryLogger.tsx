@@ -1,6 +1,5 @@
 /**
  * @module logging
- * @preferred
  */
 
 /** @ignore */
@@ -25,6 +24,15 @@ interface SentryLoggerState {
     eventId?: string;
 }
 
+/**
+ * A wrapper for React element which automatically catches and reports errors.
+ *
+ * When there is no error it just renders its children.
+ * If there is an error it displays an interface providing
+ * the user with the option to report this error.
+ *
+ * @see [[wrapSentryLogger]]
+ */
 class SentryLogger extends React.Component<SentryLoggerProps, SentryLoggerState> {
     constructor(props: SentryLoggerProps) {
         super(props);

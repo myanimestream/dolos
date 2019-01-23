@@ -119,6 +119,13 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         return false;
     }
 
+    async getAnimeURL(): Promise<string | undefined> {
+        const [animeID, animeSlug] = await Promise.all([this.getMALAnimeID(), this.getAnimeIdentifier()]);
+        if (!(animeID && animeSlug)) return;
+
+        return `https://myanimelist.net/anime/${animeID}/${animeSlug}`;
+    }
+
     async getEpisodeURL(episode: number): Promise<string> {
         const [animeId, slug] = await Promise.all([this.getMALAnimeID(), this.getAnimeIdentifier()]);
         return new URL(`/anime/${animeId}/${slug}/episode/${episode + 1}`, location.origin).toString();
@@ -196,5 +203,9 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         }
 
         this.injected(element);
+    }
+
+    async injectSubscribeButton(element: Element): Promise<void> {
+        return;
     }
 }

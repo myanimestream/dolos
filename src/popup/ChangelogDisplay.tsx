@@ -32,8 +32,8 @@ class ChangelogDisplay extends React.Component<ChangelogDisplayProps, ChangelogD
     constructor(props: ChangelogDisplayProps) {
         super(props);
         this.state = {
-            panelsOpen: new Set([Object.keys(CHANGELOG)[0]]),
-        }
+            panelsOpen: new Set([CHANGELOG.keys().next().value]),
+        };
     }
 
     togglePanel(key: string) {

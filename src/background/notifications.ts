@@ -6,102 +6,63 @@
  * @module background
  */
 
-/**
- * Event emitted for all interactions with the notification.
- *
- * @see [[NotificationButtonEvent]] for the event specific to buttons pressed.
- */
+/** ignore */
+import AsyncLock from "dolos/lock";
+import {fromEventPattern, Observable} from "rxjs";
+import {filter, first} from "rxjs/operators";
+
+
+/** Event emitted for all interactions with a notification. */
 export interface NotificationEvent {
-    notificationId: string;
+    notificationID: string;
+    /** Only set for ButtonClick events */
+    buttonIndex?: number;
 }
 
-/**
- * Event emitted when a user clicks a button.
- */
-export interface NotificationButtonEvent extends NotificationEvent {
-    buttonIndex: number;
+/** Build an Observable for the notification event `name`. */
+function getObservable(name: string): Observable<NotificationEvent> {
+    // @ts-ignore
+    const eventTarget = chrome.notifications[name] as chrome.events.Event<any>;
+
+    // because rxjs deprecated the resultSelector, wrap the handler in a
+    // function which creates the NotificationEvent we want. Return the wrapper function
+    // so that the removeHandler function can access it and remove it.
+    const addHandler = (handler: Function) => {
+        const wrapper = (notificationID: string, buttonIndex?: number) => handler({notificationID, buttonIndex});
+        eventTarget.addListener(wrapper);
+
+        return wrapper;
+    };
+    // the handler function was wrapped, we need to remove the wrapped function
+    const removeHandler = (_: Function, wrapped: Function) => eventTarget.removeListener(wrapped);
+
+    return fromEventPattern(addHandler, removeHandler);
 }
 
-/**
- * Type of a notification event listener. It receives only the [[NotificationEvent]] as an argument.
- */
-type NotificationListener<T extends NotificationEvent> = (event: T) => void;
+export const onClicked$ = getObservable("onClicked");
+export const onButtonClicked$ = getObservable("onButtonClicked");
+export const onClosed$ = getObservable("onClosed");
 
-/** @ignore */
-const eventListeners: { [key: string]: NotificationListener<any>[] } = {
-    "clicked": [],
-    "buttonClicked": [],
-    "closed": [],
-};
+/** [[AsyncLock]] used to trigger notifications sequentially. */
+export const notificationLock = new AsyncLock();
 
 /**
- * Add an event listener for notification events.
+ * Low-level function to show a notification.
+ * The difference between this function and just straight up calling chrome.notifications.create is that
+ * it uses the [[notificationLock]] to make sure only one notification is shown at a time.
  *
- * This is basically just a wrapper around `chrome.notifications`,
- * but it's structured differently.
- * The events are named "clicked", "buttonClicked", and "closed" and the [[NotificationListener]]
- * only takes one argument, a [[NotificationEvent]].
+ * @see [[BrowserNotification]] for a higher level approach to notifications.
  */
-function addEventListener(type: string, listener: NotificationListener<any>): void {
-    eventListeners[type].push(listener);
-}
+export async function createNotification(options: chrome.notifications.NotificationOptions): Promise<string> {
+    return new Promise(async (res: (id: string) => void) => {
+        await notificationLock.withLock(async () => {
+            const id = await new Promise((res: (id: string) => void) => chrome.notifications.create(options, res));
+            res(id);
 
-/**
- * Remove an event listener again.
- *
- * @param listener - Listener to remove. If not specified remove all listeners for the given type.
- */
-function removeEventListener(type: string, listener?: NotificationListener<any>): void {
-    const listeners = eventListeners[type];
-
-    if (listener) {
-        const index = listeners.indexOf(listener);
-        listeners.splice(index);
-    } else {
-        while (listeners.pop()) {
-        }
-    }
-}
-
-/** @ignore */
-function dispatchEvent(type: string, event: NotificationEvent): void {
-    const listeners = eventListeners[type];
-    if (listeners) {
-        listeners.forEach(listener => listener(event));
-    }
-}
-
-chrome.notifications.onClicked.addListener(notificationId =>
-    dispatchEvent("clicked", {notificationId,}));
-
-chrome.notifications.onClosed.addListener(notificationId =>
-    dispatchEvent("closed", {notificationId,}));
-
-chrome.notifications.onButtonClicked.addListener((notificationId, buttonIndex) =>
-    dispatchEvent("buttonClicked", {notificationId, buttonIndex} as NotificationButtonEvent));
-
-export interface NotificationEventTarget {
-    addEventListener(type: string, listener: NotificationListener<any>): void;
-
-    removeEventListener(type: string, listener?: NotificationListener<any>): void;
-}
-
-class NotificationEventTargetProxy<T extends NotificationEvent> {
-    private readonly target: NotificationEventTarget;
-    private readonly type: string;
-
-    constructor(target: NotificationEventTarget, type: string) {
-        this.target = target;
-        this.type = type;
-    }
-
-    addEventListener(listener: NotificationListener<T>): void {
-        this.target.addEventListener(this.type, listener);
-    }
-
-    removeEventListener(listener?: NotificationListener<T>): void {
-        this.target.removeEventListener(this.type, listener);
-    }
+            // wait for the notification to close and then release the lock
+            await onClosed$.pipe(first(e => e.notificationID == id)).toPromise();
+        });
+    });
 }
 
 /**
@@ -112,14 +73,8 @@ class NotificationEventTargetProxy<T extends NotificationEvent> {
  *
  * @see [[BrowserNotification.create]] to create a new notification and wrap it with a BrowserNotification.
  */
-export class BrowserNotification implements NotificationEventTarget {
+export class BrowserNotification {
     readonly id: string;
-
-    readonly onClicked: NotificationEventTargetProxy<NotificationEvent>;
-    readonly onButtonClicked: NotificationEventTargetProxy<NotificationButtonEvent>;
-    readonly onClosed: NotificationEventTargetProxy<NotificationEvent>;
-
-    private listenersAdded: { [key: string]: Set<NotificationListener<any>> };
 
     /**
      * Create a new BrowserNotification around the notification denoted by id.
@@ -129,87 +84,36 @@ export class BrowserNotification implements NotificationEventTarget {
      */
     constructor(id: string) {
         this.id = id;
+    }
 
-        this.onClicked = new NotificationEventTargetProxy(this, "clicked");
-        this.onButtonClicked = new NotificationEventTargetProxy(this, "buttonClicked");
-        this.onClosed = new NotificationEventTargetProxy(this, "closed");
+    get onClicked$(): Observable<NotificationEvent> {
+        return onClicked$.pipe(filter(ev => ev.notificationID === this.id));
+    }
 
-        this.onClosed.addEventListener(() => this.cleanup);
+    get onButtonClicked$(): Observable<NotificationEvent> {
+        return onButtonClicked$.pipe(filter(ev => ev.notificationID === this.id));
+    }
+
+    get onClosed$(): Observable<NotificationEvent> {
+        return onClosed$.pipe(filter(ev => ev.notificationID === this.id));
     }
 
     /**
      * Create a new notification and return it wrapped in a BrowserNotification instance.
      */
     static async create(options: chrome.notifications.NotificationOptions): Promise<BrowserNotification> {
-        return new Promise((res: (id: string) => void) => chrome.notifications.create(options, res))
-            .then((id: string) => new BrowserNotification(id));
+        const id = await createNotification(options);
+        return new BrowserNotification(id);
     }
 
-    /**
-     * Update the notification.
-     */
+    /** Update the notification. */
     async update(options: chrome.notifications.NotificationOptions): Promise<boolean> {
         return new Promise((res: (wasUpdated: boolean) => void) =>
             chrome.notifications.update(this.id, options, res));
     }
 
-    /**
-     * Clear the notification.
-     */
-    async clear(): Promise<boolean> {
-        return new Promise((res: (wasUpdated: boolean) => void) =>
-            chrome.notifications.clear(this.id, res));
-    }
-
-    /**
-     * Add an event listener for this notification.
-     */
-    addEventListener(type: string, listener: NotificationListener<any>): void {
-        addEventListener(type, listener);
-        let listeners = this.listenersAdded[type];
-        if (!listeners)
-            listeners = this.listenersAdded[type] = new Set();
-
-        listeners.add(listener);
-    }
-
-    /**
-     * Remove an event listener.
-     *
-     * @param listener - Listener to remove. If not specified, remove all listeners for type.
-     */
-    removeEventListener(type: string, listener?: NotificationListener<any>): void {
-        if (listener) {
-            removeEventListener(type, listener);
-            this.listenersAdded[type].delete(listener);
-        } else this.removeAllListeners(type);
-    }
-
-    /**
-     * Remove all listeners.
-     *
-     * @param type - Listener type to remove. If not specified remove all listeners regardless of type.
-     */
-    removeAllListeners(type?: string): void {
-        let listeners;
-        if (type) {
-            listeners = this.listenersAdded[type];
-            if (listeners) {
-                listeners.forEach(listener => removeEventListener(type, listener));
-                delete this.listenersAdded[type];
-            }
-        } else {
-            Object.entries(this.listenersAdded)
-                .forEach(([type, listeners]) =>
-                    listeners.forEach(listener =>
-                        removeEventListener(type, listener)
-                    )
-                );
-            this.listenersAdded = {};
-        }
-    }
-
-    private cleanup() {
-        this.removeAllListeners();
+    /** Wait until the notification is closed */
+    async waitClosed(): Promise<void> {
+        await this.onClosed$.pipe(first()).toPromise();
     }
 }

@@ -1,11 +1,13 @@
 /**
  * @module logging
+ * @preferred
  */
 
 /** @ignore */
 import * as Sentry from "@sentry/browser";
 import {getVersion} from "./info";
 
+/** Sentry release */
 const release = `dolos@${getVersion()}`;
 
 Sentry.init({

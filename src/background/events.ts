@@ -2,9 +2,9 @@
  * @module background
  */
 
-import axios from "axios";
-import {GrobberClient} from "dolos/grobber";
-import {BrowserNotification, NotificationButtonEvent} from "./notifications";
+import {Episode, GrobberClient} from "dolos/grobber";
+import {getBlobURL} from "dolos/utils";
+import {BrowserNotification} from "./notifications";
 import * as state from "./observables";
 import {performUpdateCheck} from "./update-check";
 import Alarm = chrome.alarms.Alarm;
@@ -38,18 +38,19 @@ state.hasNewVersion$.subscribe(
     val => chrome.browserAction.setBadgeText({text: val ? _("ext_badge__new_version") : ""})
 );
 
-async function getBlobURL(url: string): Promise<string> {
-    const resp = await axios.get(url, {responseType: "blob"});
-    return URL.createObjectURL(resp.data);
-}
-
 state.hasNewEpisode$.subscribe(async e => {
     const anime = e.anime;
-    const epDiff = anime.episodes - (e.previousEpisodes || 0);
-    const nextEpisodeIndex = e.previousEpisodes || anime.episodes - 1;
+    const nextEpisodeIndex = Math.min(e.episodesWatched, anime.episodes - 1);
 
     const getEpisodePoster = async () => {
-        const episode = await GrobberClient.getEpisode(anime.uid, nextEpisodeIndex);
+        let episode: Episode;
+        try {
+            episode = await GrobberClient.getEpisode(anime.uid, nextEpisodeIndex);
+        } catch (e) {
+            console.warn("Couldn't get episode", nextEpisodeIndex + 1, "for", e);
+            return;
+        }
+
         const poster = episode.poster;
         if (poster) return await getBlobURL(poster);
         else return;
@@ -62,7 +63,7 @@ state.hasNewEpisode$.subscribe(async e => {
         title: anime.title,
         iconUrl: thumbnail,
         imageUrl: poster,
-        message: _("notification__new_episodes", [epDiff]),
+        message: _("notification__new_episodes", [e.unseenEpisodes]),
         contextMessage: _("ext_name"),
         buttons: [
             {title: _("notification__new_episodes__watch"), iconUrl: "img/play_arrow.svg"},
@@ -70,5 +71,17 @@ state.hasNewEpisode$.subscribe(async e => {
         ],
     });
 
-    notification.onButtonClicked.addEventListener((event: NotificationButtonEvent) => console.log(event));
+    const sub = notification.onButtonClicked$.subscribe(event => {
+        switch (event.buttonIndex) {
+            case 0:
+                chrome.tabs.create({url: e.nextEpisodeURL,});
+                break;
+            case 1:
+                delete e.subscribedAnimes[e.identifier];
+                break;
+        }
+    });
+
+    await notification.waitClosed();
+    sub.unsubscribe();
 });

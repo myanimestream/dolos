@@ -2,12 +2,14 @@
  * @module common.pages
  */
 
+import SubscriptionToggle from "dolos/common/components/SubscriptionToggle";
 import {AnimeInfo, GrobberClient, GrobberErrorType} from "dolos/grobber";
 import {StoredAnimeInfo} from "dolos/models";
 import {getThemeFor} from "dolos/theme";
 import {reactRenderWithTheme} from "dolos/utils";
 import * as React from "react";
 import * as rxjs from "rxjs";
+import {Observable} from "rxjs";
 import {cacheInMemory} from "../../memory";
 import {ContinueWatchingButton} from "../components";
 import Service from "../service";
@@ -110,6 +112,38 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         }
     }
 
+    async getSubscribed$(): Promise<Observable<boolean> | undefined> {
+        const identifier = await this.getAnimeIdentifier();
+        if (!identifier) return;
+
+        return await this.state.getSubscribed$(identifier);
+    }
+
+    async subscribeAnime(): Promise<boolean> {
+        let [identifier, animeURL, episodesWatched, anime] = await Promise.all([
+            this.getAnimeIdentifier(), this.getAnimeURL(), this.getEpisodesWatched(), this.getAnime()
+        ]);
+
+
+        if (!(identifier && animeURL && anime)) {
+            return false;
+        }
+
+        episodesWatched = episodesWatched || 0;
+        const nextEpisodeURL = await this.getEpisodeURL(episodesWatched);
+
+        await this.state.subscribeAnime(identifier, animeURL, nextEpisodeURL, episodesWatched, anime);
+        return true;
+    }
+
+    async unsubscribeAnime(): Promise<boolean> {
+        const identifier = await this.getAnimeIdentifier();
+        if (!identifier) return false;
+
+        await this.state.unsubscribeAnime(identifier);
+        return true;
+    }
+
     /**
      * Sanity check whether it should be possible to set the "progress" of an Anime.
      */
@@ -123,6 +157,8 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
      */
     abstract async _setEpisodesWatched(progress: number): Promise<boolean>;
 
+    abstract async getAnimeURL(): Promise<string | undefined>;
+
     abstract async getEpisodeURL(episodeIndex: number): Promise<string>;
 
     /**
@@ -133,11 +169,6 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
     abstract async getEpisodesWatched(): Promise<number | undefined>;
 
     abstract async getEpisodeCount(): Promise<number | undefined>;
-
-    /**
-     * Inject the continue watching button.
-     */
-    abstract async injectContinueWatchingButton(element: Element): Promise<void>;
 
     async setEpisodesWatched(progress: number): Promise<boolean> {
         const success = await this._setEpisodesWatched(progress);
@@ -156,6 +187,11 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
     }
 
     /**
+     * Inject the continue watching button.
+     */
+    abstract async injectContinueWatchingButton(element: Element): Promise<void>;
+
+    /**
      * Build and inject a continue watching button into the site.
      */
     async showContinueWatchingButton() {
@@ -170,8 +206,28 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         await this.injectContinueWatchingButton(el);
     }
 
+    /**
+     * Inject the subscribe button.
+     */
+    abstract async injectSubscribeButton(element: Element): Promise<void>;
+
+    async showSubscribeButton() {
+        const el = document.createElement("div");
+
+        reactRenderWithTheme(
+            React.createElement(SubscriptionToggle, {animePage: this}),
+            getThemeFor(this.state.serviceId),
+            el
+        );
+
+        await this.injectSubscribeButton(el);
+    }
+
     async _load() {
-        await this.showContinueWatchingButton();
+        await Promise.all([
+            this.showContinueWatchingButton(),
+            this.showSubscribeButton()
+        ]);
     }
 
     async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | void> {

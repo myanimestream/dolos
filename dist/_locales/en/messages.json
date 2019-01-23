@@ -42,6 +42,9 @@
   "popup__nav__home": {
     "message": "Home"
   },
+  "popup__nav__subscriptions": {
+    "message": "Subscriptions"
+  },
   "popup__nav__changelog": {
     "message": "Changelog"
   },
@@ -179,6 +182,12 @@
   "anime__continue_watching__anime_unknown": {
     "message": "Couldn't load Anime"
   },
+  "anime__subscribe": {
+    "message": "Subscribe"
+  },
+  "anime__unsubscribe": {
+    "message": "Unsubscribe"
+  },
   "episode__skip_next": {
     "message": "Next Episode"
   },
@@ -231,5 +240,11 @@
         "content": "$1"
       }
     }
+  },
+  "notification__new_episodes__watch": {
+    "message": "Watch"
+  },
+  "notification__new_episodes__unsubscribe": {
+    "message": "Unsubscribe"
   }
 }

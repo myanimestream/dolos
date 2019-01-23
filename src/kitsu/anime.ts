@@ -51,6 +51,13 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return results[0].id;
     }
 
+    async getAnimeURL(): Promise<string | undefined> {
+        const animeID = await this.getAnimeIdentifier();
+        if (!animeID) return;
+
+        return `https://kitsu.io/anime/${animeID}`;
+    }
+
     async _retryGetKitsuAnimeInfo(retryInterval: number): Promise<KitsuAnimeInfo> {
         let anime;
         while (true) {
@@ -136,6 +143,13 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
     async injectContinueWatchingButton(element: Element) {
         element.setAttribute("style", "margin-top: 16px");
 
+        (await waitUntilExists("span.media-poster"))
+            .insertAdjacentElement("afterend", element);
+
+        this.injected(element);
+    }
+
+    async injectSubscribeButton(element: Element): Promise<void> {
         (await waitUntilExists("span.media-poster"))
             .insertAdjacentElement("afterend", element);
 

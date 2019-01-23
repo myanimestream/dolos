@@ -19,6 +19,7 @@ export enum GrobberErrorType {
 
 export class GrobberResponseError extends Error {
     name: GrobberErrorType;
+    /** Indicates that the error had nothing to do with Grobber */
     clientError: boolean;
 
     constructor(name: GrobberErrorType, msg: string, clientError: boolean) {

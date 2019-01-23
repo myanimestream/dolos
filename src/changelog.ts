@@ -14,7 +14,9 @@ type Change = string;
 interface Changelog {
     get(version: string): Change[];
 
-    entries(): IterableIterator<[string, Change[]]>
+    keys(): IterableIterator<string>;
+
+    entries(): IterableIterator<[string, Change[]]>;
 }
 
 /**
@@ -23,7 +25,7 @@ interface Changelog {
  */
 const CHANGELOG: Changelog = new Map([
     ["0.2.0", [
-        `Show notifications for new episodes. Hey, read it again, THIS IS HUGE!`
+        `Show notifications for new episodes. Hey, read it again, **THIS IS HUGE!**`
     ]],
     ["0.1.1", [
         `Firefox Bugs have been fixed which means that it's now on the same level as the Chrome extension.`,

@@ -10,12 +10,19 @@ export interface Namespace<VT = any> {
     [key: string]: Namespace<VT>;
 }
 
+/**
+ * Like [[enterNamespace]] but instead of returning the [[Namespace]] `namespace` it returns its parent
+ * namespace and the key that would lead to the `namespace` namespace.
+ */
 export function enterParentNamespace<T>(start: Namespace<T>, namespace: string | string[]): [Namespace<T>, string] {
     const parts = Array.isArray(namespace) ? namespace : namespace.split(".");
     const key = parts.pop() as string;
     return [enterNamespace(start, parts), key];
 }
 
+/**
+ * Get the namespace described by `namespace` relative to the `start` namespace.
+ */
 export function enterNamespace<T>(start: Namespace<T>, namespace: string | string[]): Namespace<T> {
     let target = start;
 
@@ -34,6 +41,33 @@ export function enterNamespace<T>(start: Namespace<T>, namespace: string | strin
     return target;
 }
 
+/**
+ * Get an object literal representing the flattened namespace.
+ * The namespace is flattened by combining the keys with a period.
+ *
+ * @example
+ * ```typescript
+ *
+ * const ns = {a: {
+ *      b: {
+ *          c: 5,
+ *          d: 6
+ *      },
+ *      e: 7,
+ *      __value: 8
+ * }};
+ *
+ * const flat = flattenNamespace(ns);
+ *
+ * // true
+ * flat === {
+ *     "a.b.c": 5,
+ *     "a.b.d": 6,
+ *     "a.e": 7,
+ *     "a": 8,
+ * };
+ * ```
+ */
 export function flattenNamespace<T>(ns: Namespace<T>): { [key: string]: T } {
     const result = {};
 
@@ -53,10 +87,16 @@ export function flattenNamespace<T>(ns: Namespace<T>): { [key: string]: T } {
     return result;
 }
 
+/**
+ * Type of a [[Namespace]] using [[NamespaceTraps]] to grant easy access to its values.
+ */
 export interface ProxiedNamespace<VT = any> {
     [key: string]: VT;
 }
 
+/**
+ * Traps passed to the Proxy for Namespace objects.
+ */
 export const NamespaceTraps: ProxyHandler<Namespace> = {
     get<T>(target: Namespace<T>, p: PropertyKey, receiver?: any): T {
         if (typeof p === "string")
@@ -84,6 +124,9 @@ export const NamespaceTraps: ProxyHandler<Namespace> = {
     }
 };
 
+/**
+ * @see [[HasMemory]] for an implementation.
+ */
 export interface HasMemory<T extends Memory = any> {
     memory: Namespace;
     remember: (key: string, value: any) => void;
@@ -122,11 +165,17 @@ export class Memory implements HasMemory {
     }
 }
 
+/**
+ * @see [[ElementMemory]] for an implementation.
+ */
 export interface HasElementMemory<T extends ElementMemory = any> {
     injected: (el: Element, ns: string) => void;
     removeInjected: (...namespaces: string[]) => void;
 }
 
+/**
+ * [[Memory]] that can also keep track of injected DOM elements.
+ */
 export class ElementMemory extends Memory implements HasElementMemory {
     private readonly internalInjectedMemory: Namespace<Element[]>;
     private readonly injectedMemory: ProxiedNamespace<Element[]>;
@@ -139,6 +188,7 @@ export class ElementMemory extends Memory implements HasElementMemory {
     }
 
 
+    /** Keep track of the given element such that it can be removed later. */
     injected(el: Element, ns?: string) {
         ns = ns || "global";
         const elements = this.injectedMemory[ns];
@@ -147,6 +197,10 @@ export class ElementMemory extends Memory implements HasElementMemory {
         else this.injectedMemory[ns] = [el];
     }
 
+    /**
+     * Remove all elements from the given namespaces.
+     * If no namespaces provided removes all elements.
+     */
     removeInjected(...namespaces: string[]) {
         namespaces = namespaces.length > 0 ? namespaces : Object.keys(this.injectedMemory);
 
@@ -161,6 +215,9 @@ export class ElementMemory extends Memory implements HasElementMemory {
     }
 }
 
+/**
+ * Decorator to cache the result of a nullary method.
+ */
 export function cacheInMemory(name?: string) {
     return function (target: Object & HasMemory, propertyKey: string, descriptor: PropertyDescriptor) {
         const keyName: string = name || `${target.constructor.name}-${propertyKey}`;

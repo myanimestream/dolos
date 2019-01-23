@@ -17,7 +17,6 @@ import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import Toolbar from "@material-ui/core/Toolbar";
 import withMobileDialog, {InjectedProps as WithMobileDialog} from "@material-ui/core/withMobileDialog";
 import SearchIcon from "@material-ui/icons/Search";
-// @ts-ignore
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import {AnimeInfo, GrobberClient} from "dolos/grobber";
 import * as React from "react";

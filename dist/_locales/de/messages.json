@@ -20,6 +20,9 @@
   "language__de": {
     "message": "Deutsch"
   },
+  "popup__nav__subscriptions": {
+    "message": "Abonnements"
+  },
   "popup__nav__settings": {
     "message": "Einstellungen"
   },
@@ -134,6 +137,12 @@
   "anime__continue_watching__anime_unknown": {
     "message": "Anime konnte nicht geladen werden"
   },
+  "anime__subscribe": {
+    "message": "Abonnieren"
+  },
+  "anime__unsubscribe": {
+    "message": "Deabonnieren"
+  },
   "episode__skip_next": {
     "message": "Nächste Episode"
   },
@@ -186,5 +195,11 @@
         "content": "$1"
       }
     }
+  },
+  "notification__new_episodes__watch": {
+    "message": "Ansehen"
+  },
+  "notification__new_episodes__unsubscribe": {
+    "message": "Deabonnieren"
   }
 }

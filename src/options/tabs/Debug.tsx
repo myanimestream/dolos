@@ -16,7 +16,6 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 import CheckIcon from "@material-ui/icons/Check";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import WifiIcon from "@material-ui/icons/Wifi";
-// @ts-ignore
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import axios from "axios";
 import * as React from "react";

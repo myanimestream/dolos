@@ -41,7 +41,7 @@ export default class AsyncLock {
         this.shiftQueue(key);
     }
 
-    async withLock<T>(callback: (lock?: AsyncLock) => PromiseLike<T>, key?: string | string[]): Promise<T> {
+    async withLock<T>(callback: (lock?: AsyncLock) => PromiseLike<T> | T, key?: string | string[]): Promise<T> {
         await this.acquire(key);
         try {
             return await Promise.resolve(callback(this));

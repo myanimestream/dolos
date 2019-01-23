@@ -2,6 +2,9 @@
  * @module common
  */
 
+import {AnimeInfo} from "dolos/grobber";
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
 import {ElementMemory} from "../memory";
 import {Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
@@ -60,7 +63,34 @@ export default class State<T extends Service> extends ElementMemory {
     }
 
     async getStoredAnimeInfo(identifier: string): Promise<StoredAnimeInfo> {
-        return Store.getStoredAnimeInfo(this.serviceId, identifier);
+        return await Store.getStoredAnimeInfo(this.serviceId, identifier);
+    }
+
+    /**
+     * Get an observable which keeps track of whether the user is subscribed to the Anime
+     * It immediately pushes the current state to the observer.
+     */
+    async getSubscribed$(identifier: string): Promise<Observable<boolean>> {
+        const subscribed = await Store.getSubscribedAnimes();
+        return subscribed.value$.pipe(map(sub => identifier in sub));
+    }
+
+    async subscribeAnime(identifier: string, animeURL: string, nextEpisodeURL: string, episodesWatched: number, anime: AnimeInfo): Promise<void> {
+        const subscribed = await Store.getSubscribedAnimes();
+        subscribed[identifier] = {
+            serviceID: this.serviceId,
+            anime,
+            identifier,
+            episodesWatched,
+            animeURL,
+            nextEpisodeURL,
+        };
+    }
+
+    // noinspection JSMethodCanBeStatic
+    async unsubscribeAnime(identifier: string): Promise<void> {
+        const subscribed = await Store.getSubscribedAnimes();
+        delete subscribed[identifier];
     }
 }
 

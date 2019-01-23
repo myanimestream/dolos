@@ -7,6 +7,7 @@
 /** @ignore */
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import axios from "axios";
 import {NewEpisodeEvent} from "dolos/background/update-check";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -99,4 +100,12 @@ export function reactRenderWithTheme(component: React.ReactNode, theme: Theme, r
  */
 export interface Type<T> extends Function {
     new(...args: any[]): T;
+}
+
+/**
+ * Download the data and return a url pointing to it.
+ */
+export async function getBlobURL(url: string): Promise<string> {
+    const resp = await axios.get(url, {responseType: "blob"});
+    return URL.createObjectURL(resp.data);
 }

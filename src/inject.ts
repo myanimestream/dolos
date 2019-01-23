@@ -105,7 +105,7 @@ run().then(value => pushResult(value, "data-result"),
 /**
  * Options for injections.
  */
-interface InjectOptions {
+export interface InjectOptions {
     /**
      * Element to append the script element to. Defaults to the document body.
      */
