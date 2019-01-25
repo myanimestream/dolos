@@ -2,16 +2,15 @@
  * @module common.pages
  */
 
-import SubscriptionToggle from "dolos/common/components/SubscriptionToggle";
 import {AnimeInfo, GrobberClient, GrobberErrorType} from "dolos/grobber";
+import {cacheInMemory} from "dolos/memory";
 import {StoredAnimeInfo} from "dolos/models";
 import {getThemeFor} from "dolos/theme";
 import {reactRenderWithTheme} from "dolos/utils";
 import * as React from "react";
-import * as rxjs from "rxjs";
-import {Observable} from "rxjs";
-import {cacheInMemory} from "../../memory";
-import {ContinueWatchingButton} from "../components";
+import {BehaviorSubject, Observable} from "rxjs";
+import {first} from "rxjs/operators";
+import {AnimeStatusBar} from "../components";
 import Service from "../service";
 import ServicePage from "../service-page";
 import EpisodePage from "./episode";
@@ -22,7 +21,7 @@ import EpisodePage from "./episode";
  * It displays a continue watching button.
  */
 export default abstract class AnimePage<T extends Service> extends ServicePage<T> {
-    private _episodesWatched$?: rxjs.BehaviorSubject<number | undefined>;
+    private _episodesWatched$?: BehaviorSubject<number | undefined>;
 
     /**
      * Get the search query to be used for Grobber's search endpoint.
@@ -58,6 +57,7 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
      */
     async getAnimeUID(forceSearch?: boolean): Promise<string | undefined> {
         const animeInfo = await this.getStoredAnimeInfo();
+
         if (animeInfo.uid && !forceSearch)
             return animeInfo.uid;
 
@@ -69,6 +69,7 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         if (!results) return;
 
         const uid = results[0].anime.uid;
+        console.log("setting anime uid");
         animeInfo.uid = uid;
 
         return uid;
@@ -112,6 +113,13 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         }
     }
 
+    async isSubscribed(): Promise<boolean | undefined> {
+        const subscribed$ = await this.getSubscribed$();
+        if (!subscribed$) return;
+        // should behave like a behavioursubject so the value should return right away.
+        return await subscribed$.pipe(first()).toPromise();
+    }
+
     async getSubscribed$(): Promise<Observable<boolean> | undefined> {
         const identifier = await this.getAnimeIdentifier();
         if (!identifier) return;
@@ -144,6 +152,12 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return true;
     }
 
+    async handleAnimeFinished(): Promise<void> {
+        if (await this.isSubscribed()) {
+            await this.unsubscribeAnime();
+        }
+    }
+
     /**
      * Sanity check whether it should be possible to set the "progress" of an Anime.
      */
@@ -172,62 +186,39 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
 
     async setEpisodesWatched(progress: number): Promise<boolean> {
         const success = await this._setEpisodesWatched(progress);
-        if (success) (await this.getEpisodesWatched$()).next(progress);
+        if (success && this._episodesWatched$)
+            this._episodesWatched$.next(progress);
 
         return success;
     }
 
-    async getEpisodesWatched$(): Promise<rxjs.BehaviorSubject<number | undefined>> {
+    async getEpisodesWatched$(): Promise<BehaviorSubject<number | undefined>> {
         if (!this._episodesWatched$) {
             const episodesWatched = await this.getEpisodesWatched();
-            this._episodesWatched$ = new rxjs.BehaviorSubject(episodesWatched);
+            this._episodesWatched$ = new BehaviorSubject(episodesWatched);
         }
 
         return this._episodesWatched$;
     }
 
-    /**
-     * Inject the continue watching button.
-     */
-    abstract async injectContinueWatchingButton(element: Element): Promise<void>;
+    abstract async injectAnimeStatusBar(statusBar: Element): Promise<void>;
 
-    /**
-     * Build and inject a continue watching button into the site.
-     */
-    async showContinueWatchingButton() {
+
+    async buildAnimeStatusBar(): Promise<Element> {
         const el = document.createElement("div");
 
         reactRenderWithTheme(
-            React.createElement(ContinueWatchingButton, {animePage: this}),
+            React.createElement(AnimeStatusBar, {animePage: this}),
             getThemeFor(this.state.serviceId),
             el
         );
 
-        await this.injectContinueWatchingButton(el);
-    }
-
-    /**
-     * Inject the subscribe button.
-     */
-    abstract async injectSubscribeButton(element: Element): Promise<void>;
-
-    async showSubscribeButton() {
-        const el = document.createElement("div");
-
-        reactRenderWithTheme(
-            React.createElement(SubscriptionToggle, {animePage: this}),
-            getThemeFor(this.state.serviceId),
-            el
-        );
-
-        await this.injectSubscribeButton(el);
+        return el;
     }
 
     async _load() {
-        await Promise.all([
-            this.showContinueWatchingButton(),
-            this.showSubscribeButton()
-        ]);
+        const statusBar = await this.buildAnimeStatusBar();
+        await this.injectAnimeStatusBar(statusBar);
     }
 
     async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | void> {

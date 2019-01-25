@@ -2,11 +2,11 @@
  * @module kitsu
  */
 
+import Kitsu from ".";
 import {cacheInStateMemory} from "../common";
 import {AnimePage} from "../common/pages";
 import {cacheInMemory} from "../memory";
 import {waitUntilExists, waitWithTimeout} from "../utils";
-import Kitsu from "./index";
 import {
     getAccessToken,
     getAnime,
@@ -140,16 +140,9 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return anime ? anime.episodeCount : undefined;
     }
 
-    async injectContinueWatchingButton(element: Element) {
+    async injectAnimeStatusBar(element: Element) {
         element.setAttribute("style", "margin-top: 16px");
 
-        (await waitUntilExists("span.media-poster"))
-            .insertAdjacentElement("afterend", element);
-
-        this.injected(element);
-    }
-
-    async injectSubscribeButton(element: Element): Promise<void> {
         (await waitUntilExists("span.media-poster"))
             .insertAdjacentElement("afterend", element);
 

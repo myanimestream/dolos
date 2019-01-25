@@ -20,14 +20,14 @@ const styles = (theme: Theme) => createStyles({
     }
 });
 
-interface ContinueWatchingButtonState {
+export interface ContinueWatchingButtonState {
     href?: string;
     onClick?: () => void;
     tooltip: string;
     disabled: boolean;
 }
 
-interface ContinueWatchingButtonProps extends WithStyles<typeof styles> {
+export interface ContinueWatchingButtonProps extends WithStyles<typeof styles> {
     animePage: AnimePage<any>;
 }
 
@@ -64,7 +64,7 @@ export default withStyles(styles)(class ContinueWatchingButton extends React.Com
             return;
         }
 
-        if (!(epsWatched || epsWatched === 0)) {
+        if (epsWatched === undefined) {
             this.setState({
                 tooltip: _("anime__continue_watching__unknown"),
                 disabled: true,

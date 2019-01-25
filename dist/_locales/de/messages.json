@@ -83,6 +83,15 @@
   "options__grobber__url__no_grobber": {
     "message": "Keine Grobber Antwort"
   },
+  "subscriptions__anime__subscription_header": {
+    "message": "Anime Abonnements"
+  },
+  "subscriptions__no_active_subscriptions": {
+    "message": "Keine aktiven Abonnements"
+  },
+  "subscriptions__remove_subscription": {
+    "message": "Deabonnieren"
+  },
   "anime__episode_count": {
     "message": "Episoden: $EPISODES$",
     "placeholders": {
@@ -140,8 +149,14 @@
   "anime__subscribe": {
     "message": "Abonnieren"
   },
+  "anime__subscribe__help": {
+    "message": "Werde informiert wenn eine neue Episode erscheint"
+  },
   "anime__unsubscribe": {
     "message": "Deabonnieren"
+  },
+  "anime__unsubscribe__help": {
+    "message": "Nicht mehr informieren wenn eine neue Episode erscheint"
   },
   "episode__skip_next": {
     "message": "Nächste Episode"

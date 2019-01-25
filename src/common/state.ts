@@ -28,6 +28,9 @@ export default class State<T extends Service> extends ElementMemory {
         return Store.getConfig();
     }
 
+    /**
+     * Reset state and reload current service page.
+     */
     async reload() {
         this.resetState();
         const page = this.page;
@@ -62,21 +65,43 @@ export default class State<T extends Service> extends ElementMemory {
         this.page = page;
     }
 
+    /**
+     * Get the stored [[StoredAnimeInfo]] for the provided identifier.
+     * The returned value is a StorageObject and thus can be used to alter
+     * the stored version directly.
+     *
+     * Even if nothing is stored, this method still returns an instance of [[StoredAnimeInfo]]
+     * which you may use to write to.
+     */
     async getStoredAnimeInfo(identifier: string): Promise<StoredAnimeInfo> {
-        return await Store.getStoredAnimeInfo(this.serviceId, identifier);
+        return await Store.getStoredAnimeInfo(this.serviceId, identifier, await this.config);
+    }
+
+    /**
+     * Build an identifier for the given MediaID.
+     *
+     * @see [[StaticStore.buildIdentifier]]
+     */
+    async buildIdentifier(mediaID: string): Promise<string> {
+        return await Store.buildIdentifier(this.serviceId, mediaID, await this.config);
     }
 
     /**
      * Get an observable which keeps track of whether the user is subscribed to the Anime
      * It immediately pushes the current state to the observer.
      */
-    async getSubscribed$(identifier: string): Promise<Observable<boolean>> {
-        const subscribed = await Store.getSubscribedAnimes();
+    async getSubscribed$(animeID: string): Promise<Observable<boolean>> {
+        const subscribed = await Store.getAnimeSubscriptions();
+        const identifier = await this.buildIdentifier(animeID);
+
         return subscribed.value$.pipe(map(sub => identifier in sub));
     }
 
-    async subscribeAnime(identifier: string, animeURL: string, nextEpisodeURL: string, episodesWatched: number, anime: AnimeInfo): Promise<void> {
-        const subscribed = await Store.getSubscribedAnimes();
+    /** Subscribe to an Anime */
+    async subscribeAnime(animeID: string, animeURL: string, nextEpisodeURL: string, episodesWatched: number, anime: AnimeInfo): Promise<void> {
+        const subscribed = await Store.getAnimeSubscriptions();
+        const identifier = await this.buildIdentifier(animeID);
+
         subscribed[identifier] = {
             serviceID: this.serviceId,
             anime,
@@ -87,9 +112,12 @@ export default class State<T extends Service> extends ElementMemory {
         };
     }
 
+    /** Unsubscribe from Anime */
     // noinspection JSMethodCanBeStatic
-    async unsubscribeAnime(identifier: string): Promise<void> {
-        const subscribed = await Store.getSubscribedAnimes();
+    async unsubscribeAnime(animeID: string): Promise<void> {
+        const subscribed = await Store.getAnimeSubscriptions();
+        const identifier = await this.buildIdentifier(animeID);
+
         delete subscribed[identifier];
     }
 }

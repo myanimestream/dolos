@@ -63,6 +63,15 @@
   "popup__feedback__github_issues__action": {
     "message": "Open"
   },
+  "subscriptions__anime__subscription_header": {
+    "message": "Anime Subscriptions"
+  },
+  "subscriptions__no_active_subscriptions": {
+    "message": "No active subscriptions"
+  },
+  "subscriptions__remove_subscription": {
+    "message": "Remove subscription"
+  },
   "options__video": {
     "message": "Video"
   },
@@ -185,8 +194,14 @@
   "anime__subscribe": {
     "message": "Subscribe"
   },
+  "anime__subscribe__help": {
+    "message": "Get notified when a new episode comes out"
+  },
   "anime__unsubscribe": {
     "message": "Unsubscribe"
+  },
+  "anime__unsubscribe__help": {
+    "message": "No longer get notified when a new episode comes out"
   },
   "episode__skip_next": {
     "message": "Next Episode"

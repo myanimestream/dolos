@@ -34,7 +34,7 @@ export function usePromise<T, V>(promise: PromiseLike<T>, defaultValue?: V): T |
 
     React.useEffect(() => {
         promise.then(setValue);
-    }, []);
+    }, [promise]);
 
     return value;
 }

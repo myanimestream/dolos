@@ -15,11 +15,11 @@ export interface NewEpisodeEvent extends AnimeSubscriptionInfo {
 }
 
 /**
- * Check all Anime stored in [[Store.getSubscribedAnimes]] for updates.
+ * Check all Anime stored in [[Store.getAnimeSubscriptions]] for updates.
  * Emits [[NewEpisodeEvent]] through [[hasNewEpisode$]] if a new episode was found.
  */
 async function checkAnimeUpdate() {
-    const subscribedAnimes = await Store.getSubscribedAnimes();
+    const subscribedAnimes = await Store.getAnimeSubscriptions();
 
     // there's absolutely no rush, so let's do it sequentially!
     for (const animeSubscription of Object.values(subscribedAnimes)) {
@@ -34,7 +34,7 @@ async function checkAnimeUpdate() {
             continue;
         }
 
-        if (newAnime.episodes >= oldAnime.episodes) {
+        if (newAnime.episodes > oldAnime.episodes) {
             animeSubscription.anime = newAnime;
 
             const event: NewEpisodeEvent = {

@@ -5,21 +5,22 @@
  */
 
 /** @ignore */
-import {Theme} from "@material-ui/core/styles/createMuiTheme";
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+
+import {MuiThemeProvider, Theme} from "@material-ui/core/styles";
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import axios from "axios";
 import {NewEpisodeEvent} from "dolos/background/update-check";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as rxjs from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {SentryLogger} from "./logging";
 
 /**
  * BackgroundWindow interface with all of its attributes.
  */
 interface BackgroundWindow extends Window {
-    hasNewVersion$: rxjs.BehaviorSubject<boolean>;
-    hasNewEpisode$: rxjs.Subject<NewEpisodeEvent>;
+    hasNewVersion$: BehaviorSubject<boolean>;
+    hasNewEpisode$: Subject<NewEpisodeEvent>;
 }
 
 /**
@@ -82,7 +83,9 @@ export function wrapSentryLogger(component: React.ReactNode): React.ReactNode {
  */
 export function reactRenderWithTheme(component: React.ReactNode, theme: Theme, renderTarget: Element) {
     // @ts-ignore
-    const wrapped = React.createElement(MuiThemeProvider, {theme}, component);
+    let wrapped = React.createElement(ThemeProvider, {theme}, component);
+    // @ts-ignore
+    wrapped = React.createElement(MuiThemeProvider, {theme}, wrapped);
     ReactDOM.render(wrapped, renderTarget);
 }
 

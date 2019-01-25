@@ -75,13 +75,13 @@ const styles = (theme: Theme) => createStyles({
     },
 });
 
-interface AnimeSearchResultDialogProps extends WithStyles<typeof styles>, WithMobileDialog {
+export interface AnimeSearchResultDialogProps extends WithStyles<typeof styles>, WithMobileDialog {
     open: boolean;
     onClose?: (anime?: AnimeInfo) => void;
     animePage: AnimePage<any>;
 }
 
-interface AnimeSearchResultDialogState {
+export interface AnimeSearchResultDialogState {
     loading: boolean;
     results?: AnimeInfo[];
     searchQuery?: string;

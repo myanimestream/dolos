@@ -63,17 +63,17 @@ const styles = (theme: Theme) => {
     })
 };
 
-interface EpisodeEmbedProps extends WithStyles<typeof styles> {
+export interface EpisodeEmbedProps extends WithStyles<typeof styles> {
     episodePage: EpisodePage<any>;
 }
 
-enum PlayerType {
+export enum PlayerType {
     NONE,
     DOLOS,
     EMBED
 }
 
-interface EpisodeEmbedState {
+export interface EpisodeEmbedState {
     playersAvailable: PlayerType[];
     failReason?: "episode_unavailable" | "no_streams"
     currentPlayer?: PlayerType;

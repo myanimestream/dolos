@@ -59,7 +59,7 @@ state.hasNewEpisode$.subscribe(async e => {
     const [thumbnail, poster] = await Promise.all([getBlobURL(anime.thumbnail), getEpisodePoster()]);
 
     const notification = await BrowserNotification.create({
-        type: "image",
+        type: poster ? "image" : "basic",
         title: anime.title,
         iconUrl: thumbnail,
         imageUrl: poster,

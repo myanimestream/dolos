@@ -17,7 +17,7 @@
  *
  *     // this method is called whenever the url changes
  *     onUrlChange(old: string, updated: string): void {
- *         console.log(`the url has changed from ${old} to ${updated}`);
+ *         console.info(`the url has changed from ${old} to ${updated}`);
  *     }
  * }
  * ```

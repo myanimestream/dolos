@@ -22,7 +22,7 @@ const styles = (theme: Theme) => createStyles({
     },
 });
 
-interface AnimeCardProps extends WithStyles<typeof styles> {
+export interface AnimeCardProps extends WithStyles<typeof styles> {
     animeInfo: AnimeInfo;
     current?: boolean;
     onClick?: React.ReactEventHandler;

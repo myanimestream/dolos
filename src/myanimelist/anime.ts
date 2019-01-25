@@ -3,10 +3,10 @@
  */
 
 import axios from "axios";
+import MyAnimeList from ".";
 import {AnimePage} from "../common/pages";
 import {cacheInMemory} from "../memory";
 import {waitUntilExists} from "../utils";
-import MyAnimeList from "./index";
 
 interface MALAnime {
     title: string;
@@ -170,7 +170,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         return isNaN(eps) ? undefined : eps;
     }
 
-    async injectContinueWatchingButton(element: Element) {
+    async injectAnimeStatusBar(element: Element) {
         if (this.service.isMobileLayout()) {
             element.setAttribute("style", "margin-top: 8px;" +
                 "display: flex;" +
@@ -203,9 +203,5 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         }
 
         this.injected(element);
-    }
-
-    async injectSubscribeButton(element: Element): Promise<void> {
-        return;
     }
 }

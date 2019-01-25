@@ -1,5 +1,5 @@
 # Dolos
-[![Build Status][travis-shield]][travis-url]
+[![Circle CI][circleci-shield]][circleci-url]
 [![FOSSA Status][fossa-shield]][fossa-url]
 
 The spirit of trickery and guile. *(Don't even ask me, I have no idea)*
@@ -22,6 +22,7 @@ The downside is, that the extension won't automatically update to newer versions
 ## Documentation
 You can find the documentation [here][dolos-docs].
 
+
 [dolos-docs]: https://myanimestream.github.io/dolos/docs/
 
 [react]: https://reactjs.org/
@@ -31,7 +32,7 @@ You can find the documentation [here][dolos-docs].
 [latest-release]: https://github.com/MyAnimeStream/dolos/releases/latest
 [chrome-download]: https://chrome.google.com/webstore/detail/myanimestream/keocjanldkcmlfimikagifcggihmblmf
 
-[travis-shield]: https://travis-ci.org/MyAnimeStream/dolos.svg?branch=master
-[travis-url]: https://travis-ci.org/MyAnimeStream/dolos
+[circleci-shield]: https://circleci.com/gh/MyAnimeStream/dolos.svg?style=svg
+[circleci-url]: https://circleci.com/gh/MyAnimeStream/dolos
 [fossa-shield]: https://app.fossa.io/api/projects/git%2Bgithub.com%2FMyAnimeStream%2Fdolos.svg?type=shield
 [fossa-url]: https://app.fossa.io/projects/git%2Bgithub.com%2FMyAnimeStream%2Fdolos

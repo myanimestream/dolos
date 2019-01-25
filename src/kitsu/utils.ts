@@ -141,7 +141,7 @@ export interface KitsuAnimeInfo {
     categories: string[];
     coverImage: string;
     coverImageTopOffset: number;
-    endDate: string;
+    endDate: string | null;
     episodeCount: number;
     episodeLength: number;
     favoritesCount: number;
@@ -152,7 +152,7 @@ export interface KitsuAnimeInfo {
     ratingRank: number;
     slug: string;
     startDate: string;
-    status: string;
+    status: "upcoming" | "current" | "finished";
     streamingLinks: string[];
     subtype: string;
     synopsis: string;

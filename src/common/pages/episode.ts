@@ -101,12 +101,17 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         if (epIndex === undefined)
             return;
 
+
         if (config.updateAnimeProgress)
             await this.markEpisodeWatched();
 
-        if (config.autoNext)
-            if (totalEpisodes === undefined || epIndex + 1 < totalEpisodes)
+        if (epIndex + 1 === totalEpisodes) {
+            await this.animePage.handleAnimeFinished();
+        } else if (config.autoNext) {
+            const anime = await this.animePage.getAnime();
+            if (anime === undefined || epIndex + 1 < anime.episodes)
                 await this.showNextEpisode();
+        }
     }
 
     async markEpisodeWatched() {
