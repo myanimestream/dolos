@@ -15,7 +15,6 @@ const mainTheme = createMuiTheme({
         useNextVariants: true,
     },
     palette: {
-        type: "dark",
         primary: {
             main: "#43a047",
         },

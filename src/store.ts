@@ -8,57 +8,12 @@
  * @module store
  */
 
-import {BehaviorSubject, Subject} from "rxjs";
 /** @ignore */
-import {Config, DEFAULT_CONFIG, DEFAULT_STORED_ANIME_INFO, StoredAnimeInfo, SubscribedAnimes} from "./models";
+
+import {BehaviorSubject, Subject} from "rxjs";
+import {Config, DEFAULT_CONFIG, StoredAnimeInfo, StoredServiceAnimes, SubscribedAnimes} from "./models";
 import StorageChange = chrome.storage.StorageChange;
 
-
-const StoreObjectTraps: ProxyHandler<StoreObject<any>> = {
-    has<T>(target: StoreObject<T>, p: keyof T): boolean {
-        return target.has(p);
-    },
-    ownKeys<T>(target: StoreObject<T>): string[] {
-        return target.ownKeys();
-    },
-    get<T>(target: StoreObject<T>, p: keyof T): any {
-        if (p in target) {
-            // @ts-ignore
-            return target[p];
-        }
-
-        return target.get(p);
-    },
-    getOwnPropertyDescriptor(target: StoreObject<any>, p: PropertyKey): PropertyDescriptor | undefined {
-        if (target.has(p)) {
-            return {
-                enumerable: true,
-                configurable: true
-            }
-        } else return Reflect.getOwnPropertyDescriptor(target, p);
-    },
-    set<T>(target: StoreObject<T>, p: PropertyKey, value: any, receiver?: any): boolean {
-        if (p in target) return Reflect.set(target, p, value, receiver);
-
-        if (typeof p === "string") {
-            target.set(p, value)
-                .catch(reason =>
-                    console.error("Couldn't set StoreObject property", p, "for", target, reason));
-            return true;
-        }
-
-        return false;
-    },
-    deleteProperty<T>(target: StoreObject<any>, p: keyof T): boolean {
-        if (p in target) return Reflect.deleteProperty(target, p);
-
-        target.deleteProperty(p)
-            .catch(reason =>
-                console.error("Couldn't delete StoreObject property", p, "for", target, reason));
-
-        return true;
-    }
-};
 
 /**
  * Something that can either be indexed using strings or numbers
@@ -71,117 +26,256 @@ export interface Indexable<T> {
     [index: number]: T;
 }
 
-/**
- * Wrap a proxy around the child so that if a value is changed it triggers
- * [[StoreObject.save]] on the provided store object.
- */
-function createStoreObjectChild<T extends Object>(storeObject: StoreObject<any>, child: T): T {
-    return new Proxy(child, {
-        set(target: T, p: PropertyKey, value: any, receiver: any): boolean {
-            const success = Reflect.set(target, p, value, receiver);
-            storeObject.save()
-                .catch(reason =>
-                    console.error("Couldn't set", storeObject, "child property", p, "for", target, reason));
-            return success;
-        }
-    });
+/** Check whether something is an object or a primitive value */
+export function isPrimitive(value: any): boolean {
+    return typeof value !== "object" || value === null;
 }
 
+/**
+ * Return an object with non-primitve values replaced by StoreElements.
+ */
+function prepareStoreElement<T extends Object>(root: StoreElementRoot<any>, data: T): any {
+    if (Array.isArray(data)) {
+        return data.map(item => isPrimitive(item) ? item : StoreElement.create(root, item));
+    }
 
-export class StoreObject<T extends Indexable<any>> {
-    onUpdate$: Subject<this>;
-    value$: BehaviorSubject<this>;
-    private readonly _store: Store;
-    private readonly _key: string;
-    private _container: T;
+    let result: { [key: string]: any } = {};
 
-    /**
-     * Create a basic StoreObject.
-     *
-     * @see [[StoreObject.create]] to create a [[StoreProxyObject]].
-     */
-    constructor(store: Store, key: string, data: T) {
-        this._store = store;
-        this._key = key;
-        this._container = data;
+    for (const [key, value] of Object.entries(data)) {
+        result[key] = isPrimitive(value) ? value : StoreElement.create(root, value);
+    }
+
+    return result;
+}
+
+class StoreElementTraps implements ProxyHandler<StoreElement<any>> {
+    private proxy: any;
+
+    static wrap<T extends StoreElement<any>>(target: T): StoreElementProxy<any> {
+        const traps = new StoreElementTraps();
+        const proxy = new Proxy(target, traps);
+        traps.proxy = proxy;
+        return proxy;
+    }
+
+    has<T>(target: StoreElement<T>, p: any): boolean {
+        return target.has(p);
+    }
+
+    ownKeys<T>(target: StoreElement<T>): string[] {
+        return target.ownKeys();
+    }
+
+    get<T>(target: StoreElement<T>, p: string | number) {
+        if (p in target) {
+            // @ts-ignore
+            return target[p];
+        }
+
+        return target.get(p);
+    }
+
+    getPrototypeOf(target: StoreElement<any>): object | null {
+        return Reflect.getPrototypeOf(target);
+    }
+
+    getOwnPropertyDescriptor(target: StoreElement<any>, p: string | number): PropertyDescriptor | undefined {
+        return target.getOwnPropertyDescriptor(p) || Reflect.getOwnPropertyDescriptor(target, p);
+    }
+
+    set<T>(target: StoreElement<T>, p: PropertyKey, value: any, receiver?: any): boolean {
+        if (p in target) return Reflect.set(target, p, value, receiver);
+
+        target.set.apply(this.proxy, [p as string | number, value]);
+        return true;
+    }
+
+    deleteProperty<T>(target: StoreElement<any>, p: string | number): boolean {
+        target.deleteProperty.apply(this.proxy, [p]);
+        return true;
+    }
+}
+
+export class StoreElement<T> {
+    readonly onUpdate$: Subject<this>;
+    readonly value$: BehaviorSubject<this>;
+
+    protected readonly _root: StoreElementRoot<any>;
+    protected _container: Indexable<StoreElement<T[keyof T]> | T[keyof T]>;
+
+    protected constructor(root: StoreElementRoot<any> | null, data: T) {
+        // @ts-ignore
+        this._root = root || this;
+        this.setValueSelf(data);
 
         this.onUpdate$ = new Subject();
         this.value$ = new BehaviorSubject(this);
 
         this.onUpdate$.subscribe(this.value$);
+        this.onUpdate$.subscribe((val: any) => console.log("got update", val.rawValue));
     }
 
-    /** Creates a new StoreObject wrapped with the [[StoreObjectTraps]] Proxy. */
-    static create<T>(store: Store, key: string, data: T): StoreProxyObject<T> {
-        const storeObject = new Proxy(
-            new StoreObject<T>(store, key, data),
-            StoreObjectTraps
-        ) as StoreProxyObject<T>;
+    get rawValue(): T {
+        if (Array.isArray(this._container)) {
+            // @ts-ignore
+            return this._container.map(item => (item instanceof StoreElement) ? item.rawValue : item);
+        }
 
-        // make the current value the one wrapped by the proxy
-        storeObject.value$.next(storeObject);
+        let raw: { [key: string]: any } = {};
 
-        return storeObject;
+        for (const [key, value] of Object.entries(this._container)) {
+            raw[key] = (value instanceof StoreElement) ? value.rawValue : value;
+        }
+
+        // @ts-ignore
+        return raw;
     }
 
-    getKey(): string {
-        return this._key;
+    static create<T>(root: StoreElementRoot<any>, data: T): StoreElementProxy<T> {
+        const storeEl = StoreElementTraps.wrap(new StoreElement(root, data));
+        storeEl.value$.next(storeEl);
+        return storeEl as StoreElementProxy<T>;
     }
 
-    has(key: keyof T): boolean {
+    async save(): Promise<void> {
+        await this._root.save();
+    }
+
+    triggerSave(): void {
+        this.save().catch(reason => console.error("Couldn't save", this, reason));
+    }
+
+    has(key: any): boolean {
         return key in this._container;
     }
 
-    get(key: keyof T): any {
-        const value = this._container[key];
-        // if the value isn't a primitive type, return a proxy which triggers save when a change occurs.
-        return (value === Object(value)) ? createStoreObjectChild(this, value) : value;
+    equals(other: T): boolean {
+        if (Object.entries(this._container).length !== Object.entries(other).length) return false;
+
+        for (const [key, value] of Object.entries(other)) {
+            const el = this.get(key);
+            if (el instanceof StoreElement) {
+                if (!el.equals(value)) return false;
+            } else if (el !== value) return false;
+        }
+
+        return true;
     }
 
-    async set(key: string, value: any) {
-        this._container[key] = value;
-        await this.save();
+    get(key: string | number): any {
+        return this._container[key];
     }
 
-    async deleteProperty(key: keyof T): Promise<void> {
+    getOrSetDefault<V>(key: string | number, defaultValue: V): V | StoreElementProxy<V> {
+        if (!this.has(key)) {
+            this.set(key, defaultValue);
+        }
+
+        return this.get(key);
+    }
+
+    set(key: string | number, value: any): void {
+        const el = this.get(key);
+
+        if (isPrimitive(value))
+            this._container[key] = value;
+        else if (el instanceof StoreElement)
+            el.setValueSelf(value);
+        else
+            this._container[key] = StoreElement.create(this._root, value);
+
+        this.triggerSave();
+        this.onUpdate$.next(this);
+    }
+
+    deleteProperty(key: string | number): void {
         delete this._container[key];
-        await this.save();
+        this.triggerSave();
+        this.onUpdate$.next(this);
     }
 
-    async save() {
-        await this._store.set(this._key, this._container);
+    getOwnPropertyDescriptor(p: string | number): PropertyDescriptor | undefined {
+        if (this.has(p))
+            return {
+                enumerable: true,
+                configurable: true,
+                writable: true,
+            };
+
+        return undefined;
+    }
+
+    update(newValue: T): void {
+        console.log("updating", this, newValue);
+        if (this.equals(newValue)) {
+            return;
+        }
+
+        if (Object.entries(newValue).length > 0) {
+            for (const [key, value] of Object.entries(newValue)) {
+                const el = this.get(key);
+
+                if (isPrimitive(value))
+                    this._container[key] = value;
+                else if (el instanceof StoreElement)
+                    el.update(value);
+                else
+                    this._container[key] = StoreElement.create(this._root, value);
+            }
+        } else
+            this.setValueSelf(newValue);
+
+        this.onUpdate$.next(this);
     }
 
     ownKeys(): string[] {
         return Object.keys(this._container);
     }
 
-    // noinspection JSUnusedGlobalSymbols
-    update(newValue: T): void {
-        this._container = newValue;
-        this.onUpdate$.next(this);
+    setDefaults(defaults: T): void {
+        for (const [key, value] of Object.entries(defaults)) {
+            const el = this.get(key);
+            if (el !== undefined) continue;
+
+            if (isPrimitive(value)) {
+                this._container[key] = value;
+            } else {
+                this._container[key] = StoreElement.create(this._root, value);
+            }
+        }
     }
 
-    /**
-     * Basically the same as [[StoreObject.update]],
-     * but the behaviour is different for objects insofar
-     * that their current value overwrites the provided defaults.
-     *
-     * This is useful if you need to make sure that some
-     */
-    setDefaults(defaults: T): void {
-        if (Array.isArray(defaults))
-            this._container = defaults;
-        else
-            this._container = Object.assign({}, defaults, this._container);
+    protected setValueSelf(value: T): void {
+        this._container = prepareStoreElement(this._root, value);
     }
 }
 
-/** Type of a [[StoreObject]] that uses the [[StoreObjectTraps]] Proxy. */
-export type StoreProxyObject<T> = StoreObject<T> & T;
+class StoreElementRoot<T> extends StoreElement<T> {
+    private readonly _store: Store;
+    private readonly _key: string;
+
+    constructor(store: Store, key: string, data: T) {
+        super(null, data);
+
+        this._store = store;
+        this._key = key;
+    }
+
+    static createRoot<T>(store: Store, key: string, data: T): StoreElementProxy<T> {
+        const storeEl = StoreElementTraps.wrap(new StoreElementRoot(store, key, data));
+        storeEl.value$.next(storeEl);
+        return storeEl as StoreElementProxy<T>;
+    }
+
+    async save() {
+        await this._store.set(this._key, this.rawValue);
+    }
+}
+
+export type StoreElementProxy<T> = StoreElement<T> & T;
 
 export class Store {
-    _cache: { [key: string]: StoreProxyObject<any> };
+    private readonly _cache: { [key: string]: StoreElementProxy<any> };
 
     constructor() {
         this._cache = {};
@@ -202,34 +296,69 @@ export class Store {
         await this.setRaw({[key]: value});
     }
 
-    async get<T>(key: string, defaultValue?: T): Promise<StoreProxyObject<T>> {
-        if (!(key in this._cache)) {
-            const value = (await this.getRaw(key))[key];
-            this._cache[key] = StoreObject.create(this, key, value || defaultValue);
+    static buildLanguageIdentifier(config: Config): string;
+
+    static buildLanguageIdentifier(language: string, dubbed: boolean): string;
+
+    /**
+     * Create an identifier for the language settings.
+     * The language identifier looks like this: `<language>_<dub | sub>`
+     */
+    static buildLanguageIdentifier(...args: any[]): string {
+        let language: string;
+        let dubbed: boolean;
+
+        switch (args.length) {
+            case 1:
+                const config = args[0];
+                language = config.language;
+                dubbed = config.dubbed;
+                break;
+            case 2:
+                language = args[0];
+                dubbed = args[1];
+                break;
+            default:
+                throw new Error("Invalid amount of arguments");
         }
 
-        return this._cache[key] as StoreProxyObject<T>;
+        return `${language}_${dubbed ? "dub" : "sub"}`;
     }
 
-    async getConfig(): Promise<StoreProxyObject<Config>> {
+    async get<T>(key: string, defaultValue?: T): Promise<StoreElementProxy<T>> {
+        if (!(key in this._cache)) {
+            const value = (await this.getRaw(key))[key];
+            this._cache[key] = StoreElementRoot.createRoot(this, key, value || defaultValue);
+        }
+
+        return this._cache[key] as StoreElementProxy<T>;
+    }
+
+    async getConfig(): Promise<StoreElementProxy<Config>> {
         const config = await this.get("config", {} as Config);
         config.setDefaults(DEFAULT_CONFIG);
 
         return config;
     }
 
-    async getStoredAnimeInfo(service_id: string, identifier: string, config?: StoreProxyObject<Config>): Promise<StoreProxyObject<StoredAnimeInfo>> {
-        let key = await this.buildIdentifier(service_id, identifier, config);
-        const info = await this.get(key, {} as StoredAnimeInfo);
-
-        info.setDefaults(DEFAULT_STORED_ANIME_INFO);
-
-        return info;
+    async getStoredAnimes(serviceID: string): Promise<StoreElementProxy<StoredServiceAnimes>> {
+        return await this.get(`${serviceID}::anime`, {} as StoredServiceAnimes);
     }
 
-    async buildIdentifier(service_id: string, identifier: string, config?: StoreProxyObject<Config>): Promise<string> {
+    async getStoredAnimeInfo(serviceID: string, identifier: string, config?: Config): Promise<StoreElementProxy<StoredAnimeInfo>> {
         config = config || await this.getConfig();
-        let key = `${service_id}::${config.language}_${config.dubbed ? "dub" : "sub"}::`;
+
+        const serviceAnimes = await this.getStoredAnimes(serviceID);
+        const languageID = Store.buildLanguageIdentifier(config);
+
+        let animes = serviceAnimes.getOrSetDefault(languageID, {} as StoreElement<StoredAnimeInfo>);
+        return animes.getOrSetDefault(identifier, {}) as StoreElementProxy<StoredAnimeInfo>;
+    }
+
+    async buildIdentifier(service_id: string, identifier: string, config?: Config): Promise<string> {
+        config = config || await this.getConfig();
+        const languageID = Store.buildLanguageIdentifier(config);
+        let key = `${service_id}::${languageID}::`;
 
         for (let i = 0; i < identifier.length; i++) {
             key += identifier.charCodeAt(i).toString(16);
@@ -238,8 +367,8 @@ export class Store {
         return key;
     }
 
-    async getSubscribedAnimes(): Promise<StoreProxyObject<SubscribedAnimes>> {
-        return await this.get("subscribed-anime", {} as SubscribedAnimes);
+    async getAnimeSubscriptions(): Promise<StoreElementProxy<SubscribedAnimes>> {
+        return await this.get("subscriptions::anime", {} as SubscribedAnimes);
     }
 
     private handleValueChanged(changes: { [key: string]: StorageChange }) {
@@ -250,5 +379,5 @@ export class Store {
     }
 }
 
-const DEFAULT_STORE = new Store();
-export default DEFAULT_STORE;
+const StaticStore = new Store();
+export default StaticStore;

@@ -14,9 +14,10 @@ import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {makeStyles} from "@material-ui/styles";
 import {AnimeSubscriptionInfo, SubscribedAnimes} from "dolos/models";
-import Store, {StoreProxyObject} from "dolos/store";
+import Store, {StoreElementProxy} from "dolos/store";
 import * as React from "react";
 import {Subscription} from "rxjs";
+import _ = chrome.i18n.getMessage;
 
 
 function SubscriptionItem(subscription: AnimeSubscriptionInfo) {
@@ -25,7 +26,7 @@ function SubscriptionItem(subscription: AnimeSubscriptionInfo) {
     }
 
     function unsubscribeAnime(): void {
-        Store.getSubscribedAnimes().then(subs => delete subs[subscription.identifier]);
+        Store.getAnimeSubscriptions().then(subs => delete subs[subscription.identifier]);
     }
 
     return (
@@ -37,7 +38,7 @@ function SubscriptionItem(subscription: AnimeSubscriptionInfo) {
                 primary={subscription.anime.title}
             />
             <ListItemSecondaryAction>
-                <IconButton aria-label="Delete Subscription" onClick={unsubscribeAnime}>
+                <IconButton aria-label={_("subscriptions__remove_subscription")} onClick={unsubscribeAnime}>
                     <DeleteIcon/>
                 </IconButton>
             </ListItemSecondaryAction>
@@ -48,14 +49,14 @@ function SubscriptionItem(subscription: AnimeSubscriptionInfo) {
 /** @ignore */
 const useStyles = makeStyles(() => ({}));
 
-function useSubscriptions(): StoreProxyObject<SubscribedAnimes> | undefined {
-    const [subscriptions, setSubscriptions] = React.useState(undefined as StoreProxyObject<SubscribedAnimes> | undefined);
+function useSubscriptions(): StoreElementProxy<SubscribedAnimes> | undefined {
+    const [subscriptions, setSubscriptions] = React.useState(undefined as StoreElementProxy<SubscribedAnimes> | undefined);
 
     React.useEffect(() => {
         let valueSub: Subscription;
 
         (async () => {
-            const subs = await Store.getSubscribedAnimes();
+            const subs = await Store.getAnimeSubscriptions();
             valueSub = subs.value$.subscribe(setSubscriptions);
         })();
 
@@ -73,15 +74,21 @@ function SubscriptionsDisplay() {
     if (subscriptions === undefined)
         return <CircularProgress/>;
 
-    if (Object.values(subscriptions).length === 0)
-        return <Typography>No active subscriptions</Typography>;
+    let animeSubscriptions;
+    if (Object.values(subscriptions).length > 0) {
+        animeSubscriptions = Object.entries(subscriptions).map(([id, subscription]) => (
+            <SubscriptionItem key={id} {...subscription}/>
+        ));
+    } else
+        animeSubscriptions = <Typography>{_("subscriptions__no_active_subscriptions")}</Typography>;
 
     return (
-        <List>
-            {Object.entries(subscriptions).map(([id, subscription]) => (
-                <SubscriptionItem key={id} {...subscription}/>
-            ))}
-        </List>
+        <>
+            <Typography variant="h5">{_("subscriptions__anime__subscription_header")}</Typography>
+            <List>
+                {animeSubscriptions}
+            </List>
+        </>
     );
 }
 

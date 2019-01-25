@@ -39,12 +39,13 @@ export const DEFAULT_CONFIG: Config = {
     minCertaintyForSearchResult: .4,
 };
 
+export interface StoredServiceAnimes {
+    [language: string]: { [id: string]: StoredAnimeInfo };
+}
 
 export interface StoredAnimeInfo {
     uid?: string;
 }
-
-export const DEFAULT_STORED_ANIME_INFO: StoredAnimeInfo = {};
 
 export interface AnimeSubscriptionInfo {
     serviceID: string;
