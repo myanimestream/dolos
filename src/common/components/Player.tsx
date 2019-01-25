@@ -6,7 +6,7 @@ import {WithStyles} from "@material-ui/core/styles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 // @ts-ignore
-import Plyr from "plyr/src/js/plyr.js";
+import Plyr from "plyr/src/js/plyr";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -29,9 +29,11 @@ export interface PlayerSource {
     type?: string;
 }
 
+export type PlyrEvents = Plyr.StandardEvent | Plyr.Html5Event;
+
 export interface PlayerProps extends WithStyles<typeof styles> {
     options?: any;
-    eventListener?: { [key: string]: (event: CustomEvent) => any };
+    eventListener?: Partial<{ [key in PlyrEvents]: (event: CustomEvent) => any }>;
     poster?: string;
     sources: PlayerSource[];
 }
@@ -46,14 +48,15 @@ export default withStyles(styles)(class Player extends React.Component<PlayerPro
         options.autoplay = false;
 
         const domNode = ReactDOM.findDOMNode(this);
-        if (!domNode)
+        if (!(domNode && domNode.firstChild))
             throw new Error("Couldn't find dom node");
 
-        this.player = new Plyr(domNode.firstChild, options);
+        this.player = new Plyr(domNode.firstChild as HTMLElement, options);
 
         if (eventListener) {
             for (const [event, handler] of Object.entries(eventListener)) {
-                this.player.on(event, handler);
+                if (!handler) continue;
+                this.player.on(event as PlyrEvents, handler);
             }
         }
 
