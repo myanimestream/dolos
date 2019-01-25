@@ -69,7 +69,6 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         if (!results) return;
 
         const uid = results[0].anime.uid;
-        console.log("setting anime uid");
         animeInfo.uid = uid;
 
         return uid;

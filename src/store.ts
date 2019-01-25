@@ -112,7 +112,6 @@ export class StoreElement<T> {
         this.value$ = new BehaviorSubject(this);
 
         this.onUpdate$.subscribe(this.value$);
-        this.onUpdate$.subscribe((val: any) => console.log("got update", val.rawValue));
     }
 
     get rawValue(): T {
@@ -206,7 +205,6 @@ export class StoreElement<T> {
     }
 
     update(newValue: T): void {
-        console.log("updating", this, newValue);
         if (this.equals(newValue)) {
             return;
         }

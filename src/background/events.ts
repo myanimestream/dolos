@@ -47,7 +47,7 @@ state.hasNewEpisode$.subscribe(async e => {
         try {
             episode = await GrobberClient.getEpisode(anime.uid, nextEpisodeIndex);
         } catch (e) {
-            console.warn("Couldn't get episode", nextEpisodeIndex + 1, "for", e);
+            console.warn("Couldn't get episode", nextEpisodeIndex + 1, "for", anime.title, e);
             return;
         }
 
