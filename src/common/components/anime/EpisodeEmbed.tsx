@@ -366,7 +366,7 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
         if (!anime) return;
 
         const {episodePage} = this.props;
-        await episodePage.setAnimeUID(anime.uid);
+        await episodePage.setAnimeUID(anime);
     }
 
 

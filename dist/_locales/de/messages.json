@@ -86,6 +86,14 @@
   "subscriptions__anime__subscription_header": {
     "message": "Anime Abonnements"
   },
+  "subscriptions__unseen_episodes": {
+    "message": "Ungesehen: $EPISODES$",
+    "placeholders": {
+      "episodes": {
+        "content": "$1"
+      }
+    }
+  },
   "subscriptions__no_active_subscriptions": {
     "message": "Keine aktiven Abonnements"
   },

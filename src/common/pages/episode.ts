@@ -2,7 +2,7 @@
  * @module common.pages
  */
 
-import {Episode, GrobberClient, GrobberErrorType} from "dolos/grobber";
+import {AnimeInfo, Episode, GrobberClient, GrobberErrorType} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
 import {getThemeFor} from "dolos/theme";
 import {reactRenderWithTheme, wrapSentryLogger} from "dolos/utils";
@@ -53,7 +53,7 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
 
     abstract async showPrevEpisode(): Promise<void>;
 
-    async setAnimeUID(uid: string) {
+    async setAnimeUID(uid: string | AnimeInfo) {
         await this.animePage.setAnimeUID(uid);
         await this.reload();
     }
@@ -95,8 +95,8 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
     }
 
     async onEpisodeEnd() {
-        const [config, epIndex, totalEpisodes] = await Promise.all([
-            this.state.config, this.getEpisodeIndex(), this.animePage.getEpisodeCount()]);
+        const [config, epIndex] = await Promise.all([
+            this.state.config, this.getEpisodeIndex()]);
 
         if (epIndex === undefined)
             return;
@@ -105,9 +105,7 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         if (config.updateAnimeProgress)
             await this.markEpisodeWatched();
 
-        if (epIndex + 1 === totalEpisodes) {
-            await this.animePage.handleAnimeFinished();
-        } else if (config.autoNext) {
+        if (config.autoNext) {
             const anime = await this.animePage.getAnime();
             if (anime === undefined || epIndex + 1 < anime.episodes)
                 await this.showNextEpisode();
@@ -118,8 +116,8 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         const [epIndex, canSetProgress] = await Promise.all([this.getEpisodeIndex(), this.animePage.canSetEpisodesWatched()]);
         if (!canSetProgress) return;
 
-        if (!(epIndex || epIndex === 0)) {
-            console.warn("Can't update anime progress, episodeIndex null!");
+        if (epIndex === undefined) {
+            console.warn("Can't update anime progress, episodeIndex undefined!");
             return;
         }
 

@@ -4,7 +4,7 @@
 
 import {AnimeInfo, GrobberClient, GrobberErrorType} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
-import {StoredAnimeInfo} from "dolos/models";
+import {AnimeSubscriptionInfo, StoredAnimeInfo} from "dolos/models";
 import {getThemeFor} from "dolos/theme";
 import {reactRenderWithTheme} from "dolos/utils";
 import * as React from "react";
@@ -18,7 +18,6 @@ import EpisodePage from "./episode";
 /**
  * AnimePage reflects a page that is dedicated to a specific Anime.
  *
- * It displays a continue watching button.
  */
 export default abstract class AnimePage<T extends Service> extends ServicePage<T> {
     private _episodesWatched$?: BehaviorSubject<number | undefined>;
@@ -75,12 +74,26 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
     }
 
     /**
-     * Set the UID associated with the [[AnimePage.getAnimeIdentifier]] identifier.
+     * Set the UID associated with the [[AnimePage.getAnimeIdentifier]] identifier
+     * and update the subscription if subscribed.
      * **This will cause the [[AnimePage]] to be reloaded!**
      */
-    async setAnimeUID(uid: string) {
-        const animeInfo = await this.getStoredAnimeInfo();
+    async setAnimeUID(uid: string | AnimeInfo) {
+        let anime: AnimeInfo;
+
+        if (typeof uid === "string") {
+            anime = await GrobberClient.getAnimeInfo(uid);
+        } else {
+            anime = uid;
+            uid = anime.uid;
+        }
+
+        const [animeInfo, subscription] = await Promise.all([this.getStoredAnimeInfo(), this.getSubscription()]);
         animeInfo.uid = uid;
+
+        if (subscription)
+            subscription.anime = anime;
+
         await this.reload();
     }
 
@@ -115,7 +128,7 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
     async isSubscribed(): Promise<boolean | undefined> {
         const subscribed$ = await this.getSubscribed$();
         if (!subscribed$) return;
-        // should behave like a behavioursubject so the value should return right away.
+        // should behave like a behaviour subject so the value should return right away.
         return await subscribed$.pipe(first()).toPromise();
     }
 
@@ -124,6 +137,13 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         if (!identifier) return;
 
         return await this.state.getSubscribed$(identifier);
+    }
+
+    async getSubscription(): Promise<AnimeSubscriptionInfo | undefined> {
+        const animeID = await this.getAnimeIdentifier();
+        if (!animeID) return;
+
+        return await this.state.getSubscription(animeID);
     }
 
     async subscribeAnime(): Promise<boolean> {
@@ -143,6 +163,26 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return true;
     }
 
+    async updateSubscription(episodesWatched?: number | PromiseLike<number>): Promise<void> {
+        const [animeID, epsWatched, totalEpisodes] = await Promise.all([
+            this.getAnimeIdentifier(),
+            (episodesWatched === undefined) ? this.getEpisodesWatched() : Promise.resolve(episodesWatched),
+            this.getEpisodeCount(),
+        ]);
+
+        if (!(animeID && epsWatched !== undefined))
+            return;
+
+        if (epsWatched === totalEpisodes) {
+            await this.unsubscribeAnime();
+            return;
+        }
+
+        const nextEpURL = await this.getEpisodeURL(epsWatched);
+
+        await this.state.updateAnimeSubscription(animeID, nextEpURL, epsWatched);
+    }
+
     async unsubscribeAnime(): Promise<boolean> {
         const identifier = await this.getAnimeIdentifier();
         if (!identifier) return false;
@@ -151,24 +191,25 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return true;
     }
 
-    async handleAnimeFinished(): Promise<void> {
-        if (await this.isSubscribed()) {
-            await this.unsubscribeAnime();
-        }
-    }
-
     /**
      * Sanity check whether it should be possible to set the "progress" of an Anime.
      */
     abstract async canSetEpisodesWatched(): Promise<boolean>;
 
     /**
-     * @private
-     *
-     * Internal progress setting. **Do not use this method**!
-     * @see [[AnimePage.setEpisodesWatched]] instead!
+     * Set the amount of episodes watched.
      */
-    abstract async _setEpisodesWatched(progress: number): Promise<boolean>;
+    async setEpisodesWatched(progress: number): Promise<boolean> {
+        const success = await this._setEpisodesWatched(progress);
+        if (success) {
+            if (this._episodesWatched$)
+                this._episodesWatched$.next(progress);
+
+            await this.updateSubscription(progress);
+        }
+
+        return success;
+    }
 
     abstract async getAnimeURL(): Promise<string | undefined>;
 
@@ -183,13 +224,13 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
 
     abstract async getEpisodeCount(): Promise<number | undefined>;
 
-    async setEpisodesWatched(progress: number): Promise<boolean> {
-        const success = await this._setEpisodesWatched(progress);
-        if (success && this._episodesWatched$)
-            this._episodesWatched$.next(progress);
-
-        return success;
-    }
+    /**
+     * @private
+     *
+     * Internal progress setting. **Do not use this method**!
+     * @see [[AnimePage.setEpisodesWatched]] instead!
+     */
+    protected abstract async _setEpisodesWatched(progress: number): Promise<boolean>;
 
     async getEpisodesWatched$(): Promise<BehaviorSubject<number | undefined>> {
         if (!this._episodesWatched$) {

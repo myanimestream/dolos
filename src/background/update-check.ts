@@ -9,8 +9,9 @@ import Store from "dolos/store";
 import {hasNewEpisode$} from "./observables";
 
 /** Event emitted if there is a new episode */
-export interface NewEpisodeEvent extends AnimeSubscriptionInfo {
+export interface NewEpisodeEvent {
     subscribedAnimes: SubscribedAnimes;
+    subscription: AnimeSubscriptionInfo;
     unseenEpisodes: number;
 }
 
@@ -38,8 +39,8 @@ async function checkAnimeUpdate() {
             animeSubscription.anime = newAnime;
 
             const event: NewEpisodeEvent = {
-                ...animeSubscription,
                 subscribedAnimes,
+                subscription: animeSubscription,
                 unseenEpisodes: newAnime.episodes - animeSubscription.episodesWatched,
             };
             hasNewEpisode$.next(event);

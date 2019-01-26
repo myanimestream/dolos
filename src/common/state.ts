@@ -5,8 +5,8 @@
 import {AnimeInfo} from "dolos/grobber";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
-import {ElementMemory} from "../memory";
-import {Config, StoredAnimeInfo} from "../models";
+import {cacheInMemory, ElementMemory} from "../memory";
+import {AnimeSubscriptionInfo, Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
 import Service from "./service";
 import ServicePage from "./service-page";
@@ -73,8 +73,8 @@ export default class State<T extends Service> extends ElementMemory {
      * Even if nothing is stored, this method still returns an instance of [[StoredAnimeInfo]]
      * which you may use to write to.
      */
-    async getStoredAnimeInfo(identifier: string): Promise<StoredAnimeInfo> {
-        return await Store.getStoredAnimeInfo(this.serviceId, identifier, await this.config);
+    async getStoredAnimeInfo(animeID: string): Promise<StoredAnimeInfo> {
+        return await Store.getStoredAnimeInfo(this.serviceId, animeID, await this.config);
     }
 
     /**
@@ -87,22 +87,35 @@ export default class State<T extends Service> extends ElementMemory {
     }
 
     /**
+     * Get the [[AnimeSubscriptionInfo]] for an Anime.
+     * The returned value is a [[StoreElementProxy]].
+     */
+    async getSubscription(animeID: string): Promise<AnimeSubscriptionInfo | undefined> {
+        const [subscriptions, identifier] = await Promise.all([
+            Store.getAnimeSubscriptions(),
+            this.buildIdentifier(animeID)
+        ]);
+
+        return subscriptions[identifier];
+    }
+
+    /**
      * Get an observable which keeps track of whether the user is subscribed to the Anime
      * It immediately pushes the current state to the observer.
      */
     async getSubscribed$(animeID: string): Promise<Observable<boolean>> {
-        const subscribed = await Store.getAnimeSubscriptions();
+        const subscriptions = await Store.getAnimeSubscriptions();
         const identifier = await this.buildIdentifier(animeID);
 
-        return subscribed.value$.pipe(map(sub => identifier in sub));
+        return subscriptions.value$.pipe(map(sub => identifier in sub));
     }
 
     /** Subscribe to an Anime */
     async subscribeAnime(animeID: string, animeURL: string, nextEpisodeURL: string, episodesWatched: number, anime: AnimeInfo): Promise<void> {
-        const subscribed = await Store.getAnimeSubscriptions();
+        const subscriptions = await Store.getAnimeSubscriptions();
         const identifier = await this.buildIdentifier(animeID);
 
-        subscribed[identifier] = {
+        subscriptions[identifier] = {
             serviceID: this.serviceId,
             anime,
             identifier,
@@ -112,13 +125,21 @@ export default class State<T extends Service> extends ElementMemory {
         };
     }
 
+    async updateAnimeSubscription(animeID: string, nextEpisodeURL: string, episodesWatched: number): Promise<void> {
+        const subscription = await this.getSubscription(animeID);
+        if (subscription) {
+            subscription.episodesWatched = episodesWatched;
+            subscription.nextEpisodeURL = nextEpisodeURL;
+        }
+    }
+
     /** Unsubscribe from Anime */
     // noinspection JSMethodCanBeStatic
     async unsubscribeAnime(animeID: string): Promise<void> {
-        const subscribed = await Store.getAnimeSubscriptions();
+        const subscriptions = await Store.getAnimeSubscriptions();
         const identifier = await this.buildIdentifier(animeID);
 
-        delete subscribed[identifier];
+        delete subscriptions[identifier];
     }
 }
 

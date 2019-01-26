@@ -3,13 +3,11 @@
  */
 
 import {Type} from "../utils";
-import {EpisodePage, OverviewPage} from "./pages";
-import AnimePage from "./pages/anime";
+import {AnimePage, EpisodePage} from "./pages";
 import ServicePage from "./service-page";
 import State from "./state";
 
 export default abstract class Service {
-    OverviewPage: Type<OverviewPage<this>>;
     AnimePage: Type<AnimePage<this>>;
     EpisodePage: Type<EpisodePage<this>>;
 

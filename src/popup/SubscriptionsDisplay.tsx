@@ -12,7 +12,6 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {makeStyles} from "@material-ui/styles";
 import {AnimeSubscriptionInfo, SubscribedAnimes} from "dolos/models";
 import Store, {StoreElementProxy} from "dolos/store";
 import * as React from "react";
@@ -20,13 +19,19 @@ import {Subscription} from "rxjs";
 import _ = chrome.i18n.getMessage;
 
 
-function SubscriptionItem(subscription: AnimeSubscriptionInfo) {
+export function SubscriptionItem(subscription: AnimeSubscriptionInfo) {
     function showAnime(): void {
         chrome.tabs.create({url: subscription.animeURL});
     }
 
     function unsubscribeAnime(): void {
         Store.getAnimeSubscriptions().then(subs => delete subs[subscription.identifier]);
+    }
+
+    let secondaryText = null;
+    const unseenEpisodes = subscription.anime.episodes - subscription.episodesWatched;
+    if (unseenEpisodes > 0) {
+        secondaryText = _("subscriptions__unseen_episodes", [unseenEpisodes]);
     }
 
     return (
@@ -36,6 +41,7 @@ function SubscriptionItem(subscription: AnimeSubscriptionInfo) {
             </ListItemAvatar>
             <ListItemText
                 primary={subscription.anime.title}
+                secondary={secondaryText}
             />
             <ListItemSecondaryAction>
                 <IconButton aria-label={_("subscriptions__remove_subscription")} onClick={unsubscribeAnime}>
@@ -46,10 +52,7 @@ function SubscriptionItem(subscription: AnimeSubscriptionInfo) {
     )
 }
 
-/** @ignore */
-const useStyles = makeStyles(() => ({}));
-
-function useSubscriptions(): StoreElementProxy<SubscribedAnimes> | undefined {
+export function useSubscriptions(): StoreElementProxy<SubscribedAnimes> | undefined {
     const [subscriptions, setSubscriptions] = React.useState(undefined as StoreElementProxy<SubscribedAnimes> | undefined);
 
     React.useEffect(() => {

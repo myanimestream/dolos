@@ -78,7 +78,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         return !!await this.service.getUsername();
     }
 
-    async _setEpisodesWatched(progress: number): Promise<boolean> {
+    protected async _setEpisodesWatched(progress: number): Promise<boolean> {
         const episodeCount = await this.getEpisodeCount();
         if (episodeCount === undefined)
             return false;

@@ -39,8 +39,13 @@ state.hasNewVersion$.subscribe(
 );
 
 state.hasNewEpisode$.subscribe(async e => {
-    const anime = e.anime;
-    const nextEpisodeIndex = Math.min(e.episodesWatched, anime.episodes - 1);
+    // ignore event if there's no unseen episode
+    if (e.unseenEpisodes <= 0)
+        return;
+
+    const subscription = e.subscription;
+    const anime = subscription.anime;
+    const nextEpisodeIndex = subscription.episodesWatched;
 
     const getEpisodePoster = async () => {
         let episode: Episode;
@@ -74,10 +79,10 @@ state.hasNewEpisode$.subscribe(async e => {
     const sub = notification.onButtonClicked$.subscribe(event => {
         switch (event.buttonIndex) {
             case 0:
-                chrome.tabs.create({url: e.nextEpisodeURL,});
+                chrome.tabs.create({url: subscription.nextEpisodeURL,});
                 break;
             case 1:
-                delete e.subscribedAnimes[e.identifier];
+                delete e.subscribedAnimes[subscription.identifier];
                 break;
         }
     });
