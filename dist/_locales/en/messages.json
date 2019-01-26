@@ -159,6 +159,9 @@
   "anime__search__search_placeholder": {
     "message": "Search Anime"
   },
+  "anime__search__no_search_query": {
+    "message": "Please enter a search query"
+  },
   "anime__search__no_results": {
     "message": "No results found"
   },

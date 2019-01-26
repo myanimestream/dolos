@@ -114,6 +114,9 @@
   "anime__search__search_placeholder": {
     "message": "Suche Anime"
   },
+  "anime__search__no_search_query": {
+    "message": "Bitte eine Suchanfrage (that's what Google Translate said, don't hurt me) eingeben"
+  },
   "anime__search__no_results": {
     "message": "Keine Treffer gefunden"
   },
