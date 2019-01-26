@@ -89,104 +89,119 @@ export interface AnimeSearchResultDialogState {
     currentAnime?: AnimeInfo;
 }
 
-export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>()(
-    class AnimeSearchResultDialog extends React.Component<AnimeSearchResultDialogProps, AnimeSearchResultDialogState> {
-        searchDebounced = AwesomeDebouncePromise(async (query: string) => {
-            await this.search(query);
-        }, 500);
+class AnimeSearchResultDialog extends React.Component<AnimeSearchResultDialogProps, AnimeSearchResultDialogState> {
+    searchDebounced = AwesomeDebouncePromise(async (query: string) => {
+        await this.search(query);
+    }, 500);
 
-        constructor(props: AnimeSearchResultDialogProps) {
-            super(props);
-            this.state = {
-                loading: true,
-            };
+    constructor(props: AnimeSearchResultDialogProps) {
+        super(props);
+        this.state = {
+            loading: true,
+        };
+    }
+
+    async handleDialogEnter() {
+        const {animePage} = this.props;
+
+        (async () => {
+            const currentAnimeUID = await animePage.getAnimeUID();
+            this.setState({currentAnimeUID});
+        })();
+
+        const searchQuery = await animePage.getAnimeSearchQuery();
+        if (!searchQuery) {
+            this.setState({loading: false});
+            return;
         }
 
-        async handleDialogEnter() {
-            const {animePage} = this.props;
+        await this.search(searchQuery);
+    }
 
-            (async () => {
-                const currentAnimeUID = await animePage.getAnimeUID();
-                this.setState({currentAnimeUID});
-            })();
+    async search(query: string) {
+        const {animePage} = this.props;
+        const state = animePage.state;
 
-            const searchQuery = await animePage.getAnimeSearchQuery();
-            if (!searchQuery) {
-                this.setState({loading: false});
-                return;
-            }
-
-            await this.search(searchQuery);
+        if (!query) {
+            this.setState({
+                searchQuery: query,
+                results: undefined,
+            });
+            return;
         }
 
-        async search(query: string) {
-            const {animePage} = this.props;
-            const state = animePage.state;
+        this.setState({loading: true, searchQuery: query});
 
-            this.setState({loading: true, searchQuery: query});
+        let results: AnimeInfo[] | undefined;
+        const config = await state.config;
+        const searchResults = await GrobberClient.searchAnime(query, 10);
+        if (searchResults) {
+            let consideration = searchResults
+                .filter(res => res.certainty >= config.minCertaintyForSearchResult);
 
-            let results: AnimeInfo[] | undefined;
-            const config = await state.config;
-            const searchResults = await GrobberClient.searchAnime(query, 10);
-            if (searchResults) {
-                let consideration = searchResults
-                    .filter(res => res.certainty >= config.minCertaintyForSearchResult);
+            if (consideration.length === 0) consideration = searchResults;
 
-                if (consideration.length === 0) consideration = searchResults;
-
-                results = consideration
-                    .map(res => res.anime);
-            }
-
-            this.setState({loading: false, results});
+            results = consideration
+                .map(res => res.anime);
         }
 
-        handleSelect(anime: AnimeInfo) {
-            const {currentAnimeUID} = this.state;
-            if (anime.uid == currentAnimeUID) return;
+        this.setState({loading: false, results});
+    }
 
-            this.setState({currentAnimeUID: anime.uid, currentAnime: anime});
-        }
+    handleSelect(anime: AnimeInfo) {
+        const {currentAnimeUID} = this.state;
+        if (anime.uid == currentAnimeUID) return;
 
-        renderContent(): React.ReactNode {
-            const {loading, results, currentAnimeUID} = this.state;
+        this.setState({currentAnimeUID: anime.uid, currentAnime: anime});
+    }
 
-            if (loading) {
-                return (
-                    <CircularProgress/>
-                );
-            } else if (results && results.length > 0) {
-                return (
-                    <AnimeSelection anime={results} currentUID={currentAnimeUID}
-                                    onSelect={(anime) => this.handleSelect(anime)}/>
-                );
-            } else {
-                return (
-                    <Typography variant="overline">{_("anime__search__no_results")}</Typography>
-                );
-            }
-        }
+    renderContent(): React.ReactNode {
+        const {loading, results, currentAnimeUID, searchQuery} = this.state;
 
-        render(): React.ReactNode {
-            const {classes, open, onClose, fullScreen} = this.props;
-            const {searchQuery, currentAnime} = this.state;
-
+        if (loading) {
             return (
-                <Dialog
-                    fullScreen={fullScreen}
-                    open={open}
-                    onEnter={() => this.handleDialogEnter()}
-                    onBackdropClick={() => onClose && onClose()}
-                    scroll="paper"
-                    aria-labelledby="anime-search-result-dialog-title"
-                    style={{zIndex: 10000}}
-                >
-                    <Toolbar>
-                        <DialogTitle id="anime-search-result-dialog-title">
-                            {_("anime__search__title")}
-                        </DialogTitle>
-                        <div className={classes.grow}/>
-                        {searchQuery && (
+                <CircularProgress/>
+            );
+        } else if (results && results.length > 0) {
+            return (
+                <AnimeSelection anime={results} currentUID={currentAnimeUID}
+                                onSelect={(anime) => this.handleSelect(anime)}/>
+            );
+        } else if (!searchQuery) {
+            return (
+                <Typography variant="overline">{_("anime__search__no_search_query")}</Typography>
+            );
+        } else {
+            return (
+                <Typography variant="overline">{_("anime__search__no_results")}</Typography>
+            );
+        }
+    }
+
+    render(): React.ReactNode {
+        const {classes, open, onClose, fullScreen} = this.props;
+        const {searchQuery, currentAnime} = this.state;
+
+        return (
+            <Dialog
+                fullScreen={fullScreen}
+                maxWidth="md"
+                fullWidth={true}
+                open={open}
+                onEnter={() => this.handleDialogEnter()}
+                onBackdropClick={() => onClose && onClose()}
+                scroll="paper"
+                aria-labelledby="anime-search-result-dialog-title"
+                style={{zIndex: 10000}}
+            >
+                <Toolbar>
+                    <DialogTitle id="anime-search-result-dialog-title">
+                        {_("anime__search__title")}
+                    </DialogTitle>
+                    <div className={classes.grow}/>
+                    {
+                        // searchQuery is only undefined right at the beginning
+                        searchQuery !== undefined && (
                             <div className={classes.search}>
                                 <div className={classes.searchIcon}>
                                     <SearchIcon/>
@@ -201,24 +216,26 @@ export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>
                                     }}
                                 />
                             </div>
-                        )}
-                    </Toolbar>
-                    <DialogContent className={classes.content}>
-                        {this.renderContent()}
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => onClose && onClose()} color="primary">
-                            {_("anime__search__abort")}
+                        )
+                    }
+                </Toolbar>
+                <DialogContent className={classes.content}>
+                    {this.renderContent()}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => onClose && onClose()} color="primary">
+                        {_("anime__search__abort")}
+                    </Button>
+                    {currentAnime && (
+                        <Button onClick={() => onClose && onClose(currentAnime)} variant="contained"
+                                color="primary">
+                            {_("anime__search__pick")}
                         </Button>
-                        {currentAnime && (
-                            <Button onClick={() => onClose && onClose(currentAnime)} variant="contained"
-                                    color="primary">
-                                {_("anime__search__pick")}
-                            </Button>
-                        )}
-                    </DialogActions>
-                </Dialog>
-            );
-        }
+                    )}
+                </DialogActions>
+            </Dialog>
+        );
     }
-));
+}
+
+export default withStyles(styles)(withMobileDialog<AnimeSearchResultDialogProps>()(AnimeSearchResultDialog));

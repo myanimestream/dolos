@@ -4,7 +4,6 @@
 
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import {AnimeInfo} from "dolos/grobber";
@@ -12,7 +11,7 @@ import * as React from "react";
 import AnimeCard from "./AnimeCard";
 
 /** @ignore */
-const styles = (theme: Theme) => createStyles({
+const styles = () => createStyles({
     listTile: {
         overflow: "visible",
     },
@@ -35,7 +34,7 @@ export default withStyles(styles, {withTheme: true})(
             const {classes, theme, anime, currentUID} = this.props;
 
             return (
-                <GridList cellHeight="auto" cols={3} spacing={2 * theme.spacing.unit}>
+                <GridList cellHeight="auto" cols={4} spacing={2 * theme.spacing.unit}>
                     {anime.map(anime => (
                         <GridListTile key={anime.uid} classes={{tile: classes.listTile}}>
                             <AnimeCard
