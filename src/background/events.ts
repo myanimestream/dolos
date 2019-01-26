@@ -3,17 +3,32 @@
  */
 
 import {Episode, GrobberClient} from "dolos/grobber";
+import {getVersion} from "dolos/info";
 import {getBlobURL} from "dolos/utils";
+import {performExtensionUpdate} from "./extension-update";
 import {BrowserNotification} from "./notifications";
 import * as state from "./observables";
+import {hasNewVersion$} from "./observables";
 import {performUpdateCheck} from "./update-check";
 import Alarm = chrome.alarms.Alarm;
 import _ = chrome.i18n.getMessage;
 import InstalledDetails = chrome.runtime.InstalledDetails;
 
 chrome.runtime.onInstalled.addListener(async (details: InstalledDetails) => {
-    if (details.reason == "update") {
-        state.hasNewVersion$.next(true);
+    if (details.reason == "update" && details.previousVersion && details.previousVersion !== getVersion()) {
+        await performExtensionUpdate(details.previousVersion);
+        await new Promise(res => chrome.storage.local.set({updated: true}, res));
+
+        chrome.runtime.reload();
+    }
+});
+
+chrome.storage.local.get("updated", (items: any) => {
+    const {updated} = items;
+
+    if (updated) {
+        hasNewVersion$.next(true);
+        chrome.storage.local.remove("updated");
     }
 });
 
