@@ -12,8 +12,23 @@ references:
       at: *workspace_root
   copy_node_modules: &copy_node_modules
     run: mv /tmp/workspace/node_modules .
+  install_crowdin_cli: &install_crowdin_cli
+    run:
+      name: Installing Crowdin CLI
+      command: sudo apt-get update && sudo apt-get install crowdin
 
 jobs:
+  upload-localisation:
+    executor: node/node
+
+    steps:
+      - checkout
+      - *attach_workspace
+      - *install_crowdin_cli
+      - run:
+        name: Uploading localisation source
+        command: bash tools/upload_translation_source.sh
+
   install:
     executor: node/node
 
@@ -37,6 +52,10 @@ jobs:
       - *attach_workspace
       - *copy_node_modules
       - run: npm run build:production
+      - *install_crowdin_cli
+      - run:
+          name: Getting localisations
+          command: bash tools/download_translations.sh
       - run: mv dist/ /tmp/workspace/
       - persist_to_workspace:
           root: *workspace_root
@@ -53,20 +72,7 @@ jobs:
       - run: npm run docs -- --gaID $GA_ID
       - run:
           name: Committing Documentation
-          command: |
-            rev=$(git rev-parse --short HEAD)
-
-            git config credential.helper "cache --timeout=120"
-            git config user.email "$GH_EMAIL"
-            git config user.name "$GH_USERNAME"
-
-            git remote add upstream "https://$GITHUB_TOKEN@github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git"
-            git fetch upstream
-            git reset upstream/gh-pages
-
-            git add --force docs
-            git commit --message "chore: deploy ${rev}"
-            git push --quiet upstream HEAD:gh-pages > /dev/null 2>&1
+          command: bash tools/commit_documentation.sh
 
   deploy:
     executor: node/node
@@ -90,6 +96,7 @@ workflows:
   main:
     jobs:
       - install
+      - upload-localisation
 
       - build:
           requires:

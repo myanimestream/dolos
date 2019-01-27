@@ -501,7 +501,7 @@ declare module 'plyr' {
             poster?: string;
 
             /**
-             * An array of track objects. Each element in the array is mapped directly to a track element and any keys mapped directly to HTML attributes so as in the example above, it will render as <track kind="captions" label="English" srclang="en" src="https://cdn.selz.com/plyr/1.0/example_captions_en.vtt" default> and similar for the French version. Booleans are converted to HTML5 value-less attributes.
+             * An array of track objects. Each element in the array is mapped directly to a track element and any keys mapped directly to HTML attributes so as in the example above, it will render as <track kind="captions" label="English" srclang="en_GB" src="https://cdn.selz.com/plyr/1.0/example_captions_en.vtt" default> and similar for the French version. Booleans are converted to HTML5 value-less attributes.
              */
             tracks?: Track[];
         }

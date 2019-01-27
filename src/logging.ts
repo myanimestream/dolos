@@ -16,3 +16,11 @@ Sentry.init({
 });
 
 export {default as SentryLogger} from "./SentryLogger";
+
+// export const keenClient = new KeenTracking({
+//     projectId: "",
+//     requestType: "",
+//     writeKey: ""
+// });
+//
+// keenClient.initAutoTracking();

@@ -1,0 +1,9 @@
+project_identifier: dolos
+api_key: 58ea06b7a0d8c8e95efc2aa3c7c09793
+
+api_key_env: CROWDIN_API_KEY
+project_identifier_env: CROWDIN_PROJECT_ID
+
+files:
+  - source: "/en_GB/messages.json"
+    translation: "/%locale_with_underscore%/%original_file_name%"
