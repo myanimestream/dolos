@@ -12,10 +12,8 @@ references:
       at: *workspace_root
   copy_node_modules: &copy_node_modules
     run: mv /tmp/workspace/node_modules .
-  install_crowdin_cli: &install_crowdin_cli
-    run:
-      name: Installing Crowdin CLI
-      command: npm i better-crowdin
+  inject_crowdin_creds: &inject_crowdin_creds
+    run: echo ${CROWDIN_YAML_APPENDUM} >> crowdin.yml
 
 jobs:
   upload-localisation:
@@ -24,10 +22,13 @@ jobs:
     steps:
       - checkout
       - *attach_workspace
-      - *install_crowdin_cli
-      - run:
-          name: Uploading localisation source
-          command: bash tools/upload_translation_source.sh
+      run:
+        name: Installing Crowdin CLI
+        command: npm i better-crowdin
+          - *inject_crowdin_creds
+          - run:
+              name: Uploading localisation source
+              command: npm run crowdin:upload
 
   install:
     executor: node/node
@@ -52,9 +53,10 @@ jobs:
       - *attach_workspace
       - *copy_node_modules
       - run: npm run build:production
+      - *inject_crowdin_creds
       - run:
           name: Getting localisations
-          command: bash tools/download_translations.sh
+          command: npm run crowdin:download
       - run: mv dist/ /tmp/workspace/
       - persist_to_workspace:
           root: *workspace_root

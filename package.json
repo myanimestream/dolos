@@ -4,7 +4,9 @@
     "build:dev": "webpack --config webpack.dev.js",
     "build:production": "webpack --config webpack.prod.js",
     "watch": "webpack -w --config webpack.dev.js",
-    "docs": "typedoc --options typedoc.json src/"
+    "docs": "typedoc --options typedoc.json src/",
+    "crowdin:download": "better-crowdin download",
+    "crowdin:upload": "better-crowdin upload sources"
   },
   "author": "siku2",
   "license": "MIT",
