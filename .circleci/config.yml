@@ -25,10 +25,10 @@ jobs:
       run:
         name: Installing Crowdin CLI
         command: npm i better-crowdin
-          - *inject_crowdin_creds
-          - run:
-              name: Uploading localisation source
-              command: npm run crowdin:upload
+        - *inject_crowdin_creds
+        - run:
+            name: Uploading localisation source
+            command: npm run crowdin:upload
 
   install:
     executor: node/node
