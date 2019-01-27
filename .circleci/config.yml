@@ -18,6 +18,7 @@ references:
       command: |
         wget -qO - https://artifacts.crowdin.com/repo/GPG-KEY-crowdin | sudo apt-key add -
         echo "deb https://artifacts.crowdin.com/repo/deb/ /" | sudo tee -a /etc/apt/sources.list.d/crowdin.list
+        sudo apt-get install apt-transport-https
         sudo apt-get update && sudo apt-get install crowdin
 
 jobs:
