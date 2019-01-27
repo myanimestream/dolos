@@ -52,7 +52,6 @@ jobs:
       - *attach_workspace
       - *copy_node_modules
       - run: npm run build:production
-      - *install_crowdin_cli
       - run:
           name: Getting localisations
           command: bash tools/download_translations.sh
