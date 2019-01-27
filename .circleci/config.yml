@@ -26,8 +26,8 @@ jobs:
       - *attach_workspace
       - *install_crowdin_cli
       - run:
-        name: Uploading localisation source
-        command: bash tools/upload_translation_source.sh
+          name: Uploading localisation source
+          command: bash tools/upload_translation_source.sh
 
   install:
     executor: node/node
