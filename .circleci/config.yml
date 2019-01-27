@@ -15,7 +15,10 @@ references:
   install_crowdin_cli: &install_crowdin_cli
     run:
       name: Installing Crowdin CLI
-      command: sudo apt-get update && sudo apt-get install crowdin
+      command: |
+        wget -qO - https://artifacts.crowdin.com/repo/GPG-KEY-crowdin | sudo apt-key add -
+        echo "deb https://artifacts.crowdin.com/repo/deb/ /" > /etc/apt/sources.list.d/crowdin.list
+        sudo apt-get update && sudo apt-get install crowdin
 
 jobs:
   upload-localisation:
