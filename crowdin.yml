@@ -1,6 +1,8 @@
 api_key_env: CROWDIN_API_KEY
 project_identifier_env: CROWDIN_PROJECT_ID
 
+base_path: .
+
 files:
-  - source: "/en_GB/messages.json"
-    translation: "/%locale_with_underscore%/%original_file_name%"
+  - source: "/dist/_locales/en_GB/messages.json"
+    translation: "/dist/_locales/%locale_with_underscore%/%original_file_name%"
