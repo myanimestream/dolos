@@ -13,7 +13,7 @@ references:
   copy_node_modules: &copy_node_modules
     run: mv /tmp/workspace/node_modules .
   inject_crowdin_creds: &inject_crowdin_creds
-    run: echo ${CROWDIN_YAML_APPENDUM} >> crowdin.yml
+    run: printf ${CROWDIN_YAML_APPENDUM} >> crowdin.yml
 
 jobs:
   upload-localisation:
