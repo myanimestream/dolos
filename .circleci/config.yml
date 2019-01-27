@@ -15,7 +15,7 @@ references:
   install_crowdin_cli: &install_crowdin_cli
     run:
       name: Installing Crowdin CLI
-      command: npm i crowdin-cli
+      command: npm i better-crowdin
 
 jobs:
   upload-localisation:
