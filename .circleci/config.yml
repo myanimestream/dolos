@@ -16,6 +16,7 @@ references:
     run: |
       echo "project_identifier: ${CROWDIN_PROJECT_IDENTIFIER}" >> crowdin.yml
       echo "api_key: ${CROWDIN_API_KEY}" >> crowdin.yml
+      cat crodwin.yml
 
 jobs:
   upload-localisation:
