@@ -4,5 +4,3 @@ jobs:
 
 workflows:
   version: 2.1
-  main:
-    jobs: []
