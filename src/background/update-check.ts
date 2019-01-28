@@ -35,7 +35,7 @@ async function checkAnimeUpdate() {
             continue;
         }
 
-        if (newAnime.episodes >= oldAnime.episodes) {
+        if (newAnime.episodes > oldAnime.episodes) {
             animeSubscription.anime = newAnime;
 
             const event: NewEpisodeEvent = {
