@@ -6,7 +6,7 @@ import Kitsu from ".";
 import {cacheInStateMemory} from "../common";
 import {AnimePage} from "../common/pages";
 import {cacheInMemory} from "../memory";
-import {waitUntilExists, waitWithTimeout} from "../utils";
+import {retryUntil, waitUntilExists} from "../utils";
 import {
     getAccessToken,
     getAnime,
@@ -31,8 +31,8 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
     }
 
     @cacheInStateMemory("accessToken")
-    async getAccessToken(): Promise<string | null> {
-        return await getAccessToken();
+    async getAccessToken(): Promise<string | undefined> {
+        return await retryUntil(() => getAccessToken(), 200, 2500);
     }
 
     @cacheInMemory("animeId")
@@ -58,20 +58,9 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return `https://kitsu.io/anime/${animeID}`;
     }
 
-    async _retryGetKitsuAnimeInfo(retryInterval: number): Promise<KitsuAnimeInfo> {
-        let anime;
-        while (true) {
-            anime = await getAnime();
-            if (anime) break;
-            else await new Promise(res => setTimeout(() => res(), retryInterval));
-        }
-
-        return anime;
-    }
-
     @cacheInMemory("kitsuAnime")
     async getKitsuAnimeInfo(): Promise<KitsuAnimeInfo | undefined> {
-        return await waitWithTimeout(this._retryGetKitsuAnimeInfo(100), 2500);
+        return await retryUntil(getAnime, 200, 2500);
     }
 
     @cacheInStateMemory("userId")
@@ -127,7 +116,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
     }
 
     @cacheInMemory("episodesWatched")
-    async getEpisodesWatched(): Promise<number | undefined> {
+    async _getEpisodesWatched(): Promise<number | undefined> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
         if (!(animeId && userId)) return;
 
@@ -137,7 +126,12 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
     @cacheInMemory("episodeCount")
     async getEpisodeCount(): Promise<number | undefined> {
         const anime = await this.getKitsuAnimeInfo();
-        return anime ? anime.episodeCount : undefined;
+        if (anime) {
+            const epCount = anime.episodeCount;
+            if (epCount !== null) return epCount;
+        }
+
+        return;
     }
 
     async injectAnimeStatusBar(element: Element) {

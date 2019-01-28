@@ -9,7 +9,7 @@ import {getThemeFor} from "dolos/theme";
 import {reactRenderWithTheme} from "dolos/utils";
 import * as React from "react";
 import {BehaviorSubject, Observable} from "rxjs";
-import {first} from "rxjs/operators";
+import {distinctUntilChanged, first, map} from "rxjs/operators";
 import {AnimeStatusBar} from "../components";
 import Service from "../service";
 import ServicePage from "../service-page";
@@ -125,6 +125,11 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         }
     }
 
+    /**
+     * Check whether the user is subscribed to the Anime
+     *
+     * @see [[AnimePage.getSubscribed$]]
+     */
     async isSubscribed(): Promise<boolean | undefined> {
         const subscribed$ = await this.getSubscribed$();
         if (!subscribed$) return;
@@ -132,6 +137,7 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return await subscribed$.pipe(first()).toPromise();
     }
 
+    /** Observable denoting whether the user is subscribed to the Anime */
     async getSubscribed$(): Promise<Observable<boolean> | undefined> {
         const identifier = await this.getAnimeIdentifier();
         if (!identifier) return;
@@ -139,6 +145,10 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return await this.state.getSubscribed$(identifier);
     }
 
+    /**
+     * Get the [[AnimeSubscriptionInfo]] for the Anime
+     * @returns undefined if the user isn't subscribed to the Anime.
+     */
     async getSubscription(): Promise<AnimeSubscriptionInfo | undefined> {
         const animeID = await this.getAnimeIdentifier();
         if (!animeID) return;
@@ -146,6 +156,36 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return await this.state.getSubscription(animeID);
     }
 
+    /**
+     * Observable denoting whether it is possible (read: allowed) to subscribe to the Anime.
+     */
+    async canSubscribeAnime$(): Promise<Observable<boolean>> {
+        const [epsWatched$, totalEpisodes] = await Promise.all([
+            this.getEpisodesWatched$(),
+            this.getEpisodeCount()
+        ]);
+
+        // only allow subscriptions when the user hasn't finished the anime or we're unsure whether they have
+        return epsWatched$.pipe(
+            map(epsWatched => totalEpisodes === undefined || epsWatched === undefined || epsWatched < totalEpisodes),
+            distinctUntilChanged(),
+        );
+    }
+
+    /**
+     * Check whether the user may subscribe to the Anime.
+     *
+     * @see [[AnimePage.canSubscribeAnime$]]
+     */
+    async canSubscribeAnime(): Promise<boolean> {
+        const canSubscribeAnime$ = await this.canSubscribeAnime$();
+        return await canSubscribeAnime$.pipe(first()).toPromise();
+    }
+
+    /**
+     * Subscribe to the Anime.
+     * @returns Whether the subscription was successful
+     */
     async subscribeAnime(): Promise<boolean> {
         let [identifier, animeURL, episodesWatched, anime] = await Promise.all([
             this.getAnimeIdentifier(), this.getAnimeURL(), this.getEpisodesWatched(), this.getAnime()
@@ -163,6 +203,11 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return true;
     }
 
+
+    /**
+     * Subscribe to the Anime.
+     * @returns Whether the action was successful.
+     */
     async updateSubscription(episodesWatched?: number | PromiseLike<number>): Promise<void> {
         const [animeID, epsWatched, totalEpisodes] = await Promise.all([
             this.getAnimeIdentifier(),
@@ -183,6 +228,10 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         await this.state.updateAnimeSubscription(animeID, nextEpURL, epsWatched);
     }
 
+    /**
+     * Unsubscribe from the Anime.
+     * @returns Whether the action was successful.
+     */
     async unsubscribeAnime(): Promise<boolean> {
         const identifier = await this.getAnimeIdentifier();
         if (!identifier) return false;
@@ -198,6 +247,8 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
 
     /**
      * Set the amount of episodes watched.
+     *
+     * @returns whether the action was successful.
      */
     async setEpisodesWatched(progress: number): Promise<boolean> {
         const success = await this._setEpisodesWatched(progress);
@@ -211,18 +262,32 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return success;
     }
 
+    /** Return the URL of this Anime. */
     abstract async getAnimeURL(): Promise<string | undefined>;
 
+    /** Get the URL of the provided episode for this Anime */
     abstract async getEpisodeURL(episodeIndex: number): Promise<string>;
+
+    /** Get the amount of episodes the user has seen */
+    async getEpisodesWatched(): Promise<number | undefined> {
+        if (this._episodesWatched$) return this._episodesWatched$.getValue();
+        else return await this._getEpisodesWatched();
+    }
 
     /**
      * Navigate the user to the episode with the given index.
      */
     abstract async showEpisode(episodeIndex: number): Promise<void>;
 
-    abstract async getEpisodesWatched(): Promise<number | undefined>;
-
     abstract async getEpisodeCount(): Promise<number | undefined>;
+
+    async _load() {
+        const statusBar = await this.buildAnimeStatusBar();
+        await this.injectAnimeStatusBar(statusBar);
+
+        // update the subscription to make sure it reflects the current state
+        if (await this.isSubscribed()) await this.updateSubscription();
+    }
 
     /**
      * @private
@@ -256,10 +321,13 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return el;
     }
 
-    async _load() {
-        const statusBar = await this.buildAnimeStatusBar();
-        await this.injectAnimeStatusBar(statusBar);
-    }
+    /**
+     * @private
+     *
+     * Internal progress getter. **Do not use this method**!
+     * @see [[AnimePage.getEpisodesWatched]] instead!
+     */
+    protected abstract async _getEpisodesWatched(): Promise<number | undefined>;
 
     async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | void> {
         if (page instanceof AnimePage) {

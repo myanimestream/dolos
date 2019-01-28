@@ -2,11 +2,11 @@
  * @module common.components.anime
  */
 
-import {Tooltip} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
+import Tooltip from "@material-ui/core/Tooltip";
 import PlayCircleIcon from "@material-ui/icons/PlayCircleFilled";
 import * as React from "react";
 import {Subscription} from "rxjs";

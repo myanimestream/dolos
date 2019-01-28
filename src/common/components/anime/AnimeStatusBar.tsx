@@ -26,8 +26,8 @@ export function AnimeStatusBar({animePage}: AnimeStatusBarProps) {
 
     return (
         <span className={classes.bar}>
-            <SubscriptionToggle animePage={animePage}/>
             <ContinueWatchingButton animePage={animePage}/>
+            <SubscriptionToggle animePage={animePage}/>
         </span>
     )
 }

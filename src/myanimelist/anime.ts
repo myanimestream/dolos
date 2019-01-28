@@ -136,7 +136,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
     }
 
     @cacheInMemory("episodesWatched")
-    async getEpisodesWatched(): Promise<number | undefined> {
+    async _getEpisodesWatched(): Promise<number | undefined> {
         if (this.service.isMobileLayout()) {
             const anime = await this.getMALAnime();
 

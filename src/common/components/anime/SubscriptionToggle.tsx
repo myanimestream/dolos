@@ -12,9 +12,8 @@ import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import {makeStyles} from "@material-ui/styles";
 import {AnimePage} from "dolos/common/pages";
-import {useObservable, usePromise} from "dolos/hooks";
+import {useObservablePromiseMemo} from "dolos/hooks";
 import * as React from "react";
-import {EMPTY} from "rxjs";
 import _ = chrome.i18n.getMessage;
 
 /** @ignore */
@@ -48,14 +47,12 @@ export function SubscriptionToggle(props: SubscriptionToggleProps) {
     const classes = useStyles();
     const [loading, setLoading] = React.useState(false);
 
-    // keep reference to the promise because otherwise it changes on every render
-    const subscribed$Promise = React.useMemo(() => animePage.getSubscribed$(), []);
-    const subscribed$ = usePromise(subscribed$Promise);
-    const subscribed = useObservable(subscribed$ || EMPTY, false);
+    const canSubscribe = useObservablePromiseMemo(() => animePage.canSubscribeAnime$(), false);
+    const subscribed = useObservablePromiseMemo(() => animePage.getSubscribed$());
 
     async function toggleSubscription(): Promise<void> {
         // still loading
-        if (!subscribed$) return;
+        if (subscribed === undefined) return;
 
         setLoading(true);
         if (subscribed) await animePage.unsubscribeAnime();
@@ -66,11 +63,19 @@ export function SubscriptionToggle(props: SubscriptionToggleProps) {
 
     const Icon = subscribed ? NotificationsActiveIcon : NotificationsNoneIcon;
 
+    // only disable button if the user isn't already subscribed.
+    const disableAction = !subscribed && !canSubscribe;
+
+    const buttonDisabled = loading || disableAction;
+    const tooltipText = disableAction
+        ? _("anime__subscription_not_possible")
+        : _("anime__" + (subscribed ? "unsubscribe" : "subscribe") + "__help");
+
     return (
-        <Tooltip title={_("anime__" + (subscribed ? "unsubscribe" : "subscribe") + "__help")}>
+        <Tooltip title={tooltipText}>
             <div className={classes.container}>
                 <Button variant="contained" color="secondary" fullWidth
-                        disabled={loading}
+                        disabled={buttonDisabled}
                         onClick={toggleSubscription}
                 >
                     <Icon className={classes.buttonIconLeft}/>

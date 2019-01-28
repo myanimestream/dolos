@@ -71,6 +71,39 @@ export async function waitWithTimeout<T>(promise: PromiseLike<T>, timeout: numbe
 }
 
 /**
+ * Re-run a function until the return value meets the condition.
+ *
+ * @param func - may take the number of attempts that preceded it (counting up from 0)
+ * @param condition
+ */
+export async function retryUntil<T>(
+    func: (attempt: number) => T | PromiseLike<T>,
+    interval: number,
+    timeout: number,
+    condition?: (value: T, attempt: number) => boolean | PromiseLike<boolean>
+): Promise<T | undefined> {
+    condition = condition || (val => Boolean(val));
+
+    let running = true;
+    setTimeout(() => running = false, timeout);
+
+    let attempt: number = 0;
+    while (running) {
+        const delay = new Promise(res => setTimeout(res, interval));
+
+        const res = await Promise.resolve(func(attempt));
+        if (await Promise.resolve(condition(res, attempt))) {
+            return res;
+        }
+
+        attempt += 1;
+        await delay;
+    }
+
+    return;
+}
+
+/**
  * Wrap a React node with a Sentry logger which tracks errors.
  * @see [[SentryLogger]]
  */
