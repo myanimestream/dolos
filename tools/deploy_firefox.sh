@@ -5,7 +5,7 @@ set -e
 echo "[FIREFOX] bundling..."
 mkdir -p "temp/firefox"
 cp -af "dist/." "temp/firefox/"
-cd "temp/firefox"
+cd temp/firefox/
 echo $(cat "manifest.webextension.json") > "manifest.json"
 
 echo "[FIREFOX] signing..."
