@@ -80,6 +80,17 @@ jobs:
       - run:
           name: Deploy
           command: bash tools/deploy.sh
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - build/
+
+  github_releases:
+    executor: github-release/default
+
+    steps:
+      - *attach_workspace
+      - run: mv /tmp/workspace/build .
       - github-release/create:
           tag: $CIRCLE_TAG
           title: Version $CIRCLE_TAG
@@ -114,6 +125,15 @@ workflows:
       - deploy:
           requires:
             - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+
+      - github_releases:
+          requires:
+            - deploy
           filters:
             branches:
               ignore: /.*/
