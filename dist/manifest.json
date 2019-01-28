@@ -1,4 +1,9 @@
 {
+  "applications": {
+    "gecko": {
+      "id": "dolos@myanimestream.net"
+    }
+  },
   "manifest_version": 2,
   "name": "MyAnimeStream",
   "short_name": "MAS",
@@ -29,8 +34,7 @@
   "background": {
     "scripts": [
       "js/background.js"
-    ],
-    "persistent": false
+    ]
   },
   "content_scripts": [
     {
