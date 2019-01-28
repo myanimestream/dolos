@@ -4,9 +4,7 @@
     "build:dev": "webpack --config webpack.dev.js",
     "build:production": "webpack --config webpack.prod.js",
     "watch": "webpack -w --config webpack.dev.js",
-    "docs": "typedoc --options typedoc.json src/",
-    "crowdin:download": "better-crowdin download",
-    "crowdin:upload": "better-crowdin upload sources"
+    "docs": "typedoc --options typedoc.json src/"
   },
   "author": "siku2",
   "license": "MIT",
@@ -18,7 +16,6 @@
     "@types/react-copy-to-clipboard": "^4.2.6",
     "@types/react-dom": "^16.0.4",
     "@types/react-router-dom": "^4.3.1",
-    "better-crowdin": "^1.0.0",
     "css-loader": "^2.1.0",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
