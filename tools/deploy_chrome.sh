@@ -9,7 +9,7 @@ cp -af "dist/." "temp/chrome/"
 cd "temp/chrome"
 echo $(cat "manifest.chrome.json") > "manifest.json"
 zip -r9 "../../build/mas-chrome.zip" *
-cd ../..
+cd ../../build/
 
 echo "[CHROME] getting access token..."
 CHROME_AUTH=$(curl -s "https://www.googleapis.com/oauth2/v4/token" -d \
