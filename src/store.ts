@@ -210,7 +210,18 @@ export class StoreElement<T> {
         }
 
         if (Object.entries(newValue).length > 0) {
-            for (const [key, value] of Object.entries(newValue)) {
+            const keys = new Set([...this.ownKeys(), ...Object.keys(newValue)]);
+
+            for (const key of keys) {
+                // this key was removed
+                if (!(key in newValue)) {
+                    delete this._container[key];
+                    continue;
+                }
+                // otherwise it's either a new or changed key
+
+                // @ts-ignore
+                const value = newValue[key];
                 const el = this.get(key);
 
                 if (isPrimitive(value))
