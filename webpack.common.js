@@ -1,4 +1,16 @@
+const webpack = require("webpack");
 const path = require("path");
+
+// load the config from the file
+const secrets = require("./dolos-secrets");
+
+// override with env variables.
+for (const key of Object.keys(secrets)) {
+    const envKey = `DOLOS_${key.toString().toUpperCase()}`;
+    const envValue = process.env[envKey];
+    if (envValue)
+        secrets[key] = envValue;
+}
 
 module.exports = {
     entry: {
@@ -41,5 +53,10 @@ module.exports = {
             "dolos": path.join(__dirname, "src"),
         },
         extensions: [".ts", ".tsx", ".js"]
-    }
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            WEBPACK_SECRETS: JSON.stringify(secrets),
+        }),
+    ]
 };

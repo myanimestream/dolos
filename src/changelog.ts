@@ -28,7 +28,8 @@ const CHANGELOG: Changelog = new Map([
         `Show notifications for new episodes. Hey, read it again, **THIS IS HUGE!**`,
         `Rewrote some of the storage logic. You hopefully won't notice this one. *Why did I even bring it up...*`,
         `Only continuing to next episode if there actually is one. No longer getting your hopes up for nothing, you're welcome.`,
-        `Added a version updater which should allow for breaking changes without affecting you.`
+        `Added a version updater which should allow for breaking changes without affecting you.`,
+        `Dolos' theme is now light instead of dark.`
     ]],
     ["0.1.1", [
         `Firefox Bugs have been fixed which means that it's now on the same level as the Chrome extension.`,
