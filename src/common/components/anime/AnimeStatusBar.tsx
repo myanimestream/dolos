@@ -1,3 +1,9 @@
+/**
+ * @module common.components.anime
+ */
+
+/** @ignore */
+
 import {Theme} from "@material-ui/core/styles";
 import {makeStyles} from "@material-ui/styles";
 import {AnimePage} from "dolos/common/pages";

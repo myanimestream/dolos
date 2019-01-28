@@ -33,7 +33,7 @@ export async function getAnimeSubsWithUnseenEps$(): Promise<Observable<AnimeSubs
 /**
  * Get an observable for the amount of subscriptions with unseen episodes
  *
- * @see [[getAnimeSubsWithUnseenEps]]
+ * @see [[getAnimeSubsWithUnseenEps$]]
  */
 export async function getAnimeSubsWithUnseenEpsCount$(): Promise<Observable<number>> {
     const unseen$ = await getAnimeSubsWithUnseenEps$();
