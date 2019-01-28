@@ -1,16 +1,19 @@
 {
   "ext_name": {
-    "message": "MyAnimeStream"
+    "message": "MyAnimeStream",
+    "description": "The name of the extension. Unless there is a really good reason to you shouldn't translate this"
   },
   "ext_description": {
     "message": "Get the most out of your favourite anime site by turning it into a streaming site.",
     "description": "The description of the extension"
   },
   "ext_tooltip": {
-    "message": "MyAnimeStream - Dolos"
+    "message": "MyAnimeStream",
+    "description": "Text shown to the user when they hover over the logo. On mobile this is shown instead of the logo."
   },
   "ext_badge__new_version": {
-    "message": "new"
+    "message": "new",
+    "description": "Text displayed on the logo if the extension updated. Should be as short as possible"
   },
   "sentry__event_id": {
     "message": "Event id: "
@@ -65,6 +68,14 @@
   },
   "subscriptions__anime__subscription_header": {
     "message": "Anime Subscriptions"
+  },
+  "subscriptions__anime__featured_subscriptions": {
+    "message": "Unseen Episodes",
+    "descriptions": "List header shown for subscriptions whose Animes have unseen episodes."
+  },
+  "subscriptions__anime__all_subscriptions": {
+    "message": "Other",
+    "descriptions": "List header shown for subscriptions whose Animes don't have unseen episodes. This header is only shown if there are episodes with unseen episodes"
   },
   "subscriptions__unseen_episodes": {
     "message": "Unseen episodes: $EPISODES$",
@@ -201,6 +212,10 @@
   },
   "anime__continue_watching__anime_unknown": {
     "message": "Couldn't load Anime"
+  },
+  "anime__subscription_not_possible": {
+    "message": "Can't subscribe",
+    "description": "Tooltip text when a subscription is impossible. For instance when the user has already seen all episodes"
   },
   "anime__subscribe": {
     "message": "Subscribe"

@@ -102,6 +102,8 @@ state.hasNewEpisode$.subscribe(async e => {
         }
     });
 
-    await notification.waitClosed();
+    // this might cause a small memory leak because waitRemoved doesn't capture all means of closing a notification
+    // but at least it's better than having the buttons not work
+    await notification.waitRemoved();
     sub.unsubscribe();
 });

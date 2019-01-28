@@ -2,10 +2,10 @@
  * @module popup
  */
 
-import {Card} from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import Badge from "@material-ui/core/Badge";
 import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -33,14 +33,15 @@ import MenuIcon from "@material-ui/icons/Menu";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import SettingsIcon from "@material-ui/icons/Settings";
 import SubscriptionsIcon from "@material-ui/icons/Subscriptions";
-import SubscriptionsDisplay from "dolos/popup/SubscriptionsDisplay";
+import GitHubIcon from "dolos/assets/GitHubIcon";
+import * as info from "dolos/info";
+import {getAnimeSubsWithUnseenEpsCount$} from "dolos/subscriptions";
+import {getBackgroundWindow} from "dolos/utils";
 import * as React from "react";
 import {NavLink, Redirect, Route, RouteComponentProps, Switch, withRouter} from "react-router-dom";
 import * as rxjs from "rxjs";
-import GitHubIcon from "../assets/GitHubIcon";
-import * as info from "../info";
-import {getBackgroundWindow} from "../utils";
 import Changelog from "./ChangelogDisplay";
+import SubscriptionsDisplay from "./SubscriptionsDisplay";
 import _ = chrome.i18n.getMessage;
 
 /** @ignore */
@@ -69,6 +70,9 @@ const styles = (theme: Theme) => {
             [theme.breakpoints.up("sm")]: {
                 display: "none",
             },
+        },
+        badge: {
+            paddingRight: 2 * theme.spacing.unit,
         },
         drawer: {
             [theme.breakpoints.up("sm")]: {
@@ -102,6 +106,7 @@ interface PopupProps extends WithStyles<typeof styles, true>, RouteComponentProp
 interface PopupState {
     drawerOpen: boolean;
     changelogBadgeVisible: boolean;
+    unseenEpisodesCount: number;
 }
 
 /**
@@ -109,17 +114,20 @@ interface PopupState {
  */
 class Popup extends React.Component<PopupProps, PopupState> {
     hasNewVersionSub?: rxjs.Subscription;
+    unseenEpsCountSub?: rxjs.Subscription;
 
     constructor(props: PopupProps) {
         super(props);
         this.state = {
             drawerOpen: false,
             changelogBadgeVisible: false,
+            unseenEpisodesCount: 0,
         }
     }
 
     componentWillUnmount() {
         if (this.hasNewVersionSub) this.hasNewVersionSub.unsubscribe();
+        if (this.unseenEpsCountSub) this.unseenEpsCountSub.unsubscribe();
     }
 
     async componentDidMount() {
@@ -130,6 +138,10 @@ class Popup extends React.Component<PopupProps, PopupState> {
             if (changelogBadgeVisible) history.push("/changelog");
             this.setState({changelogBadgeVisible});
         });
+
+        const animeSubsWithUnseenEpsCount$ = await getAnimeSubsWithUnseenEpsCount$();
+        this.unseenEpsCountSub = animeSubsWithUnseenEpsCount$
+            .subscribe(unseenEpisodesCount => this.setState({unseenEpisodesCount}));
     }
 
     toggleDrawer() {
@@ -186,7 +198,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
 
     render() {
         const {classes, theme} = this.props;
-        const {changelogBadgeVisible} = this.state;
+        const {changelogBadgeVisible, unseenEpisodesCount} = this.state;
 
         const getLink = (target: string) => (props: {}) => <NavLink to={target}
                                                                     activeClassName={classes.activeDrawerLink} {...props} />;
@@ -206,15 +218,25 @@ class Popup extends React.Component<PopupProps, PopupState> {
                     </ListItem>
                     <ListItem button component={SubscriptionsLink}>
                         <ListItemIcon><SubscriptionsIcon/></ListItemIcon>
-                        <ListItemText primary={_("popup__nav__subscriptions")}/>
+                        <ListItemText>
+                            <Badge badgeContent={unseenEpisodesCount} max={9}
+                                   className={classes.badge}
+                                   color="secondary"
+                            >
+                                {_("popup__nav__subscriptions")}
+                            </Badge>
+                        </ListItemText>
                     </ListItem>
                     <ListItem button component={ChangelogLink}>
-                        <ListItemIcon>
-                            <HistoryIcon/>
-                        </ListItemIcon>
-                        <Badge color="primary" badgeContent={1} invisible={!changelogBadgeVisible}>
-                            <ListItemText primary={_("popup__nav__changelog")}/>
-                        </Badge>
+                        <ListItemIcon><HistoryIcon/></ListItemIcon>
+                        <ListItemText>
+                            <Badge variant="dot" invisible={!changelogBadgeVisible}
+                                   className={classes.badge}
+                                   color="secondary"
+                            >
+                                {_("popup__nav__changelog")}
+                            </Badge>
+                        </ListItemText>
                     </ListItem>
                 </List>
                 <Divider/>

@@ -10,16 +10,22 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
+import ListSubheader from "@material-ui/core/ListSubheader";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {AnimeSubscriptionInfo, SubscribedAnimes} from "dolos/models";
-import Store, {StoreElementProxy} from "dolos/store";
+import {AnimeSubscriptionInfo} from "dolos/models";
+import Store from "dolos/store";
+import {useAnimeSubscriptions} from "dolos/subscriptions";
 import * as React from "react";
-import {Subscription} from "rxjs";
 import _ = chrome.i18n.getMessage;
 
+export interface SubscriptionItemProps {
+    subscription: AnimeSubscriptionInfo;
+}
 
-export function SubscriptionItem(subscription: AnimeSubscriptionInfo) {
+export function SubscriptionItem(props: SubscriptionItemProps) {
+    const {subscription} = props;
+
     function showAnime(): void {
         chrome.tabs.create({url: subscription.animeURL});
     }
@@ -52,38 +58,42 @@ export function SubscriptionItem(subscription: AnimeSubscriptionInfo) {
     )
 }
 
-export function useSubscriptions(): StoreElementProxy<SubscribedAnimes> | undefined {
-    const [subscriptions, setSubscriptions] = React.useState(undefined as StoreElementProxy<SubscribedAnimes> | undefined);
-
-    React.useEffect(() => {
-        let valueSub: Subscription;
-
-        (async () => {
-            const subs = await Store.getAnimeSubscriptions();
-            valueSub = subs.value$.subscribe(setSubscriptions);
-        })();
-
-        return () => {
-            if (valueSub) valueSub.unsubscribe();
-        };
-    }, []);
-
-    return subscriptions;
-}
-
 function SubscriptionsDisplay() {
-    const subscriptions = useSubscriptions();
+    const subscriptions = useAnimeSubscriptions();
 
     if (subscriptions === undefined)
         return <CircularProgress/>;
 
     let animeSubscriptions;
     if (Object.values(subscriptions).length > 0) {
-        animeSubscriptions = Object.entries(subscriptions).map(([id, subscription]) => (
-            <SubscriptionItem key={id} {...subscription}/>
-        ));
-    } else
+        const featuredSubs: AnimeSubscriptionInfo[] = [];
+        const subs: AnimeSubscriptionInfo[] = [];
+
+        Object.values(subscriptions).forEach(sub => {
+            const unseenEpisodes = sub.anime.episodes - sub.episodesWatched;
+            if (unseenEpisodes > 0)
+                featuredSubs.push(sub);
+            else
+                subs.push(sub);
+        });
+
+        animeSubscriptions = (
+            <>
+                {featuredSubs.length > 0 && (
+                    <>
+                        <ListSubheader>{_("subscriptions__anime__featured_subscriptions")}</ListSubheader>
+                        {featuredSubs.map(sub => <SubscriptionItem key={sub.identifier} subscription={sub}/>)}
+
+                        <ListSubheader>{_("subscriptions__anime__all_subscriptions")}</ListSubheader>
+                    </>
+                )}
+
+                {subs.map(sub => <SubscriptionItem key={sub.identifier} subscription={sub}/>)}
+            </>
+        );
+    } else {
         animeSubscriptions = <Typography>{_("subscriptions__no_active_subscriptions")}</Typography>;
+    }
 
     return (
         <>

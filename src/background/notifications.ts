@@ -8,7 +8,7 @@
 
 /** ignore */
 import AsyncLock from "dolos/lock";
-import {fromEventPattern, Observable} from "rxjs";
+import {fromEventPattern, merge, Observable} from "rxjs";
 import {filter, first} from "rxjs/operators";
 
 
@@ -59,8 +59,14 @@ export async function createNotification(options: chrome.notifications.Notificat
             const id = await new Promise((res: (id: string) => void) => chrome.notifications.create(options, res));
             res(id);
 
-            // wait for the notification to close and then release the lock
-            await onClosed$.pipe(first(e => e.notificationID == id)).toPromise();
+            // wait for the notification to close and then release the lock.
+            // onClosed isn't fired when the user takes action, but pressing a button closes
+            // the notification. To fix this we just listen to them as well.
+            await merge(
+                onClosed$,
+                onClicked$,
+                onButtonClicked$
+            ).pipe(first(e => e.notificationID == id)).toPromise();
         });
     });
 }
@@ -115,5 +121,23 @@ export class BrowserNotification {
     /** Wait until the notification is closed */
     async waitClosed(): Promise<void> {
         await this.onClosed$.pipe(first()).toPromise();
+    }
+
+    /**
+     * Wait until the notification is removed.
+     * This is different from [[BrowserNotification.waitClosed]] because it waits for the user to take action.
+     *
+     * On Windows for example the onClosed event is triggered when the notification goes off-screen, but it is still
+     * accessible in the notification area. The notification is only truly removed when the user takes some sort of action,
+     * either "closing" (clearing) the notification or pressing a button. It seems there is no way to detect the clearing
+     * of a notification so we only take the buttons into account.
+     */
+    async waitRemoved(): Promise<void> {
+        await merge(
+            this.onClicked$,
+            this.onButtonClicked$
+        )
+            .pipe(first())
+            .toPromise();
     }
 }

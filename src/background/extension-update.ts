@@ -36,8 +36,8 @@ export async function performExtensionUpdate(fromVersion: string): Promise<void>
 /** @ignore */
 const updaters: Map<string | RegExp, Updater> = new Map([
     /**
-     * From versions 0.0.1 to 0.1.1 the storage structure was different.
-     * This updater fixes this and removes all unnecessary garbage as well.
+     * From versions 0.0.1 to 0.1.1 the storage structure differs from later versions.
+     * This updater fixes this and cleans up as well.
      */
     [/0\.[01]\.\d+/, async (v: string) => {
         console.info(`[${v} -> 0.2.0] performing storage update`);
