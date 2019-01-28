@@ -12,8 +12,14 @@ zip -r9 "../../build/mas-chrome.zip" *
 cd ../../build/
 
 echo "[CHROME] getting access token..."
-CHROME_AUTH=$(curl -s "https://www.googleapis.com/oauth2/v4/token" -d \
-"client_id=$CHROME_CLIENT_ID&client_secret=$CHROME_CLIENT_SECRET&refresh_token=$CHROME_REFRESH_TOKEN&grant_type=refresh_token&redirect_uri=urn:ietf:wg:oauth:2.0:oob")
+CHROME_AUTH=$(curl -s \
+ --data "client_id=$CHROME_CLIENT_ID" \
+ --data "client_secret=$CHROME_CLIENT_SECRET" \
+ --data "refresh_token=$CHROME_REFRESH_TOKEN" \
+ --data "grant_type=refresh_token" \
+ --data "redirect_uri=urn:ietf:wg:oauth:2.0:oob" \
+ "https://www.googleapis.com/oauth2/v4/token"
+)
 
 CHROME_ACCESS_TOKEN=$(echo ${CHROME_AUTH} | jq -r ".access_token")
 
