@@ -75,6 +75,7 @@ jobs:
       - checkout
       - *attach_workspace
       - *copy_node_modules
+      - run: rm -r dist/
       - run: mv /tmp/workspace/dist .
       - run:
           name: Deploy
