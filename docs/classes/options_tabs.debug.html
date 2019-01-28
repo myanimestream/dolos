@@ -142,7 +142,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/options/tabs/Debug.tsx#L55">options/tabs/Debug.tsx:55</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/options/tabs/Debug.tsx#L54">options/tabs/Debug.tsx:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -161,12 +161,33 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="changegrobberurl" class="tsd-anchor"></a>
 					<h3>change<wbr>Grobber<wbr>Url</h3>
-					<div class="tsd-signature tsd-kind-icon">change<wbr>Grobber<wbr>Url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;AwesomeDebouncePromise(async (url: string) &#x3D;&gt; {if (!url.match(/https?:\/\/.+/)) {this.setState({invalidUrl: _(&quot;options__grobber__url__invalid&quot;)});return;}this.setState({checkingUrl: true});const result &#x3D; await Debug.checkGrobberUrl(url);if (result.valid) {await this.change(&quot;grobberUrl&quot;, url);this.setState({invalidUrl: undefined});} else {const text &#x3D; &#x60;options__grobber__url__${result.hint || &quot;test_failed&quot;}&#x60;;this.setState({invalidUrl: _(text)});}this.setState({checkingUrl: false});}, 500)</span></div>
+					<div class="tsd-signature tsd-kind-icon">change<wbr>Grobber<wbr>Url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;AwesomeDebouncePromise(async (url: string) &#x3D;&gt; {if (!url.match(/https?:\/\/.+/)) {this.setState({invalidUrl: _(&quot;options__grobber__url__invalid&quot;)});return;}this.setState({checkingUrl: true});const result &#x3D; await Debug.checkGrobberUrl(url);if (result.valid) {await this.change(&quot;grobberUrl&quot;, url);this.setState({invalidUrl: undefined});} else {const text &#x3D; &#x60;options__grobber__url__${result.hint || &quot;test_failed&quot;}&#x60;;this.setState({invalidUrl: _(text)});}this.setState({checkingUrl: false});}, 500)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/options/tabs/Debug.tsx#L37">options/tabs/Debug.tsx:37</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/options/tabs/Debug.tsx#L36">options/tabs/Debug.tsx:36</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Parameters</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReturnType&lt;T&gt; extends Promise&lt;any&gt; ? ReturnType&lt;T&gt; : Promise&lt;ReturnType&lt;T&gt;&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">Parameters</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ReturnType&lt;T&gt; extends Promise&lt;any&gt; ? ReturnType&lt;T&gt; : Promise&lt;ReturnType&lt;T&gt;&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -319,7 +340,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="options.settingstabcontent.html">SettingsTabContent</a>.<a href="options.settingstabcontent.html#change">change</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/options/SettingsTab.tsx#L147">options/SettingsTab.tsx:147</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/options/SettingsTab.tsx#L147">options/SettingsTab.tsx:147</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -634,7 +655,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/options/tabs/Debug.tsx#L89">options/tabs/Debug.tsx:89</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/options/tabs/Debug.tsx#L88">options/tabs/Debug.tsx:88</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Element</span></h4>
@@ -692,7 +713,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="options.settingstabcontent.html">SettingsTabContent</a>.<a href="options.settingstabcontent.html#toggle">toggle</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/options/SettingsTab.tsx#L143">options/SettingsTab.tsx:143</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/options/SettingsTab.tsx#L143">options/SettingsTab.tsx:143</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -715,7 +736,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/options/tabs/Debug.tsx#L64">options/tabs/Debug.tsx:64</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/options/tabs/Debug.tsx#L63">options/tabs/Debug.tsx:63</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -736,71 +757,8 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/assets.html">assets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components.html">common.components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components_anime.html">common.components.anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_pages.html">common.pages</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/kitsu.html">kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/myanimelist.html">myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options.html">options</a>
-					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/options_tabs.html">options.tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>

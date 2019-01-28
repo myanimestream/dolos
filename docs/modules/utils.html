@@ -88,7 +88,9 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="utils.html#getbackgroundwindow" class="tsd-kind-icon">get<wbr>Background<wbr>Window</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="utils.html#getbloburl" class="tsd-kind-icon">get<wbr>BlobURL</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="utils.html#reactrenderwiththeme" class="tsd-kind-icon">react<wbr>Render<wbr>With<wbr>Theme</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="utils.html#retryuntil" class="tsd-kind-icon">retry<wbr>Until</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="utils.html#waituntilexists" class="tsd-kind-icon">wait<wbr>Until<wbr>Exists</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="utils.html#waitwithtimeout" class="tsd-kind-icon">wait<wbr>With<wbr>Timeout</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="utils.html#wrapsentrylogger" class="tsd-kind-icon">wrap<wbr>Sentry<wbr>Logger</a></li>
@@ -109,7 +111,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/utils.ts#L27">utils.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/utils.ts#L29">utils.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -118,6 +120,34 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/utils.backgroundwindow.html" class="tsd-signature-type">BackgroundWindow</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="getbloburl" class="tsd-anchor"></a>
+					<h3>get<wbr>BlobURL</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>BlobURL<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/utils.ts#L144">utils.ts:144</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Download the data and return a url pointing to it.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>url: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -131,7 +161,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/utils.ts#L82">utils.ts:82</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/utils.ts#L117">utils.ts:117</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -155,6 +185,75 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+					<a name="retryuntil" class="tsd-anchor"></a>
+					<h3>retry<wbr>Until</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">retry<wbr>Until&lt;T&gt;<span class="tsd-signature-symbol">(</span>func<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, interval<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, timeout<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, condition<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/utils.ts#L79">utils.ts:79</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Re-run a function until the return value meets the condition.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>func: <span class="tsd-signature-type">function</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>may take the number of attempts that preceded it (counting up from 0)</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>attempt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PromiseLike</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>attempt: <span class="tsd-signature-type">number</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span>
+														<span class="tsd-signature-symbol"> | </span>
+														<span class="tsd-signature-type">PromiseLike</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
+													</h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<h5>interval: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>timeout: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> condition: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="waituntilexists" class="tsd-anchor"></a>
 					<h3>wait<wbr>Until<wbr>Exists</h3>
@@ -165,7 +264,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/utils.ts#L41">utils.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/utils.ts#L43">utils.ts:43</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -202,7 +301,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/utils.ts#L66">utils.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/utils.ts#L68">utils.ts:68</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -243,7 +342,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/utils.ts#L75">utils.ts:75</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/utils.ts#L110">utils.ts:110</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -274,69 +373,6 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="assets.html">assets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_components.html">common.components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_components_anime.html">common.components.anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_pages.html">common.pages</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="kitsu.html">kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="myanimelist.html">myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="options_tabs.html">options.tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="theme.html">theme</a>
-					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="utils.html">utils</a>
 					</li>
@@ -354,7 +390,13 @@
 						<a href="utils.html#getbackgroundwindow" class="tsd-kind-icon">get<wbr>Background<wbr>Window</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="utils.html#getbloburl" class="tsd-kind-icon">get<wbr>BlobURL</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="utils.html#reactrenderwiththeme" class="tsd-kind-icon">react<wbr>Render<wbr>With<wbr>Theme</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="utils.html#retryuntil" class="tsd-kind-icon">retry<wbr>Until</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="utils.html#waituntilexists" class="tsd-kind-icon">wait<wbr>Until<wbr>Exists</a>

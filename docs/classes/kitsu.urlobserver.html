@@ -71,6 +71,26 @@
 		<div class="col-8 col-content">
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Observes the url for any changes and calls a callback if it changes.</p>
+					</div>
+					<p>Instead of using the UrlObserver directly you may extend it:</p>
+					<dl class="tsd-comment-tags">
+						<dt>example</dt>
+						<dd><pre><code class="language-typescript">
+<span class="hljs-keyword">class</span> MyThing <span class="hljs-keyword">extends</span> UrlObserver {
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params"></span>) {
+         <span class="hljs-comment">// don't provide a callback because we're using it directly.</span>
+        <span class="hljs-keyword">super</span>(<span class="hljs-number">1000</span>);
+    }
+
+    <span class="hljs-comment">// this method is called whenever the url changes</span>
+    onUrlChange(old: <span class="hljs-built_in">string</span>, updated: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">void</span> {
+        <span class="hljs-built_in">console</span>.info(<span class="hljs-string">`the url has changed from <span class="hljs-subst">${old}</span> to <span class="hljs-subst">${updated}</span>`</span>);
+    }
+}</code></pre>
+						</dd>
+					</dl>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -103,7 +123,7 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="kitsu.urlobserver.html#_observeurl" class="tsd-kind-icon">_observe<wbr>Url</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="kitsu.urlobserver.html#_observeurl" class="tsd-kind-icon">_observe<wbr>Url</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="kitsu.urlobserver.html#onurlchange" class="tsd-kind-icon">on<wbr>Url<wbr>Change</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="kitsu.urlobserver.html#start" class="tsd-kind-icon">start</a></li>
 							</ul>
@@ -123,13 +143,28 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/url-observer.ts#L11">kitsu/url-observer.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/kitsu/url-observer.ts#L31">kitsu/url-observer.ts:31</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create a new UrlObserver.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="kitsu.urlobserver.html#start">UrlObserver.start</a> to start monitoring the url.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>interval: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>in milliseconds</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> callback: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
@@ -148,7 +183,7 @@
 					<div class="tsd-signature tsd-kind-icon">_observing<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/url-observer.ts#L6">kitsu/url-observer.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/kitsu/url-observer.ts#L26">kitsu/url-observer.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -158,7 +193,7 @@
 					<div class="tsd-signature tsd-kind-icon">callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/url-observer.ts#L11">kitsu/url-observer.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/kitsu/url-observer.ts#L31">kitsu/url-observer.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -168,7 +203,7 @@
 					<div class="tsd-signature tsd-kind-icon">interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/url-observer.ts#L8">kitsu/url-observer.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/kitsu/url-observer.ts#L28">kitsu/url-observer.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -178,24 +213,24 @@
 					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/url-observer.ts#L9">kitsu/url-observer.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/kitsu/url-observer.ts#L29">kitsu/url-observer.ts:29</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
 					<a name="_observeurl" class="tsd-anchor"></a>
-					<h3>_observe<wbr>Url</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _observe<wbr>Url</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
 						<li class="tsd-signature tsd-kind-icon">_observe<wbr>Url<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/url-observer.ts#L19">kitsu/url-observer.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/kitsu/url-observer.ts#L69">kitsu/url-observer.ts:69</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -212,9 +247,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/url-observer.ts#L37">kitsu/url-observer.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/kitsu/url-observer.ts#L64">kitsu/url-observer.ts:64</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>This method is called whenever a url change is observed.</p>
+								</div>
+								<p>You can override this method when inheriting from <a href="kitsu.urlobserver.html">UrlObserver</a>.</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -238,9 +279,19 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/kitsu/url-observer.ts#L29">kitsu/url-observer.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/kitsu/url-observer.ts#L51">kitsu/url-observer.ts:51</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Start observing the url.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>TypeError is the</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -253,71 +304,8 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/assets.html">assets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components.html">common.components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components_anime.html">common.components.anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_pages.html">common.pages</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/inject.html">inject</a>
-					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/kitsu.html">kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/myanimelist.html">myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options_tabs.html">options.tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -352,7 +340,7 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="kitsu.urlobserver.html#url" class="tsd-kind-icon">url</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="kitsu.urlobserver.html#_observeurl" class="tsd-kind-icon">_observe<wbr>Url</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">

@@ -74,7 +74,7 @@
 					<div class="lead">
 						<p>Wrapper around the low-level notification namespace to make it easier to work with.</p>
 					</div>
-					<p>It takes an object-oriented approach i.e. the <a href="background.browsernotification.html#update">BrowserNotification.update</a>/<a href="background.browsernotification.html#clear">BrowserNotification.clear</a> operations
+					<p>It takes an object-oriented approach i.e. the <a href="background.browsernotification.html#update">BrowserNotification.update</a>/[[BrowserNotification.clear]] operations
 					are methods on the instance.</p>
 					<dl class="tsd-comment-tags">
 						<dt>see</dt>
@@ -91,12 +91,6 @@
 					</li>
 				</ul>
 			</section>
-			<section class="tsd-panel">
-				<h3>Implements</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/background.notificationeventtarget.html" class="tsd-signature-type">NotificationEventTarget</a></li>
-				</ul>
-			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
@@ -111,21 +105,22 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="background.browsernotification.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="background.browsernotification.html#listenersadded" class="tsd-kind-icon">listeners<wbr>Added</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="background.browsernotification.html#onbuttonclicked" class="tsd-kind-icon">on<wbr>Button<wbr>Clicked</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="background.browsernotification.html#onclicked" class="tsd-kind-icon">on<wbr>Clicked</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="background.browsernotification.html#onclosed" class="tsd-kind-icon">on<wbr>Closed</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="background.browsernotification.html#onbuttonclicked_" class="tsd-kind-icon">on<wbr>Button<wbr>Clicked$</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="background.browsernotification.html#onclicked_" class="tsd-kind-icon">on<wbr>Clicked$</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="background.browsernotification.html#onclosed_" class="tsd-kind-icon">on<wbr>Closed$</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="background.browsernotification.html#addeventlistener" class="tsd-kind-icon">add<wbr>Event<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="background.browsernotification.html#cleanup" class="tsd-kind-icon">cleanup</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="background.browsernotification.html#clear" class="tsd-kind-icon">clear</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="background.browsernotification.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="background.browsernotification.html#removeeventlistener" class="tsd-kind-icon">remove<wbr>Event<wbr>Listener</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="background.browsernotification.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="background.browsernotification.html#waitclosed" class="tsd-kind-icon">wait<wbr>Closed</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="background.browsernotification.html#waitremoved" class="tsd-kind-icon">wait<wbr>Removed</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="background.browsernotification.html#create" class="tsd-kind-icon">create</a></li>
 							</ul>
 						</section>
@@ -144,7 +139,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L122">background/notifications.ts:122</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/background/notifications.ts#L83">background/notifications.ts:83</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -173,198 +168,67 @@
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L116">background/notifications.ts:116</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="listenersadded" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> listeners<wbr>Added</h3>
-					<div class="tsd-signature tsd-kind-icon">listeners<wbr>Added<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L122">background/notifications.ts:122</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-index-signature">
-								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/background.html#notificationlistener" class="tsd-signature-type">NotificationListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="onbuttonclicked" class="tsd-anchor"></a>
-					<h3>on<wbr>Button<wbr>Clicked</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Button<wbr>Clicked<span class="tsd-signature-symbol">:</span> <a href="background.notificationeventtargetproxy.html" class="tsd-signature-type">NotificationEventTargetProxy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/background.notificationbuttonevent.html" class="tsd-signature-type">NotificationButtonEvent</a><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L119">background/notifications.ts:119</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="onclicked" class="tsd-anchor"></a>
-					<h3>on<wbr>Clicked</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Clicked<span class="tsd-signature-symbol">:</span> <a href="background.notificationeventtargetproxy.html" class="tsd-signature-type">NotificationEventTargetProxy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/background.notificationevent.html" class="tsd-signature-type">NotificationEvent</a><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L118">background/notifications.ts:118</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="onclosed" class="tsd-anchor"></a>
-					<h3>on<wbr>Closed</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Closed<span class="tsd-signature-symbol">:</span> <a href="background.notificationeventtargetproxy.html" class="tsd-signature-type">NotificationEventTargetProxy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/background.notificationevent.html" class="tsd-signature-type">NotificationEvent</a><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L120">background/notifications.ts:120</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/background/notifications.ts#L83">background/notifications.ts:83</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="onbuttonclicked_" class="tsd-anchor"></a>
+					<h3>on<wbr>Button<wbr>Clicked$</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> onButtonClicked$<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/background.notificationevent.html" class="tsd-signature-type">NotificationEvent</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/background/notifications.ts#L99">background/notifications.ts:99</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/background.notificationevent.html" class="tsd-signature-type">NotificationEvent</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="onclicked_" class="tsd-anchor"></a>
+					<h3>on<wbr>Clicked$</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> onClicked$<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/background.notificationevent.html" class="tsd-signature-type">NotificationEvent</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/background/notifications.ts#L95">background/notifications.ts:95</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/background.notificationevent.html" class="tsd-signature-type">NotificationEvent</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="onclosed_" class="tsd-anchor"></a>
+					<h3>on<wbr>Closed$</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> onClosed$<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/background.notificationevent.html" class="tsd-signature-type">NotificationEvent</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/background/notifications.ts#L103">background/notifications.ts:103</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/background.notificationevent.html" class="tsd-signature-type">NotificationEvent</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="addeventlistener" class="tsd-anchor"></a>
-					<h3>add<wbr>Event<wbr>Listener</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Event<wbr>Listener<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, listener<span class="tsd-signature-symbol">: </span><a href="../modules/background.html#notificationlistener" class="tsd-signature-type">NotificationListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/background.notificationeventtarget.html">NotificationEventTarget</a>.<a href="../interfaces/background.notificationeventtarget.html#addeventlistener">addEventListener</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L167">background/notifications.ts:167</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Add an event listener for this notification.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>type: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>listener: <a href="../modules/background.html#notificationlistener" class="tsd-signature-type">NotificationListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="cleanup" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> cleanup</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">cleanup<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L212">background/notifications.ts:212</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="clear" class="tsd-anchor"></a>
-					<h3>clear</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">clear<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L159">background/notifications.ts:159</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Clear the notification.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="removealllisteners" class="tsd-anchor"></a>
-					<h3>remove<wbr>All<wbr>Listeners</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">remove<wbr>All<wbr>Listeners<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L193">background/notifications.ts:193</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Remove all listeners.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> type: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Listener type to remove. If not specified remove all listeners regardless of type.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="removeeventlistener" class="tsd-anchor"></a>
-					<h3>remove<wbr>Event<wbr>Listener</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">remove<wbr>Event<wbr>Listener<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, listener<span class="tsd-signature-symbol">?: </span><a href="../modules/background.html#notificationlistener" class="tsd-signature-type">NotificationListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/background.notificationeventtarget.html">NotificationEventTarget</a>.<a href="../interfaces/background.notificationeventtarget.html#removeeventlistener">removeEventListener</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L181">background/notifications.ts:181</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Remove an event listener.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>type: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> listener: <a href="../modules/background.html#notificationlistener" class="tsd-signature-type">NotificationListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Listener to remove. If not specified, remove all listeners for type.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="update" class="tsd-anchor"></a>
 					<h3>update</h3>
@@ -375,7 +239,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L151">background/notifications.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/background/notifications.ts#L116">background/notifications.ts:116</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -393,6 +257,55 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="waitclosed" class="tsd-anchor"></a>
+					<h3>wait<wbr>Closed</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">wait<wbr>Closed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/background/notifications.ts#L122">background/notifications.ts:122</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Wait until the notification is closed</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="waitremoved" class="tsd-anchor"></a>
+					<h3>wait<wbr>Removed</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">wait<wbr>Removed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/background/notifications.ts#L135">background/notifications.ts:135</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Wait until the notification is removed.
+									This is different from <a href="background.browsernotification.html#waitclosed">BrowserNotification.waitClosed</a> because it waits for the user to take action.</p>
+								</div>
+								<p>On Windows for example the onClosed event is triggered when the notification goes off-screen, but it is still
+									accessible in the notification area. The notification is only truly removed when the user takes some sort of action,
+									either &quot;closing&quot; (clearing) the notification or pressing a button. It seems there is no way to detect the clearing
+								of a notification so we only take the buttons into account.</p>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
 					<a name="create" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> create</h3>
@@ -403,7 +316,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/notifications.ts#L143">background/notifications.ts:143</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/background/notifications.ts#L110">background/notifications.ts:110</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -429,71 +342,8 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/assets.html">assets</a>
-					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components.html">common.components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components_anime.html">common.components.anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_pages.html">common.pages</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/kitsu.html">kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/myanimelist.html">myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options_tabs.html">options.tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -510,35 +360,23 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="background.browsernotification.html#id" class="tsd-kind-icon">id</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="background.browsernotification.html#listenersadded" class="tsd-kind-icon">listeners<wbr>Added</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="background.browsernotification.html#onbuttonclicked_" class="tsd-kind-icon">on<wbr>Button<wbr>Clicked$</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="background.browsernotification.html#onbuttonclicked" class="tsd-kind-icon">on<wbr>Button<wbr>Clicked</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="background.browsernotification.html#onclicked_" class="tsd-kind-icon">on<wbr>Clicked$</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="background.browsernotification.html#onclicked" class="tsd-kind-icon">on<wbr>Clicked</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="background.browsernotification.html#onclosed" class="tsd-kind-icon">on<wbr>Closed</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="background.browsernotification.html#addeventlistener" class="tsd-kind-icon">add<wbr>Event<wbr>Listener</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="background.browsernotification.html#cleanup" class="tsd-kind-icon">cleanup</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="background.browsernotification.html#clear" class="tsd-kind-icon">clear</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="background.browsernotification.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="background.browsernotification.html#removeeventlistener" class="tsd-kind-icon">remove<wbr>Event<wbr>Listener</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="background.browsernotification.html#onclosed_" class="tsd-kind-icon">on<wbr>Closed$</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="background.browsernotification.html#update" class="tsd-kind-icon">update</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="background.browsernotification.html#waitclosed" class="tsd-kind-icon">wait<wbr>Closed</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="background.browsernotification.html#waitremoved" class="tsd-kind-icon">wait<wbr>Removed</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="background.browsernotification.html#create" class="tsd-kind-icon">create</a>
@@ -547,23 +385,14 @@
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-						<a href="background.notificationeventtargetproxy.html" class="tsd-kind-icon">Notification<wbr>Event<wbr>Target<wbr>Proxy</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/background.newepisodeevent.html" class="tsd-kind-icon">New<wbr>Episode<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/background.notificationbuttonevent.html" class="tsd-kind-icon">Notification<wbr>Button<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/background.notificationevent.html" class="tsd-kind-icon">Notification<wbr>Event</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/background.notificationeventtarget.html" class="tsd-kind-icon">Notification<wbr>Event<wbr>Target</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-						<a href="../modules/background.html#notificationlistener" class="tsd-kind-icon">Notification<wbr>Listener</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/background.html#updater" class="tsd-kind-icon">Updater</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="../modules/background.html#hasnewepisode_" class="tsd-kind-icon">has<wbr>New<wbr>Episode$</a>
@@ -571,23 +400,38 @@
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="../modules/background.html#hasnewversion_" class="tsd-kind-icon">has<wbr>New<wbr>Version$</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/background.html#notificationlock" class="tsd-kind-icon">notification<wbr>Lock</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/background.html#onbuttonclicked_" class="tsd-kind-icon">on<wbr>Button<wbr>Clicked$</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/background.html#onclicked_" class="tsd-kind-icon">on<wbr>Clicked$</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/background.html#onclosed_" class="tsd-kind-icon">on<wbr>Closed$</a>
+					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="../modules/background.html#updatelock" class="tsd-kind-icon">update<wbr>Lock</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/background.html#addeventlistener" class="tsd-kind-icon">add<wbr>Event<wbr>Listener</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="../modules/background.html#checkanimeupdate" class="tsd-kind-icon">check<wbr>Anime<wbr>Update</a>
 					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/background.html#createnotification" class="tsd-kind-icon">create<wbr>Notification</a>
+					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/background.html#getbloburl" class="tsd-kind-icon">get<wbr>BlobURL</a>
+						<a href="../modules/background.html#getobservable" class="tsd-kind-icon">get<wbr>Observable</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/background.html#getupdater" class="tsd-kind-icon">get<wbr>Updater</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/background.html#performextensionupdate" class="tsd-kind-icon">perform<wbr>Extension<wbr>Update</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="../modules/background.html#performupdatecheck" class="tsd-kind-icon">perform<wbr>Update<wbr>Check</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/background.html#removeeventlistener" class="tsd-kind-icon">remove<wbr>Event<wbr>Listener</a>
 					</li>
 				</ul>
 			</nav>

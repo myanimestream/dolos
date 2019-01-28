@@ -69,6 +69,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Event emitted if there is a new episode</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -84,8 +91,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="background.newepisodeevent.html#anime" class="tsd-kind-icon">anime</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="background.newepisodeevent.html#previousepisodes" class="tsd-kind-icon">previous<wbr>Episodes</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="background.newepisodeevent.html#subscribedanimes" class="tsd-kind-icon">subscribed<wbr>Animes</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="background.newepisodeevent.html#subscription" class="tsd-kind-icon">subscription</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="background.newepisodeevent.html#unseenepisodes" class="tsd-kind-icon">unseen<wbr>Episodes</a></li>
 							</ul>
 						</section>
 					</div>
@@ -94,22 +102,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="anime" class="tsd-anchor"></a>
-					<h3>anime</h3>
-					<div class="tsd-signature tsd-kind-icon">anime<span class="tsd-signature-symbol">:</span> <a href="grobber.animeinfo.html" class="tsd-signature-type">AnimeInfo</a></div>
+					<a name="subscribedanimes" class="tsd-anchor"></a>
+					<h3>subscribed<wbr>Animes</h3>
+					<div class="tsd-signature tsd-kind-icon">subscribed<wbr>Animes<span class="tsd-signature-symbol">:</span> <a href="models.subscribedanimes.html" class="tsd-signature-type">SubscribedAnimes</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/update-check.ts#L11">background/update-check.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/background/update-check.ts#L13">background/update-check.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="previousepisodes" class="tsd-anchor"></a>
-					<h3>previous<wbr>Episodes</h3>
-					<div class="tsd-signature tsd-kind-icon">previous<wbr>Episodes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+					<a name="subscription" class="tsd-anchor"></a>
+					<h3>subscription</h3>
+					<div class="tsd-signature tsd-kind-icon">subscription<span class="tsd-signature-symbol">:</span> <a href="models.animesubscriptioninfo.html" class="tsd-signature-type">AnimeSubscriptionInfo</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/cd14b6d/src/background/update-check.ts#L12">background/update-check.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/background/update-check.ts#L14">background/update-check.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="unseenepisodes" class="tsd-anchor"></a>
+					<h3>unseen<wbr>Episodes</h3>
+					<div class="tsd-signature tsd-kind-icon">unseen<wbr>Episodes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/53d5990/src/background/update-check.ts#L15">background/update-check.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -121,71 +139,8 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/assets.html">assets</a>
-					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components.html">common.components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components_anime.html">common.components.anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_pages.html">common.pages</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/kitsu.html">kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/myanimelist.html">myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options_tabs.html">options.tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -194,35 +149,29 @@
 					<li class=" tsd-kind-class tsd-parent-kind-external-module">
 						<a href="../classes/background.browsernotification.html" class="tsd-kind-icon">Browser<wbr>Notification</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-						<a href="../classes/background.notificationeventtargetproxy.html" class="tsd-kind-icon">Notification<wbr>Event<wbr>Target<wbr>Proxy</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="background.newepisodeevent.html" class="tsd-kind-icon">New<wbr>Episode<wbr>Event</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="background.newepisodeevent.html#anime" class="tsd-kind-icon">anime</a>
+								<a href="background.newepisodeevent.html#subscribedanimes" class="tsd-kind-icon">subscribed<wbr>Animes</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="background.newepisodeevent.html#previousepisodes" class="tsd-kind-icon">previous<wbr>Episodes</a>
+								<a href="background.newepisodeevent.html#subscription" class="tsd-kind-icon">subscription</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="background.newepisodeevent.html#unseenepisodes" class="tsd-kind-icon">unseen<wbr>Episodes</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="background.notificationbuttonevent.html" class="tsd-kind-icon">Notification<wbr>Button<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="background.notificationevent.html" class="tsd-kind-icon">Notification<wbr>Event</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="background.notificationeventtarget.html" class="tsd-kind-icon">Notification<wbr>Event<wbr>Target</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-						<a href="../modules/background.html#notificationlistener" class="tsd-kind-icon">Notification<wbr>Listener</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/background.html#updater" class="tsd-kind-icon">Updater</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="../modules/background.html#hasnewepisode_" class="tsd-kind-icon">has<wbr>New<wbr>Episode$</a>
@@ -230,23 +179,38 @@
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="../modules/background.html#hasnewversion_" class="tsd-kind-icon">has<wbr>New<wbr>Version$</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/background.html#notificationlock" class="tsd-kind-icon">notification<wbr>Lock</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/background.html#onbuttonclicked_" class="tsd-kind-icon">on<wbr>Button<wbr>Clicked$</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/background.html#onclicked_" class="tsd-kind-icon">on<wbr>Clicked$</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/background.html#onclosed_" class="tsd-kind-icon">on<wbr>Closed$</a>
+					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="../modules/background.html#updatelock" class="tsd-kind-icon">update<wbr>Lock</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/background.html#addeventlistener" class="tsd-kind-icon">add<wbr>Event<wbr>Listener</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="../modules/background.html#checkanimeupdate" class="tsd-kind-icon">check<wbr>Anime<wbr>Update</a>
 					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/background.html#createnotification" class="tsd-kind-icon">create<wbr>Notification</a>
+					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/background.html#getbloburl" class="tsd-kind-icon">get<wbr>BlobURL</a>
+						<a href="../modules/background.html#getobservable" class="tsd-kind-icon">get<wbr>Observable</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/background.html#getupdater" class="tsd-kind-icon">get<wbr>Updater</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/background.html#performextensionupdate" class="tsd-kind-icon">perform<wbr>Extension<wbr>Update</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="../modules/background.html#performupdatecheck" class="tsd-kind-icon">perform<wbr>Update<wbr>Check</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/background.html#removeeventlistener" class="tsd-kind-icon">remove<wbr>Event<wbr>Listener</a>
 					</li>
 				</ul>
 			</nav>
