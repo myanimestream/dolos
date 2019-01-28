@@ -2,6 +2,8 @@ declare module "keen-tracking" {
     export default class KeenTracking {
         constructor(options: { projectId: string; writeKey: string; requestType?: string });
 
+        extendEvents(data: any): void;
+
         recordEvent(
             collectionName: string,
             event: object
@@ -13,6 +15,6 @@ declare module "keen-tracking" {
             [collectionName: string]: boolean[];
         }>;
 
-        initAutoTracking(): KeenTracking;
+        initAutoTracking(options?: any): KeenTracking;
     }
 }

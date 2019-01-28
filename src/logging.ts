@@ -19,13 +19,19 @@ Sentry.init({
 
 export {default as SentryLogger} from "./SentryLogger";
 
-export const keenClient = new KeenTracking({
+export const keen = new KeenTracking({
     projectId: Secrets.keenProjectID || "",
     writeKey: Secrets.keenWriteKey || ""
 });
 
+keen.extendEvents({
+    dolos: {
+        version: getVersion()
+    }
+});
+
 // keen isn't a big fan of extension pages, so if it doesn't work, just ignore it.
 try {
-    keenClient.initAutoTracking();
+    keen.initAutoTracking();
 } catch {
 }
