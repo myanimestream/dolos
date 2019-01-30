@@ -82,7 +82,7 @@ jobs:
       - run:
           name: Getting dist from workplace
           command: |
-            rm -f dist/
+            rm -rf dist/
             mv /tmp/workspace/dist .
       - run:
           name: Deploy
