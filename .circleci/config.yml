@@ -28,8 +28,8 @@ jobs:
     executor: node/node
 
     steps:
-      - *attach_workspace
       - checkout
+      - *attach_workspace
       - node/with-cache:
           steps:
             - run: npm install
@@ -48,7 +48,7 @@ jobs:
       - *copy_node_modules
       - run:
           name: Run tests with JUnit as reporter
-          command: npx jest -- --ci --runInBand --coverage --reporters=default --reporters=jest-junit
+          command: npx jest --ci --runInBand --coverage --reporters=default --reporters=jest-junit
           environment:
             JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
       - store_test_results:
@@ -78,7 +78,6 @@ jobs:
 
     steps:
       - *attach_workspace
-      - run: rm -r dist/
       - run: mv /tmp/workspace/dist .
       - run:
           name: Deploy
