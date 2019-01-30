@@ -14,6 +14,7 @@ import {ContinueWatchingButton, SubscriptionToggle} from ".";
 const useStyles = makeStyles((theme: Theme) => ({
     bar: {
         display: "flex",
+        width: "100%",
         flexDirection: "column",
         justifyContent: "space-between",
         "& > * + *": {

@@ -20,6 +20,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
+import {Toggle} from "dolos/common/components";
 import {AnimeInfo} from "dolos/grobber";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
@@ -331,15 +332,17 @@ export default withStyles(styles)(class EpisodeEmbed extends React.Component<Epi
     renderBookmarkButton() {
         const {bookmarked, canSetProgress} = this.state;
 
-        return (
-            <Tooltip title={_(`episode__bookmark_${bookmarked ? "seen" : "unseen"}`)}>
-                <span>
-                    <IconButton onClick={() => this.toggleBookmark()} color="primary" disabled={!canSetProgress}>
-                        {bookmarked ? <BookmarkIcon/> : <BookmarkBorderIcon/>}
-                    </IconButton>
-                </span>
-            </Tooltip>
-        );
+        return <Toggle
+            tooltip={_(`episode__bookmark_unseen`)}
+            tooltipToggled={_(`episode__bookmark_seen`)}
+
+            icon={<BookmarkBorderIcon/>}
+            iconToggled={<BookmarkIcon/>}
+
+            toggled={bookmarked}
+            canToggle={canSetProgress}
+            onToggle={() => this.toggleBookmark()}
+        />;
     }
 
     renderSwitchPlayerTypeButton() {

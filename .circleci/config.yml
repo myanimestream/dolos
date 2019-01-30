@@ -117,6 +117,8 @@ jobs:
       - run:
           name: Deploy
           command: bash tools/deploy.sh
+      - store_artifacts:
+          path: signed
 
   github_releases:
     executor: github-release/default

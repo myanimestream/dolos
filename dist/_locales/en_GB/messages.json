@@ -257,7 +257,7 @@
     "message": "Embedded Stream"
   },
   "episode__embedded_stream__warning": {
-    "message": "Couldn't extract any sources for this episode.\nImportant: Your watch status won't automatically update!"
+    "message": "Embeds aren't controlled by Dolos. Your progress won't automatically update!"
   },
   "episode__switch_embed": {
     "message": "Switch Embed"
