@@ -77,8 +77,13 @@ jobs:
     executor: node/node
 
     steps:
+      - checkout
       - *attach_workspace
-      - run: mv /tmp/workspace/dist .
+      - run:
+          name: Getting dist from workplace
+          command: |
+            rm -f dist/
+            mv /tmp/workspace/dist .
       - run:
           name: Deploy
           command: bash tools/build_extension.sh
@@ -106,6 +111,7 @@ jobs:
     executor: node/node
 
     steps:
+      - checkout
       - *attach_workspace
       - run: mv /tmp/workspace/build .
       - run:
