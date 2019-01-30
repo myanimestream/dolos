@@ -39,6 +39,19 @@ jobs:
           paths:
             - node_modules/
 
+  test:
+    executor: node/node
+
+    steps:
+      - checkout
+      - *attach_workspace
+      - *copy_node_modules
+      - run:
+          name: Run tests with JUnit as reporter
+          command: jest --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+
   build:
     executor: node/node
 
@@ -108,6 +121,13 @@ workflows:
             tags:
               only: /^v.*/
 
+      - test:
+          requires:
+            - install
+          filters:
+            tags:
+              only: /^v.*/
+
       - build:
           requires:
             - install
@@ -124,6 +144,7 @@ workflows:
 
       - deploy:
           requires:
+            - test
             - build
           filters:
             branches:

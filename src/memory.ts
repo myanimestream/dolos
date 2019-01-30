@@ -4,10 +4,9 @@
 
 /** @ignore */
 export interface Namespace<VT = any> {
-    // @ts-ignore
-    __value?: VT;
+    [key: string]: Namespace<any> | VT | undefined;
 
-    [key: string]: Namespace<VT>;
+    __value?: VT;
 }
 
 /**
@@ -33,7 +32,7 @@ export function enterNamespace<T>(start: Namespace<T>, namespace: string | strin
             throw new Error(`Cannot use reserved name __value in namespace: ${namespace}`);
 
         if (part in target)
-            target = target[part];
+            target = target[part] as Namespace<T>;
         else
             target = target[part] = {};
     }
@@ -69,19 +68,20 @@ export function enterNamespace<T>(start: Namespace<T>, namespace: string | strin
  * ```
  */
 export function flattenNamespace<T>(ns: Namespace<T>): { [key: string]: T } {
-    const result = {};
+    const result: { [key: string]: T } = {};
 
-    const stack = [["", ns]];
+    const stack = [[undefined, ns]];
 
     while (stack.length) {
-        const [prefix, target] = stack.pop();
+        const [prefix, target] = stack.pop() as [string | undefined, Namespace];
 
         for (const [key, value] of Object.entries(target))
             if (key === "__value")
-            // @ts-ignore
-                result[prefix + key] = value;
-            else
-                stack.push([`${prefix}${key}.`, value]);
+                result[prefix === undefined ? "." : prefix] = value;
+            else {
+                const absKey = prefix === undefined ? key : [prefix, key].join(".");
+                stack.push([absKey, value]);
+            }
     }
 
     return result;
@@ -207,8 +207,8 @@ export class ElementMemory extends Memory implements HasElementMemory {
         namespaces.forEach(key => {
             const [parentNS, nsKey] = enterParentNamespace(this.internalInjectedMemory, key);
 
-            const flattened = flattenNamespace(parentNS[nsKey]);
-            Object.values(flattened).forEach(elements => elements.forEach(el => el.remove()));
+            const flattened = flattenNamespace(parentNS[nsKey] as Namespace);
+            Object.values(flattened).forEach(elements => elements.forEach((el: Element) => el.remove()));
 
             delete parentNS[nsKey];
         });

@@ -11,7 +11,13 @@ export interface Secrets {
     keenWriteKey?: string;
 }
 
-// @ts-ignore
-const secrets = WEBPACK_SECRETS as Secrets;
+let secrets: Secrets;
+
+try {
+    // @ts-ignore
+    secrets = WEBPACK_SECRETS;
+} catch {
+    secrets = {};
+}
 
 export default secrets;
