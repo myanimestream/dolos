@@ -32,7 +32,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
 
     @cacheInStateMemory("accessToken")
     async getAccessToken(): Promise<string | undefined> {
-        return await retryUntil(() => getAccessToken(), 200, 2500);
+        return await retryUntil(getAccessToken, {interval: 500, timeout: 2500});
     }
 
     @cacheInMemory("animeId")
@@ -60,7 +60,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
 
     @cacheInMemory("kitsuAnime")
     async getKitsuAnimeInfo(): Promise<KitsuAnimeInfo | undefined> {
-        return await retryUntil(getAnime, 200, 2500);
+        return await retryUntil(getAnime, {interval: 500, timeout: 2500});
     }
 
     @cacheInStateMemory("userId")

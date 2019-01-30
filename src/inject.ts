@@ -98,8 +98,9 @@ const EVAL_TEMPLATE = `
 ${PUSH_RESULT}
 
 const run = async () => {{{code}}};
-run().then(value => pushResult(value, "data-result"),
-        reason => pushResult(reason.toString(), "data-error"));
+run()
+    .then(value => pushResult(value, "data-result"))
+    .catch(reason => pushResult(reason.toString(), "data-error"));
 `;
 
 /**
@@ -188,7 +189,7 @@ export async function evaluateCode(code: string): Promise<any> {
     const el = await waitUntilExists(`#${uid}`);
 
     const error = el.getAttribute("data-error");
-    if (error) throw Error(error);
+    if (error) throw Error(`Evaluation error: ${error}`);
 
     const result = el.getAttribute("data-result");
     if (result === null)

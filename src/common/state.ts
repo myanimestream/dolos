@@ -50,14 +50,14 @@ export default class State<T extends Service> extends ElementMemory {
                 const override = await this.page.transitionTo(page);
                 if (override) page = override;
             } catch (e) {
-                console.error("Couldn't transition from page", this.page, "to", page);
+                console.error("Couldn't transition from page", this.page, "to", page, "because", e);
                 throw e;
             }
         } else if (page) {
             try {
                 await page.load();
             } catch (e) {
-                console.error("Couldn't load page", page);
+                console.error("Couldn't load page", page, "because", e);
                 throw e;
             }
         }

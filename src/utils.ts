@@ -70,37 +70,64 @@ export async function waitWithTimeout<T>(promise: PromiseLike<T>, timeout: numbe
     return await Promise.race([promise, timeoutPromise]);
 }
 
+export interface RetryUntilOptions<T> {
+    interval: number;
+    timeout?: number;
+    catchErrors?: boolean;
+    condition?: (value: T, attempt: number) => boolean | PromiseLike<boolean>;
+}
+
 /**
  * Re-run a function until the return value meets the condition.
  *
  * @param func - may take the number of attempts that preceded it (counting up from 0)
- * @param condition
  */
 export async function retryUntil<T>(
     func: (attempt: number) => T | PromiseLike<T>,
-    interval: number,
-    timeout: number,
-    condition?: (value: T, attempt: number) => boolean | PromiseLike<boolean>
+    opts: RetryUntilOptions<T>
 ): Promise<T | undefined> {
-    condition = condition || (val => Boolean(val));
+    const condition = opts.condition || (val => Boolean(val));
 
     let running = true;
-    setTimeout(() => running = false, timeout);
+    let attempt = 0;
 
-    let attempt: number = 0;
-    while (running) {
-        const delay = new Promise(res => setTimeout(res, interval));
+    async function runner() {
+        while (running) {
+            const delay = new Promise(res => setTimeout(res, opts.interval));
 
-        const res = await Promise.resolve(func(attempt));
-        if (await Promise.resolve(condition(res, attempt))) {
-            return res;
+            // use a separate flag because the res might be undefined intentionally!
+            let gotRes = false;
+            // @ts-ignore
+            let res: T = undefined;
+
+            try {
+                res = await Promise.resolve(func(attempt));
+                gotRes = true;
+            } catch (e) {
+                if (!opts.catchErrors) throw e;
+            }
+
+            if (gotRes) {
+                if (await Promise.resolve(condition(res, attempt))) {
+                    return res;
+                }
+            }
+
+            attempt += 1;
+            await delay;
         }
-
-        attempt += 1;
-        await delay;
+        return;
     }
 
-    return;
+    let res;
+    if (opts.timeout) {
+        res = await waitWithTimeout(runner(), opts.timeout);
+    } else {
+        res = await runner();
+    }
+
+    running = false;
+    return res;
 }
 
 /**
