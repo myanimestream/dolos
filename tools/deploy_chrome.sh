@@ -1,15 +1,7 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 set -e
 
-echo "[CHROME] bundling..."
-
-mkdir -p "temp/chrome"
-cp -af "dist/." "temp/chrome/"
-cd "temp/chrome"
-echo $(cat "manifest.chrome.json") > "manifest.json"
-zip -r9 "../../build/mas-chrome.zip" *
-cd ../../build/
+cd build/
 
 echo "[CHROME] getting access token..."
 CHROME_AUTH=$(curl -s \

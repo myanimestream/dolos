@@ -48,7 +48,7 @@ jobs:
       - *copy_node_modules
       - run:
           name: Run tests with JUnit as reporter
-          command: npx jest --ci --runInBand --reporters=default --reporters=jest-junit
+          command: npx jest -- --ci --runInBand --coverage --reporters=default --reporters=jest-junit
           environment:
             JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
       - store_test_results:
@@ -56,7 +56,7 @@ jobs:
       - store_artifacts:
           path: reports/junit
 
-  build:
+  compile:
     executor: node/node
 
     steps:
@@ -72,6 +72,24 @@ jobs:
           root: *workspace_root
           paths:
             - dist/
+
+  build-extension:
+    executor: node/node
+
+    steps:
+      - *attach_workspace
+      - run: rm -r dist/
+      - run: mv /tmp/workspace/dist .
+      - run:
+          name: Deploy
+          command: bash tools/build_extension.sh
+      - store_artifacts:
+          path: build
+      - run: mv build/ /tmp/workspace/
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - build/
 
   documentation:
     executor: node/node
@@ -89,18 +107,11 @@ jobs:
     executor: node/node
 
     steps:
-      - checkout
       - *attach_workspace
-      - *copy_node_modules
-      - run: rm -r dist/
-      - run: mv /tmp/workspace/dist .
+      - run: mv /tmp/workspace/build .
       - run:
           name: Deploy
           command: bash tools/deploy.sh
-      - persist_to_workspace:
-          root: *workspace_root
-          paths:
-            - build/
 
   github_releases:
     executor: github-release/default
@@ -132,9 +143,16 @@ workflows:
             tags:
               only: /^v.*/
 
-      - build:
+      - compile:
           requires:
             - install
+          filters:
+            tags:
+              only: /^v.*/
+
+      - build-extension:
+          requires:
+            - compile
           filters:
             tags:
               only: /^v.*/
@@ -149,7 +167,7 @@ workflows:
       - deploy:
           requires:
             - test
-            - build
+            - build-extension
           filters:
             branches:
               ignore: /.*/
@@ -158,7 +176,8 @@ workflows:
 
       - github_releases:
           requires:
-            - deploy
+            - test
+            - build-extension
           filters:
             branches:
               ignore: /.*/

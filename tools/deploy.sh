@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
-
 set -e
+
+if [[ ! -d "build" ]]; then
+  echo "No build directory. Make sure to build first"
+  exit 1
+fi
 
 VERSION=$(cat "dist/manifest.json" | jq -r ".version")
 RELEASE="dolos@${VERSION}"
 
 echo "Deploying version ${RELEASE}"
-mkdir "build"
 tools/deploy_chrome.sh
 tools/deploy_firefox.sh
 
