@@ -71,11 +71,11 @@
   },
   "subscriptions__anime__featured_subscriptions": {
     "message": "Unseen Episodes",
-    "descriptions": "List header shown for subscriptions whose Animes have unseen episodes."
+    "description": "List header shown for subscriptions whose Animes have unseen episodes."
   },
   "subscriptions__anime__all_subscriptions": {
     "message": "Other",
-    "descriptions": "List header shown for subscriptions whose Animes don't have unseen episodes. This header is only shown if there are episodes with unseen episodes"
+    "description": "List header shown for subscriptions whose Animes don't have unseen episodes. This header is only shown if there are episodes with unseen episodes"
   },
   "subscriptions__unseen_episodes": {
     "message": "Unseen episodes: $EPISODES$",
