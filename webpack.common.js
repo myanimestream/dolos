@@ -58,5 +58,5 @@ module.exports = {
         new webpack.DefinePlugin({
             WEBPACK_SECRETS: JSON.stringify(secrets),
         }),
-    ]
+    ],
 };

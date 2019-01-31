@@ -14,7 +14,7 @@ const release = `dolos@${getVersion()}`;
 
 Sentry.init({
     release,
-    dsn: Secrets.sentryDSN
+    dsn: Secrets.sentryDSN,
 });
 
 export {default as SentryLogger} from "./SentryLogger";

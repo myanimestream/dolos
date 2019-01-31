@@ -9,8 +9,7 @@ if (["SENTRY_AUTH_TOKEN", "SENTRY_ORG", "SENTRY_PROJECT"].every(key => key in pr
     plugins.push(
         new SentryCliPlugin({
             release: `dolos@${manifest.version}`,
-            include: ".",
-            ignore: ["node_modules", "webpack.common.js", "webpack.dev.js", "webpack.prod.js",],
+            include: "dist/",
         }));
     console.info("uploading source maps to Sentry!");
 } else {

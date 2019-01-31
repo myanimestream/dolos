@@ -29,7 +29,7 @@ export default class Kitsu extends Service {
     async route(url: URL) {
         let match;
 
-        match = url.pathname.match(/\/anime\/([^\/]+)(?:\/episodes\/(\d+))?/);
+        match = url.pathname.match(/kitsu\.io\/anime\/([^\/]+)(?:\/episodes\/(\d+))?/);
 
         if (match) {
             if (match[2]) {

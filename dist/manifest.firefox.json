@@ -7,7 +7,7 @@
   "manifest_version": 2,
   "name": "MyAnimeStream",
   "short_name": "MAS",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "__MSG_ext_description__",
   "default_locale": "en_GB",
   "icons": {
@@ -20,7 +20,7 @@
     "alarms",
     "notifications",
     "storage",
-    "<all_urls>"
+    "https://*/"
   ],
   "options_ui": {
     "page": "options.html",

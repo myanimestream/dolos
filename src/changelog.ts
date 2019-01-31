@@ -24,6 +24,10 @@ interface Changelog {
  * This is done using a Map to make sure it can be iterated in the right order.
  */
 const CHANGELOG: Changelog = new Map([
+    ["0.2.1", [
+        `Showing loading animation for bookmark button`,
+        `**Kitsu**: No longer breaks on [/explore/](https://kitsu.io/explore/anime) sites.`
+    ]],
     ["0.2.0", [
         `Show notifications for new episodes. Hey, read it again, **THIS IS HUGE!**`,
         `Rewrote some of the storage logic. You hopefully won't notice this one. *Why did I even bring it up...*`,
