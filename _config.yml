@@ -4,5 +4,7 @@ description: To Do
 theme: jekyll-theme-cayman
 google_analytics: UA-131499018-2
 
-exclude:
-  - docs
+baseurl: /dolos/
+
+collections:
+  - guides

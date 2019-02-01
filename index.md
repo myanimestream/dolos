@@ -1,11 +1,10 @@
 ---
-layout: page
 title: Dolos
 ---
 
 # Dolos
 
-[Guides]
+[Guides][guides]
 [Documentation][docs]
 
 
