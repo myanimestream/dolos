@@ -10,7 +10,10 @@ If you want to add your own [Service] to Dolos, please refer to the
 
 ## All Guides
 
+<ul>
 {% for guide in site.guides %}
-  <h2>{{ guide.title }}</h2>
-  <p>{{ guide.description }}</p>
+  <li>
+    <a href="{{ guide.url }}">{{ guide.title }}</a>
+  </li>
 {% endfor %}
+</ul>
