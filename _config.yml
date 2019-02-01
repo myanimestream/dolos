@@ -7,4 +7,5 @@ google_analytics: UA-131499018-2
 baseurl: /dolos
 
 collections:
-  - guides
+  guides:
+    output: true
