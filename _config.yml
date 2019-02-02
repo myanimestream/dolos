@@ -5,8 +5,3 @@ theme: jekyll-theme-cayman
 google_analytics: UA-131499018-2
 
 baseurl: /dolos
-
-collections:
-  guides:
-    output: true
-    permalink: /:collection/:name

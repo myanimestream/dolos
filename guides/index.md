@@ -1,6 +1,5 @@
 ---
 title: Dolos Guides
-permalink: /guides/
 ---
 
 # Guides
@@ -13,7 +12,7 @@ If you want to add your own [Service] to Dolos, please refer to the
 <ul>
 {% for guide in site.guides %}
   <li>
-    <a href="{{ guide.url }}">{{ guide.title }}</a>
+    <a href="{{ site.baseurl }}{{ guide.url }}">{{ guide.title }}</a>
   </li>
 {% endfor %}
 </ul>
