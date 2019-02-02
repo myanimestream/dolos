@@ -16,6 +16,15 @@ Now that we have the code we need to install the dependencies. Use
 or you don't even have npm installed. Can't help you with the former, but
 [downloading npm is fairly straightforward](https://www.npmjs.com/get-npm).
 
+## Secrets
+They're called "secrets", but it's really just a bunch of variables passed
+to the code. They can be set in the `dolos-secrets.json` file. You may also
+use environment variables by using the uppercase key from the file and prefixing
+it with "DOLOS_".
+
+For example:
+> "sentryDSN" -> "DOLOS_SENTRYDSN"
+
 ## Bundling the code
 To use the extension we first need to build the extension! Why is that?
 Well, Dolos is written in TypeScript and ~~most~~ browsers don't
@@ -30,23 +39,23 @@ Have a look if you're interested (Why would that be the case? Who knows).
 ## Node scripts
 Here's a rundown of all the `npm run` scripts available:
 
-#### test
+##### test
 Run all available tests using [Jest](https://jestjs.io/).
 
-#### build:dev
+##### build:dev
 Run webpack with the `webpack.dev.js` configuration. This creates inline
 source-maps and is quite fast.
 
-#### build:production
+##### build:production
 Run webpack with the `webpack.prod.js` configuration. This configuration
 is used to build the production-ready code. It is not suited for development.
 
-#### watch
+##### watch
 Runs webpack with the `build:dev` configuration in watch mode. This means
 that the files are re-built when there's a change in the source files. This
 is ideal for development.
 
-#### docs
+##### docs
 Generate the documentation for Dolos using [TypeDoc](https://typedoc.org/).
 After running the documentation can be found in the `docs` directory.
 

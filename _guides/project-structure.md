@@ -54,7 +54,7 @@ for example, the `__tests__` folder should be used.
 
 #### Telemetry
 Dolos automatically records some telemetry using [Keen](https://keen.io/).
-This data is solely used for improvements. The credentials are specified
+This data is solely used to improve Dolos. The credentials are specified
 in the `dolos-secrets.json` file or using the
 `DOLOS_KEENPROJECTID` / `DOLOS_KEENWRITEKEY` environment variables.
 
