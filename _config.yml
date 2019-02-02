@@ -9,3 +9,4 @@ baseurl: /dolos
 collections:
   guides:
     output: true
+    permalink: /:collection/:name
