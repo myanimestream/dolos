@@ -1,7 +1,10 @@
 title: Dolos
-description: To Do
+title_separator: "|"
+description: A browser extension for Chrome and Firefox
 
-theme: jekyll-theme-cayman
+theme: mmistakes/minimal-mistakes
+minimal_mistakes_skin: dark
+breadcrumbs: true
 google_analytics: UA-131499018-2
 
 baseurl: /dolos

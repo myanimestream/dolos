@@ -17,7 +17,7 @@ There's the simple [MyAnimeList Service][docs-mal-service] and the more
 complex [Kitsu Service][docs-kitsu-service].
 
 ## Example for [aniDB](https://anidb.net)
-Instead of having to read my incoherence blabbering, let's instead take a different
+Instead of having to read my incoherent blabbering, let's instead take a different
 approach and build our own little Service together, shall we?
 
 Don't be afraid, it *probably* won't take that long and it's gonna be a fun
