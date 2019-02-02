@@ -2,7 +2,7 @@ title: Dolos
 title_separator: "|"
 description: A browser extension for Chrome and Firefox
 
-theme: mmistakes/minimal-mistakes
+remote_theme: mmistakes/minimal-mistakes
 minimal_mistakes_skin: dark
 breadcrumbs: true
 google_analytics: UA-131499018-2
