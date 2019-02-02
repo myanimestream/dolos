@@ -3,7 +3,7 @@ title: Creating your own Service
 excerpt: Extending Dolos to support other sites.
 ---
 
-# How to add your own service
+## What is a "Service"?
 A "service" is the abstract concept of an interface between the core Dolos functionality
 and a website. Instead of rewriting everything from scratch for every site we want to support
 there's only a *comparatively* tiny amount of code to write thanks to Services.
@@ -86,8 +86,8 @@ We want to run the contents of the index file whenever the user opens the aniDB
 website. To check whether this works, let's put a little something in the index file.
 If you're not already using one, now's probably a good time to switch to an editor.
 Anything will do, really, but I recommend using something like [Visual Studio Code](https://code.visualstudio.com/)
-or [Atom](https://atom.io/) because working with the built-in notes editor won't bring
-you very far.
+or [Atom](https://atom.io/) because working with the system's built-in text
+editor won't bring you very far.
 Open the `index.ts` file you just created and add something like:
 
 ```typescript
@@ -197,12 +197,15 @@ import {Service} from "dolos/common";
 > `dolos/common` contains a whole bunch of useful stuff and you'll see it a lot.
 
 Create a class called `AniDB` which extends `Service`:
-
 ```typescript
-class AniDB extends Service {
+export default class AniDB extends Service {
 }
 
 ```
+
+**Because we're going to use it in other modules be sure to export the class
+as the default export.**
+
 
 And there it is. Our own little Service, thanks for readin... - oh...
 Have a look at the output of Webpack:
@@ -215,24 +218,542 @@ TS2515: Non-abstract class 'AniDB' does not implement inherited abstract member 
 What this error message is trying to tell us is that we haven't implemented
 the necessary abstract methods yet - namely [`route`][docs-common-service-route].
 It's the only abstract method [`Service`][docs-common-service] has.
-It take a [`URL`](https://developer.mozilla.org/en-US/docs/Web/API/URL)
+It takes a [`URL`](https://developer.mozilla.org/en-US/docs/Web/API/URL)
 object for the current location and should "route" based on it.
 
 I think this is as good a point as any to tell you about the concept of [`ServicePage`][docs-common-servicepage]s.
 A service page is Dolos' abstract representation of a view (think: page) on the service
 (i.e. on the website). The service itself doesn't really interact with the page all
 that much, it passes it on to the service page. There are two noteworthy service pages
-we're going to use. [`AnimePage`][docs-common-animepage] and [`EpisodePage`][docs-common-episodepage]
+we're going to use. [`AnimePage`][docs-common-pages-animepage] and [`EpisodePage`][docs-common-pages-episodepage]
 but more on that later.
 
 The [`route`][docs-common-service-route] method should delegate which
 service page to show.
 
+We need to find out how to determine which service page to show, but for
+now let's just add the method to stop Webpack from complaining. Place
+the following code in the AniDB class body.
+```typescript
+async route(url: URL): Promise<void> {
+}
+```
+
+Okay, now it compiles again, but how do we determine which service page to show?
+
+#### Routing
+After browsing on [anidb.net](https://anidb.net) for a bit we can see, that
+the url of an Anime looks something like this: `https://anidb.net/perl-bin/animedb.pl?show=anime&aid=69`.
+The first part always stays the same, but the query string looks very interesting.
+it contains `show=anime` and `aid=69`. To detect whether we're on an Anime page
+we can simply check whether the `show` parameter is "anime".
+
+To do that, we can use the [`URL.searchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URL/searchParams)
+attribute of the url that was passed to the route method. It gives us
+access to a [`URLSearchParams`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+object which has the [`URLSearchParams.get`](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/get)
+method.
+So `url.searchParams.get("show")` will give us the value of the "show"
+parameter.
+
+We can add a check to our route method for this:
+```typescript
+if (url.searchParams.get("show") === "anime") {
+    // show anime service page
+}
+```
+
+Actually "showing" (more like loading) the service page is very simple.
+The [`Service`][dolos-common-service] class exposes the method [`showAnimePage`][dolos-common-service-showanimepage]
+which does exactly that.
+
+> Side-note: Most of Dolos' code is async and thus returns Promises. Please
+> use `async`/`await` syntax instead of operating on the promises directly.
+
+All we have to do is add
+```typescript
+await this.showAnimePage();
+```
+to the if-clause and we're done.
+
+The second route we would like to support is for specific episodes. I mean,
+the entire premise of Dolos is showing episode streams so of course we need to
+support that.
+
+Looking at the url of an episode we can easily tell that, again, it uses query
+parameters and has a "show" parameter which now has the value "ep":
+`https://anidb.net/perl-bin/animedb.pl?show=ep&eid=440`
+
+So should we just use `url.searchParams.get("show")` again to check whether the
+value is "ep" this time? Well, we could... But this screams like an opportunity
+to use a switch statement, doesn't it?
+
+Let's refactor our logic to use a switch statement:
+```typescript
+switch (url.searchParams.get("show")) {
+    case "anime":
+        // load anime service page
+        await this.showAnimePage();
+        break;
+    case "ep":
+        // load episode service page
+        await this.showEpisodePage();
+        break;
+}
+```
+
+Thankfully the service page exposes the method [`showEpisodePage`][docs-common-service-showepisodepage] which is analogous
+to the [`showAnimePage`][dolos-common-service-showanimepage] method from before.
+
+At this point you should justifiably get suspicious of me pulling another
+bait-and-switch. Fret not, this time I trust that you've already sensed the problem.
+It builds, but something is clearly wrong because we're never explicitly constructing
+an instance of `AniDB`, nor have we coded any service page logic yet...
+
+The problem surfaces when we try to construct an instance of our new service.
+To start our service we need to call the [`load`][docs-common-service-load]
+method on an instance. Since we want to load it as soon as the code is executed,
+i.e. the anidb website is loaded, we can add the following line to the end of the file:
+```typescript
+// create a new instance and call load on it
+new AniDB().load();
+```
+
+But - oh, here we go. There's our problem:
+`Constructor of class 'Service' is protected and only accessible within the class declaration.`
+This means that we can't just construct our Service like that, because we
+need to provide our own constructor for the service.
+
+Well, that's an easy fix, right? Just add a constructor which then calls
+[`super`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super).
+But this is the point where our dreams come crashing down. When we look at the
+signature of the [`constructor`][docs-common-service-constructor] for a service
+we can see that it takes three arguments.
+A service id, the anime page, and the episode page.
+
+The first one is easy, it's used to uniquely identify the service. We're
+going to use `anidb`.
+
+The other arguments, however, require us to pass service page classes...
+No wonder nothing complained so far. Well, we're going to write them soon enough, for
+now let's just pass `undefined`.
+
+TypeScript won't like that at all, so let's add `// @ts-ignore` above
+the line to make TypeScript ignore it.
+
+So the constructor should look like this:
+```
+constructor() {
+    // @ts-ignore
+    super("anidb", undefined, undefined);
+}
+```
+
+Of course we can't expect this to do anything or even work for that matter,
+but at least it builds and we can focus on writing the service pages now.
+
+Our code so far:
+```typescript
+// src/anidb/index.ts:
+
+import {Service} from "dolos/common";
+
+export default class AniDB extends Service {
+    // Override constructor for convenience.
+    constructor() {
+        // we haven't coded the service pages yet
+        // @ts-ignore
+        super("anidb", undefined, undefined);
+    }
+
+    async route(url: URL): Promise<void> {
+        switch (url.searchParams.get("show")) {
+            case "anime":
+                // load anime service page
+                await this.showAnimePage();
+                break;
+            case "ep":
+                // load episode service page
+                await this.showEpisodePage();
+                break;
+        }
+    }
+}
+
+// load the service as soon as the code is executed.
+new AniDB().load();
+```
+
+#### Anime Service Page
+Because "a" comes before "e" we're going to start with writing the anime service page.
+A service page extends the abstract class [`ServicePage`][docs-common-servicepage].
+As you can see it doesn't have a very broad spectrum of methods. But we're not going
+to deal with it directly anyway, because there's already a specific service page
+for Anime service pages.
+It's called - you've guessed it - [`AnimePage`][docs-common-pages-animepage].
+*(If you've guessed "AnimeServicePage" then you're already a lot smarter than
+I was when I named it)*
+
+All we need to do is create a class for anidb that extends [`AnimePage`][docs-common-pages-animepage]
+and implements a few *cough* **10** *cough* abstract methods.
+**NO, PLEASE COME BACK!** It's not as bad as it sounds. These methods are
+really basic.
+
+Okay, thanks for trusting me. Have a cookie or something...
+
+Anyway, let's start by creating a new file in the `anidb` directory called
+`anime.ts` and open it.
+To extend [`AnimePage`][docs-common-pages-animepage] we have to get access to it
+first. Import it using `import {AnimePage} from "dolos/common/pages";`.
+Add a new class `AniDBAnimePage` which extends AnimePage and default-export it:
+
+```typescript
+export default AniDBAnimePage extends AnimePage {
+}
+```
+
+Upon saving you'll find a TON of errors from Webpack. Most of them are there
+because we haven't implemented the abstract methods yet, but there's one error
+that isn't like the others:
+`TS2314: Generic type 'AnimePage<T>' requires 1 type argument(s).`
+
+You see, the AnimePage class is a [generic class](https://www.typescriptlang.org/docs/handbook/generics.html#generic-classes).
+It takes the type of the Service it belongs to.
+
+Import the AniDB service class from the index file: `import AniDB from "./index";`
+and replace `extends AnimePage` with `extends AnimePage<AniDB>`. Now it knows
+that this is a service page belonging to AniDB.
+
+Now it's time to implement the abstract methods. We need to implement the
+following method signatures, but don't worry, we'll go over them one by one:
+- `async getAnimeIdentifier(): Promise<string | undefined>`
+- `async getAnimeSearchQuery(): Promise<string | undefined>`
+- `async getAnimeURL(): Promise<string | undefined>`
+- `async getEpisodeURL(episodeIndex: number): Promise<string>`
+- `async showEpisode(episodeIndex: number): Promise<void>`
+- `async getEpisodeCount(): Promise<number | undefined>`
+- `async canSetEpisodesWatched(): Promise<boolean>`
+- `protected async _setEpisodesWatched(progress: number): Promise<boolean>`
+- `protected async _getEpisodesWatched(): Promise<number | undefined>`
+- `async injectAnimeStatusBar(statusBar: Element): Promise<void>`
+
+But take a second to look at the names. It may look like a lot of methods,
+but they really only do one specific thing, so most of them are no longer
+than one line of code. That's easy, right?
+
+Okay so here goes!
+
+##### getAnimeIdentifier
+This method should return a string that identifies the Anime. You don't have
+to return something like the name of the Anime. Often you can actually just use
+parts of the url (preferred). The goal here is to have something very quickly
+that can be used to store information for an Anime.
+
+For aniDB this is easy. Next to the "show" parameter we've also seen "aid"
+which presumably stands for anime id. We can just use that!
+
+```typescript
+async getAnimeIdentifier(): Promise<string | undefined> {
+    // parse the current url into a URL object because
+    // it's easier to work with and return the "aid" parameter.
+    // searchParams.get returns null when the parameter doesn't exist,
+    // but we need it to return undefined, thus the "|| undefined"
+    return new URL(location.href).searchParams.get("aid") || undefined;
+}
+```
+
+##### getAnimeSearchQuery
+Return the search query that should be passed to the [search endpoint of Grobber](https://grobber.docs.apiary.io/#reference/anime/anime/search-anime/).
+I don't think there's a situation where you wouldn't just return the title
+of the Anime, but who knows?
+
+aniDB displays the title in a table cell on the right:
+```typescript
+async getAnimeSearchQuery(): Promise<string | undefined> {
+    // find the "Main Title" table cell.
+    const mainTitle = document.querySelector(`td.value > span[itemprop="name"]`);
+    // return its content if it was found or undefined otherwise
+    return mainTitle ? mainTitle.innerHTML : undefined;
+}
+```
+
+##### getAnimeURL
+You might think: "What the hell, why don't you just use location.href?"
+Well, you can do that if you want, but it might lead to some problems
+which will become apparent later on.
+It's a good idea to build the url from scratch like this:
+
+```typescript
+async getAnimeURL(): Promise<string | undefined> {
+    // we know that our anime identifier is the aid parameter
+    const animeID = await this.getAnimeIdentifier();
+    // if aid is undefined, return undefined!
+    if (!animeID) return;
+
+    const url = new URL("https://anidb.net/perl-bin/animedb.pl");
+    // add ?show=anime
+    url.searchParams.set("show", "anime");
+    // and &aid=<anime id>
+    url.searchParams.set("aid", animeID);
+
+    // return the string representation
+    return url.href;
+}
+```
+
+##### getEpisodeURL
+This method should return the url for a given episode index. This is relatively
+simple for most sites because the episodes have an url like `/episode/5`.
+aniDB, instead, decided to express f*ck all in their urls. It's just a number...
+
+Because of this ~~questionable~~ decision we have take a different approach.
+At the bottom of the page there's a table with all episodes in it, we're going to
+add a helper function that parses this table:
+
+```typescript
+async getEpisodeURLs(): Promise<{[key: string]: string}> {
+    // get all episode links
+    const epLinks = document.querySelectorAll(`#eplist > tbody > tr > td > a[itemprop="url"]`);
+
+    const urls: {[key: string]: string} = {};
+
+    for (const epLink of Array.from(epLinks)) {
+        // get the url of the episode
+        const url = (epLink as HTMLLinkElement).href;
+        if (!url) continue;
+
+        // get the episode text
+        const epText= epLink.textContent;
+        if (!epText) continue;
+
+        const episode = epText.trim();
+        urls[episode] = url;
+    }
+
+    return urls;
+}
+```
+
+This returns an object which maps an episode number to its url.
+
+We can use this in our actual implementation of `getEpisodeURL`:
+```typescript
+async getEpisodeURL(episodeIndex: number): Promise<string> {
+    const episodes = await this.getEpisodeURLs();
+    // get episode number from index and convert to string
+    const episode = (episodeIndex + 1).toString();
+
+    // return the url
+    return episodes[episode];
+}
+```
+
+> Dolos generally uses indices (i.e. starting from 0) to index episodes.
+> Please stick to this convention!
+
+##### showEpisode
+Take the user to the given episode. In many cases this will just be manipulating the
+url, but Kitsu, for example, can smoothly transition to a different page.
+aniDB doesn't do anything fancy like that, so we can just use:
+```typescript
+async showEpisode(episodeIndex: number): Promise<void> {
+    location.assign(await this.getEpisodeURL(episodeIndex));
+}
+```
+
+##### getEpisodeCount
+Returns the amount of episodes the Anime has.
+aniDB makes this relatively easy, it displays the episode count in a span
+tag with the class `amountOfEpisodes`. Unless it's a movie, then it shows the
+text "Movie" instead. Could be worse...
+
+```typescript
+async getEpisodeCount(): Promise<number | undefined> {
+    const animeType = document.querySelector("div.pane.info tr.type > td.value");
+    if (!animeType) return;
+
+    // get the episode count. Not present for movies for example
+    const episodeCount = animeType.querySelector(`span[itemprop="numberOfEpisodes"]`);
+    if (episodeCount) return parseInt(episodeCount.innerHTML);
+
+    // if it's a movie return 1
+    if (animeType.innerHTML === "Movie") return 1
+
+    return undefined;
+}
+```
+
+##### canSetEpisodesWatched
+Indicates whether Dolos can keep track of the amount of episodes the user has
+watched. This is usually true when the user is logged-in and false otherwise.
+In this case we're just going to return false mainly because I can't be bothered
+to actually create an account to test this. The implementation of this is left
+as an exercise to the reader or whatever :D
+
+```typescript
+async canSetEpisodesWatched(): Promise<boolean> {
+    return false;
+}
+```
 
 
+##### _setEpisodesWatched
+Is used to set the amount of episodes the user has watched. It returns whether
+the operation was successful. Since we're not doing this part we can just return
+`false` again.
+
+```typescript
+protected async _setEpisodesWatched(progress: number): Promise<boolean> {
+    return false;
+}
+```
+
+##### _getEpisodesWatched
+Return the amount of episodes the user has already seen, or undefined. We're
+going to return `undefined` here because again, not bothering with this part.
+
+```typescript
+protected async _getEpisodesWatched(): Promise<number | undefined> {
+    return undefined;
+}
+```
+
+##### injectAnimeStatusBar
+THE FINAL METHOD, FINALLY!
+This method takes an [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element)
+which it should add to the DOM somewhere.
+The element in question happens to be the [`AnimeStatusBar`][docs-common-components-anime-animestatusbar]
+which consists of a continue watching and a subscribe button.
+
+For aniDB there seems to be a lot of space just below the Anime poster,
+so let's insert it there.
+
+```typescript
+async injectAnimeStatusBar(statusBar: Element): Promise<void> {
+    const imgContainer = document.querySelector("div.image > div.container");
+    if (!imgContainer) return;
+
+    // insert the status bar after the image
+    imgContainer.insertAdjacentElement("afterend", statusBar);
+}
+```
 
 
+The entire `anime.ts` file should look like this:
+```typescript
+import {AnimePage} from "dolos/common/pages";
+import AniDB from "./index";
 
+export default class AniDBAnimePage extends AnimePage<AniDB> {
+    async getAnimeIdentifier(): Promise<string | undefined> {
+        // parse the current url into a URL object because
+        // it's easier to work with and return the "aid" parameter.
+        // searchParams.get returns null when the parameter doesn't exist,
+        // but we need it to return undefined, thus the "|| undefined"
+        return new URL(location.href).searchParams.get("aid") || undefined;
+    }
+
+    async getAnimeSearchQuery(): Promise<string | undefined> {
+        // find the "Main Title" table cell.
+        const mainTitle = document.querySelector(`td.value > span[itemprop="name"]`);
+        // return its content if it was found or undefined otherwise
+        return mainTitle ? mainTitle.innerHTML : undefined;
+    }
+
+    async getAnimeURL(): Promise<string | undefined> {
+        // we know that our anime identifier is the aid parameter
+        const animeID = await this.getAnimeIdentifier();
+        // if aid is undefined, return undefined!
+        if (!animeID) return;
+
+        const url = new URL("https://anidb.net/perl-bin/animedb.pl");
+        // add ?show=anime
+        url.searchParams.set("show", "anime");
+        // and &aid=<anime id>
+        url.searchParams.set("aid", animeID);
+
+        // return the string representation
+        return url.href;
+    }
+
+    async getEpisodeURLs(): Promise<{[key: string]: string}> {
+        // get all episode links
+        const epLinks = document.querySelectorAll(`#eplist > tbody > tr > td > a[itemprop="url"]`);
+
+        const urls: {[key: string]: string} = {};
+
+        for (const epLink of Array.from(epLinks)) {
+            // get the url of the episode
+            const url = (epLink as HTMLLinkElement).href;
+            if (!url) continue;
+
+            const epText= epLink.textContent;
+            if (!epText) continue;
+
+            const episode = epText.trim();
+            urls[episode] = url;
+        }
+
+        return urls;
+    }
+
+    async getEpisodeURL(episodeIndex: number): Promise<string> {
+        const episodes = await this.getEpisodeURLs();
+        // get episode number from index and convert to string
+        const episode = (episodeIndex + 1).toString();
+
+        // return the url
+        return episodes[episode];
+    }
+
+    async showEpisode(episodeIndex: number): Promise<void> {
+        location.assign(await this.getEpisodeURL(episodeIndex));
+    }
+
+    async getEpisodeCount(): Promise<number | undefined> {
+        const animeType = document.querySelector("div.pane.info tr.type > td.value");
+        if (!animeType) return;
+
+        // get the episode count. Not present for movies for example
+        const episodeCount = animeType.querySelector(`span[itemprop="numberOfEpisodes"]`);
+        if (episodeCount) return parseInt(episodeCount.innerHTML);
+
+        // if it's a movie return 1
+        if (animeType.innerHTML === "Movie") return 1
+
+        return undefined;
+    }
+
+    async canSetEpisodesWatched(): Promise<boolean> {
+        return false;
+    }
+
+    protected async _setEpisodesWatched(progress: number): Promise<boolean> {
+        return false;
+    }
+
+    protected async _getEpisodesWatched(): Promise<number | undefined> {
+        return undefined;
+    }
+
+    async injectAnimeStatusBar(statusBar: Element): Promise<void> {
+        const imgContainer = document.querySelector("div.image > div.container");
+        if (!imgContainer) return;
+
+        // insert the status bar after the image
+        imgContainer.insertAdjacentElement("afterend", statusBar);
+    }
+}
+```
+
+
+And we're done! That's our Anime service page. All that's left to do is adding
+it to the AniDB service. To do that simply open the `index.ts` file again, import
+the service page using `import AniDBAnimePage from "./anime";` and replace the first
+`undefined` with `AniDBAnimePage`:
+```typescript
+super("anidb", AniDBAnimePage, undefined);
+```
 
 
 
@@ -243,8 +764,14 @@ service page to show.
 [docs-mal-service]: {{ site.baseurl }}/docs/modules/myanimelist.html
 
 [docs-common-service]: {{ site.baseurl }}/docs/classes/common.service.html
+[docs-common-service-constructor]: {{ site.baseurl }}/docs/classes/common.service.html#constructor
+[docs-common-service-load]: {{ site.baseurl }}/docs/classes/common.service.html#load
 [docs-common-service-route]: {{ site.baseurl }}/docs/classes/common.service.html#route
+[docs-common-service-showanimepage]: {{ site.baseurl }}/docs/classes/common.service.html#showanimepage
+[docs-common-service-showepisodepage]: {{ site.baseurl }}/docs/classes/common.service.html#showepisodepage
 [docs-common-servicepage]: {{ site.baseurl }}/docs/classes/common.servicepage.html
 
-[docs-common-animepage]: {{ site.baseurl }}/docs/classes/common_pages.animepage.html
-[docs-common-episodepage]: {{ site.baseurl }}/docs/classes/common_pages.episodepage.html
+[docs-common-pages-animepage]: {{ site.baseurl }}/docs/classes/common_pages.animepage.html
+[docs-common-pages-episodepage]: {{ site.baseurl }}/docs/classes/common_pages.episodepage.html
+
+[dolos-common-components-anime-animestatusbar]: {{ site.baseurl }}/docs/interfaces/common_components_anime.animestatusbar.html

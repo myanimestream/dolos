@@ -1,5 +1,5 @@
 main:
   - title: "Guides"
     url: /guides/
-  - title: "Documentation"
+  - title: "API Documentation"
     url: /docs/
