@@ -364,10 +364,10 @@ export class Store {
         return animes.getOrSetDefault(identifier, {}) as StoreElementProxy<StoredAnimeInfo>;
     }
 
-    async buildIdentifier(service_id: string, identifier: string, config?: Config): Promise<string> {
+    async buildIdentifier(serviceID: string, identifier: string, config?: Config): Promise<string> {
         config = config || await this.getConfig();
         const languageID = Store.buildLanguageIdentifier(config);
-        let key = `${service_id}::${languageID}::`;
+        let key = `${serviceID}::${languageID}::`;
 
         for (let i = 0; i < identifier.length; i++) {
             key += identifier.charCodeAt(i).toString(16);

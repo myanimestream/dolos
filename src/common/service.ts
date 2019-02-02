@@ -13,8 +13,8 @@ export default abstract class Service {
 
     state: State<this>;
 
-    protected constructor(service_id: string, animePage: Type<AnimePage<any>>, episodePage: Type<EpisodePage<any>>,) {
-        this.state = new State(service_id);
+    protected constructor(serviceID: string, animePage: Type<AnimePage<any>>, episodePage: Type<EpisodePage<any>>,) {
+        this.state = new State(serviceID);
 
         this.AnimePage = animePage;
         this.EpisodePage = episodePage;

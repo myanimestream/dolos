@@ -18,9 +18,9 @@ export default class State<T extends Service> extends ElementMemory {
     serviceId: string;
     page?: ServicePage<T>;
 
-    constructor(service_id: string) {
+    constructor(serviceID: string) {
         super();
-        this.serviceId = service_id;
+        this.serviceId = serviceID;
     }
 
     // noinspection JSMethodCanBeStatic
