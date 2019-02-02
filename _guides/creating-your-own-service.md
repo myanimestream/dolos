@@ -1,6 +1,6 @@
 ---
 title: Creating your own Service
-description: Extending Dolos to support other sites.
+excerpt: Extending Dolos to support other sites.
 ---
 
 # How to add your own service

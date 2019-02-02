@@ -38,7 +38,7 @@ defaults:
   # _guides
   - scope:
       path: ""
-      type: portfolio
+      type: guides
     values:
       layout: single
       author_profile: false
