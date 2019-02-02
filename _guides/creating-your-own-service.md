@@ -32,7 +32,12 @@ without all that much Javascript action going on. That's a good thing!
 But enough talk for now, let's get started!
 
 ### Getting ready for development
-{% include_relative getting-ready-for-development.md %}
+If you haven't already, please read the [Getting ready for development guide]({{ site.baseurl }}{% link _guides/getting-ready-for-development.md %}).
+It guides you through downloading the code, installing its dependencies, building the extension
+and installing it.
+
+From this point on it's assumed that you have webpack running in watch mode
+and the extension installed.
 
 ### Adding files for the new Service
 Before we get to the fun part, that is, writing code, we should first setup
