@@ -23,6 +23,9 @@ baseurl: /dolos
 include:
   - _pages
 
+exclude:
+  - README.md
+
 remote_theme: mmistakes/minimal-mistakes
 minimal_mistakes_skin: dark
 breadcrumbs: true

@@ -6,11 +6,11 @@ excerpt: Extending Dolos to support other sites.
 ## What is a "Service"?
 A "service" is the abstract concept of an interface between the core Dolos functionality
 and a website. Instead of rewriting everything from scratch for every site we want to support
-there's only a *comparatively* tiny amount of code to write thanks to Services.
-The behaviours of Dolos is standardised. It should work the same for every site, that's why
-only very low-level logic needs to be provided to adapt to a new site.
+there's only a *comparatively* tiny amount of code to write thanks to services.
+The behaviour of Dolos is standardised. It should work the same for every site, thus
+one only needs to provide logic required to interact with the page to adapt to a new site.
 
-Adding a new Service is very easy in most cases.
+Adding a new Service is very easy in *most* cases.
 
 Dolos already has two Services which may serve as good reference points.
 There's the simple [MyAnimeList Service][docs-mal-service] and the more
@@ -31,49 +31,8 @@ without all that much Javascript action going on. That's a good thing!
 
 But enough talk for now, let's get started!
 
-### Setting up Dolos
-First we need to setup the environment we're gonna code in. If you already
-have everything ready then feel free to skip this one.
-
-The first step is to get the code somehow. Usually guides recommend cloning the GitHub
-repository at this point, but I'm not that opinionated. Download the ZIP file and unpack
-it for all I care... If you don't know how to download the code to your filesystem
-~~stop reading right now because this guide probably isn't for you~~ you can read-up
-how to do it [here](https://help.github.com/articles/fork-a-repo/). Once you have
-downloaded the code, change into its directory.
-
-Now that we have the code we need to install the dependencies. Use
-`npm install` and you're already done. Unless it spits out an error
-or you don't even have npm installed. Can't help you with the former, but
-[downloading npm is fairly straightforward](https://www.npmjs.com/get-npm).
-
-### Installing the Extension
-Of course we would like to test our extension along the way. To do that we
-need to install the extension first. But even before that we first
-need to build the extension! Why is that? Well, Dolos is written in TypeScript
-and ~~most~~ browsers don't run TypeScript natively *(citation needed)*.
-To build the extension you can simply run `npm run watch` in the Dolos directory.
-This will, as the name implies, watch your files and re-build the extension files
-every time something changes (and it runs at the very start). This compiles the
-TypeScript files to JavaScript and stores it in the `dist/js` folder.
-Have a look if you're interested (Why would that be the case? Who knows).
-
-Now, installing the extension depends on the browser you would like to use during
-development:
-
-If you want to develop using **Firefox** you need to copy the contents of
-`manifest.firefox.json` to `manifest.json` (overwrite it). After that you can run
-`npx web-ext run` which will automatically start a Firefox browser with the extension
-installed (If you don't have npx installed, install it using `npm install --global npx`).
-
-If you prefer using **Chrome**, copy the contents of `manifest.chrome.json`
-to `manifest.json` (again, overwrite it). To actually install the extension
-you need to open the Chrome browser, go to `chrome://extensions` and click
-`Load unpacked` which should allow you to pick a folder. Choose the `dist`
-folder in the Dolos directory.
-
-At this point you should have the local extension installed and should be ready to start
-hacking!
+### Getting ready for development
+{% include_relative getting-ready-for-development.md %}
 
 ### Adding files for the new Service
 Before we get to the fun part, that is, writing code, we should first setup
@@ -102,9 +61,9 @@ the script when you visit the page. How could it?
 We need to first tell it to be run. And if you take a look at the `/dist/js`
 folder there's not even a file for it... What?
 
-Well, it's actually quite simple. Webpack, the tool used to build the Javascript
+Well, it's actually quite simple. webpack, the tool used to build the Javascript
 files doesn't do anything unless you tell it to. The first thing we need to adjust
-to make our code run when the page is opened is to tell Webpack to "compile" the file.
+to make our code run when the page is opened is to tell webpack to "compile" the file.
 
 To do this let's open the `webpack.common.js` file in the root folder. In it
 you should find the "entry" object which contains names mapped to paths. The keys
@@ -114,7 +73,7 @@ Add a new key-value pair at the end for our anidb script. It should look like th
 anidb: path.join(__dirname, "src/anidb/index.ts"),
 ```
 
-This will cause Webpack to generate the file `anidb.js` in the `dist/js` directory.
+This will cause webpack to generate the file `anidb.js` in the `dist/js` directory.
 But for this to take effect we need to restart it first. Stop the previous
 `npm run watch` and run the same command again.
 
@@ -161,13 +120,13 @@ Open a new tab and go to [https://anidb.net](https://anidb.net). Open the Web Co
 (Press F12 and switch to the console tab) and you should see the beautiful
 "Hello World from Dolos on aniDB" text from before.
 
-> If you don't see it, please make sure that Webpack has rebuilt the Javascript and
+> If you don't see it, please make sure that webpack has rebuilt the Javascript and
 > you've reloaded the extension!
 
 #### Quick Recap because I've heard those are useful
 - We created a new directory for our service called `anidb` in the `src` folder.
 - Added an `index.ts` file to said folder with some debug code to check whether it works.
-- Changed the Webpack configuration `webpack.common.js` to build our new file
+- Changed the webpack configuration `webpack.common.js` to build our new file
   to a Javascript file in the `dist/js` directory.
 - Edited the `manifest.json` files so that our file is being run when the user
   visits anidb.net.
@@ -200,7 +159,6 @@ Create a class called `AniDB` which extends `Service`:
 ```typescript
 export default class AniDB extends Service {
 }
-
 ```
 
 **Because we're going to use it in other modules be sure to export the class
@@ -208,7 +166,7 @@ as the default export.**
 
 
 And there it is. Our own little Service, thanks for readin... - oh...
-Have a look at the output of Webpack:
+Have a look at the output of webpack:
 ```
 TS2515: Non-abstract class 'AniDB' does not implement inherited abstract member 'route' from class 'Service'.
 ```
@@ -232,7 +190,7 @@ The [`route`][docs-common-service-route] method should delegate which
 service page to show.
 
 We need to find out how to determine which service page to show, but for
-now let's just add the method to stop Webpack from complaining. Place
+now let's just add the method to stop webpack from complaining. Place
 the following code in the AniDB class body.
 ```typescript
 async route(url: URL): Promise<void> {
@@ -412,7 +370,7 @@ export default AniDBAnimePage extends AnimePage {
 }
 ```
 
-Upon saving you'll find a TON of errors from Webpack. Most of them are there
+Upon saving you'll find a TON of errors from webpack. Most of them are there
 because we haven't implemented the abstract methods yet, but there's one error
 that isn't like the others:
 `TS2314: Generic type 'AnimePage<T>' requires 1 type argument(s).`
