@@ -2,9 +2,17 @@ title: Dolos
 title_separator: "|"
 description: A browser extension for Chrome and Firefox
 
+baseurl: /dolos
+
 remote_theme: mmistakes/minimal-mistakes
 minimal_mistakes_skin: dark
 breadcrumbs: true
-google_analytics: UA-131499018-2
 
-baseurl: /dolos
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jemoji
+  - jekyll-include-cache
+
