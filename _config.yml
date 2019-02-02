@@ -4,15 +4,43 @@ description: A browser extension for Chrome and Firefox
 
 baseurl: /dolos
 
+include:
+  - _pages
+
 remote_theme: mmistakes/minimal-mistakes
 minimal_mistakes_skin: dark
 breadcrumbs: true
+search: true
 
 plugins:
+  - jekyll-feed
+  - jekyll-gist
+  - jekyll-include-cache
   - jekyll-paginate
   - jekyll-sitemap
-  - jekyll-gist
-  - jekyll-feed
   - jemoji
-  - jekyll-include-cache
 
+collections:
+  guides:
+    output: true
+    permalink: /:collection/:path/
+
+defaults:
+  # _pages
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: false
+      read_time: true
+
+  # _guides
+  - scope:
+      path: ""
+      type: portfolio
+    values:
+      layout: single
+      author_profile: false
+      read_time: true
+      share: true

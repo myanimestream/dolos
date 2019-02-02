@@ -1,5 +1,6 @@
----
-title: Dolos
+--
+layout: splash
+permalink: /
 ---
 
 # Dolos
