@@ -23,15 +23,15 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
     private _episodesWatched$?: BehaviorSubject<number | undefined>;
 
     /**
+     * Get a unique identifier for this anime.
+     */
+    abstract async getAnimeIdentifier(): Promise<string | undefined>;
+
+    /**
      * Get the search query to be used for Grobber's search endpoint.
      * @return `undefined` if there is no search query.
      */
     abstract async getAnimeSearchQuery(): Promise<string | undefined>;
-
-    /**
-     * Get a unique identifier for this anime.
-     */
-    abstract async getAnimeIdentifier(): Promise<string | undefined>;
 
     /**
      * Get the information stored in the browser storage.
@@ -67,7 +67,10 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         const results = await GrobberClient.searchAnime(query);
         if (!results) return;
 
-        const uid = results[0].anime.uid;
+            return;
+        }
+
+        const uid = searchResult.anime.uid;
         animeInfo.uid = uid;
 
         return uid;
@@ -206,7 +209,6 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return true;
     }
 
-
     /**
      * Subscribe to the Anime.
      * @returns Whether the action was successful.
@@ -244,6 +246,44 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
     }
 
     /**
+     * Open the anime search dialog.
+     */
+    async openAnimeSearchDialog(): Promise<void> {
+        console.log("opening");
+    }
+
+    /** Get the amount of episodes the user has seen */
+    async getEpisodesWatched(): Promise<number | undefined> {
+        if (this._episodesWatched$) return this._episodesWatched$.getValue();
+        else return await this._getEpisodesWatched();
+    }
+
+    /**
+     * Get an observable for the amount of episodes the user has watched.
+     *
+     * @see [[AnimePage.getEpisodesWatched]]
+     */
+    async getEpisodesWatched$(): Promise<BehaviorSubject<number | undefined>> {
+        if (!this._episodesWatched$) {
+            const episodesWatched = await this.getEpisodesWatched();
+            this._episodesWatched$ = new BehaviorSubject(episodesWatched);
+        }
+
+        return this._episodesWatched$;
+    }
+
+    /**
+     * Get the amount of episodes this Anime has.
+     * Note that this is **not** the amount of episodes
+     * available on Grobber but the amount reported by the
+     * site which should ideally be the total amount.
+     *
+     * @see [[AnimePage.getAnime]]'s [[AnimeInfo.episodes]]
+     * for the amount of available episodes.
+     */
+    abstract async getEpisodeCount(): Promise<number | undefined>;
+
+    /**
      * Sanity check whether it should be possible to set the "progress" of an Anime.
      */
     abstract async canSetEpisodesWatched(): Promise<boolean>;
@@ -265,52 +305,35 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return success;
     }
 
+    abstract async injectAnimeStatusBar(statusBar: Element): Promise<void>;
+
     /** Return the URL of this Anime. */
     abstract async getAnimeURL(): Promise<string | undefined>;
 
     /** Get the URL of the provided episode for this Anime */
     abstract async getEpisodeURL(episodeIndex: number): Promise<string>;
 
-    /** Get the amount of episodes the user has seen */
-    async getEpisodesWatched(): Promise<number | undefined> {
-        if (this._episodesWatched$) return this._episodesWatched$.getValue();
-        else return await this._getEpisodesWatched();
-    }
-
     /**
      * Navigate the user to the episode with the given index.
      */
     abstract async showEpisode(episodeIndex: number): Promise<void>;
 
-    abstract async getEpisodeCount(): Promise<number | undefined>;
-
-    async _load() {
-        const statusBar = await this.buildAnimeStatusBar();
-        await this.injectAnimeStatusBar(statusBar);
-
-        // update the subscription to make sure it reflects the current state
-        if (await this.isSubscribed()) await this.updateSubscription();
-    }
-
-    /**
-     * @private
-     *
-     * Internal progress setting. **Do not use this method**!
-     * @see [[AnimePage.setEpisodesWatched]] instead!
-     */
-    protected abstract async _setEpisodesWatched(progress: number): Promise<boolean>;
-
-    async getEpisodesWatched$(): Promise<BehaviorSubject<number | undefined>> {
-        if (!this._episodesWatched$) {
-            const episodesWatched = await this.getEpisodesWatched();
-            this._episodesWatched$ = new BehaviorSubject(episodesWatched);
+    async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | void> {
+        if (page instanceof AnimePage) {
+            const [thisID, otherID] = await Promise.all([
+                this.getAnimeIdentifier(),
+                page.getAnimeIdentifier()
+            ]);
+            // no need to do anything if we're still on the same page.
+            if (thisID === otherID) return this;
+        } else if (page instanceof EpisodePage) {
+            page.animePage = this;
+            await page.load();
+            return;
         }
 
-        return this._episodesWatched$;
+        await super.transitionTo(page);
     }
-
-    abstract async injectAnimeStatusBar(statusBar: Element): Promise<void>;
-
 
     async buildAnimeStatusBar(): Promise<Element> {
         const el = document.createElement("div");
@@ -324,6 +347,14 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return el;
     }
 
+    async _load() {
+        const statusBar = await this.buildAnimeStatusBar();
+        await this.injectAnimeStatusBar(statusBar);
+
+        // update the subscription to make sure it reflects the current state
+        if (await this.isSubscribed()) await this.updateSubscription();
+    }
+
     /**
      * @private
      *
@@ -332,16 +363,11 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
      */
     protected abstract async _getEpisodesWatched(): Promise<number | undefined>;
 
-    async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | void> {
-        if (page instanceof AnimePage) {
-            const [thisID, otherID] = await Promise.all([this.getAnimeIdentifier(), page.getAnimeIdentifier()]);
-            if (thisID === otherID) return this;
-        } else if (page instanceof EpisodePage) {
-            page.animePage = this;
-            await page.load();
-            return;
-        }
-
-        await super.transitionTo(page);
-    }
+    /**
+     * @private
+     *
+     * Internal progress setting. **Do not use this method**!
+     * @see [[AnimePage.setEpisodesWatched]] instead!
+     */
+    protected abstract async _setEpisodesWatched(progress: number): Promise<boolean>;
 }

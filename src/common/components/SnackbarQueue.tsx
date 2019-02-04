@@ -4,166 +4,115 @@
 
 /** @ignore */
 
-import amber from "@material-ui/core/colors/amber";
-import green from "@material-ui/core/colors/green";
-import IconButton from "@material-ui/core/IconButton";
-import Snackbar from "@material-ui/core/Snackbar";
-import {Theme} from "@material-ui/core/styles/createMuiTheme";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CloseIcon from "@material-ui/icons/Close";
-import ErrorIcon from "@material-ui/icons/Error";
-import InfoIcon from "@material-ui/icons/Info";
-import WarningIcon from "@material-ui/icons/Warning";
+import Button, {ButtonProps} from "@material-ui/core/Button";
+import {useSubscription} from "dolos/hooks";
+import {InjectedNotistackProps, OptionsObject, SnackbarProvider, VariantType, withSnackbar} from "notistack";
 import * as React from "react";
-import {Subject, Subscription} from "rxjs";
+import {Subject} from "rxjs";
+import _ = chrome.i18n.getMessage;
 
-export const iconVariant = {
-    success: CheckCircleIcon,
-    warning: WarningIcon,
-    error: ErrorIcon,
-    info: InfoIcon,
-};
+export interface SnackbarAction {
+    text: string;
+    buttonProps?: ButtonProps;
+    onClick?: () => void;
+}
 
-export interface SnackbarMessage {
-    key?: any;
+function isSnackbarAction(action: any): action is SnackbarAction {
+    // ignore primitive
+    if (typeof action !== "object" || action === null)
+        return false;
+
+    return [
+        "text"
+    ].every(attr => attr in action);
+}
+
+
+/**
+ * Template for a Snackbar which can be displayed using [[SnackbarQueue]].
+ */
+export interface SnackbarMessage extends OptionsObject {
     message: string;
-    type?: keyof typeof iconVariant;
-    autoHideDuration?: number;
+
+    /**
+     *
+     */
+    action?: React.ReactNode | SnackbarAction;
 }
 
 /**
  * Convenience function to create a snackbar message.
  */
-export function resolveSnackbarMessage(message: string | SnackbarMessage, type?: keyof typeof iconVariant): SnackbarMessage {
+export function resolveSnackbarMessage(message: string | SnackbarMessage, variant?: VariantType): SnackbarMessage {
     if (typeof message === "string") message = {message,};
 
-    message.type = type;
-
+    message.variant = variant;
     return message;
 }
 
-const SnackbarMessageDefaults = {
-    autoHideDuration: 6000,
-};
-
-/** @ignore */
-const styles = (theme: Theme) => createStyles({
-    success: {
-        backgroundColor: green[600],
-    },
-    error: {
-        backgroundColor: theme.palette.error.dark,
-    },
-    info: {
-        backgroundColor: theme.palette.primary.dark,
-    },
-    warning: {
-        backgroundColor: amber[700],
-    },
-    iconVariant: {
-        fontSize: 20,
-        opacity: 0.9,
-        marginRight: theme.spacing.unit,
-    },
-    message: {
-        display: "flex",
-        alignItems: "center",
-    },
-});
-
-export interface SnackbarQueueProps extends WithStyles<typeof styles> {
-    snackbarMessage$: Subject<SnackbarMessage>
-}
-
-interface SnackbarQueueState {
-    snackbarMessage?: SnackbarMessage;
-    open: boolean;
+interface SnackbarListenerProps {
+    snackbarMessage$: Subject<SnackbarMessage>;
 }
 
 /**
- * A Snackbar display which takes [[SnackbarMessage]] messages
- * from an [[Observable]].
+ * Because [[SnackbarProvider]] passes the [[enqueueSnackbar]] down to its
+ * children using a React context it isn't accessible to the [[SnackbarQueue]].
+ *
+ * This is a hidden component which subscribes to the [[SnackbarListenerProps.snackbarMessage$]]
+ * observable and calls [[enqueueSnackbar]].
  */
-export const SnackbarQueue = withStyles(styles)(
-    class SnackbarQueue extends React.Component<SnackbarQueueProps, SnackbarQueueState> {
-        snackbarMessageSub?: Subscription;
+const SnackbarListener = withSnackbar(
+    function SnackbarListener(props: SnackbarListenerProps & InjectedNotistackProps) {
+        useSubscription(props.snackbarMessage$, msg => {
+            const action = msg.action;
+            if (isSnackbarAction(action)) {
+                let props: ButtonProps = {
+                    color: "secondary",
+                    size: "small",
+                };
 
-        constructor(props: SnackbarQueueProps) {
-            super(props);
+                if (action.buttonProps)
+                    props = Object.assign(props, action.buttonProps);
 
-            this.state = {
-                open: false,
-            };
-        }
+                msg.action = (
+                    <Button {...props}>
+                        {action.text}
+                    </Button>
+                );
 
-        componentDidMount() {
-            const {snackbarMessage$} = this.props;
+                if (action.onClick)
+                    msg.onClickAction = action.onClick;
+            }
 
-            this.snackbarMessageSub = snackbarMessage$.subscribe(message => {
-                message = Object.assign({},
-                    SnackbarMessageDefaults,
-                    {key: new Date().getTime()},
-                    message);
+            props.enqueueSnackbar(msg.message, msg);
+        });
 
-                this.setState({snackbarMessage: message, open: true});
-            });
-        }
-
-        componentWillUnmount() {
-            if (this.snackbarMessageSub) this.snackbarMessageSub.unsubscribe();
-        }
-
-        handleClose() {
-            this.setState({open: false});
-        }
-
-        render() {
-            const {classes} = this.props;
-            const {open, snackbarMessage} = this.state;
-            if (!snackbarMessage) return false;
-
-            const Icon = snackbarMessage.type ? iconVariant[snackbarMessage.type] : undefined;
-            const snackbarClassName = snackbarMessage.type ? classes[snackbarMessage.type] : undefined;
-
-            return (
-                <Snackbar
-                    key={snackbarMessage.key}
-                    anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "left",
-                    }}
-                    open={open}
-                    autoHideDuration={snackbarMessage.autoHideDuration}
-                    onClose={(_, reason) => {
-                        if (reason !== "clickaway") this.handleClose();
-                    }}
-
-                    ContentProps={{
-                        "aria-describedby": "message-id",
-                        className: snackbarClassName
-                    }}
-
-                    message={
-                        <span id="message-id" className={classes.message}>
-                        {Icon && <Icon className={classes.iconVariant}/>}
-                            {snackbarMessage.message}
-                    </span>
-                    }
-
-                    action={[
-                        <IconButton
-                            key="close"
-                            aria-label="Close"
-                            color="inherit"
-                            onClick={() => this.handleClose()}
-                        >
-                            <CloseIcon/>
-                        </IconButton>
-                    ]}
-                />
-            );
-        }
+        return null;
     }
 );
+
+export interface SnackbarQueueProps extends SnackbarListenerProps {
+    /** defaults to 3 */
+    maxMessages?: number;
+}
+
+/**
+ * A Snackbar queue which takes snackbars from an observable
+ * ([[SnackbarListenerProps.snackbarMessage$]]) and shows them.
+ */
+export function SnackbarQueue(props: SnackbarQueueProps) {
+    const {maxMessages} = props;
+
+    return (
+        <SnackbarProvider
+            maxSnack={maxMessages || 3}
+            action={
+                <Button color="secondary" size="small">
+                    {_("snackbar__dismiss")}
+                </Button>
+            }
+        >
+            <SnackbarListener {...props}/>
+        </SnackbarProvider>
+    );
+}

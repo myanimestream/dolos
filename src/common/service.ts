@@ -86,12 +86,12 @@ export default abstract class Service {
         this.snackbarMessage$.next(message);
     }
 
-    /** Shortcut for [[Service.snackbarMessage$.next]] with type error */
+    /** Shortcut for [[Service.snackbarMessage$.next]] with variant error */
     showErrorSnackbar(message: string | SnackbarMessage): void {
         this.showSnackbar(resolveSnackbarMessage(message, "error"));
     }
 
-    /** Shortcut for [[Service.snackbarMessage$.next]] with type warning */
+    /** Shortcut for [[Service.snackbarMessage$.next]] with variant warning */
     showWarningSnackbar(message: string | SnackbarMessage): void {
         this.showSnackbar(resolveSnackbarMessage(message, "warning"));
     }

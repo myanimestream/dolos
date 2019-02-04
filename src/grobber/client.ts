@@ -80,6 +80,14 @@ export class Client extends Memory {
         }
     }
 
+    /**
+     * Search for Anime.
+     * Found Animes are stored in the cache.
+     *
+     * @param results - Defaults to 1 and may go up to 20 (Hard limit by Grobber)
+     *
+     * @return - List of [[SearchResult]]. Length will not exceed the provided `results`.
+     */
     async searchAnime(query: string, results?: number): Promise<SearchResult[] | null> {
         const config = await Store.getConfig();
 
@@ -96,7 +104,16 @@ export class Client extends Memory {
             return null;
         }
 
-        return resp.anime;
+        const searchResults = resp.anime as SearchResult[];
+
+        for (const searchResult of searchResults) {
+            const anime = searchResult.anime;
+
+            const memoryKey = buildKeys([["uid", anime.uid]])[1];
+            this.rememberExpiring(memoryKey, anime, responseCacheTTL);
+        }
+
+        return searchResults;
     }
 
     /**

@@ -120,11 +120,15 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         }
 
         if (!await this.animePage.setEpisodesWatched(epIndex + 1))
-            this.service.showSnackbar({message: _("episode__bookmark_failed"), type: "error"});
+            this.service.showErrorSnackbar(_("episode__bookmark_failed"));
     }
 
     async markEpisodeUnwatched() {
-        const [epIndex, canSetProgress] = await Promise.all([this.getEpisodeIndex(), this.animePage.canSetEpisodesWatched()]);
+        const [epIndex, canSetProgress] = await Promise.all([
+            this.getEpisodeIndex(),
+            this.animePage.canSetEpisodesWatched()
+        ]);
+
         if (!canSetProgress) return;
 
         if (!(epIndex || epIndex === 0)) {
@@ -133,7 +137,7 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         }
 
         if (await this.animePage.setEpisodesWatched(epIndex)) this.episodeBookmarked$.next(false);
-        else this.service.showSnackbar({message: _("episode__bookmark_failed"), type: "error"});
+        else this.service.showErrorSnackbar(_("episode__bookmark_failed"));
     }
 
     async _load() {

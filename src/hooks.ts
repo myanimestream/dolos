@@ -6,7 +6,20 @@
 
 /** @ignore */
 import * as React from "react";
-import {EMPTY, Observable} from "rxjs";
+import {EMPTY, Observable, PartialObserver} from "rxjs";
+
+/** Add a subscriber to an observable */
+export function useSubscription<T>(observable: Observable<T>,
+                                   observerOrNext?: PartialObserver<T> | ((value: T) => void),
+                                   error?: (error: any) => void,
+                                   complete?: () => void): void {
+    React.useEffect(() => {
+        // copied signature from type definitions
+        // @ts-ignore
+        const subscription = observable.subscribe(observerOrNext, error, complete);
+        return () => subscription.unsubscribe();
+    }, [observable]);
+}
 
 export function useObservable<T, V>(observable: Observable<T>): T | undefined;
 export function useObservable<T, V>(observable: Observable<T>, defaultValue: V): T | V;
@@ -16,10 +29,7 @@ export function useObservable<T, V>(observable: Observable<T>, defaultValue: V):
 export function useObservable<T, V>(observable: Observable<T>, defaultValue?: V): T | V {
     const [value, setValue] = React.useState(defaultValue as T | V);
 
-    React.useEffect(() => {
-        const subscription = observable.subscribe(setValue);
-        return () => subscription.unsubscribe();
-    }, [observable]);
+    useSubscription(observable, setValue);
 
     return value;
 }

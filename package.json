@@ -45,6 +45,7 @@
     "awesome-debounce-promise": "^1.0.0",
     "axios": "^0.18.0",
     "keen-tracking": "^4.0.17",
+    "notistack": "^0.4.1",
     "plyr": "^3.4.8",
     "react": "next",
     "react-copy-to-clipboard": "^5.0.1",

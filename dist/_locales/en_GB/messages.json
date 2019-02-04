@@ -42,6 +42,10 @@
   "language__translation_type__subbed": {
     "message": "Subbed"
   },
+  "snackbar__dismiss": {
+    "message": "Dismiss",
+    "description": "Button shown on Snackbars (notifications) to hide them."
+  },
   "popup__nav__home": {
     "message": "Home"
   },
