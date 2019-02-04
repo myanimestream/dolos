@@ -16,8 +16,11 @@ import {
     SearchResult
 } from "./models";
 
-
-export let responseCacheTTL = 60 * 60 * 1000;
+/**
+ * Time-to-live for cached [[Client]] objects.
+ * Defaults to an hour.
+ */
+export let responseCacheTTL = 1000 * 60 * 60;
 
 interface ExpiringItem<T> {
     item: T;
@@ -56,6 +59,15 @@ export class Client extends Memory {
         this.axiosClient = axios.create();
     }
 
+    /**
+     * Perform a request to the given Grobber endpoint with the given parameters.
+     * The base url is read from the [[Config]].
+     *
+     * @throws [[GrobberResponseError]] - If Grobber returned an error response.
+     * @throws [[GrobberRequestError]] - If a request was made but there was no response
+     * @throws [[Error]] - When anything goes wrong while setting up the request.
+     * This (probably) should't occur during normal operation.
+     */
     async request(endpoint: string, params?: Object): Promise<any> {
         const config = await Store.getConfig();
 
@@ -82,44 +94,51 @@ export class Client extends Memory {
 
     /**
      * Search for Anime.
-     * Found Animes are stored in the cache.
+     * Results are stored in the cache.
      *
      * @param results - Defaults to 1 and may go up to 20 (Hard limit by Grobber)
      *
      * @return - List of [[SearchResult]]. Length will not exceed the provided `results`.
+     *
+     * @throws Same errors as [[Client.request]]
      */
     async searchAnime(query: string, results?: number): Promise<SearchResult[] | null> {
         const config = await Store.getConfig();
 
         let resp;
         try {
-            resp = await this.request("/anime/search/", {
-                anime: query,
-                language: config.language,
-                dubbed: config.dubbed,
-                results: results || 1
-            });
+            resp = await this.performAnimeRequest(
+                "/anime/search/",
+                [
+                    ["anime", query],
+                    ["language", config.language],
+                    ["dubbed", config.dubbed],
+                    ["results", results || 1]
+                ],
+                (resp) => {
+                    const searchResults = resp.anime as SearchResult[];
+                    searchResults.forEach(searchResult => {
+                        const anime = animeFromResp(searchResult);
+
+                        const memoryKey = buildKeys([["uid", anime.uid]])[1];
+                        this.rememberExpiring(memoryKey, anime, responseCacheTTL);
+                    });
+
+                    return searchResults;
+                }
+            );
         } catch (e) {
             console.error("Couldn't search for anime", e);
             return null;
         }
 
-        const searchResults = resp.anime as SearchResult[];
-
-        for (const searchResult of searchResults) {
-            const anime = searchResult.anime;
-
-            const memoryKey = buildKeys([["uid", anime.uid]])[1];
-            this.rememberExpiring(memoryKey, anime, responseCacheTTL);
-        }
-
-        return searchResults;
+        return resp;
     }
 
     /**
      * Get the Anime info for the given uid.
      *
-     * @throws [[GrobberRequestError]] - When there was an error with the request.
+     * @throws Same errors as [[Client.request]]
      */
     async getAnimeInfo(uid: string): Promise<AnimeInfo> {
         return await this.performAnimeRequest(
@@ -134,7 +153,7 @@ export class Client extends Memory {
      *
      * @param episode - **Index**
      *
-     * @throws [[GrobberRequestError]] - When there was an error with the request.
+     * @throws Same errors as [[Client.request]]
      */
     async getEpisode(uid: string, episode: number): Promise<Episode> {
         return await this.performAnimeRequest(
@@ -163,7 +182,7 @@ export class Client extends Memory {
         return null;
     }
 
-    private async performAnimeRequest(endpoint: string, paramsList: [string, any][], respHandler: (resp: any) => any): Promise<any> {
+    private async performAnimeRequest(endpoint: string, paramsList: [string, any][], respHandler?: (resp: any) => any): Promise<any> {
         const [lockKeys, memoryKey] = buildKeys(paramsList);
 
         const params = paramsList.reduce((prev, [key, value]) => {
@@ -177,7 +196,8 @@ export class Client extends Memory {
             if (cached) return cached;
 
             const resp = await this.request(endpoint, params);
-            const data = respHandler(resp);
+            const data = respHandler ? respHandler(resp) : resp;
+
             this.rememberExpiring(memoryKey, data, responseCacheTTL);
             return data;
         }, lockKeys);
