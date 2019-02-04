@@ -3,5 +3,10 @@
   "name": "Dolos Documentation",
   "plugin": [
     "typedoc-plugin-external-module-name"
+  ],
+  "exclude": [
+    "**/*.test.ts",
+    "**/__tests__/**",
+    "**/__mocks__/**"
   ]
 }
