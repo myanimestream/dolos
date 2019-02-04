@@ -177,8 +177,8 @@ export interface HasElementMemory<T extends ElementMemory = any> {
  * [[Memory]] that can also keep track of injected DOM elements.
  */
 export class ElementMemory extends Memory implements HasElementMemory {
-    private readonly internalInjectedMemory: Namespace<Element[]>;
-    private readonly injectedMemory: ProxiedNamespace<Element[]>;
+    private readonly internalInjectedMemory: Namespace<Node[]>;
+    private readonly injectedMemory: ProxiedNamespace<Node[]>;
 
     constructor() {
         super();
@@ -189,7 +189,7 @@ export class ElementMemory extends Memory implements HasElementMemory {
 
 
     /** Keep track of the given element such that it can be removed later. */
-    injected(el: Element, ns?: string) {
+    injected(el: Node, ns?: string) {
         ns = ns || "global";
         const elements = this.injectedMemory[ns];
 

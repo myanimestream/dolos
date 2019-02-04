@@ -11,6 +11,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import {makeStyles} from "@material-ui/styles";
+import {Service} from "dolos/common";
 import {AnimePage} from "dolos/common/pages";
 import {useObservablePromiseMemo} from "dolos/hooks";
 import * as React from "react";
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export interface SubscriptionToggleProps {
-    animePage: AnimePage<any>;
+    animePage: AnimePage<Service>;
 }
 
 /**
@@ -55,8 +56,19 @@ export function SubscriptionToggle(props: SubscriptionToggleProps) {
         if (subscribed === undefined) return;
 
         setLoading(true);
-        if (subscribed) await animePage.unsubscribeAnime();
-        else await animePage.subscribeAnime();
+        let success;
+
+        if (subscribed)
+            success = await animePage.unsubscribeAnime();
+        else
+            success = await animePage.subscribeAnime();
+
+        if (!success)
+            animePage.service.showErrorSnackbar(_(
+                "anime__" +
+                (subscribed ? "unsubscribe" : "subscribe") +
+                "__failed"
+            ));
 
         setLoading(false);
     }

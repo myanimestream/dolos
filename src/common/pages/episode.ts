@@ -8,7 +8,7 @@ import {getThemeFor} from "dolos/theme";
 import {reactRenderWithTheme, wrapSentryLogger} from "dolos/utils";
 import * as React from "react";
 import * as rxjs from "rxjs";
-import {EpisodeEmbed, SkipButton, SnackbarMessage} from "../components";
+import {EpisodeEmbed, SkipButton} from "../components";
 import Service from "../service";
 import ServicePage from "../service-page";
 import AnimePage from "./anime";
@@ -17,14 +17,12 @@ import _ = chrome.i18n.getMessage;
 
 export default abstract class EpisodePage<T extends Service> extends ServicePage<T> {
     episodeBookmarked$: rxjs.BehaviorSubject<boolean>;
-    snackbarMessage$: rxjs.Subject<SnackbarMessage>;
     private epsWatchedSub: rxjs.Subscription;
 
     constructor(service: T) {
         super(service);
 
         this.episodeBookmarked$ = new rxjs.BehaviorSubject(false);
-        this.snackbarMessage$ = new rxjs.Subject();
     }
 
     private _animePage: AnimePage<T>;
@@ -122,7 +120,7 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         }
 
         if (!await this.animePage.setEpisodesWatched(epIndex + 1))
-            this.snackbarMessage$.next({message: _("episode__bookmark_failed"), type: "error"});
+            this.service.showSnackbar({message: _("episode__bookmark_failed"), type: "error"});
     }
 
     async markEpisodeUnwatched() {
@@ -135,7 +133,7 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         }
 
         if (await this.animePage.setEpisodesWatched(epIndex)) this.episodeBookmarked$.next(false);
-        else this.snackbarMessage$.next({message: _("episode__bookmark_failed"), type: "error"});
+        else this.service.showSnackbar({message: _("episode__bookmark_failed"), type: "error"});
     }
 
     async _load() {

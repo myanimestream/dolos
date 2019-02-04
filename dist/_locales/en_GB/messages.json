@@ -223,11 +223,17 @@
   "anime__subscribe__help": {
     "message": "Get notified when a new episode comes out"
   },
+  "anime__subscribe__failed": {
+    "message": "Couldn't subscribe to Anime"
+  },
   "anime__unsubscribe": {
     "message": "Unsubscribe"
   },
   "anime__unsubscribe__help": {
     "message": "No longer get notified when a new episode comes out"
+  },
+  "anime__unsubscribe__failed": {
+    "message": "Couldn't unsubscribe from Anime"
   },
   "episode__skip_next": {
     "message": "Next Episode"

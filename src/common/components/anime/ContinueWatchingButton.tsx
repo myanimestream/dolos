@@ -8,6 +8,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import Tooltip from "@material-ui/core/Tooltip";
 import PlayCircleIcon from "@material-ui/icons/PlayCircleFilled";
+import Service from "dolos/common/service";
 import * as React from "react";
 import {Subscription} from "rxjs";
 import {AnimePage} from "../../pages";
@@ -28,7 +29,7 @@ export interface ContinueWatchingButtonState {
 }
 
 export interface ContinueWatchingButtonProps extends WithStyles<typeof styles> {
-    animePage: AnimePage<any>;
+    animePage: AnimePage<Service>;
 }
 
 export default withStyles(styles)(class ContinueWatchingButton extends React.Component<ContinueWatchingButtonProps, ContinueWatchingButtonState> {
@@ -36,6 +37,7 @@ export default withStyles(styles)(class ContinueWatchingButton extends React.Com
 
     constructor(props: ContinueWatchingButtonProps) {
         super(props);
+
         this.state = {
             tooltip: _("anime__continue_watching__loading"),
             disabled: true,
@@ -57,18 +59,27 @@ export default withStyles(styles)(class ContinueWatchingButton extends React.Com
         const anime = await animePage.getAnime();
 
         if (!anime) {
+            const msg = _("anime__continue_watching__anime_unknown");
+
             this.setState({
-                tooltip: _("anime__continue_watching__anime_unknown"),
+                tooltip: msg,
                 disabled: true,
             });
+
+            animePage.service.showWarningSnackbar(msg);
+
             return;
         }
 
         if (epsWatched === undefined) {
+            const msg = _("anime__continue_watching__unknown");
+
             this.setState({
-                tooltip: _("anime__continue_watching__unknown"),
+                tooltip: msg,
                 disabled: true,
             });
+
+            animePage.service.showWarningSnackbar(msg);
 
             return;
         }

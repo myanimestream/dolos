@@ -2,6 +2,8 @@
  * @module common.components
  */
 
+/** @ignore */
+
 import amber from "@material-ui/core/colors/amber";
 import green from "@material-ui/core/colors/green";
 import IconButton from "@material-ui/core/IconButton";
@@ -15,24 +17,35 @@ import ErrorIcon from "@material-ui/icons/Error";
 import InfoIcon from "@material-ui/icons/Info";
 import WarningIcon from "@material-ui/icons/Warning";
 import * as React from "react";
-import * as rxjs from "rxjs";
+import {Subject, Subscription} from "rxjs";
 
-export interface SnackbarMessage {
-    key?: any;
-    message: string;
-    type?: "info" | "success" | "error" | "warning";
-    autoHideDuration?: number;
-}
-
-const SnackbarMessageDefaults: Partial<SnackbarMessage> = {
-    autoHideDuration: 6000,
-};
-
-const iconVariant = {
+export const iconVariant = {
     success: CheckCircleIcon,
     warning: WarningIcon,
     error: ErrorIcon,
     info: InfoIcon,
+};
+
+export interface SnackbarMessage {
+    key?: any;
+    message: string;
+    type?: keyof typeof iconVariant;
+    autoHideDuration?: number;
+}
+
+/**
+ * Convenience function to create a snackbar message.
+ */
+export function resolveSnackbarMessage(message: string | SnackbarMessage, type?: keyof typeof iconVariant): SnackbarMessage {
+    if (typeof message === "string") message = {message,};
+
+    message.type = type;
+
+    return message;
+}
+
+const SnackbarMessageDefaults = {
+    autoHideDuration: 6000,
 };
 
 /** @ignore */
@@ -60,8 +73,8 @@ const styles = (theme: Theme) => createStyles({
     },
 });
 
-interface SnackbarQueueProps extends WithStyles<typeof styles> {
-    snackbarMessage$: rxjs.Subject<SnackbarMessage>
+export interface SnackbarQueueProps extends WithStyles<typeof styles> {
+    snackbarMessage$: Subject<SnackbarMessage>
 }
 
 interface SnackbarQueueState {
@@ -69,81 +82,88 @@ interface SnackbarQueueState {
     open: boolean;
 }
 
-export default withStyles(styles)(class SnackbarQueue extends React.Component<SnackbarQueueProps, SnackbarQueueState> {
-    snackbarMessageSub?: rxjs.Subscription;
+/**
+ * A Snackbar display which takes [[SnackbarMessage]] messages
+ * from an [[Observable]].
+ */
+export const SnackbarQueue = withStyles(styles)(
+    class SnackbarQueue extends React.Component<SnackbarQueueProps, SnackbarQueueState> {
+        snackbarMessageSub?: Subscription;
 
-    constructor(props: SnackbarQueueProps) {
-        super(props);
-        this.state = {
-            open: false,
-        };
-    }
+        constructor(props: SnackbarQueueProps) {
+            super(props);
 
-    componentDidMount() {
-        const {snackbarMessage$} = this.props;
+            this.state = {
+                open: false,
+            };
+        }
 
-        this.snackbarMessageSub = snackbarMessage$.subscribe(message => {
-            message = Object.assign({},
-                SnackbarMessageDefaults,
-                {key: new Date().getTime()},
-                message);
+        componentDidMount() {
+            const {snackbarMessage$} = this.props;
 
-            this.setState({snackbarMessage: message, open: true});
-        });
-    }
+            this.snackbarMessageSub = snackbarMessage$.subscribe(message => {
+                message = Object.assign({},
+                    SnackbarMessageDefaults,
+                    {key: new Date().getTime()},
+                    message);
 
-    componentWillUnmount() {
-        if (this.snackbarMessageSub) this.snackbarMessageSub.unsubscribe();
-    }
+                this.setState({snackbarMessage: message, open: true});
+            });
+        }
 
-    handleClose() {
-        this.setState({open: false});
-    }
+        componentWillUnmount() {
+            if (this.snackbarMessageSub) this.snackbarMessageSub.unsubscribe();
+        }
 
-    render() {
-        const {classes} = this.props;
-        const {open, snackbarMessage} = this.state;
-        if (!snackbarMessage) return false;
+        handleClose() {
+            this.setState({open: false});
+        }
 
-        const Icon = snackbarMessage.type ? iconVariant[snackbarMessage.type] : undefined;
-        const snackbarClassName = snackbarMessage.type ? classes[snackbarMessage.type] : undefined;
+        render() {
+            const {classes} = this.props;
+            const {open, snackbarMessage} = this.state;
+            if (!snackbarMessage) return false;
 
-        return (
-            <Snackbar
-                key={snackbarMessage.key}
-                anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                }}
-                open={open}
-                autoHideDuration={snackbarMessage.autoHideDuration}
-                onClose={(_, reason) => {
-                    if (reason !== "clickaway") this.handleClose();
-                }}
+            const Icon = snackbarMessage.type ? iconVariant[snackbarMessage.type] : undefined;
+            const snackbarClassName = snackbarMessage.type ? classes[snackbarMessage.type] : undefined;
 
-                ContentProps={{
-                    "aria-describedby": "message-id",
-                    className: snackbarClassName
-                }}
+            return (
+                <Snackbar
+                    key={snackbarMessage.key}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                    }}
+                    open={open}
+                    autoHideDuration={snackbarMessage.autoHideDuration}
+                    onClose={(_, reason) => {
+                        if (reason !== "clickaway") this.handleClose();
+                    }}
 
-                message={
-                    <span id="message-id" className={classes.message}>
+                    ContentProps={{
+                        "aria-describedby": "message-id",
+                        className: snackbarClassName
+                    }}
+
+                    message={
+                        <span id="message-id" className={classes.message}>
                         {Icon && <Icon className={classes.iconVariant}/>}
-                        {snackbarMessage.message}
+                            {snackbarMessage.message}
                     </span>
-                }
+                    }
 
-                action={[
-                    <IconButton
-                        key="close"
-                        aria-label="Close"
-                        color="inherit"
-                        onClick={() => this.handleClose()}
-                    >
-                        <CloseIcon/>
-                    </IconButton>
-                ]}
-            />
-        );
+                    action={[
+                        <IconButton
+                            key="close"
+                            aria-label="Close"
+                            color="inherit"
+                            onClick={() => this.handleClose()}
+                        >
+                            <CloseIcon/>
+                        </IconButton>
+                    ]}
+                />
+            );
+        }
     }
-});
+);

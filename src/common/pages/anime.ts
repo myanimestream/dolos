@@ -88,7 +88,10 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
             uid = anime.uid;
         }
 
-        const [animeInfo, subscription] = await Promise.all([this.getStoredAnimeInfo(), this.getSubscription()]);
+        const [animeInfo, subscription] = await Promise.all([
+            this.getStoredAnimeInfo(),
+            this.getSubscription()
+        ]);
         animeInfo.uid = uid;
 
         if (subscription)
