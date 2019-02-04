@@ -22,7 +22,19 @@ export interface Config {
 
     updateAnimeProgress: boolean;
 
+    /**
+     * How high does the [[SearchResult.certainty]]
+     * value have to be for a [[SearchResult]] to be listed
+     * in the search results
+     */
     minCertaintyForSearchResult: number;
+
+    /**
+     * How low does the [[SearchResult.certainty]] value
+     * have to be for Dolos to show a warning Snackbar
+     * prompting the user to manually check?
+     */
+    maxCertaintyForWarning: number;
 }
 
 export const DEFAULT_CONFIG: Config = {
@@ -37,6 +49,9 @@ export const DEFAULT_CONFIG: Config = {
     updateAnimeProgress: true,
 
     minCertaintyForSearchResult: .4,
+
+    maxCertaintyForWarning: .7,
+
 };
 
 export interface StoredServiceAnimes {

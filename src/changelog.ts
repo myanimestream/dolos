@@ -26,7 +26,8 @@ interface Changelog {
 const CHANGELOG: Changelog = new Map([
     ["0.2.1", [
         `Showing loading animation for bookmark button`,
-        `**Kitsu**: No longer breaks on [/explore/](https://kitsu.io/explore/anime) sites.`
+        `**Kitsu**: No longer breaks on [/explore/](https://kitsu.io/explore/anime) sites.`,
+        `Showing more [Snackbars](https://material.io/design/components/snackbars.html) mhh, tasty...`
     ]],
     ["0.2.0", [
         `Show notifications for new episodes. Hey, read it again, **THIS IS HUGE!**`,

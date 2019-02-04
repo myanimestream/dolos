@@ -73,7 +73,10 @@ class ChangelogDisplay extends React.Component<ChangelogDisplayProps, ChangelogD
                             {changes.map((change, index) => (
                                 <div key={index}>
                                     <Typography component="div" paragraph>
-                                        <ReactMarkdown source={change}/>
+                                        <ReactMarkdown
+                                            source={change}
+                                            linkTarget="_blank"
+                                        />
                                     </Typography>
                                     {index < changes.length - 1 && (
                                         <Divider/>
