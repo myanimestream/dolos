@@ -186,6 +186,19 @@
   "anime__search__abort": {
     "message": "Abort"
   },
+  "anime__search__low_confidence_warning": {
+    "message": "Only $CERTAINTY$% sure that the correct Anime was selected.",
+    "placeholders": {
+      "certainty": {
+        "content": "$1"
+      }
+    },
+    "description": "Warning that is shown when the certainty for the search result is below a certain threshold."
+  },
+  "anime__search__low_confidence_warning__search_button": {
+    "message": "Search",
+    "description": "Button that is shown next to the low confidence warning."
+  },
   "anime__continue_watching": {
     "message": "Continue"
   },

@@ -13,6 +13,7 @@ import {AnimeStatusBar, RemoteAnimeSearchDialog, SearchDialogOpenCommand} from "
 import Service from "../service";
 import ServicePage from "../service-page";
 import EpisodePage from "./episode";
+import _ = chrome.i18n.getMessage;
 
 /**
  * AnimePage reflects a page that is dedicated to a specific Anime.
@@ -22,10 +23,16 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
     private _episodesWatched$?: BehaviorSubject<number | undefined>;
     private readonly _animeSearchDialogOpen$: Subject<SearchDialogOpenCommand>;
 
+    // used to make sure the warning is only shown once
+    // this feels very dirty but it works...
+    private readonly _lowConfidenceWarningShown: Set<string>;
+
     constructor(service: T) {
         super(service);
 
         this._animeSearchDialogOpen$ = new Subject();
+
+        this._lowConfidenceWarningShown = new Set();
     }
 
     /**
@@ -71,9 +78,27 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
             return;
 
         const results = await GrobberClient.searchAnime(query);
-        if (!results) return;
+        if (!results || !results.length) return;
 
-            return;
+        const searchResult = results[0];
+
+        // only even consider showing the warning if it hasn't already been shown
+        if (!this._lowConfidenceWarningShown.has(query)) {
+            this._lowConfidenceWarningShown.add(query);
+
+            const config = await this.state.config;
+            if (searchResult.certainty < config.maxCertaintyForWarning) {
+                const percentage = Math.floor(100 * searchResult.certainty);
+
+                this.service.showWarningSnackbar({
+                    message: _("anime__search__low_confidence_warning", [percentage]),
+                    action: {
+                        text: _("anime__search__low_confidence_warning__search_button"),
+                        onClick: () => this.openAnimeSearchDialog(),
+                    },
+                    autoHideDuration: 7000,
+                });
+            }
         }
 
         const uid = searchResult.anime.uid;
