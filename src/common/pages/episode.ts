@@ -2,10 +2,9 @@
  * @module common.pages
  */
 
-import {AnimeInfo, Episode, GrobberClient, GrobberErrorType} from "dolos/grobber";
+import {Episode, GrobberClient, GrobberErrorType} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
-import {getThemeFor} from "dolos/theme";
-import {reactRenderWithTheme, wrapSentryLogger} from "dolos/utils";
+import {wrapSentryLogger} from "dolos/utils";
 import * as React from "react";
 import * as rxjs from "rxjs";
 import {EpisodeEmbed, SkipButton} from "../components";
@@ -51,11 +50,6 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
 
     abstract async showPrevEpisode(): Promise<void>;
 
-    async setAnimeUID(uid: string | AnimeInfo) {
-        await this.animePage.setAnimeUID(uid);
-        await this.reload();
-    }
-
     @cacheInMemory("episode")
     async getEpisode(): Promise<Episode | undefined> {
         let [uid, epIndex] = await Promise.all([this.animePage.getAnimeUID(), this.getEpisodeIndex()]);
@@ -82,14 +76,9 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
     }
 
     async buildEmbed(): Promise<Element> {
-        const el = document.createElement("div");
-        reactRenderWithTheme(
-            wrapSentryLogger(React.createElement(EpisodeEmbed, {episodePage: this})),
-            getThemeFor(this.state.serviceId),
-            el
+        return this.state.renderWithTheme(
+            wrapSentryLogger(React.createElement(EpisodeEmbed, {episodePage: this}))
         );
-
-        return el;
     }
 
     async onEpisodeEnd() {

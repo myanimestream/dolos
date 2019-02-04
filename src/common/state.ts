@@ -3,6 +3,9 @@
  */
 
 import {AnimeInfo} from "dolos/grobber";
+import {getThemeFor} from "dolos/theme";
+import {reactRenderWithTheme} from "dolos/utils";
+import * as React from "react";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {cacheInMemory, ElementMemory} from "../memory";
@@ -63,6 +66,14 @@ export default class State<T extends Service> extends ElementMemory {
         }
 
         this.page = page;
+    }
+
+    renderWithTheme(element: React.ReactNode, tag: keyof HTMLElementTagNameMap | Element = "div"): Element {
+        const el = (tag instanceof Element) ? tag : document.createElement(tag);
+
+        reactRenderWithTheme(element, getThemeFor(this.serviceId), el);
+
+        return el;
     }
 
     /**

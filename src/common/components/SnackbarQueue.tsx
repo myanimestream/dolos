@@ -13,7 +13,21 @@ import _ = chrome.i18n.getMessage;
 
 export interface SnackbarAction {
     text: string;
+    /**
+     * Props passed to the underlying [[Button]]
+     * By default the props consist of:
+     * ```typescript
+     *
+     * {
+     *     color: "secondary",
+     *     size: "small"
+     * }
+     * ```
+     */
     buttonProps?: ButtonProps;
+    /**
+     * Really just a "nicer" way of specifying [[SnackbarMessage.onClickAction]]
+     */
     onClick?: () => void;
 }
 
@@ -33,10 +47,6 @@ function isSnackbarAction(action: any): action is SnackbarAction {
  */
 export interface SnackbarMessage extends OptionsObject {
     message: string;
-
-    /**
-     *
-     */
     action?: React.ReactNode | SnackbarAction;
 }
 

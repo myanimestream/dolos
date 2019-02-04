@@ -26,7 +26,6 @@ import "plyr/src/sass/plyr.scss";
 import * as React from "react";
 import * as rxjs from "rxjs";
 import {EmbedInfo, EmbedPlayer, embedProviders, Player, PlayerProps, PlayerSource, Toggle, WithRatio} from "..";
-import AnimeSearchResultDialog from "./AnimeSearchResultDialog";
 import _ = chrome.i18n.getMessage;
 
 export interface SkipButton {
@@ -81,7 +80,6 @@ interface EpisodeEmbedState {
     bookmarked: boolean;
 
     menuAnchorElement?: HTMLElement;
-    searchDialogOpen: boolean;
 }
 
 export const EpisodeEmbed = withStyles(styles)(
@@ -94,7 +92,6 @@ export const EpisodeEmbed = withStyles(styles)(
                 playersAvailable: [],
                 canSetProgress: false,
                 bookmarked: false,
-                searchDialogOpen: false,
             };
         }
 
@@ -360,18 +357,24 @@ export const EpisodeEmbed = withStyles(styles)(
         }
 
         async handleSearchDialogClose(anime?: AnimeInfo) {
-            // close dialog AND the menu because it's served its purpose
-            this.setState({searchDialogOpen: false, menuAnchorElement: undefined});
+            // close the menu because it's served its purpose
+            this.setState({menuAnchorElement: undefined});
+
             if (!anime) return;
 
             const {episodePage} = this.props;
-            await episodePage.setAnimeUID(anime);
+            await episodePage.reload();
         }
 
 
         renderMenuButton() {
             const {episodePage} = this.props;
-            const {menuAnchorElement, searchDialogOpen} = this.state;
+            const {menuAnchorElement} = this.state;
+
+            const handleSearchAnimeClick = async () => {
+                await episodePage.animePage.openAnimeSearchDialog(
+                    this.handleSearchDialogClose.bind(this));
+            };
 
             return (
                 <div>
@@ -390,16 +393,10 @@ export const EpisodeEmbed = withStyles(styles)(
                         open={!!menuAnchorElement}
                         onClose={() => this.setState({menuAnchorElement: undefined})}
                     >
-                        <MenuItem onClick={() => this.setState({searchDialogOpen: true})}>
+                        <MenuItem onClick={handleSearchAnimeClick}>
                             {_("episode__menu__search_anime")}
                         </MenuItem>
                     </Menu>
-
-                    <AnimeSearchResultDialog
-                        open={searchDialogOpen}
-                        onClose={(anime) => this.handleSearchDialogClose(anime)}
-                        animePage={episodePage.animePage}
-                    />
                 </div>
             );
         }

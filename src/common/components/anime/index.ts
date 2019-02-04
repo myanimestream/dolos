@@ -10,3 +10,4 @@ export {default as ContinueWatchingButton} from "./ContinueWatchingButton";
 export * from "./EpisodeEmbed";
 export * from "./SubscriptionToggle";
 export * from "./AnimeStatusBar";
+export * from "./AnimeSearchDialog";

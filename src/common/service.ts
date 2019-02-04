@@ -4,10 +4,9 @@
 
 import {SnackbarMessage, SnackbarQueue} from "dolos/common/components";
 import {resolveSnackbarMessage} from "dolos/common/components/SnackbarQueue";
-import {getThemeFor} from "dolos/theme";
 import * as React from "react";
 import {Subject} from "rxjs";
-import {reactRenderWithTheme, Type} from "../utils";
+import {Type} from "../utils";
 import {AnimePage, EpisodePage} from "./pages";
 import ServicePage from "./service-page";
 import State from "./state";
@@ -54,16 +53,11 @@ export default abstract class Service {
     }
 
     async buildSnackbarQueue(): Promise<Element> {
-        const el = document.createElement("div");
-        reactRenderWithTheme(
+        return this.state.renderWithTheme(
             React.createElement(SnackbarQueue, {
                 snackbarMessage$: this.snackbarMessage$
-            }),
-            getThemeFor(this.state.serviceId),
-            el
+            })
         );
-
-        return el;
     }
 
     // noinspection JSMethodCanBeStatic

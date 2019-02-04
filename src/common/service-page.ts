@@ -12,7 +12,7 @@ export default abstract class ServicePage<T extends Service> extends ElementMemo
 
     private loaded: boolean;
 
-    constructor(service: T) {
+    protected constructor(service: T) {
         super();
         this.service = service;
         this.state = service.state;
