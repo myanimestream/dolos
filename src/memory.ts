@@ -4,9 +4,9 @@
 
 /** @ignore */
 export interface Namespace<VT = any> {
-    [key: string]: Namespace<any> | VT | undefined;
-
     __value?: VT;
+
+    [key: string]: Namespace<any> | VT | undefined;
 }
 
 /**

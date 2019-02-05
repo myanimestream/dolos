@@ -78,47 +78,6 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         return !!await this.service.getUsername();
     }
 
-    protected async _setEpisodesWatched(progress: number): Promise<boolean> {
-        const episodeCount = await this.getEpisodeCount();
-        if (episodeCount === undefined)
-            return false;
-
-        // 1: watching, 2: completed
-        const status = !isNaN(episodeCount) && progress >= episodeCount ? 2 : 1;
-
-        const data = {
-            csrf_token: this.service.getCSRFToken(),
-            anime_id: this.getMALAnimeID(),
-            status,
-            num_watched_episodes: progress
-        };
-
-        // brute-force our way through this. First try to edit it
-        // and if it doesn't work (probably because entry doesn't exist yet) add a new one
-
-        const strategies = ["edit", "add"].map(strat => async () => {
-            const resp = await axios.post(
-                `https://myanimelist.net/ownlist/anime/${strat}.json`, JSON.stringify(data),
-                {headers: {"Content-Type": "application/x-www-form-urlencoded"}}
-            );
-
-            if (resp.data !== null) console.warn("unknown response after setting progress", resp.data);
-        });
-
-        let lastException;
-        for (const strategy of strategies) {
-            try {
-                await strategy();
-                return true;
-            } catch (e) {
-                lastException = e;
-            }
-        }
-
-        console.error("Couldn't set anime progress", lastException);
-        return false;
-    }
-
     async getAnimeURL(): Promise<string | undefined> {
         const [animeID, animeSlug] = await Promise.all([this.getMALAnimeID(), this.getAnimeIdentifier()]);
         if (!(animeID && animeSlug)) return;
@@ -203,5 +162,46 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         }
 
         this.injected(element);
+    }
+
+    protected async _setEpisodesWatched(progress: number): Promise<boolean> {
+        const episodeCount = await this.getEpisodeCount();
+        if (episodeCount === undefined)
+            return false;
+
+        // 1: watching, 2: completed
+        const status = !isNaN(episodeCount) && progress >= episodeCount ? 2 : 1;
+
+        const data = {
+            csrf_token: this.service.getCSRFToken(),
+            anime_id: this.getMALAnimeID(),
+            status,
+            num_watched_episodes: progress
+        };
+
+        // brute-force our way through this. First try to edit it
+        // and if it doesn't work (probably because entry doesn't exist yet) add a new one
+
+        const strategies = ["edit", "add"].map(strat => async () => {
+            const resp = await axios.post(
+                `https://myanimelist.net/ownlist/anime/${strat}.json`, JSON.stringify(data),
+                {headers: {"Content-Type": "application/x-www-form-urlencoded"}}
+            );
+
+            if (resp.data !== null) console.warn("unknown response after setting progress", resp.data);
+        });
+
+        let lastException;
+        for (const strategy of strategies) {
+            try {
+                await strategy();
+                return true;
+            } catch (e) {
+                lastException = e;
+            }
+        }
+
+        console.error("Couldn't set anime progress", lastException);
+        return false;
     }
 }

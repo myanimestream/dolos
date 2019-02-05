@@ -385,14 +385,6 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
      */
     abstract async showEpisode(episodeIndex: number): Promise<void>;
 
-    /**
-     * @private
-     *
-     * Internal progress getter. **Do not use this method**!
-     * @see [[AnimePage.getEpisodesWatched]] instead!
-     */
-    protected abstract async _getEpisodesWatched(): Promise<number | undefined>;
-
     abstract async injectAnimeStatusBar(statusBar: Element): Promise<void>;
 
     async buildAnimeSearchDialog(): Promise<Element> {
@@ -425,6 +417,14 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
 
         await super.transitionTo(page);
     }
+
+    /**
+     * @private
+     *
+     * Internal progress getter. **Do not use this method**!
+     * @see [[AnimePage.getEpisodesWatched]] instead!
+     */
+    protected abstract async _getEpisodesWatched(): Promise<number | undefined>;
 
     /**
      * @private

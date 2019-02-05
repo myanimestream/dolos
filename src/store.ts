@@ -294,33 +294,10 @@ export class Store {
         chrome.storage.onChanged.addListener(this.handleValueChanged.bind(this));
     }
 
-    async get<T>(key: string, defaultValue?: T): Promise<StoreElementProxy<T>> {
-        // prevents multiple roots for the same item.
-        // without the lock 2 get requests to the same key
-        // could lead to two different StoreElementRoots, only the
-        // latter would be stored in the cache and as such, updated.
-        return await this._getLock.withLock(async () => {
-            if (!(key in this._cache)) {
-                const value = (await this.getRaw(key))[key];
-                this._cache[key] = StoreElementRoot.createRoot(this, key, value || defaultValue || {});
-            }
-
-            return this._cache[key] as StoreElementProxy<T>;
-        }, key);
-    }
-
-    private async getRaw(keys: string | string[] | Object): Promise<{ [key: string]: any }> {
-        return await new Promise(res => {
-            chrome.storage.sync.get(keys, res);
-        });
-    }
-
-    async set(key: string, value: any): Promise<void> {
-        await this.setRaw({[key]: value});
-    }
-
     static buildLanguageIdentifier(config: Config): string;
+
     static buildLanguageIdentifier(language: string, dubbed: boolean): string;
+
     /**
      * Create an identifier for the language settings.
      * The language identifier looks like this: `<language>_<dub | sub>`
@@ -346,8 +323,23 @@ export class Store {
         return `${language}_${dubbed ? "dub" : "sub"}`;
     }
 
-    private async setRaw(items: Object): Promise<void> {
-        return await new Promise(resolve => chrome.storage.sync.set(items, resolve));
+    async get<T>(key: string, defaultValue?: T): Promise<StoreElementProxy<T>> {
+        // prevents multiple roots for the same item.
+        // without the lock 2 get requests to the same key
+        // could lead to two different StoreElementRoots, only the
+        // latter would be stored in the cache and as such, updated.
+        return await this._getLock.withLock(async () => {
+            if (!(key in this._cache)) {
+                const value = (await this.getRaw(key))[key];
+                this._cache[key] = StoreElementRoot.createRoot(this, key, value || defaultValue || {});
+            }
+
+            return this._cache[key] as StoreElementProxy<T>;
+        }, key);
+    }
+
+    async set(key: string, value: any): Promise<void> {
+        await this.setRaw({[key]: value});
     }
 
     async getConfig(): Promise<StoreElementProxy<Config>> {
@@ -385,6 +377,16 @@ export class Store {
 
     async getAnimeSubscriptions(): Promise<StoreElementProxy<SubscribedAnimes>> {
         return await this.get("subscriptions::anime", {} as SubscribedAnimes);
+    }
+
+    private async getRaw(keys: string | string[] | Object): Promise<{ [key: string]: any }> {
+        return await new Promise(res => {
+            chrome.storage.sync.get(keys, res);
+        });
+    }
+
+    private async setRaw(items: Object): Promise<void> {
+        return await new Promise(resolve => chrome.storage.sync.set(items, resolve));
     }
 
     private handleValueChanged(changes: { [key: string]: StorageChange }) {
