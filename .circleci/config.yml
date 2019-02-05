@@ -140,14 +140,20 @@ jobs:
           tag: $CIRCLE_TAG
           title: Version $CIRCLE_TAG
           description: |
-            Automated release for version $CIRCLE_TAG.
+            ## Automated release for version $CIRCLE_TAG
             Attached you'll find both the raw and signed build artifacts for this release.
 
             To install the extension please use [mas-firefox.xpi] for Firefox
             and [mas-chrome.crx] for Chrome.
 
+            ### Links
+            [Circle Workflow][workflow-url]
+
+
             [mas-firefox.xpi]: ../../releases/download/$CIRCLE_TAG/mas-firefox.xpi
             [mas-chrome.crx]: ../../releases/download/$CIRCLE_TAG/mas-chrome.crx
+            [workflow-url]: https://circleci.com/workflow-run/$CIRCLE_WORKFLOW_ID
+
           file-path: release/
 
 workflows:

@@ -1,6 +1,7 @@
 # Dolos
 [![Circle CI][circleci-shield]][circleci-url]
 [![Crowdin][crowdin-shield]][crowdin-url]
+[![Latest Release][release-shield]][latest-release]
 [![FOSSA Status][fossa-shield]][fossa-url]
 [![Chrome Web Store][chrome-shield]][chrome-download]
 
@@ -49,6 +50,7 @@ If you want to dive straight in, [here's a link to the API documentation][dolos-
 [circleci-url]: https://circleci.com/gh/MyAnimeStream/dolos
 [crowdin-url]: https://crowdin.com/project/dolos
 [crowdin-shield]: https://d322cqt584bo4o.cloudfront.net/dolos/localized.svg
+[release-shield]: https://img.shields.io/github/release/myanimestream/dolos.svg?style=flat
 [fossa-shield]: https://app.fossa.io/api/projects/git%2Bgithub.com%2FMyAnimeStream%2Fdolos.svg?type=shield
 [fossa-url]: https://app.fossa.io/projects/git%2Bgithub.com%2FMyAnimeStream%2Fdolos
 
