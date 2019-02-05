@@ -28,7 +28,8 @@ const CHANGELOG: Changelog = new Map([
         `Showing loading animation for bookmark button`,
         `**Kitsu**: No longer breaks on [/explore/](https://kitsu.io/explore/anime) sites.`,
         `Showing more [Snackbars](https://material.io/design/components/snackbars.html) mhh, tasty...`,
-        `Continue Watching button now shows "start watching" when you haven't started an Anime`
+        `Continue Watching button now shows "start watching" when you haven't started an Anime`,
+        `**MyAnimeList**: Fixed Subscription Toggle not responding`
     ]],
     ["0.2.0", [
         `Show notifications for new episodes. Hey, read it again, **THIS IS HUGE!**`,

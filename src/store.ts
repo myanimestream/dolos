@@ -10,6 +10,7 @@
 
 /** @ignore */
 
+import AsyncLock from "dolos/lock";
 import {BehaviorSubject, Subject} from "rxjs";
 import {Config, DEFAULT_CONFIG, StoredAnimeInfo, StoredServiceAnimes, SubscribedAnimes} from "./models";
 import StorageChange = chrome.storage.StorageChange;
@@ -285,20 +286,33 @@ export type StoreElementProxy<T> = StoreElement<T> & T;
 
 export class Store {
     private readonly _cache: { [key: string]: StoreElementProxy<any> };
+    private readonly _getLock: AsyncLock;
 
     constructor() {
         this._cache = {};
+        this._getLock = new AsyncLock();
         chrome.storage.onChanged.addListener(this.handleValueChanged.bind(this));
     }
 
-    async getRaw(keys: string | string[] | Object): Promise<{ [key: string]: any }> {
+    async get<T>(key: string, defaultValue?: T): Promise<StoreElementProxy<T>> {
+        // prevents multiple roots for the same item.
+        // without the lock 2 get requests to the same key
+        // could lead to two different StoreElementRoots, only the
+        // latter would be stored in the cache and as such, updated.
+        return await this._getLock.withLock(async () => {
+            if (!(key in this._cache)) {
+                const value = (await this.getRaw(key))[key];
+                this._cache[key] = StoreElementRoot.createRoot(this, key, value || defaultValue || {});
+            }
+
+            return this._cache[key] as StoreElementProxy<T>;
+        }, key);
+    }
+
+    private async getRaw(keys: string | string[] | Object): Promise<{ [key: string]: any }> {
         return await new Promise(res => {
             chrome.storage.sync.get(keys, res);
         });
-    }
-
-    async setRaw(items: Object): Promise<void> {
-        return await new Promise(resolve => chrome.storage.sync.set(items, resolve));
     }
 
     async set(key: string, value: any): Promise<void> {
@@ -334,13 +348,8 @@ export class Store {
         return `${language}_${dubbed ? "dub" : "sub"}`;
     }
 
-    async get<T>(key: string, defaultValue?: T): Promise<StoreElementProxy<T>> {
-        if (!(key in this._cache)) {
-            const value = (await this.getRaw(key))[key];
-            this._cache[key] = StoreElementRoot.createRoot(this, key, value || defaultValue || {});
-        }
-
-        return this._cache[key] as StoreElementProxy<T>;
+    private async setRaw(items: Object): Promise<void> {
+        return await new Promise(resolve => chrome.storage.sync.set(items, resolve));
     }
 
     async getConfig(): Promise<StoreElementProxy<Config>> {
