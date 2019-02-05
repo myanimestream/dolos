@@ -25,6 +25,7 @@ export interface ContinueWatchingButtonState {
     href?: string;
     onClick?: () => void;
     tooltip: string;
+    buttonText: string;
     disabled: boolean;
 }
 
@@ -41,6 +42,7 @@ export default withStyles(styles)(
 
             this.state = {
                 tooltip: _("anime__continue_watching__loading"),
+                buttonText: _("anime__continue_watching"),
                 disabled: true,
             }
         }
@@ -72,17 +74,22 @@ export default withStyles(styles)(
                 return;
             }
 
-            if (epsWatched === undefined) {
+            let buttonText;
+
+            // either undefined or 0 i.e. the user hasn't started the Anime
+            if (!epsWatched) {
                 const msg = _("anime__continue_watching__unknown");
 
                 this.setState({
                     tooltip: msg,
+
                     disabled: true,
                 });
 
-                animePage.service.showWarningSnackbar(msg);
-
-                return;
+                epsWatched = 0;
+                buttonText = _("anime__continue_watching__start");
+            } else {
+                buttonText = _("anime__continue_watching");
             }
 
             if (anime.episodes > epsWatched) {
@@ -90,7 +97,8 @@ export default withStyles(styles)(
 
                 this.setState({
                     href,
-                    onClick: () => animePage.showEpisode(epsWatched),
+                    buttonText,
+                    onClick: () => animePage.showEpisode(epsWatched as number),
                     tooltip: _("anime__continue_watching__available", [epsWatched + 1]),
                     disabled: false,
                 });
@@ -98,11 +106,13 @@ export default withStyles(styles)(
                 const totalEpisodes = await animePage.getEpisodeCount();
                 if (epsWatched === totalEpisodes) {
                     this.setState({
+                        buttonText,
                         tooltip: _("anime__continue_watching__completed"),
                         disabled: true,
                     });
                 } else {
                     this.setState({
+                        buttonText,
                         tooltip: _("anime__continue_watching__unavailable", [epsWatched + 1]),
                         disabled: true,
                     });
@@ -112,7 +122,7 @@ export default withStyles(styles)(
 
         render() {
             const {classes} = this.props;
-            const {tooltip, href, onClick, disabled} = this.state;
+            const {tooltip, buttonText, href, onClick, disabled} = this.state;
 
             return (
                 <Tooltip title={tooltip}>
@@ -129,7 +139,7 @@ export default withStyles(styles)(
                             {...{href, disabled}}
                         >
                             <PlayCircleIcon className={classes.buttonIconLeft}/>
-                            {_("anime__continue_watching")}
+                            {buttonText}
                         </Button>
                     </div>
                 </Tooltip>

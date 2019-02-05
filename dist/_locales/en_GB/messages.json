@@ -202,6 +202,10 @@
   "anime__continue_watching": {
     "message": "Continue"
   },
+  "anime__continue_watching__start": {
+    "message": "Start Watching",
+    "description": "Text shown on the continue watching button if the user hasn't started the Anime yet"
+  },
   "anime__continue_watching__loading": {
     "message": "Loading"
   },
@@ -223,9 +227,6 @@
         "content": "$1"
       }
     }
-  },
-  "anime__continue_watching__unknown": {
-    "message": "Progress unknown"
   },
   "anime__continue_watching__anime_unknown": {
     "message": "Couldn't load Anime"

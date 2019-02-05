@@ -281,7 +281,12 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return true;
     }
 
-    /** Get the amount of episodes the user has seen */
+    /**
+     * Get the amount of episodes the user has seen.
+     *
+     * @return
+     * `undefined` if the user is not watching this particular Anime.
+     */
     async getEpisodesWatched(): Promise<number | undefined> {
         if (this._episodesWatched$) return this._episodesWatched$.getValue();
         else return await this._getEpisodesWatched();
