@@ -139,8 +139,15 @@ jobs:
       - github-release/create:
           tag: $CIRCLE_TAG
           title: Version $CIRCLE_TAG
-          description: >
+          description: |
             Automated release for version $CIRCLE_TAG.
+            Attached you'll find both the raw and signed build artifacts for this release.
+
+            To install the extension please use [mas-firefox.xpi] for Firefox
+            and [mas-chrome.crx] for Chrome.
+
+            [mas-firefox.xpi]: ../../releases/download/$CIRCLE_TAG/mas-firefox.xpi
+            [mas-chrome.crx]: ../../releases/download/$CIRCLE_TAG/mas-chrome.crx
           file-path: release/
 
 workflows:
