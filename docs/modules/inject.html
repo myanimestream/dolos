@@ -152,7 +152,7 @@ injectCode(<span class="hljs-string">`changeBackgroundColour("green");`</span>);
 					<div class="tsd-signature tsd-kind-icon">DELETE_<wbr>AFTER<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;(${(() &#x3D;&gt; {const script &#x3D; document.currentScript;if (script) script.remove();}).toString()})();&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/inject.ts#L64">inject.ts:64</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/inject.ts#L64">inject.ts:64</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -169,10 +169,10 @@ injectCode(<span class="hljs-string">`changeBackgroundColour("green");`</span>);
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="eval_template" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> EVAL_<wbr>TEMPLATE</h3>
-					<div class="tsd-signature tsd-kind-icon">EVAL_<wbr>TEMPLATE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;${PUSH_RESULT}const run &#x3D; async () &#x3D;&gt; {{{code}}};run().then(value &#x3D;&gt; pushResult(value, &quot;data-result&quot;),reason &#x3D;&gt; pushResult(reason.toString(), &quot;data-error&quot;));&#x60;</span></div>
+					<div class="tsd-signature tsd-kind-icon">EVAL_<wbr>TEMPLATE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;${PUSH_RESULT}const run &#x3D; async () &#x3D;&gt; {{{code}}};run().then(value &#x3D;&gt; pushResult(value, &quot;data-result&quot;)).catch(reason &#x3D;&gt; pushResult(reason.toString(), &quot;data-error&quot;));&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/inject.ts#L97">inject.ts:97</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/inject.ts#L97">inject.ts:97</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -196,7 +196,7 @@ injectCode(<span class="hljs-string">`changeBackgroundColour("green");`</span>);
 					<div class="tsd-signature tsd-kind-icon">PUSH_<wbr>RESULT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;const pushResult &#x3D; ${((value: any, key: string) &#x3D;&gt; {const el &#x3D; document.createElement(&quot;div&quot;);el.id &#x3D; &quot;{{uid}}&quot;;el.setAttribute(key, JSON.stringify(value));document.body.appendChild(el);}).toString()};&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/inject.ts#L77">inject.ts:77</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/inject.ts#L77">inject.ts:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -225,7 +225,7 @@ injectCode(<span class="hljs-string">`changeBackgroundColour("green");`</span>);
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/inject.ts#L182">inject.ts:182</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/inject.ts#L183">inject.ts:183</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -270,7 +270,7 @@ injectCode(<span class="hljs-string">`changeBackgroundColour("green");`</span>);
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/inject.ts#L127">inject.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/inject.ts#L128">inject.ts:128</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -309,7 +309,7 @@ injectCode(<span class="hljs-string">`changeBackgroundColour("green");`</span>);
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/inject.ts#L160">inject.ts:160</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/inject.ts#L161">inject.ts:161</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -332,7 +332,7 @@ injectCode(<span class="hljs-string">`changeBackgroundColour("green");`</span>);
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/inject.ts#L139">inject.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/inject.ts#L140">inject.ts:140</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -362,8 +362,80 @@ injectCode(<span class="hljs-string">`changeBackgroundColour("green");`</span>);
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="assets.html">assets</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="background.html">background</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="changelog.html">changelog</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="common.html">common</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="common_components.html">common.components</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="common_components_anime.html">common.components.anime</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="common_pages.html">common.pages</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="grobber.html">grobber</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="hooks.html">hooks</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="info.html">info</a>
+					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="inject.html">inject</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="kitsu.html">kitsu</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="lock.html">lock</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="logging.html">logging</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="memory.html">memory</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="models.html">models</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="myanimelist.html">myanimelist</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="options.html">options</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="options_tabs.html">options.tabs</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="popup.html">popup</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="secrets.html">secrets</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="store.html">store</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="subscriptions.html">subscriptions</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="theme.html">theme</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
