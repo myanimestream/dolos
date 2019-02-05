@@ -337,7 +337,7 @@ export class Store {
     async get<T>(key: string, defaultValue?: T): Promise<StoreElementProxy<T>> {
         if (!(key in this._cache)) {
             const value = (await this.getRaw(key))[key];
-            this._cache[key] = StoreElementRoot.createRoot(this, key, value || defaultValue);
+            this._cache[key] = StoreElementRoot.createRoot(this, key, value || defaultValue || {});
         }
 
         return this._cache[key] as StoreElementProxy<T>;

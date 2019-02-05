@@ -14,7 +14,7 @@ import {distinctUntilChanged, map} from "rxjs/operators";
 
 /** React hook for getting the [[SubscribedAnimes]] */
 export function useAnimeSubscriptions(): StoreElementProxy<SubscribedAnimes> | undefined {
-    const subs = usePromiseMemo(() => Store.getAnimeSubscriptions());
+    const subs = usePromiseMemo(Store.getAnimeSubscriptions);
     let subsObservable = subs ? subs.value$ : EMPTY;
 
     return useObservable(subsObservable);
