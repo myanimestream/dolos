@@ -17,7 +17,6 @@ import _ = chrome.i18n.getMessage;
 
 /**
  * AnimePage reflects a page that is dedicated to a specific Anime.
- *
  */
 export default abstract class AnimePage<T extends Service> extends ServicePage<T> {
     private _episodesWatched$?: BehaviorSubject<number | undefined>;
@@ -293,17 +292,6 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
     }
 
     /**
-     * Get the amount of episodes this Anime has.
-     * Note that this is **not** the amount of episodes
-     * available on Grobber but the amount reported by the
-     * site which should ideally be the total amount.
-     *
-     * @see [[AnimePage.getAnime]]'s [[AnimeInfo.episodes]]
-     * for the amount of available episodes.
-     */
-    abstract async getEpisodeCount(): Promise<number | undefined>;
-
-    /**
      * Get an observable for the amount of episodes the user has watched.
      *
      * @see [[AnimePage.getEpisodesWatched]]
@@ -316,6 +304,17 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
 
         return this._episodesWatched$;
     }
+
+    /**
+     * Get the amount of episodes this Anime has.
+     * Note that this is **not** the amount of episodes
+     * available on Grobber but the amount reported by the
+     * site which should ideally be the total amount.
+     *
+     * @see [[AnimePage.getAnime]]'s [[AnimeInfo.episodes]]
+     * for the amount of available episodes.
+     */
+    abstract async getEpisodeCount(): Promise<number | undefined>;
 
     /**
      * Sanity check whether it should be possible to set the "progress" of an Anime.
@@ -339,6 +338,12 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         return success;
     }
 
+    async buildAnimeStatusBar(): Promise<Element> {
+        return this.state.renderWithTheme(
+            wrapSentryLogger(React.createElement(AnimeStatusBar, {animePage: this}))
+        );
+    }
+
     /**
      * Open the anime search dialog.
      */
@@ -354,38 +359,8 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         });
     }
 
-    async buildAnimeStatusBar(): Promise<Element> {
-        return this.state.renderWithTheme(
-            wrapSentryLogger(React.createElement(AnimeStatusBar, {animePage: this}))
-        );
-    }
-
     /** Return the URL of this Anime. */
     abstract async getAnimeURL(): Promise<string | undefined>;
-
-    /** Get the URL of the provided episode for this Anime */
-    abstract async getEpisodeURL(episodeIndex: number): Promise<string>;
-
-    /**
-     * Navigate the user to the episode with the given index.
-     */
-    abstract async showEpisode(episodeIndex: number): Promise<void>;
-
-    abstract async injectAnimeStatusBar(statusBar: Element): Promise<void>;
-
-    async buildAnimeSearchDialog(): Promise<Element> {
-        return this.state.renderWithTheme(
-            React.createElement(RemoteAnimeSearchDialog, {
-                animePage: this,
-                open$: this._animeSearchDialogOpen$
-            })
-        );
-    }
-
-    async injectAnimeSearchDialog(searchDialog: Element): Promise<void> {
-        document.body.appendChild(searchDialog);
-        this.injected(searchDialog);
-    }
 
     async _load() {
         const [statusBar, searchDialog] = await Promise.all([
@@ -402,6 +377,14 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         if (await this.isSubscribed()) await this.updateSubscription();
     }
 
+    /** Get the URL of the provided episode for this Anime */
+    abstract async getEpisodeURL(episodeIndex: number): Promise<string>;
+
+    /**
+     * Navigate the user to the episode with the given index.
+     */
+    abstract async showEpisode(episodeIndex: number): Promise<void>;
+
     /**
      * @private
      *
@@ -409,6 +392,22 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
      * @see [[AnimePage.getEpisodesWatched]] instead!
      */
     protected abstract async _getEpisodesWatched(): Promise<number | undefined>;
+
+    abstract async injectAnimeStatusBar(statusBar: Element): Promise<void>;
+
+    async buildAnimeSearchDialog(): Promise<Element> {
+        return this.state.renderWithTheme(
+            React.createElement(RemoteAnimeSearchDialog, {
+                animePage: this,
+                open$: this._animeSearchDialogOpen$
+            })
+        );
+    }
+
+    async injectAnimeSearchDialog(searchDialog: Element): Promise<void> {
+        document.body.appendChild(searchDialog);
+        this.injected(searchDialog);
+    }
 
     async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | void> {
         if (page instanceof AnimePage) {

@@ -99,13 +99,6 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return !!await this.getUserId();
     }
 
-    protected async _setEpisodesWatched(progress: number): Promise<boolean> {
-        const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
-        if (!(animeId && userId)) return false;
-
-        return await setProgress(animeId, userId, progress);
-    }
-
     async getEpisodeURL(episode: number): Promise<string> {
         const slug = await this.getAnimeIdentifier();
         return new URL(`/anime/${slug}/episodes/${episode + 1}`, location.origin).toString();
@@ -141,5 +134,12 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
             .insertAdjacentElement("afterend", element);
 
         this.injected(element);
+    }
+
+    protected async _setEpisodesWatched(progress: number): Promise<boolean> {
+        const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
+        if (!(animeId && userId)) return false;
+
+        return await setProgress(animeId, userId, progress);
     }
 }
