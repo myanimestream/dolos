@@ -12,20 +12,31 @@ sites with the power of the [Grobber API][grobber-repository].
 
 ## Installing
 You can head over to the [latest release][latest-release] where you'll find
-a `.zip` file for Chrome and a `.xpi` file for Firefox which you may install.
+a `.crx` file for Chrome and a `.xpi` file for Firefox which you may install.
 
-### Chrome Web Store
+#### Chrome Web Store
 You may also download the Chrome extension from the Chrome web store [here][chrome-download]
 
-### Firefox Add-ons
+#### Firefox Add-ons
 I haven't gotten around to this yet, so please install the `.xpi` file from the release manually.
 The downside is, that the extension won't automatically update to newer versions.
 
+### Manual
+If you wish to build and install the extension manually please refer to the
+["Getting ready for development" Guide][dolos-guides-getting-ready]
+
 ## Documentation
-You can find the documentation [here][dolos-docs].
+There are some in-depth guides available on the [Dolos website][dolos-guides].
+If you want to dive straight in, [here's a link to the API documentation][dolos-docs].
+
+## License
+[MIT](LICENSE)
 
 
+[dolos-website]: https://myanimestream.github.io/dolos/
+[dolos-guides]: https://myanimestream.github.io/dolos/guides/
 [dolos-docs]: https://myanimestream.github.io/dolos/docs/
+[dolos-guides-getting-ready]: https://myanimestream.github.io/dolos/guides/getting-ready-for-development/
 
 [react]: https://reactjs.org/
 [material-ui]: https://material-ui.com/
