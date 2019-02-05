@@ -15,6 +15,9 @@ module.exports = {
         "json",
         "node"
     ],
+    "moduleNameMapper": {
+        "^dolos(.*)$": "<rootDir>/src$1",
+    },
     setupFiles: [
         "jest-webextension-mock"
     ],
