@@ -17,5 +17,6 @@ tools/deploy_firefox.sh &
 
 wait
 
+# deploy sentry release
 npx sentry-cli releases set-commits ${RELEASE} --auto
 npx sentry-cli releases deploys ${RELEASE} new -e "production"

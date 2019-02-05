@@ -58,7 +58,7 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         try {
             return await GrobberClient.getEpisode(uid, epIndex);
         } catch (e) {
-            if (e.name === GrobberErrorType.UidUnknown) {
+            if (e.name === GrobberErrorType.UIDUnknown) {
                 console.warn("Grobber didn't recognise uid, updating...");
                 uid = await this.animePage.getAnimeUID(true);
                 if (uid === undefined)

@@ -1,8 +1,14 @@
 /**
+ * Namespaced data storage.
+ *
  * @module memory
  */
 
 /** @ignore */
+
+/**
+ * Abstract representation of a Namespace.
+ */
 export interface Namespace<VT = any> {
     __value?: VT;
 
@@ -134,6 +140,27 @@ export interface HasMemory<T extends Memory = any> {
     resetMemory: (...namespaces: string[]) => void;
 }
 
+/**
+ * A simple namespaced data storage.
+ * You can access the memory directly using [[Memory.memory]].
+ *
+ * ## Namespaces
+ * Namespaces aren't just "objects within objects".
+ * If you have the namespace `a.b.c`, `a` does not contain `b`
+ * and likewise `b` doesn't contain `c`.
+ *
+ * You can set `a` to 5 and `a.b` to 6. `a` would still be 5.
+ *
+ * The only thing affected by namespaces is data removal.
+ * If you remove `a` it will also remove `a.b` and `a.b.c`.
+ *
+ * > Removing a namespace removes all other namespaces that
+ * > have the removed namespace as a prefix.
+ *
+ * The notable exception is [[Memory.forget]] with `forgetNamespace` false
+ * (the default). This only removes the specific namespace without affecting
+ * anything else.
+ */
 export class Memory implements HasMemory {
     readonly memory: ProxiedNamespace;
     private readonly internalMemory: Namespace;
@@ -143,10 +170,22 @@ export class Memory implements HasMemory {
         this.memory = new Proxy(this.internalMemory, NamespaceTraps);
     }
 
+    /**
+     * Store the given value under the namespace key.
+     *
+     * @param key - Namespaces are separated by a dot
+     */
     remember(key: string, value: any) {
         this.memory[key] = value;
     }
 
+    /**
+     * Delete the value of the provided namespace key.
+     *
+     * @param forgetNamespace - if true this operation behaves
+     * like [[Memory.resetMemory]] with the key as an argument.
+     * Otherwise it merely removes the specified namespace.
+     */
     forget(key: string, forgetNamespace?: boolean) {
         let target;
         if (forgetNamespace) {
@@ -156,6 +195,14 @@ export class Memory implements HasMemory {
         delete target[key];
     }
 
+    /**
+     * Reset the given namespaces and all their children.
+     *
+     * When called with no arguments this flushes the entire memory
+     * (i.e. deletes all keys).
+     *
+     * @see [[Memory.forget]] to remove a specific namespace without affecting its children.
+     */
     resetMemory(...namespaces: string[]) {
         namespaces = namespaces.length > 0 ? namespaces : Object.keys(this.memory);
 
@@ -175,6 +222,9 @@ export interface HasElementMemory<T extends ElementMemory = any> {
 
 /**
  * [[Memory]] that can also keep track of injected DOM elements.
+ *
+ * This class doesn't actually touch the [[Memory.memory]] at all,
+ * but provides a similar interface for HTML Elements.
  */
 export class ElementMemory extends Memory implements HasElementMemory {
     private readonly internalInjectedMemory: Namespace<Node[]>;
@@ -188,7 +238,11 @@ export class ElementMemory extends Memory implements HasElementMemory {
     }
 
 
-    /** Keep track of the given element such that it can be removed later. */
+    /**
+     * Keep track of the given element such that it can be removed later.
+     *
+     * @see [[ElementMemory.removeInjected]] to remove elements
+     */
     injected(el: Node, ns?: string) {
         ns = ns || "global";
         const elements = this.injectedMemory[ns];
@@ -199,6 +253,9 @@ export class ElementMemory extends Memory implements HasElementMemory {
 
     /**
      * Remove all elements from the given namespaces.
+     * Removing elements of a namespace also removes all elements
+     * in namespaces further down.
+     *
      * If no namespaces provided removes all elements.
      */
     removeInjected(...namespaces: string[]) {
@@ -217,6 +274,11 @@ export class ElementMemory extends Memory implements HasElementMemory {
 
 /**
  * Decorator to cache the result of a nullary method.
+ *
+ * Applying this decorator to a method in a [[HasMemory]] class
+ * will memoize the result of the method in the [[Memory.memory]].
+ *
+ * The method must not take any arguments (i.e. be a nullary function)
  */
 export function cacheInMemory(name?: string) {
     return function (target: Object & HasMemory, propertyKey: string, descriptor: PropertyDescriptor) {

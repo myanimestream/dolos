@@ -2,8 +2,9 @@
  * @module grobber
  */
 
-import {Language} from "../models";
-
+/**
+ * When a request was made but there was no response.
+ */
 export class GrobberRequestError extends Error {
     request: XMLHttpRequest;
 
@@ -13,10 +14,21 @@ export class GrobberRequestError extends Error {
     }
 }
 
+/**
+ * Grobber error types returned under the key `name`.
+ */
 export enum GrobberErrorType {
-    UidUnknown = "UIDUnknown"
+    /**
+     * The provided UID was not recognised by Grobber.
+     * This means you should drop the uid and
+     * perform a search for a new one.
+     */
+    UIDUnknown = "UIDUnknown"
 }
 
+/**
+ * Represents an error returned by Grobber.
+ */
 export class GrobberResponseError extends Error {
     name: GrobberErrorType;
     /** Indicates that the error had nothing to do with Grobber */
@@ -29,11 +41,25 @@ export class GrobberResponseError extends Error {
     }
 }
 
-export interface SearchResult {
+/**
+ * Supported languages of Grobber
+ */
+export enum Language {
+    ENGLISH = "en",
+    GERMAN = "de",
+}
+
+/**
+ * A search result from the anime search endpoint.
+ */
+export interface AnimeSearchResult {
     anime: AnimeInfo;
     certainty: number;
 }
 
+/**
+ * Grobber anime model
+ */
 export interface AnimeInfo {
     uid: string;
     title: string;
@@ -43,10 +69,17 @@ export interface AnimeInfo {
     dubbed: boolean;
 }
 
+/**
+ * Create an [[AnimeInfo]] object from a Grobber JSON response.
+ */
 export function animeFromResp(resp: any): AnimeInfo {
     return resp.anime as AnimeInfo;
 }
 
+/**
+ * Grobber Episode model.
+ * Contains the [[AnimeInfo]] it belongs to.
+ */
 export interface Episode {
     anime: AnimeInfo;
     embeds: string[];
@@ -54,6 +87,9 @@ export interface Episode {
     poster?: string;
 }
 
+/**
+ * Create an [[Episode]] object from a Grobber JSON response.
+ */
 export function episodeFromResp(resp: any): Episode {
     const episode = resp.episode;
     episode.anime = animeFromResp(resp);
@@ -68,6 +104,9 @@ export interface EpisodeStream {
     poster?: string;
 }
 
+/**
+ * Create an [[EpisodeStream]] object from a Grobber JSON response.
+ */
 export function streamFromResponse(resp: any): EpisodeStream {
     const stream = resp.stream;
     stream.episode = episodeFromResp(resp);

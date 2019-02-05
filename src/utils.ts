@@ -1,5 +1,6 @@
 /**
  * Utility functions for Dolos.
+ * These are some miscellaneous functions that didn't really fit anywhere else.
  *
  * @module utils
  */
@@ -70,10 +71,24 @@ export async function waitWithTimeout<T>(promise: PromiseLike<T>, timeout: numbe
     return await Promise.race([promise, timeoutPromise]);
 }
 
+/**
+ * Options passed to [[retryUntil]] function.
+ */
 export interface RetryUntilOptions<T> {
+    /**
+     * Time in milliseconds that needs to pass before the next attempt is started.
+     * The time is counted before an attempt is started!
+     */
     interval: number;
+    /**
+     * Time in milliseconds after which to abort.
+     */
     timeout?: number;
     catchErrors?: boolean;
+    /**
+     * Exit condition is called after every attempt unless an error was caught
+     * with [[RetryUntilOptions.catchErrors]].
+     */
     condition?: (value: T, attempt: number) => boolean | PromiseLike<boolean>;
 }
 
@@ -131,7 +146,9 @@ export async function retryUntil<T>(
 }
 
 /**
- * Wrap a React node with a Sentry logger which tracks errors.
+ * Wrap a React node with a Sentry logger which catches errors and displays a message
+ * to the user.
+ *
  * @see [[SentryLogger]]
  */
 export function wrapSentryLogger(component: React.ReactNode): React.ReactNode {
@@ -139,14 +156,27 @@ export function wrapSentryLogger(component: React.ReactNode): React.ReactNode {
 }
 
 /**
+ * Apply a theme to a React node.
+ *
+ * This wraps the provided node with both the modern [[ThemeProvider]] and
+ * the old [[MuiThemeProvider]].
+ *
+ * @see [[reactRenderWithTheme]] to render the result to an element.
+ */
+export function wrapWithTheme(component: React.ReactNode, theme: Theme): React.ReactElement<any> {
+    // @ts-ignore
+    let wrapper = React.createElement(ThemeProvider, {theme}, component);
+    // @ts-ignore
+    wrapper = React.createElement(MuiThemeProvider, {theme}, wrapper);
+
+    return wrapper;
+}
+
+/**
  * Apply a theme to a React node and render it to renderTarget
  */
 export function reactRenderWithTheme(component: React.ReactNode, theme: Theme, renderTarget: Element) {
-    // @ts-ignore
-    let wrapped = React.createElement(ThemeProvider, {theme}, component);
-    // @ts-ignore
-    wrapped = React.createElement(MuiThemeProvider, {theme}, wrapped);
-    ReactDOM.render(wrapped, renderTarget);
+    ReactDOM.render(wrapWithTheme(component, theme), renderTarget);
 }
 
 /**

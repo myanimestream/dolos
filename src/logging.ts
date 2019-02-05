@@ -1,4 +1,6 @@
 /**
+ * Telemetry and Error tracking.
+ *
  * @module logging
  * @preferred
  */

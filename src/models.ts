@@ -1,14 +1,11 @@
 /**
+ * Some general models mostly for [[store]].
+ *
  * @module models
  */
 
 /** @ignore */
-import {AnimeInfo} from "dolos/grobber";
-
-export enum Language {
-    ENGLISH = "en",
-    GERMAN = "de",
-}
+import {AnimeInfo, Language} from "dolos/grobber";
 
 
 export interface Config {
@@ -23,20 +20,24 @@ export interface Config {
     updateAnimeProgress: boolean;
 
     /**
-     * How high does the [[SearchResult.certainty]]
-     * value have to be for a [[SearchResult]] to be listed
+     * How high does the [[AnimeSearchResult.certainty]]
+     * value have to be for a [[AnimeSearchResult]] to be listed
      * in the search results
      */
     minCertaintyForSearchResult: number;
 
     /**
-     * How low does the [[SearchResult.certainty]] value
+     * How low does the [[AnimeSearchResult.certainty]] value
      * have to be for Dolos to show a warning Snackbar
      * prompting the user to manually check?
      */
     maxCertaintyForWarning: number;
 }
 
+/**
+ * Default config values that are used if there is no
+ * corresponding value.
+ */
 export const DEFAULT_CONFIG: Config = {
     grobberUrl: "https://mas.dokkeral.com",
 
@@ -71,6 +72,9 @@ export interface AnimeSubscriptionInfo {
     anime: AnimeInfo;
 }
 
+/**
+ * Keeps track of Animes the user has subscribed to.
+ */
 export interface SubscribedAnimes {
     [identifer: string]: AnimeSubscriptionInfo;
 }

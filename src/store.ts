@@ -49,9 +49,19 @@ function prepareStoreElement<T extends Object>(root: StoreElementRoot<any>, data
     return result;
 }
 
+/**
+ * Proxy that is applied to [[StoreElement]]s to create a [[StoreElementProxy]] instance.
+ * You should not have to use this directly.
+ * @see Use [[StoreElement.create]] to create a [[StoreElementProxy]]
+ */
 class StoreElementTraps implements ProxyHandler<StoreElement<any>> {
     private proxy: any;
 
+    /**
+     * Wrap a [[StoreElement]] in this proxy such that it becomes a [[StoreELementProxy]].
+     *
+     * @see [[StoreElement.create]] which already does this for you.
+     */
     static wrap<T extends StoreElement<any>>(target: T): StoreElementProxy<any> {
         const traps = new StoreElementTraps();
         const proxy = new Proxy(target, traps);
@@ -97,8 +107,30 @@ class StoreElementTraps implements ProxyHandler<StoreElement<any>> {
     }
 }
 
+/**
+ * Internal representation of every object inside of the extension storage.
+ *
+ * If you want to create a [[StoreElementProxy]] directly, call [[StoreElement.create]].
+ *
+ * @see [[Store]] which manages these objects.
+ *
+ * StoreElement itself is only used for "child" objects.
+ * @see [[StoreElementRoot]] for the root.
+ *
+ * @see [[StoreElementProxy]] for a more accurate representation of the values
+ * returned by [[Store]]
+ */
 export class StoreElement<T> {
+    /**
+     * Observable which pushes a new value when anything changes.
+     *
+     * @see [[StoreElement.value$]] which does the same but always pushes the current value first.
+     */
     readonly onUpdate$: Subject<this>;
+    /**
+     * Like [[StoreElement.onUpdate$]] but a BeahviourSubject.
+     * As such it always pushes the current value when you subscribe to it.
+     */
     readonly value$: BehaviorSubject<this>;
 
     protected readonly _root: StoreElementRoot<any>;
@@ -115,6 +147,13 @@ export class StoreElement<T> {
         this.onUpdate$.subscribe(this.value$);
     }
 
+    /**
+     * Return the "raw" value such as the one that was used to create this element.
+     * This recursively traverses the element tree and converts the nested store elements
+     * to their raw value.
+     *
+     * This returns a copy of the value, not the original one.
+     */
     get rawValue(): T {
         if (Array.isArray(this._container)) {
             // @ts-ignore
@@ -131,16 +170,33 @@ export class StoreElement<T> {
         return raw;
     }
 
+    /**
+     * Create a [[StoreElement]] and wrap it with [[StoreElementTraps]].
+     *
+     * Note that you should use this method because it pushes the wrapped value to
+     * [[StoreElement.value$]] which otherwise would not be the case.
+     */
     static create<T>(root: StoreElementRoot<any>, data: T): StoreElementProxy<T> {
         const storeEl = StoreElementTraps.wrap(new StoreElement(root, data));
         storeEl.value$.next(storeEl);
         return storeEl as StoreElementProxy<T>;
     }
 
+    /**
+     * Save the [[StoreElement]] to the extension storage and wait for it to complete.
+     * **IMPORTANT**: You don't have to call this method manually.
+     * [[StoreElement]] automatically saves when something changes!
+     *
+     * @see [[StoreElement.triggerSave]] if you don't want to wait.
+     */
     async save(): Promise<void> {
         await this._root.save();
     }
 
+    /**
+     * Calls [[StoreElement.save]] and logs errors.
+     * If you don't want to await [[StoreElement.save]], use this method!
+     */
     triggerSave(): void {
         this.save().catch(reason => console.error("Couldn't save", this, reason));
     }
@@ -149,6 +205,20 @@ export class StoreElement<T> {
         return key in this._container;
     }
 
+    /**
+     * Check whether the [[StoreElement]] is equal to a raw value.
+     * This is not a comparator between [[StoreElement]]. It is used by
+     * [[StoreElement.update]] to check whether something has changed.
+     *
+     * @example
+     * ```typescript
+     *
+     * // storeEl is a StoreElement!
+     *
+     * // this is a tautology!
+     * storeEl.equals(storeEl.rawValue);
+     * ```
+     */
     equals(other: T): boolean {
         if (Object.entries(this._container).length !== Object.entries(other).length) return false;
 
@@ -166,6 +236,9 @@ export class StoreElement<T> {
         return this._container[key];
     }
 
+    /**
+     * Get the value of key or set it to the provided default value if it doesn't exist.
+     */
     getOrSetDefault<V>(key: string | number, defaultValue: V): V | StoreElementProxy<V> {
         if (!this.has(key)) {
             this.set(key, defaultValue);
@@ -205,6 +278,13 @@ export class StoreElement<T> {
         return undefined;
     }
 
+    /**
+     * Receive a new value and apply it to this element.
+     * This is not a method you should use! It is exposed for [[Store]]
+     * to apply changes to this element.
+     *
+     * @see [[StoreElement.setDefaults]] for a way to set defaults.
+     */
     update(newValue: T): void {
         if (this.equals(newValue)) {
             return;
@@ -242,6 +322,12 @@ export class StoreElement<T> {
         return Object.keys(this._container);
     }
 
+    /**
+     * Provide some default values for this element.
+     * If a key already exists it is skipped.
+     *
+     * This does not trigger [[StoreElement.save]]!
+     */
     setDefaults(defaults: T): void {
         for (const [key, value] of Object.entries(defaults)) {
             const el = this.get(key);
@@ -260,6 +346,10 @@ export class StoreElement<T> {
     }
 }
 
+/**
+ * A special type of [[StoreElement]] that represents the top level object from the
+ * extension storage.
+ */
 class StoreElementRoot<T> extends StoreElement<T> {
     private readonly _store: Store;
     private readonly _key: string;
@@ -277,13 +367,32 @@ class StoreElementRoot<T> extends StoreElement<T> {
         return storeEl as StoreElementProxy<T>;
     }
 
+    /**
+     * Save directly propagates to the [[Store]].
+     */
     async save() {
         await this._store.set(this._key, this.rawValue);
     }
 }
 
+/**
+ * A [[StoreElement]] that has been wrapped with [[StoreElementTraps]].
+ * This makes it so you can access all the attributes from the object
+ * while still having access to the benefits of a [[StoreElement]].
+ *
+ * Note that all properties of the object which are themselves objects
+ * will be a store element proxy themselves.
+ */
 export type StoreElementProxy<T> = StoreElement<T> & T;
 
+/**
+ * An interface between the extension storage and Dolos.
+ * It uses [[StoreElement]] or rather [[StoreElementProxy]] objects to
+ * provide an easy-to-work-with API.
+ *
+ * Each [[Store]] instance manages its own cache, but there won't be a problem
+ * if you use multiple instances as the cache is kept up-to-date with the storage.
+ */
 export class Store {
     private readonly _cache: { [key: string]: StoreElementProxy<any> };
     private readonly _getLock: AsyncLock;
@@ -323,6 +432,23 @@ export class Store {
         return `${language}_${dubbed ? "dub" : "sub"}`;
     }
 
+    /**
+     * Get the value for the provided key from the storage.
+     * This method returns a [[StoreElementProxy]] proxied object which
+     * can interact with the underlying value directly.
+     *
+     * If there's no value for the given key the provided default value is used.
+     * If no default value is provided it defaults to an empty object.
+     * The default value is not immediately saved to the storage. However if you
+     * edit an attribute of the [[StoreElementProxy]] object the saved value will
+     * include the default.
+     *
+     * Access to the storage is "locked" using the key. This means that if you
+     * start multiple get requests at the same time they will all finish
+     * at the same time and resolve to the same [[StoreElementProxy]] object.
+     * This is to provide consistency and ensure that the [[Store._cache]] cannot
+     * be overwritten, potentially creating a dead [[StoreElement]] that isn't updated.
+     */
     async get<T>(key: string, defaultValue?: T): Promise<StoreElementProxy<T>> {
         // prevents multiple roots for the same item.
         // without the lock 2 get requests to the same key
@@ -338,10 +464,19 @@ export class Store {
         }, key);
     }
 
+    /**
+     * Store the given value under the given key in the storage.
+     *
+     * @see [[StoreElementProxy]] objects returned by [[Store.get]]
+     * for a more convenient access.
+     */
     async set(key: string, value: any): Promise<void> {
         await this.setRaw({[key]: value});
     }
 
+    /**
+     * Load the [[Config]] from the storage.
+     */
     async getConfig(): Promise<StoreElementProxy<Config>> {
         const config = await this.get("config", {} as Config);
         config.setDefaults(DEFAULT_CONFIG);
@@ -349,6 +484,11 @@ export class Store {
         return config;
     }
 
+    /**
+     * Get thhe [[StoredServiceAnimes]] for a given service from the storage.
+     *
+     * @see [[Store.getStoredAnimeInfo]] for accessing [[StoredAnimeInfo]] directly.
+     */
     async getStoredAnimes(serviceID: string): Promise<StoreElementProxy<StoredServiceAnimes>> {
         return await this.get(`${serviceID}::anime`, {} as StoredServiceAnimes);
     }
@@ -363,6 +503,11 @@ export class Store {
         return animes.getOrSetDefault(identifier, {}) as StoreElementProxy<StoredAnimeInfo>;
     }
 
+    /**
+     * Build an identifier which uniquely represents a medium for a service.
+     *
+     * @oaram config - if not provided [[Store.getConfig]] is used.
+     */
     async buildIdentifier(serviceID: string, identifier: string, config?: Config): Promise<string> {
         config = config || await this.getConfig();
         const languageID = Store.buildLanguageIdentifier(config);
@@ -375,6 +520,9 @@ export class Store {
         return key;
     }
 
+    /**
+     * Get the stored [[SubscribedAnimes]] object.
+     */
     async getAnimeSubscriptions(): Promise<StoreElementProxy<SubscribedAnimes>> {
         return await this.get("subscriptions::anime", {} as SubscribedAnimes);
     }
@@ -389,13 +537,24 @@ export class Store {
         return await new Promise(resolve => chrome.storage.sync.set(items, resolve));
     }
 
-    private handleValueChanged(changes: { [key: string]: StorageChange }) {
-        for (const [key, change] of Object.entries(changes)) {
-            const storeObject = this._cache[key];
-            if (storeObject) storeObject.update(change.newValue);
-        }
+    private async handleValueChanged(changes: { [key: string]: StorageChange }) {
+        await Promise.all(
+            Object.entries(changes)
+                .map(([key, change]) =>
+                    // lock the key
+                    this._getLock.withLock(() => {
+                        const storeObject = this._cache[key];
+                        if (storeObject) storeObject.update(change.newValue);
+                    }, key)
+                )
+        );
     }
 }
 
+/**
+ * Global version of [[Store]].
+ * It doesn't break anything if you don't use this instance, but there
+ * are several performance benefits if you do use it.
+ */
 const StaticStore = new Store();
 export default StaticStore;

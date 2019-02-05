@@ -1,5 +1,5 @@
 /**
- * A module containing some helper functions for acessing subscriptions.
+ * A module containing some helper functions for accessing subscriptions.
  *
  * @module subscriptions
  */

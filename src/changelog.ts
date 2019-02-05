@@ -21,7 +21,7 @@ interface Changelog {
 
 /**
  * A mapping of a version to its changes.
- * This is done using a Map to make sure it can be iterated in the right order.
+ * This is done using a Map to make sure it can be iterated over in the right order.
  */
 const CHANGELOG: Changelog = new Map([
     ["0.2.1", [

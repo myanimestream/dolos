@@ -11,6 +11,7 @@ function cleanup {
   echo "Deleted temp working directory $WORK_DIR"
 }
 
+# cleanup when done
 trap cleanup EXIT
 
 mkdir -p build/

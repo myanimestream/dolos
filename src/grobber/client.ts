@@ -9,11 +9,11 @@ import Store from "dolos/store";
 import {
     animeFromResp,
     AnimeInfo,
+    AnimeSearchResult,
     Episode,
     episodeFromResp,
     GrobberRequestError,
-    GrobberResponseError,
-    SearchResult
+    GrobberResponseError
 } from "./models";
 
 /**
@@ -98,11 +98,11 @@ export class Client extends Memory {
      *
      * @param results - Defaults to 1 and may go up to 20 (Hard limit by Grobber)
      *
-     * @return - List of [[SearchResult]]. Length will not exceed the provided `results`.
+     * @return - List of [[AnimeSearchResult]]. Length will not exceed the provided `results`.
      *
      * @throws Same errors as [[Client.request]]
      */
-    async searchAnime(query: string, results?: number): Promise<SearchResult[] | null> {
+    async searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | null> {
         const config = await Store.getConfig();
 
         let resp;
@@ -116,7 +116,7 @@ export class Client extends Memory {
                     ["results", results || 1]
                 ],
                 (resp) => {
-                    const searchResults = resp.anime as SearchResult[];
+                    const searchResults = resp.anime as AnimeSearchResult[];
                     searchResults.forEach(searchResult => {
                         const anime = animeFromResp(searchResult);
 

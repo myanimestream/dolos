@@ -1,6 +1,11 @@
 /**
  * Material UI themes for dolos.
  *
+ * Instead of using these themes directly you should use
+ * [[getThemeFor]].
+ *
+ * @see [[wrapWithTheme]] to easily apply a theme to a react component.
+ *
  * @module theme
  */
 
