@@ -320,9 +320,7 @@ export class Store {
     }
 
     static buildLanguageIdentifier(config: Config): string;
-
     static buildLanguageIdentifier(language: string, dubbed: boolean): string;
-
     /**
      * Create an identifier for the language settings.
      * The language identifier looks like this: `<language>_<dub | sub>`
