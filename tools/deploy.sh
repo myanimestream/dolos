@@ -10,8 +10,12 @@ VERSION=$(cat "dist/manifest.json" | jq -r ".version")
 RELEASE="dolos@${VERSION}"
 
 echo "Deploying version ${RELEASE}"
-tools/deploy_chrome.sh
-tools/deploy_firefox.sh
+mkdir -p signed/
+
+tools/deploy_chrome.sh &
+tools/deploy_firefox.sh &
+
+wait
 
 npx sentry-cli releases set-commits ${RELEASE} --auto
 npx sentry-cli releases deploys ${RELEASE} new -e "production"

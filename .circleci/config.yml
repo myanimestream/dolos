@@ -119,18 +119,29 @@ jobs:
           command: bash tools/deploy.sh
       - store_artifacts:
           path: signed
+      - run: mv signed/ /tmp/workspace/
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - signed/
 
   github_releases:
     executor: github-release/default
 
     steps:
       - *attach_workspace
-      - run: mv /tmp/workspace/build .
+      - run:
+          name: Moving build artifacts
+          command: mv /tmp/workspace/build/* release/
+      - run:
+          name: Moving signed artifacts
+          command: mv /tmp/workspace/signed/* release/
       - github-release/create:
           tag: $CIRCLE_TAG
           title: Version $CIRCLE_TAG
-          description: I have no idea what to put here...
-          file-path: build/
+          description: >
+            Automated release for version $CIRCLE_TAG.
+          file-path: release/
 
 workflows:
   version: 2
@@ -183,8 +194,7 @@ workflows:
 
       - github_releases:
           requires:
-            - test
-            - build-extension
+            - deploy
           filters:
             branches:
               ignore: /.*/
