@@ -19,10 +19,23 @@ import {useAnimeSubscriptions} from "dolos/subscriptions";
 import * as React from "react";
 import _ = chrome.i18n.getMessage;
 
+/**
+ * Props for [[SubscriptionItem]].
+ * Only needs the [[AnimeSubscriptionInfo]].
+ */
 export interface SubscriptionItemProps {
     subscription: AnimeSubscriptionInfo;
 }
 
+/**
+ * React component for displaying an anime Subscription.
+ *
+ * Shows a list item with the Anime's poster and the name.
+ * Clicking on the item opens the anime page.
+ * Comes with a button to unsubscribe.
+ *
+ * @see [[SubscriptionDisplay]] for a list of all active subscriptions
+ */
 export function SubscriptionItem(props: SubscriptionItemProps) {
     const {subscription} = props;
 
@@ -58,9 +71,19 @@ export function SubscriptionItem(props: SubscriptionItemProps) {
     )
 }
 
+/**
+ * A React component for displaying Dolos subscriptions.
+ *
+ * Shows a list of active subscriptions where each item is a [[SubscriptionItem]].
+ * If there are subscriptions with new episodes, the list is separated in two
+ * by subheaders for animes with new episodes and those without.
+ *
+ * The list also comes with a header.
+ */
 function SubscriptionsDisplay() {
     const subscriptions = useAnimeSubscriptions();
 
+    // TODO: center circular progress
     if (subscriptions === undefined)
         return <CircularProgress/>;
 
