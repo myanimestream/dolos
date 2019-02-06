@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AnimeSubscriptionInfo | Dolos Documentation</title>
+	<title>AnimeSearchResult | Dolos Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,24 +56,31 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/models.html">models</a>
+					<a href="../modules/grobber.html">grobber</a>
 				</li>
 				<li>
-					<a href="models.animesubscriptioninfo.html">AnimeSubscriptionInfo</a>
+					<a href="grobber.animesearchresult.html">AnimeSearchResult</a>
 				</li>
 			</ul>
-			<h1>Interface AnimeSubscriptionInfo</h1>
+			<h1>Interface AnimeSearchResult</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A search result from the anime search endpoint.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AnimeSubscriptionInfo</span>
+						<span class="target">AnimeSearchResult</span>
 					</li>
 				</ul>
 			</section>
@@ -84,12 +91,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.animesubscriptioninfo.html#anime" class="tsd-kind-icon">anime</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.animesubscriptioninfo.html#animeurl" class="tsd-kind-icon">animeURL</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.animesubscriptioninfo.html#episodeswatched" class="tsd-kind-icon">episodes<wbr>Watched</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.animesubscriptioninfo.html#identifier" class="tsd-kind-icon">identifier</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.animesubscriptioninfo.html#nextepisodeurl" class="tsd-kind-icon">next<wbr>EpisodeURL</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.animesubscriptioninfo.html#serviceid" class="tsd-kind-icon">serviceID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="grobber.animesearchresult.html#anime" class="tsd-kind-icon">anime</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="grobber.animesearchresult.html#certainty" class="tsd-kind-icon">certainty</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,64 +106,17 @@
 					<div class="tsd-signature tsd-kind-icon">anime<span class="tsd-signature-symbol">:</span> <a href="grobber.animeinfo.html" class="tsd-signature-type">AnimeInfo</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/models.ts#L77">models.ts:77</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/grobber/models.ts#L56">grobber/models.ts:56</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="animeurl" class="tsd-anchor"></a>
-					<h3>animeURL</h3>
-					<div class="tsd-signature tsd-kind-icon">animeURL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="certainty" class="tsd-anchor"></a>
+					<h3>certainty</h3>
+					<div class="tsd-signature tsd-kind-icon">certainty<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/models.ts#L70">models.ts:70</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="episodeswatched" class="tsd-anchor"></a>
-					<h3>episodes<wbr>Watched</h3>
-					<div class="tsd-signature tsd-kind-icon">episodes<wbr>Watched<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/models.ts#L69">models.ts:69</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="identifier" class="tsd-anchor"></a>
-					<h3>identifier</h3>
-					<div class="tsd-signature tsd-kind-icon">identifier<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/models.ts#L68">models.ts:68</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="nextepisodeurl" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> next<wbr>EpisodeURL</h3>
-					<div class="tsd-signature tsd-kind-icon">next<wbr>EpisodeURL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/models.ts#L76">models.ts:76</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Url of the next episode the user hasn&#39;t watched.
-								This is undefined if the next episode url
-							couldn&#39;t be determined.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="serviceid" class="tsd-anchor"></a>
-					<h3>serviceID</h3>
-					<div class="tsd-signature tsd-kind-icon">serviceID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/models.ts#L67">models.ts:67</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/grobber/models.ts#L57">grobber/models.ts:57</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -193,7 +149,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/common_pages.html">common.pages</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/grobber.html">grobber</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -217,7 +173,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/memory.html">memory</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/models.html">models</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -251,47 +207,68 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/grobber.grobbererrortype.html" class="tsd-kind-icon">Grobber<wbr>Error<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/grobber.language.html" class="tsd-kind-icon">Language</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.client.html" class="tsd-kind-icon">Client</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.grobberrequesterror.html" class="tsd-kind-icon">Grobber<wbr>Request<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.grobberresponseerror.html" class="tsd-kind-icon">Grobber<wbr>Response<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="grobber.animeinfo.html" class="tsd-kind-icon">Anime<wbr>Info</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="models.animesubscriptioninfo.html" class="tsd-kind-icon">Anime<wbr>Subscription<wbr>Info</a>
+						<a href="grobber.animesearchresult.html" class="tsd-kind-icon">Anime<wbr>Search<wbr>Result</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="models.animesubscriptioninfo.html#anime" class="tsd-kind-icon">anime</a>
+								<a href="grobber.animesearchresult.html#anime" class="tsd-kind-icon">anime</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="models.animesubscriptioninfo.html#animeurl" class="tsd-kind-icon">animeURL</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="models.animesubscriptioninfo.html#episodeswatched" class="tsd-kind-icon">episodes<wbr>Watched</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="models.animesubscriptioninfo.html#identifier" class="tsd-kind-icon">identifier</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="models.animesubscriptioninfo.html#nextepisodeurl" class="tsd-kind-icon">next<wbr>EpisodeURL</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="models.animesubscriptioninfo.html#serviceid" class="tsd-kind-icon">serviceID</a>
+								<a href="grobber.animesearchresult.html#certainty" class="tsd-kind-icon">certainty</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="models.config.html" class="tsd-kind-icon">Config</a>
+						<a href="grobber.episode.html" class="tsd-kind-icon">Episode</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="models.storedanimeinfo.html" class="tsd-kind-icon">Stored<wbr>Anime<wbr>Info</a>
+						<a href="grobber.episodestream.html" class="tsd-kind-icon">Episode<wbr>Stream</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="models.storedserviceanimes.html" class="tsd-kind-icon">Stored<wbr>Service<wbr>Animes</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="grobber.expiringitem.html" class="tsd-kind-icon">Expiring<wbr>Item</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="models.subscribedanimes.html" class="tsd-kind-icon">Subscribed<wbr>Animes</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#staticclient" class="tsd-kind-icon">Static<wbr>Client</a>
 					</li>
-					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module">
-						<a href="../modules/models.html#default_config" class="tsd-kind-icon">DEFAULT_<wbr>CONFIG</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#responsecachettl" class="tsd-kind-icon">response<wbr>CacheTTL</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#animefromresp" class="tsd-kind-icon">anime<wbr>From<wbr>Resp</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/grobber.html#buildkeys" class="tsd-kind-icon">build<wbr>Keys</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="../modules/grobber.html#createexpiringitem" class="tsd-kind-icon">create<wbr>Expiring<wbr>Item</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#episodefromresp" class="tsd-kind-icon">episode<wbr>From<wbr>Resp</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#streamfromresponse" class="tsd-kind-icon">stream<wbr>From<wbr>Response</a>
 					</li>
 				</ul>
 			</nav>

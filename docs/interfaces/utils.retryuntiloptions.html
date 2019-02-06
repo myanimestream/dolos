@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AnimeSearchResultDialogState | Dolos Documentation</title>
+	<title>RetryUntilOptions | Dolos Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,24 +56,39 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/common_components_anime.html">common.components.anime</a>
+					<a href="../modules/utils.html">utils</a>
 				</li>
 				<li>
-					<a href="common_components_anime.animesearchresultdialogstate.html">AnimeSearchResultDialogState</a>
+					<a href="utils.retryuntiloptions.html">RetryUntilOptions</a>
 				</li>
 			</ul>
-			<h1>Interface AnimeSearchResultDialogState</h1>
+			<h1>Interface RetryUntilOptions&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Options passed to <a href="../modules/utils.html#retryuntil">retryUntil</a> function.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>T</h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AnimeSearchResultDialogState</span>
+						<span class="target">RetryUntilOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -84,11 +99,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="common_components_anime.animesearchresultdialogstate.html#currentanime" class="tsd-kind-icon">current<wbr>Anime</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="common_components_anime.animesearchresultdialogstate.html#currentanimeuid" class="tsd-kind-icon">current<wbr>AnimeUID</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="common_components_anime.animesearchresultdialogstate.html#loading" class="tsd-kind-icon">loading</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="common_components_anime.animesearchresultdialogstate.html#results" class="tsd-kind-icon">results</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="common_components_anime.animesearchresultdialogstate.html#searchquery" class="tsd-kind-icon">search<wbr>Query</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="utils.retryuntiloptions.html#catcherrors" class="tsd-kind-icon">catch<wbr>Errors</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="utils.retryuntiloptions.html#condition" class="tsd-kind-icon">condition</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="utils.retryuntiloptions.html#interval" class="tsd-kind-icon">interval</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="utils.retryuntiloptions.html#timeout" class="tsd-kind-icon">timeout</a></li>
 							</ul>
 						</section>
 					</div>
@@ -97,54 +111,61 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="currentanime" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> current<wbr>Anime</h3>
-					<div class="tsd-signature tsd-kind-icon">current<wbr>Anime<span class="tsd-signature-symbol">:</span> <a href="grobber.animeinfo.html" class="tsd-signature-type">AnimeInfo</a></div>
+					<a name="catcherrors" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> catch<wbr>Errors</h3>
+					<div class="tsd-signature tsd-kind-icon">catch<wbr>Errors<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/common/components/anime/AnimeSearchResultDialog.tsx#L89">common/components/anime/AnimeSearchResultDialog.tsx:89</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/utils.ts#L87">utils.ts:87</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="currentanimeuid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> current<wbr>AnimeUID</h3>
-					<div class="tsd-signature tsd-kind-icon">current<wbr>AnimeUID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="condition" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> condition</h3>
+					<div class="tsd-signature tsd-kind-icon">condition<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/common/components/anime/AnimeSearchResultDialog.tsx#L88">common/components/anime/AnimeSearchResultDialog.tsx:88</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/utils.ts#L92">utils.ts:92</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Exit condition is called after every attempt unless an error was caught
+							with <a href="utils.retryuntiloptions.html#catcherrors">RetryUntilOptions.catchErrors</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="loading" class="tsd-anchor"></a>
-					<h3>loading</h3>
-					<div class="tsd-signature tsd-kind-icon">loading<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="interval" class="tsd-anchor"></a>
+					<h3>interval</h3>
+					<div class="tsd-signature tsd-kind-icon">interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/common/components/anime/AnimeSearchResultDialog.tsx#L85">common/components/anime/AnimeSearchResultDialog.tsx:85</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/utils.ts#L82">utils.ts:82</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Time in milliseconds that needs to pass before the next attempt is started.
+							The time is counted before an attempt is started!</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="results" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> results</h3>
-					<div class="tsd-signature tsd-kind-icon">results<span class="tsd-signature-symbol">:</span> <a href="grobber.animeinfo.html" class="tsd-signature-type">AnimeInfo</a><span class="tsd-signature-symbol">[]</span></div>
+					<a name="timeout" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> timeout</h3>
+					<div class="tsd-signature tsd-kind-icon">timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/common/components/anime/AnimeSearchResultDialog.tsx#L86">common/components/anime/AnimeSearchResultDialog.tsx:86</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/utils.ts#L86">utils.ts:86</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="searchquery" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> search<wbr>Query</h3>
-					<div class="tsd-signature tsd-kind-icon">search<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/common/components/anime/AnimeSearchResultDialog.tsx#L87">common/components/anime/AnimeSearchResultDialog.tsx:87</a></li>
-						</ul>
-					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Time in milliseconds after which to abort.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -154,66 +175,135 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/assets.html">assets</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/background.html">background</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/changelog.html">changelog</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common.html">common</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common_components.html">common.components</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/common_components_anime.html">common.components.anime</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common_pages.html">common.pages</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/grobber.html">grobber</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/hooks.html">hooks</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/info.html">info</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inject.html">inject</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/kitsu.html">kitsu</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/lock.html">lock</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/logging.html">logging</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/memory.html">memory</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/models.html">models</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/myanimelist.html">myanimelist</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/options.html">options</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/options_tabs.html">options.tabs</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/popup.html">popup</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/secrets.html">secrets</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/store.html">store</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/subscriptions.html">subscriptions</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/theme.html">theme</a>
+					</li>
+					<li class="current tsd-kind-external-module">
+						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
-						<a href="../enums/common_components_anime.playertype.html" class="tsd-kind-icon">Player<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-						<a href="../classes/common_components_anime.animesearchresultdialog.html" class="tsd-kind-icon">Anime<wbr>Search<wbr>Result<wbr>Dialog</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components_anime.animecardprops.html" class="tsd-kind-icon">Anime<wbr>Card<wbr>Props</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components_anime.animesearchresultdialogprops.html" class="tsd-kind-icon">Anime<wbr>Search<wbr>Result<wbr>Dialog<wbr>Props</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="utils.backgroundwindow.html" class="tsd-kind-icon">Background<wbr>Window</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components_anime.animesearchresultdialogstate.html" class="tsd-kind-icon">Anime<wbr>Search<wbr>Result<wbr>Dialog<wbr>State</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="utils.retryuntiloptions.html" class="tsd-kind-icon">Retry<wbr>Until<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="common_components_anime.animesearchresultdialogstate.html#currentanime" class="tsd-kind-icon">current<wbr>Anime</a>
+								<a href="utils.retryuntiloptions.html#catcherrors" class="tsd-kind-icon">catch<wbr>Errors</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="common_components_anime.animesearchresultdialogstate.html#currentanimeuid" class="tsd-kind-icon">current<wbr>AnimeUID</a>
+								<a href="utils.retryuntiloptions.html#condition" class="tsd-kind-icon">condition</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="common_components_anime.animesearchresultdialogstate.html#loading" class="tsd-kind-icon">loading</a>
+								<a href="utils.retryuntiloptions.html#interval" class="tsd-kind-icon">interval</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="common_components_anime.animesearchresultdialogstate.html#results" class="tsd-kind-icon">results</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="common_components_anime.animesearchresultdialogstate.html#searchquery" class="tsd-kind-icon">search<wbr>Query</a>
+								<a href="utils.retryuntiloptions.html#timeout" class="tsd-kind-icon">timeout</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components_anime.animeselectionprops.html" class="tsd-kind-icon">Anime<wbr>Selection<wbr>Props</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="utils.type.html" class="tsd-kind-icon">Type</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components_anime.continuewatchingbuttonprops.html" class="tsd-kind-icon">Continue<wbr>Watching<wbr>Button<wbr>Props</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/utils.html#getbackgroundwindow" class="tsd-kind-icon">get<wbr>Background<wbr>Window</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components_anime.continuewatchingbuttonstate.html" class="tsd-kind-icon">Continue<wbr>Watching<wbr>Button<wbr>State</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/utils.html#getbloburl" class="tsd-kind-icon">get<wbr>BlobURL</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components_anime.episodeembedprops.html" class="tsd-kind-icon">Episode<wbr>Embed<wbr>Props</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/utils.html#reactrenderwiththeme" class="tsd-kind-icon">react<wbr>Render<wbr>With<wbr>Theme</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components_anime.episodeembedstate.html" class="tsd-kind-icon">Episode<wbr>Embed<wbr>State</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../modules/utils.html#retryuntil" class="tsd-kind-icon">retry<wbr>Until</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components_anime.skipbutton.html" class="tsd-kind-icon">Skip<wbr>Button</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/utils.html#waituntilexists" class="tsd-kind-icon">wait<wbr>Until<wbr>Exists</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../modules/utils.html#waitwithtimeout" class="tsd-kind-icon">wait<wbr>With<wbr>Timeout</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/utils.html#wrapsentrylogger" class="tsd-kind-icon">wrap<wbr>Sentry<wbr>Logger</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/utils.html#wrapwiththeme" class="tsd-kind-icon">wrap<wbr>With<wbr>Theme</a>
 					</li>
 				</ul>
 			</nav>

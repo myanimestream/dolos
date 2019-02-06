@@ -74,6 +74,8 @@
 					<div class="lead">
 						<p><a href="memory.memory-1.html">Memory</a> that can also keep track of injected DOM elements.</p>
 					</div>
+					<p>This class doesn&#39;t actually touch the <a href="memory.memory-1.html#memory">Memory.memory</a> at all,
+					but provides a similar interface for HTML Elements.</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -148,7 +150,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L181">memory.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L231">memory.ts:231</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="memory.elementmemory.html" class="tsd-signature-type">ElementMemory</a></h4>
@@ -161,20 +163,20 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="injectedmemory" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> injected<wbr>Memory</h3>
-					<div class="tsd-signature tsd-kind-icon">injected<wbr>Memory<span class="tsd-signature-symbol">:</span> <a href="../interfaces/memory.proxiednamespace.html" class="tsd-signature-type">ProxiedNamespace</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Element</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">injected<wbr>Memory<span class="tsd-signature-symbol">:</span> <a href="../interfaces/memory.proxiednamespace.html" class="tsd-signature-type">ProxiedNamespace</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Node</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L181">memory.ts:181</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L231">memory.ts:231</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="internalinjectedmemory" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> internal<wbr>Injected<wbr>Memory</h3>
-					<div class="tsd-signature tsd-kind-icon">internal<wbr>Injected<wbr>Memory<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Namespace</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Element</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">internal<wbr>Injected<wbr>Memory<span class="tsd-signature-symbol">:</span> <a href="../interfaces/memory.namespace.html" class="tsd-signature-type">Namespace</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Node</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L180">memory.ts:180</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L230">memory.ts:230</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -186,7 +188,7 @@
 						<p>Implementation of <a href="../interfaces/memory.hasmemory.html">HasMemory</a>.<a href="../interfaces/memory.hasmemory.html#memory">memory</a></p>
 						<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#memory">memory</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L138">memory.ts:138</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L165">memory.ts:165</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -204,9 +206,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#forget">forget</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L150">memory.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L189">memory.ts:189</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Delete the value of the provided namespace key.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -214,6 +221,11 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forgetNamespace: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>if true this operation behaves
+											like <a href="memory.memory-1.html#resetmemory">Memory.resetMemory</a> with the key as an argument.
+										Otherwise it merely removes the specified namespace.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -224,24 +236,29 @@
 					<a name="injected" class="tsd-anchor"></a>
 					<h3>injected</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">injected<span class="tsd-signature-symbol">(</span>el<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Element</span>, ns<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">injected<span class="tsd-signature-symbol">(</span>el<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Node</span>, ns<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L192">memory.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L246">memory.ts:246</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Keep track of the given element such that it can be removed later.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="memory.elementmemory.html#removeinjected">ElementMemory.removeInjected</a> to remove elements</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>el: <span class="tsd-signature-type">Element</span></h5>
+									<h5>el: <span class="tsd-signature-type">Node</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> ns: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
@@ -262,13 +279,21 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#remember">remember</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L146">memory.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L178">memory.ts:178</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Store the given value under the namespace key.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Namespaces are separated by a dot</p>
+									</div>
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">any</span></h5>
@@ -288,14 +313,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L204">memory.ts:204</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L261">memory.ts:261</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Remove all elements from the given namespaces.
-									If no namespaces provided removes all elements.</p>
+										Removing elements of a namespace also removes all elements
+									in namespaces further down.</p>
 								</div>
+								<p>If no namespaces provided removes all elements.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -318,9 +345,21 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#resetmemory">resetMemory</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L159">memory.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L206">memory.ts:206</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Reset the given namespaces and all their children.</p>
+								</div>
+								<p>When called with no arguments this flushes the entire memory
+								(i.e. deletes all keys).</p>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="memory.memory-1.html#forget">Memory.forget</a> to remove a specific namespace without affecting its children.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -339,8 +378,80 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/assets.html">assets</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/background.html">background</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/changelog.html">changelog</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common.html">common</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common_components.html">common.components</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common_components_anime.html">common.components.anime</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common_pages.html">common.pages</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/grobber.html">grobber</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/hooks.html">hooks</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/info.html">info</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inject.html">inject</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/kitsu.html">kitsu</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/lock.html">lock</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/logging.html">logging</a>
+					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/memory.html">memory</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/models.html">models</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/myanimelist.html">myanimelist</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/options.html">options</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/options_tabs.html">options.tabs</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/popup.html">popup</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/secrets.html">secrets</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/store.html">store</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/subscriptions.html">subscriptions</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/theme.html">theme</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -390,6 +501,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../interfaces/memory.hasmemory.html" class="tsd-kind-icon">Has<wbr>Memory</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../interfaces/memory.namespace.html" class="tsd-kind-icon">Namespace</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="../interfaces/memory.proxiednamespace.html" class="tsd-kind-icon">Proxied<wbr>Namespace</a>

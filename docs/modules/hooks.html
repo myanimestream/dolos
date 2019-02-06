@@ -69,8 +69,13 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Dolos started using React Hooks. This module exposes some useful hooks.</p>
+						<p>Dolos started using React Hooks!
+						This module exposes some useful hooks when interacting with Dolos.</p>
 					</div>
+					<p>The following hooks aren&#39;t specific to Dolos! There are hooks specifically
+					for Dolos, but you won&#39;t find them in here.</p>
+					<p>Most of these hooks alleviate working with observables, promises, or even the
+					combination of the two.</p>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -85,6 +90,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="hooks.html#useobservablepromisememo" class="tsd-kind-icon">use<wbr>Observable<wbr>Promise<wbr>Memo</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="hooks.html#usepromise" class="tsd-kind-icon">use<wbr>Promise</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="hooks.html#usepromisememo" class="tsd-kind-icon">use<wbr>Promise<wbr>Memo</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="hooks.html#usesubscription" class="tsd-kind-icon">use<wbr>Subscription</a></li>
 							</ul>
 						</section>
 					</div>
@@ -96,28 +102,62 @@
 					<a name="useobservable" class="tsd-anchor"></a>
 					<h3>use<wbr>Observable</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">use<wbr>Observable&lt;T, V&gt;<span class="tsd-signature-symbol">(</span>observable<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+						<li class="tsd-signature tsd-kind-icon">use<wbr>Observable&lt;T&gt;<span class="tsd-signature-symbol">(</span>observable<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BehaviorSubject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+						<li class="tsd-signature tsd-kind-icon">use<wbr>Observable&lt;T&gt;<span class="tsd-signature-symbol">(</span>observable<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
 						<li class="tsd-signature tsd-kind-icon">use<wbr>Observable&lt;T, V&gt;<span class="tsd-signature-symbol">(</span>observable<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, defaultValue<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">V</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/hooks.ts#L11">hooks.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/hooks.ts#L60">hooks.ts:60</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Always returns the latest value emitted by the observable.</p>
 								</div>
+								<p>If you provide a [[BehaviorSubject]] the first returned value will be
+									initialised with the observables current value (i.e. [[BehaviourSubject.getValue]]).
+									This makes providing a default value in that case useless since it&#39;ll be overwritten.
+									If you don&#39;t want this behaviour, please pipe your observable
+								(this essentially converts it to a normal observable).</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
 									<h4>T</h4>
 								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
 								<li>
-									<h4>V</h4>
+									<h5>observable: <span class="tsd-signature-type">BehaviorSubject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+							<p>The latest value of the observable</p>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/hooks.ts#L61">hooks.ts:61</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Always returns the latest value emitted by the observable.</p>
+								</div>
+								<p>If you provide a [[BehaviorSubject]] the first returned value will be
+									initialised with the observables current value (i.e. [[BehaviourSubject.getValue]]).
+									This makes providing a default value in that case useless since it&#39;ll be overwritten.
+									If you don&#39;t want this behaviour, please pipe your observable
+								(this essentially converts it to a normal observable).</p>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -130,17 +170,23 @@
 								<span class="tsd-signature-symbol"> | </span>
 								<span class="tsd-signature-type">undefined</span>
 							</h4>
+							<p>The latest value of the observable</p>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/hooks.ts#L12">hooks.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/hooks.ts#L62">hooks.ts:62</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Always returns the latest value emitted by the observable.</p>
 								</div>
+								<p>If you provide a [[BehaviorSubject]] the first returned value will be
+									initialised with the observables current value (i.e. [[BehaviourSubject.getValue]]).
+									This makes providing a default value in that case useless since it&#39;ll be overwritten.
+									If you don&#39;t want this behaviour, please pipe your observable
+								(this essentially converts it to a normal observable).</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
@@ -164,6 +210,7 @@
 								<span class="tsd-signature-symbol"> | </span>
 								<span class="tsd-signature-type">V</span>
 							</h4>
+							<p>The latest value of the observable</p>
 						</li>
 					</ul>
 				</section>
@@ -171,14 +218,14 @@
 					<a name="useobservablepromise" class="tsd-anchor"></a>
 					<h3>use<wbr>Observable<wbr>Promise</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">use<wbr>Observable<wbr>Promise&lt;T, V&gt;<span class="tsd-signature-symbol">(</span>promise<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PromiseLike</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+						<li class="tsd-signature tsd-kind-icon">use<wbr>Observable<wbr>Promise&lt;T&gt;<span class="tsd-signature-symbol">(</span>promise<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PromiseLike</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
 						<li class="tsd-signature tsd-kind-icon">use<wbr>Observable<wbr>Promise&lt;T, V&gt;<span class="tsd-signature-symbol">(</span>promise<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PromiseLike</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span>, defaultValue<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">V</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/hooks.ts#L50">hooks.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/hooks.ts#L87">hooks.ts:87</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -190,9 +237,6 @@
 							<ul class="tsd-type-parameters">
 								<li>
 									<h4>T</h4>
-								</li>
-								<li>
-									<h4>V</h4>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -209,7 +253,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/hooks.ts#L51">hooks.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/hooks.ts#L88">hooks.ts:88</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -246,28 +290,30 @@
 					<a name="useobservablepromisememo" class="tsd-anchor"></a>
 					<h3>use<wbr>Observable<wbr>Promise<wbr>Memo</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">use<wbr>Observable<wbr>Promise<wbr>Memo&lt;T, V&gt;<span class="tsd-signature-symbol">(</span>func<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+						<li class="tsd-signature tsd-kind-icon">use<wbr>Observable<wbr>Promise<wbr>Memo&lt;T&gt;<span class="tsd-signature-symbol">(</span>func<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
 						<li class="tsd-signature tsd-kind-icon">use<wbr>Observable<wbr>Promise<wbr>Memo&lt;T, V&gt;<span class="tsd-signature-symbol">(</span>func<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, defaultValue<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">V</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/hooks.ts#L58">hooks.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/hooks.ts#L95">hooks.ts:95</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Call the function once to get a promise returning an observable and return its current value</p>
+									<p>Call the function once to get a promise returning an observable and return its current value .</p>
 								</div>
+								<p>Like calling:</p>
+								<pre><code class="language-typescript">     <span class="hljs-keyword">const</span> observable = usePromiseMemo(&lt;func&gt;, EMPTY);
+     <span class="hljs-keyword">const</span> value = useObservable(observable, &lt;defaultValue&gt;);</code></pre>
+								<p>This may seem like it is way too specific to be of any use but you&#39;ll find that a lot
+								of Dolos is built using getter functions that asynchronously return observables.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
 									<h4>T</h4>
-								</li>
-								<li>
-									<h4>V</h4>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -296,13 +342,18 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/hooks.ts#L59">hooks.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/hooks.ts#L96">hooks.ts:96</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Call the function once to get a promise returning an observable and return its current value</p>
+									<p>Call the function once to get a promise returning an observable and return its current value .</p>
 								</div>
+								<p>Like calling:</p>
+								<pre><code class="language-typescript">     <span class="hljs-keyword">const</span> observable = usePromiseMemo(&lt;func&gt;, EMPTY);
+     <span class="hljs-keyword">const</span> value = useObservable(observable, &lt;defaultValue&gt;);</code></pre>
+								<p>This may seem like it is way too specific to be of any use but you&#39;ll find that a lot
+								of Dolos is built using getter functions that asynchronously return observables.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
@@ -345,14 +396,14 @@
 					<a name="usepromise" class="tsd-anchor"></a>
 					<h3>use<wbr>Promise</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">use<wbr>Promise&lt;T, V&gt;<span class="tsd-signature-symbol">(</span>promise<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PromiseLike</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+						<li class="tsd-signature tsd-kind-icon">use<wbr>Promise&lt;T&gt;<span class="tsd-signature-symbol">(</span>promise<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PromiseLike</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
 						<li class="tsd-signature tsd-kind-icon">use<wbr>Promise&lt;T, V&gt;<span class="tsd-signature-symbol">(</span>promise<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PromiseLike</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, defaultValue<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">V</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/hooks.ts#L27">hooks.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/hooks.ts#L19">hooks.ts:19</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -364,9 +415,6 @@
 							<ul class="tsd-type-parameters">
 								<li>
 									<h4>T</h4>
-								</li>
-								<li>
-									<h4>V</h4>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -383,7 +431,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/hooks.ts#L28">hooks.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/hooks.ts#L20">hooks.ts:20</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -420,14 +468,14 @@
 					<a name="usepromisememo" class="tsd-anchor"></a>
 					<h3>use<wbr>Promise<wbr>Memo</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">use<wbr>Promise<wbr>Memo&lt;T, V&gt;<span class="tsd-signature-symbol">(</span>func<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+						<li class="tsd-signature tsd-kind-icon">use<wbr>Promise<wbr>Memo&lt;T&gt;<span class="tsd-signature-symbol">(</span>func<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
 						<li class="tsd-signature tsd-kind-icon">use<wbr>Promise<wbr>Memo&lt;T, V&gt;<span class="tsd-signature-symbol">(</span>func<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, defaultValue<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">V</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/hooks.ts#L42">hooks.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/hooks.ts#L34">hooks.ts:34</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -439,9 +487,6 @@
 							<ul class="tsd-type-parameters">
 								<li>
 									<h4>T</h4>
-								</li>
-								<li>
-									<h4>V</h4>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -470,7 +515,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/hooks.ts#L43">hooks.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/hooks.ts#L35">hooks.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -515,6 +560,55 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+					<a name="usesubscription" class="tsd-anchor"></a>
+					<h3>use<wbr>Subscription</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">use<wbr>Subscription&lt;T&gt;<span class="tsd-signature-symbol">(</span>observable<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, observerOrNext<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PartialObserver</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span>, error<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span>, complete<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/hooks.ts#L48">hooks.ts:48</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add a subscriber to an observable.
+									Automatically unsubscribes.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="hooks.html#useobservable">useObservable</a> to get the current value of an observable.</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>observable: <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> observerOrNext: <span class="tsd-signature-type">PartialObserver</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> error: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> complete: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -523,8 +617,80 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="assets.html">assets</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="background.html">background</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="changelog.html">changelog</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="common.html">common</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="common_components.html">common.components</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="common_components_anime.html">common.components.anime</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="common_pages.html">common.pages</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="grobber.html">grobber</a>
+					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="hooks.html">hooks</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="info.html">info</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="inject.html">inject</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="kitsu.html">kitsu</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="lock.html">lock</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="logging.html">logging</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="memory.html">memory</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="models.html">models</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="myanimelist.html">myanimelist</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="options.html">options</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="options_tabs.html">options.tabs</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="popup.html">popup</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="secrets.html">secrets</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="store.html">store</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="subscriptions.html">subscriptions</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="theme.html">theme</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -544,6 +710,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="hooks.html#usepromisememo" class="tsd-kind-icon">use<wbr>Promise<wbr>Memo</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="hooks.html#usesubscription" class="tsd-kind-icon">use<wbr>Subscription</a>
 					</li>
 				</ul>
 			</nav>

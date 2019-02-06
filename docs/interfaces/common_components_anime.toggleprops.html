@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AnimeSubscriptionInfo | Dolos Documentation</title>
+	<title>ToggleProps | Dolos Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/models.html">models</a>
+					<a href="../modules/common_components_anime.html">common.components.anime</a>
 				</li>
 				<li>
-					<a href="models.animesubscriptioninfo.html">AnimeSubscriptionInfo</a>
+					<a href="common_components_anime.toggleprops.html">ToggleProps</a>
 				</li>
 			</ul>
-			<h1>Interface AnimeSubscriptionInfo</h1>
+			<h1>Interface ToggleProps</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AnimeSubscriptionInfo</span>
+						<span class="target">ToggleProps</span>
 					</li>
 				</ul>
 			</section>
@@ -84,12 +84,13 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.animesubscriptioninfo.html#anime" class="tsd-kind-icon">anime</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.animesubscriptioninfo.html#animeurl" class="tsd-kind-icon">animeURL</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.animesubscriptioninfo.html#episodeswatched" class="tsd-kind-icon">episodes<wbr>Watched</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.animesubscriptioninfo.html#identifier" class="tsd-kind-icon">identifier</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.animesubscriptioninfo.html#nextepisodeurl" class="tsd-kind-icon">next<wbr>EpisodeURL</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.animesubscriptioninfo.html#serviceid" class="tsd-kind-icon">serviceID</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="common_components_anime.toggleprops.html#cantoggle" class="tsd-kind-icon">can<wbr>Toggle</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="common_components_anime.toggleprops.html#icon" class="tsd-kind-icon">icon</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="common_components_anime.toggleprops.html#icontoggled" class="tsd-kind-icon">icon<wbr>Toggled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="common_components_anime.toggleprops.html#ontoggle" class="tsd-kind-icon">on<wbr>Toggle</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="common_components_anime.toggleprops.html#toggled" class="tsd-kind-icon">toggled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="common_components_anime.toggleprops.html#tooltip" class="tsd-kind-icon">tooltip</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="common_components_anime.toggleprops.html#tooltiptoggled" class="tsd-kind-icon">tooltip<wbr>Toggled</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,69 +99,96 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="anime" class="tsd-anchor"></a>
-					<h3>anime</h3>
-					<div class="tsd-signature tsd-kind-icon">anime<span class="tsd-signature-symbol">:</span> <a href="grobber.animeinfo.html" class="tsd-signature-type">AnimeInfo</a></div>
+					<a name="cantoggle" class="tsd-anchor"></a>
+					<h3>can<wbr>Toggle</h3>
+					<div class="tsd-signature tsd-kind-icon">can<wbr>Toggle<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/models.ts#L77">models.ts:77</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/Toggle.tsx#L35">common/components/Toggle.tsx:35</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="animeurl" class="tsd-anchor"></a>
-					<h3>animeURL</h3>
-					<div class="tsd-signature tsd-kind-icon">animeURL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="icon" class="tsd-anchor"></a>
+					<h3>icon</h3>
+					<div class="tsd-signature tsd-kind-icon">icon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">React.ReactNode</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/models.ts#L70">models.ts:70</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/Toggle.tsx#L28">common/components/Toggle.tsx:28</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="episodeswatched" class="tsd-anchor"></a>
-					<h3>episodes<wbr>Watched</h3>
-					<div class="tsd-signature tsd-kind-icon">episodes<wbr>Watched<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="icontoggled" class="tsd-anchor"></a>
+					<h3>icon<wbr>Toggled</h3>
+					<div class="tsd-signature tsd-kind-icon">icon<wbr>Toggled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">React.ReactNode</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/models.ts#L69">models.ts:69</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/Toggle.tsx#L29">common/components/Toggle.tsx:29</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="identifier" class="tsd-anchor"></a>
-					<h3>identifier</h3>
-					<div class="tsd-signature tsd-kind-icon">identifier<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="ontoggle" class="tsd-anchor"></a>
+					<h3>on<wbr>Toggle</h3>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>Toggle<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/models.ts#L68">models.ts:68</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/Toggle.tsx#L37">common/components/Toggle.tsx:37</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="nextepisodeurl" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> next<wbr>EpisodeURL</h3>
-					<div class="tsd-signature tsd-kind-icon">next<wbr>EpisodeURL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/models.ts#L76">models.ts:76</a></li>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>toggled<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>toggled: <span class="tsd-signature-type">boolean</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>
+											<span class="tsd-signature-symbol"> | </span>
+											<span class="tsd-signature-type">any</span>
+										</h4>
+									</li>
+								</ul>
+							</li>
 						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Url of the next episode the user hasn&#39;t watched.
-								This is undefined if the next episode url
-							couldn&#39;t be determined.</p>
-						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="serviceid" class="tsd-anchor"></a>
-					<h3>serviceID</h3>
-					<div class="tsd-signature tsd-kind-icon">serviceID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="toggled" class="tsd-anchor"></a>
+					<h3>toggled</h3>
+					<div class="tsd-signature tsd-kind-icon">toggled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/models.ts#L67">models.ts:67</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/Toggle.tsx#L34">common/components/Toggle.tsx:34</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="tooltip" class="tsd-anchor"></a>
+					<h3>tooltip</h3>
+					<div class="tsd-signature tsd-kind-icon">tooltip<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/Toggle.tsx#L31">common/components/Toggle.tsx:31</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="tooltiptoggled" class="tsd-anchor"></a>
+					<h3>tooltip<wbr>Toggled</h3>
+					<div class="tsd-signature tsd-kind-icon">tooltip<wbr>Toggled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/Toggle.tsx#L32">common/components/Toggle.tsx:32</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -187,7 +215,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/common_components.html">common.components</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/common_components_anime.html">common.components.anime</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -217,7 +245,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/memory.html">memory</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/models.html">models</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -251,47 +279,92 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/common_components_anime.playertype.html" class="tsd-kind-icon">Player<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="common_components_anime.animecardprops.html" class="tsd-kind-icon">Anime<wbr>Card<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="common_components_anime.animesearchdialogprops.html" class="tsd-kind-icon">Anime<wbr>Search<wbr>Dialog<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="common_components_anime.animesearchdialogstate.html" class="tsd-kind-icon">Anime<wbr>Search<wbr>Dialog<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="common_components_anime.animeselectionprops.html" class="tsd-kind-icon">Anime<wbr>Selection<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="common_components_anime.animestatusbarprops.html" class="tsd-kind-icon">Anime<wbr>Status<wbr>Bar<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="common_components_anime.continuewatchingbuttonprops.html" class="tsd-kind-icon">Continue<wbr>Watching<wbr>Button<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="common_components_anime.continuewatchingbuttonstate.html" class="tsd-kind-icon">Continue<wbr>Watching<wbr>Button<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="common_components_anime.episodeembedprops.html" class="tsd-kind-icon">Episode<wbr>Embed<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="common_components_anime.episodeembedstate.html" class="tsd-kind-icon">Episode<wbr>Embed<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="common_components_anime.remoteanimesearchdialogprops.html" class="tsd-kind-icon">Remote<wbr>Anime<wbr>Search<wbr>Dialog<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="common_components_anime.searchdialogopencommand.html" class="tsd-kind-icon">Search<wbr>Dialog<wbr>Open<wbr>Command</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="common_components_anime.skipbutton.html" class="tsd-kind-icon">Skip<wbr>Button</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="models.animesubscriptioninfo.html" class="tsd-kind-icon">Anime<wbr>Subscription<wbr>Info</a>
+						<a href="common_components_anime.toggleprops.html" class="tsd-kind-icon">Toggle<wbr>Props</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="models.animesubscriptioninfo.html#anime" class="tsd-kind-icon">anime</a>
+								<a href="common_components_anime.toggleprops.html#cantoggle" class="tsd-kind-icon">can<wbr>Toggle</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="models.animesubscriptioninfo.html#animeurl" class="tsd-kind-icon">animeURL</a>
+								<a href="common_components_anime.toggleprops.html#icon" class="tsd-kind-icon">icon</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="models.animesubscriptioninfo.html#episodeswatched" class="tsd-kind-icon">episodes<wbr>Watched</a>
+								<a href="common_components_anime.toggleprops.html#icontoggled" class="tsd-kind-icon">icon<wbr>Toggled</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="models.animesubscriptioninfo.html#identifier" class="tsd-kind-icon">identifier</a>
+								<a href="common_components_anime.toggleprops.html#ontoggle" class="tsd-kind-icon">on<wbr>Toggle</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="models.animesubscriptioninfo.html#nextepisodeurl" class="tsd-kind-icon">next<wbr>EpisodeURL</a>
+								<a href="common_components_anime.toggleprops.html#toggled" class="tsd-kind-icon">toggled</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="models.animesubscriptioninfo.html#serviceid" class="tsd-kind-icon">serviceID</a>
+								<a href="common_components_anime.toggleprops.html#tooltip" class="tsd-kind-icon">tooltip</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="common_components_anime.toggleprops.html#tooltiptoggled" class="tsd-kind-icon">tooltip<wbr>Toggled</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="models.config.html" class="tsd-kind-icon">Config</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/common_components_anime.html#animesearchdialoganimepage" class="tsd-kind-icon">Anime<wbr>Search<wbr>Dialog<wbr>Anime<wbr>Page</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="models.storedanimeinfo.html" class="tsd-kind-icon">Stored<wbr>Anime<wbr>Info</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/common_components_anime.html#animesearchdialog" class="tsd-kind-icon">Anime<wbr>Search<wbr>Dialog</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="models.storedserviceanimes.html" class="tsd-kind-icon">Stored<wbr>Service<wbr>Animes</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/common_components_anime.html#episodeembed" class="tsd-kind-icon">Episode<wbr>Embed</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="models.subscribedanimes.html" class="tsd-kind-icon">Subscribed<wbr>Animes</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/common_components_anime.html#animestatusbar" class="tsd-kind-icon">Anime<wbr>Status<wbr>Bar</a>
 					</li>
-					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module">
-						<a href="../modules/models.html#default_config" class="tsd-kind-icon">DEFAULT_<wbr>CONFIG</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/common_components_anime.html#remoteanimesearchdialog" class="tsd-kind-icon">Remote<wbr>Anime<wbr>Search<wbr>Dialog</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/common_components_anime.html#toggle" class="tsd-kind-icon">Toggle</a>
 					</li>
 				</ul>
 			</nav>

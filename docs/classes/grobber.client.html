@@ -145,7 +145,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/grobber/client.ts#L49">grobber/client.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/grobber/client.ts#L52">grobber/client.ts:52</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="grobber.client.html" class="tsd-signature-type">Client</a></h4>
@@ -158,10 +158,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="animeinfolock" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> anime<wbr>Info<wbr>Lock</h3>
-					<div class="tsd-signature tsd-kind-icon">anime<wbr>Info<wbr>Lock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AsyncLock</span></div>
+					<div class="tsd-signature tsd-kind-icon">anime<wbr>Info<wbr>Lock<span class="tsd-signature-symbol">:</span> <a href="lock.asynclock.html" class="tsd-signature-type">AsyncLock</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/grobber/client.ts#L49">grobber/client.ts:49</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/grobber/client.ts#L52">grobber/client.ts:52</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -171,7 +171,7 @@
 					<div class="tsd-signature tsd-kind-icon">axios<wbr>Client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AxiosInstance</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/grobber/client.ts#L47">grobber/client.ts:47</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/grobber/client.ts#L50">grobber/client.ts:50</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -183,7 +183,7 @@
 						<p>Implementation of <a href="../interfaces/memory.hasmemory.html">HasMemory</a>.<a href="../interfaces/memory.hasmemory.html#memory">memory</a></p>
 						<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#memory">memory</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L138">memory.ts:138</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L165">memory.ts:165</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -201,9 +201,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#forget">forget</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L150">memory.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L189">memory.ts:189</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Delete the value of the provided namespace key.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -211,6 +216,11 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forgetNamespace: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>if true this operation behaves
+											like <a href="memory.memory-1.html#resetmemory">Memory.resetMemory</a> with the key as an argument.
+										Otherwise it merely removes the specified namespace.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -227,7 +237,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/grobber/client.ts#L107">grobber/client.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/grobber/client.ts#L143">grobber/client.ts:143</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -236,7 +246,7 @@
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
-									<dd><p><a href="grobber.grobberrequesterror.html">GrobberRequestError</a> - When there was an error with the request.</p>
+									<dd><p>Same errors as <a href="grobber.client.html#request">Client.request</a></p>
 									</dd>
 								</dl>
 							</div>
@@ -260,7 +270,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/grobber/client.ts#L122">grobber/client.ts:122</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/grobber/client.ts#L158">grobber/client.ts:158</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -269,7 +279,7 @@
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
-									<dd><p><a href="grobber.grobberrequesterror.html">GrobberRequestError</a> - When there was an error with the request.</p>
+									<dd><p>Same errors as <a href="grobber.client.html#request">Client.request</a></p>
 									</dd>
 								</dl>
 							</div>
@@ -299,7 +309,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/grobber/client.ts#L140">grobber/client.ts:140</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/grobber/client.ts#L176">grobber/client.ts:176</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -316,13 +326,13 @@
 					<a name="performanimerequest" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> perform<wbr>Anime<wbr>Request</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">perform<wbr>Anime<wbr>Request<span class="tsd-signature-symbol">(</span>endpoint<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, paramsList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[]</span>, respHandler<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">perform<wbr>Anime<wbr>Request<span class="tsd-signature-symbol">(</span>endpoint<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, paramsList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[]</span>, respHandler<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/grobber/client.ts#L149">grobber/client.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/grobber/client.ts#L185">grobber/client.ts:185</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -334,25 +344,7 @@
 									<h5>paramsList: <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>respHandler: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>resp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>resp: <span class="tsd-signature-type">any</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> respHandler: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -370,13 +362,21 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#remember">remember</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L146">memory.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L178">memory.ts:178</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Store the given value under the namespace key.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Namespaces are separated by a dot</p>
+									</div>
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">any</span></h5>
@@ -396,7 +396,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/grobber/client.ts#L136">grobber/client.ts:136</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/grobber/client.ts#L172">grobber/client.ts:172</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -425,9 +425,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/grobber/client.ts#L59">grobber/client.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/grobber/client.ts#L71">grobber/client.ts:71</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Perform a request to the given Grobber endpoint with the given parameters.
+									The base url is read from the <a href="../interfaces/models.config.html">Config</a>.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p><a href="grobber.grobberresponseerror.html">GrobberResponseError</a> - If Grobber returned an error response.</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p><a href="grobber.grobberrequesterror.html">GrobberRequestError</a> - If a request was made but there was no response</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p><a href="grobber.grobberrequesterror.html#error">Error</a> - When anything goes wrong while setting up the request.
+										This (probably) should&#39;t occur during normal operation.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -452,9 +470,21 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#resetmemory">resetMemory</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/memory.ts#L159">memory.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/memory.ts#L206">memory.ts:206</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Reset the given namespaces and all their children.</p>
+								</div>
+								<p>When called with no arguments this flushes the entire memory
+								(i.e. deletes all keys).</p>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="memory.memory-1.html#forget">Memory.forget</a> to remove a specific namespace without affecting its children.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -469,15 +499,26 @@
 					<a name="searchanime" class="tsd-anchor"></a>
 					<h3>search<wbr>Anime</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">search<wbr>Anime<span class="tsd-signature-symbol">(</span>query<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, results<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.searchresult.html" class="tsd-signature-type">SearchResult</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">search<wbr>Anime<span class="tsd-signature-symbol">(</span>query<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, results<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.animesearchresult.html" class="tsd-signature-type">AnimeSearchResult</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/ede460f/src/grobber/client.ts#L83">grobber/client.ts:83</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/grobber/client.ts#L105">grobber/client.ts:105</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Search for Anime.
+									Results are stored in the cache.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>Same errors as <a href="grobber.client.html#request">Client.request</a></p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -485,9 +526,15 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> results: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Defaults to 1 and may go up to 20 (Hard limit by Grobber)</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.searchresult.html" class="tsd-signature-type">SearchResult</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.animesearchresult.html" class="tsd-signature-type">AnimeSearchResult</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<ul>
+								<li>List of <a href="../interfaces/grobber.animesearchresult.html">AnimeSearchResult</a>. Length will not exceed the provided <code>results</code>.</li>
+							</ul>
 						</li>
 					</ul>
 				</section>
@@ -499,8 +546,80 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/assets.html">assets</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/background.html">background</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/changelog.html">changelog</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common.html">common</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common_components.html">common.components</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common_components_anime.html">common.components.anime</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common_pages.html">common.pages</a>
+					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/grobber.html">grobber</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/hooks.html">hooks</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/info.html">info</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inject.html">inject</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/kitsu.html">kitsu</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/lock.html">lock</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/logging.html">logging</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/memory.html">memory</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/models.html">models</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/myanimelist.html">myanimelist</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/options.html">options</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/options_tabs.html">options.tabs</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/popup.html">popup</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/secrets.html">secrets</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/store.html">store</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/subscriptions.html">subscriptions</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/theme.html">theme</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -508,6 +627,9 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
 						<a href="../enums/grobber.grobbererrortype.html" class="tsd-kind-icon">Grobber<wbr>Error<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/grobber.language.html" class="tsd-kind-icon">Language</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -570,6 +692,9 @@
 						<a href="../interfaces/grobber.animeinfo.html" class="tsd-kind-icon">Anime<wbr>Info</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/grobber.animesearchresult.html" class="tsd-kind-icon">Anime<wbr>Search<wbr>Result</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/grobber.episode.html" class="tsd-kind-icon">Episode</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
@@ -577,9 +702,6 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
 						<a href="../interfaces/grobber.expiringitem.html" class="tsd-kind-icon">Expiring<wbr>Item</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/grobber.searchresult.html" class="tsd-kind-icon">Search<wbr>Result</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="../modules/grobber.html#staticclient" class="tsd-kind-icon">Static<wbr>Client</a>
