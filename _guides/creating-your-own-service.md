@@ -81,7 +81,7 @@ Add a new key-value pair at the end for our anidb script. It should look like th
 ```javascript
 {
     // other entry points...
-    path.join(__dirname, "src/anidb/index.ts"),
+    anidb: path.join(__dirname, "src/anidb/index.ts"),
 }
 ```
 
@@ -206,7 +206,7 @@ We need to find out how to determine which service page to show, but for
 now let's just add the method to stop webpack from complaining. Place
 the following code in the AniDB class body.
 ```typescript
-async; route(url;: URL;): Promise<void> {
+async route(url: URL): Promise<void> {
 }
 ```
 
@@ -379,7 +379,7 @@ first. Import it using `import {AnimePage} from "dolos/common/pages";`.
 Add a new class `AniDBAnimePage` which extends AnimePage and default-export it:
 
 ```typescript
-export default AniDBAnimePage extends AnimePage; {
+export default AniDBAnimePage extends AnimePage {
 }
 ```
 
@@ -424,7 +424,7 @@ For aniDB this is easy. Next to the "show" parameter we've also seen "aid"
 which presumably stands for anime id. We can just use that!
 
 ```typescript
-async; getAnimeIdentifier();: Promise<string | undefined> {
+async getAnimeIdentifier(): Promise<string | undefined> {
     // parse the current url into a URL object because
     // it's easier to work with and return the "aid" parameter.
     // searchParams.get returns null when the parameter doesn't exist,
@@ -440,7 +440,7 @@ of the Anime, but who knows?
 
 aniDB displays the title in a table cell on the right:
 ```typescript
-async; getAnimeSearchQuery();: Promise<string | undefined> {
+async getAnimeSearchQuery(): Promise<string | undefined> {
     // find the "Main Title" table cell.
     const mainTitle = document.querySelector(`td.value > span[itemprop="name"]`);
     // return its content if it was found or undefined otherwise
@@ -455,7 +455,7 @@ which will become apparent later on.
 It's a good idea to build the url from scratch like this:
 
 ```typescript
-async; getAnimeURL();: Promise<string | undefined> {
+async getAnimeURL(): Promise<string | undefined> {
     // we know that our anime identifier is the aid parameter
     const animeID = await this.getAnimeIdentifier();
     // if aid is undefined, return undefined!
@@ -482,7 +482,7 @@ At the bottom of the page there's a table with all episodes in it, we're going t
 add a helper function that parses this table:
 
 ```typescript
-async; getEpisodeURLs();: Promise<{ [key: string;]: string; }> {
+async getEpisodeURLs(): Promise<{ [key: string]: string }> {
     // get all episode links
     const epLinks = document.querySelectorAll(`#eplist > tbody > tr > td > a[itemprop="url"]`);
 
@@ -509,7 +509,7 @@ This returns an object which maps an episode number to its url.
 
 We can use this in our actual implementation of `getEpisodeURL`:
 ```typescript
-async; getEpisodeURL(episodeIndex;: number;): Promise<string | undefined> {
+async getEpisodeURL(episodeIndex: number): Promise<string | undefined> {
     const episodes = await this.getEpisodeURLs();
     // get episode number from index and convert to string
     const episode = (episodeIndex + 1).toString();
@@ -527,7 +527,7 @@ Take the user to the given episode. In many cases this will just be manipulating
 url, but Kitsu, for example, can smoothly transition to a different page.
 aniDB doesn't do anything fancy like that, so we can just use:
 ```typescript
-async; showEpisode(episodeIndex;: number;): Promise<boolean> {
+async showEpisode(episodeIndex: number): Promise<boolean> {
     const episodeURL = await this.getEpisodeURL(episodeIndex);
     if (!episodeURL) return false;
     
@@ -543,7 +543,7 @@ tag with the class `amountOfEpisodes`. Unless it's a movie, then it shows the
 text "Movie" instead. Could be worse...
 
 ```typescript
-async; getEpisodeCount();: Promise<number | undefined> {
+async getEpisodeCount(): Promise<number | undefined> {
     const animeType = document.querySelector("div.pane.info tr.type > td.value");
     if (!animeType) return;
 
@@ -566,7 +566,7 @@ to actually create an account to test this. The implementation of this is left
 as an exercise to the reader or whatever :D
 
 ```typescript
-async; canSetEpisodesWatched();: Promise<boolean> {
+async canSetEpisodesWatched(): Promise<boolean> {
     return false;
 }
 ```
@@ -578,7 +578,7 @@ the operation was successful. Since we're not doing this part we can just return
 `false` again.
 
 ```typescript
-protected async _setEpisodesWatched(progress;: number;): Promise<boolean> {
+protected async _setEpisodesWatched(progress: number): Promise<boolean> {
     return false;
 }
 ```
@@ -588,7 +588,7 @@ Return the amount of episodes the user has already seen, or undefined. We're
 going to return `undefined` here because again, not bothering with this part.
 
 ```typescript
-protected async _getEpisodesWatched();: Promise<number | undefined> {
+protected async _getEpisodesWatched(): Promise<number | undefined> {
     return undefined;
 }
 ```
@@ -604,7 +604,7 @@ For aniDB there seems to be a lot of space just below the Anime poster,
 so let's insert it there.
 
 ```typescript
-async; injectAnimeStatusBar(statusBar;: Element;): Promise<void> {
+async injectAnimeStatusBar(statusBar: Element): Promise<void> {
     const imgContainer = document.querySelector("div.image > div.container");
     if (!imgContainer) return;
 
@@ -799,7 +799,7 @@ It can take a `href` and an `onClick` handler. For our case `href` is totally
 sufficient:
 <!--TODO more detail-->
 ```typescript
-async; nextEpisodeButton();: Promise<SkipButton | undefined> {
+async nextEpisodeButton(): Promise<SkipButton | undefined> {
     const nextEpBtn = document.querySelector(".links > .next a");
     if (!nextEpBtn) return;
 
@@ -813,7 +813,7 @@ async; nextEpisodeButton();: Promise<SkipButton | undefined> {
 Navigate the user to the next episode. Let's just use the data
 from nextEpisodeButton and go to the url:
 ```typescript
-async; showNextEpisode();: Promise<void> {
+async showNextEpisode(): Promise<void> {
     // use the SkipButton data
     const data = await this.nextEpisodeButton();
     if (!data) return;
@@ -825,7 +825,7 @@ async; showNextEpisode();: Promise<void> {
 ##### prevEpisodeButton
 Same as nextEpisodeButton but the other way around:
 ```typescript
-async; prevEpisodeButton();: Promise<SkipButton | undefined> {
+async prevEpisodeButton(): Promise<SkipButton | undefined> {
     const prevEpBtn = document.querySelector(".links > .prev a");
     if (!prevEpBtn) return;
 
@@ -838,7 +838,7 @@ async; prevEpisodeButton();: Promise<SkipButton | undefined> {
 ##### showPrevEpisode
 Same as showNextEpisode but for the previous episode:
 ```typescript
-async; showPrevEpisode();: Promise<void> {
+async showPrevEpisode(): Promise<void> {
     // use the SkipButton data
     const data = await this.prevEpisodeButton();
     if (!data) return;
@@ -853,7 +853,7 @@ Add the episode embed (think: episode player) to the page.
 The episode page has an "airing schedule" table. Let's insert
 it right above it:
 ```typescript
-async; injectEmbed(embed;: Element;): Promise<void> {
+async injectEmbed(embed: Element): Promise<void> {
     // insert the embed just above the airing schedule table
     const schedule = document.querySelector("#schedule");
     if (!schedule) throw new Error("Couldn't find schedule");
@@ -871,6 +871,8 @@ Now this is where things go south again.
 
 This is what the `episode.ts` file should look like:
 ```typescript
+// src/anidb/episode.ts:
+
 import AniDB from "./index";
 import { EpisodePage, EpisodeAnimePageLike, EpisodeAnimePage, AnimePage } from "dolos/common/pages";
 import { SkipButton } from "dolos/common/components";
