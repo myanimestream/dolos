@@ -8,6 +8,16 @@
 /** @ignore */
 
 /**
+ * Function type that can be provided to [[AsyncLock.withCallback]].
+ */
+export type WithLockCallback<T> = (lock: AsyncLock) => PromiseLike<T> | T;
+
+/**
+ * Key used if no key provided.
+ */
+export const DefaultLockKey = Symbol("global lock");
+
+/**
  * A namespaced Semaphore for asynchronous operations.
  *
  * Not providing a key to the methods makes this function as if
@@ -18,10 +28,10 @@
  *
  * const lock = new AsyncLock();
  *
- * async write(text: string, key: string): Promise<void> {
- *      await lock.withLock(() => {
- *          // delay 500 ms to simulate load
- *          await new Promise(res => setTimeout(res, 500));
+ * async function write(text: string, key: string, delay?: number): Promise<void> {
+ *      await lock.withLock(async () => {
+ *          // wait 500ms
+ *          await new Promise(res => setTimeout(res, 500 + (delay || 0)));
  *          console.info(text);
  *      }, key);
  * }
@@ -31,7 +41,7 @@
  *
  * write("this", "a");
  * write("is", "a");
- * write("me", "a");
+ * write("me", "a", 10);
  *
  * write("cute", "b");
  * write("not", "b");
@@ -51,46 +61,36 @@
  * ```
  */
 export default class AsyncLock {
-    private readonly locked: { [key: string]: boolean };
-    private readonly queues: { [key: string]: (() => void)[] };
+    private readonly locked: Set<any>;
+    private readonly queues: Map<any, (() => void)[]>;
 
     constructor() {
-        this.locked = {};
-        this.queues = {};
+        this.locked = new Set();
+        this.queues = new Map();
     }
 
     /**
      * Check whether the given key is locked.
      *
-     * If provided with an array of keys it checks whether **any**
+     * If provided with multiple keys it checks whether **any**
      * of the keys are locked.
-     *
-     * > If you nest a list of keys within the list of keys,
-     * > while this isn't supported, it recursively checks whether any
-     * > of the keys is locked.
      */
-    isLocked(key?: string | string[]): boolean {
-        if (Array.isArray(key)) {
-            return key.some(k => this.isLocked(k));
-        }
+    isLocked(...keys: any[]): boolean {
+        if (!keys.length) keys.push(DefaultLockKey);
 
-        return this.locked[key || ""];
+        return keys.some(key => this.locked.has(key));
     }
 
     /**
      * Wait for the keys to be unlocked and lock them.
-     * **Don't forget to call [[AsyncLock.release]] with the same argument!**
+     * **Don't forget to call [[AsyncLock.release]] with the same arguments!**
      *
      * @see [[AsyncLock.withLock]] for a safer and more convenient approach.
      */
-    async acquire(key?: string | string[]) {
-        if (Array.isArray(key)) {
-            await Promise.all(key.map(k => this.acquire(k)));
-            return;
-        }
+    async acquire(...keys: any[]) {
+        if (!keys.length) keys.push(DefaultLockKey);
 
-        await this.waitForLock(key);
-        this.locked[key || ""] = true;
+        await Promise.all(keys.map(key => this.waitForLocked(key)));
     }
 
     /**
@@ -99,18 +99,14 @@ export default class AsyncLock {
      * called [[AsyncLock.acquire]]**
      *
      * @see [[AsyncLock.withLock]] for a safer and more convenient approach.
-     *
-     * @throws Error - When the lock isn't locked
      */
-    release(key?: string | string[]) {
-        if (Array.isArray(key)) {
-            key.forEach(k => this.release(k));
-            return;
-        }
+    release(...keys: any[]) {
+        if (!keys.length) keys.push(DefaultLockKey);
 
-        if (!this.isLocked(key)) throw new Error("Lock isn't locked");
-        this.locked[key || ""] = false;
-        this.shiftQueue(key);
+        for (const key of keys) {
+            this.locked.delete(key);
+            this.shiftQueue(key);
+        }
     }
 
     /**
@@ -120,29 +116,46 @@ export default class AsyncLock {
      *
      * The provided `keys` are interpreted the same as for [[AsyncLock.acquire]].
      */
-    async withLock<T>(callback: (lock?: AsyncLock) => PromiseLike<T> | T, key?: string | string[]): Promise<T> {
-        await this.acquire(key);
+    async withLock<T>(callback: WithLockCallback<T>, ...keys: any[]): Promise<T> {
+        await this.acquire(...keys);
+
+        let result;
+
         try {
-            return await Promise.resolve(callback(this));
+            result = await Promise.resolve(callback(this));
         } finally {
-            this.release(key);
+            this.release(...keys);
         }
+
+        return result;
     }
 
-    private getQueue(key?: string): (() => void)[] {
-        let queue = this.queues[key || ""];
-        if (!queue) queue = this.queues[key || ""] = [];
+    private getQueue(key: any): (() => void)[] {
+        let queue = this.queues.get(key);
+        if (!queue) {
+            queue = [];
+            this.queues.set(key, queue);
+        }
 
         return queue;
     }
 
-    private shiftQueue(key?: string) {
+    private shiftQueue(key: any): void {
         const cb = this.getQueue(key).shift();
         if (cb) cb();
     }
 
-    private async waitForLock(key?: string) {
-        if (!this.isLocked(key)) return;
-        await new Promise(res => this.getQueue(key).push(res));
+    /**
+     * Wait and lock the specified key.
+     *
+     * @see [[AsyncLock.acquire]] for a high-level method.
+     */
+    private async waitForLocked(key: any): Promise<void> {
+        if (this.locked.has(key)) {
+            const queue = this.getQueue(key);
+            await new Promise(res => queue.push(res));
+        }
+
+        this.locked.add(key);
     }
 }
