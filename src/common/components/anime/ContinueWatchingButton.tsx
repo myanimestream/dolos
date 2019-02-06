@@ -57,6 +57,14 @@ export default withStyles(styles)(
             if (this.episodesWatchedSub) this.episodesWatchedSub.unsubscribe();
         }
 
+        async showEpisode(episodeIndex: number) {
+            const {animePage} = this.props;
+
+            const success = await animePage.showEpisode(episodeIndex);
+            if (!success)
+                animePage.service.showErrorSnackbar(_("anime__show_episode__failed"));
+        }
+
         async handleEpisodesWatchedChanged(epsWatched?: number) {
             const {animePage} = this.props;
             const anime = await animePage.getAnime();
@@ -94,14 +102,22 @@ export default withStyles(styles)(
 
             if (anime.episodes > epsWatched) {
                 const href = await animePage.getEpisodeURL(epsWatched);
-
-                this.setState({
-                    href,
-                    buttonText,
-                    onClick: () => animePage.showEpisode(epsWatched as number),
-                    tooltip: _("anime__continue_watching__available", [epsWatched + 1]),
-                    disabled: false,
-                });
+                if (href) {
+                    this.setState({
+                        href,
+                        buttonText,
+                        onClick: () => this.showEpisode(epsWatched as number),
+                        tooltip: _("anime__continue_watching__available", [epsWatched + 1]),
+                        disabled: false,
+                    });
+                } else {
+                    // this isn't technically the truth but sometimes it's easier to lie
+                    this.setState({
+                        buttonText,
+                        tooltip: _("anime__continue_watching__unavailable", [epsWatched + 1]),
+                        disabled: true,
+                    });
+                }
             } else {
                 const totalEpisodes = await animePage.getEpisodeCount();
                 if (epsWatched === totalEpisodes) {

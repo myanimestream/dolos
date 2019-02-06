@@ -13,7 +13,38 @@ import ServicePage from "../service-page";
 import AnimePage from "./anime";
 import _ = chrome.i18n.getMessage;
 
+/**
+ * The methods required for [[EpisodePage.animePage]].
+ *
+ * Incidentally this is a subset of [[AnimePage]] and is used as such.
+ */
+export type EpisodeAnimePage = Pick<AnimePage<Service>,
+    | "getAnimeUID"
+    | "getAnime"
+    | "getEpisodesWatched$"
+    | "canSetEpisodesWatched"
+    | "setEpisodesWatched"
+    | "openAnimeSearchDialog">;
 
+/**
+ * Possible values for [[EpisodePage.animePage]].
+ */
+export type EpisodeAnimePageLike<T extends Service> =
+    | EpisodeAnimePage
+    | AnimePage<T>
+    | EpisodeAnimePage & ServicePage<T>;
+
+/**
+ * A page that will show the [[EpisodeEmbed]].
+ *
+ * Because often episodes are displayed in a page that is a slightly modified
+ * version of the anime overview page the [[EpisodePage]] will reuse the [[AnimePage]]
+ * when transitioning.
+ *
+ * Supported transitions:
+ * - [[EpisodePage]] -> [[EpisodePage]]: [[EpisodePage.animePage]] is passed
+ * - [[EpisodePage]] -> [[AnimePage]]: Uses [[EpisodePage.animePage.transitionTo]] to handle the transition.
+ */
 export default abstract class EpisodePage<T extends Service> extends ServicePage<T> {
     episodeBookmarked$: rxjs.BehaviorSubject<boolean>;
     private epsWatchedSub: rxjs.Subscription;
@@ -24,19 +55,19 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         this.episodeBookmarked$ = new rxjs.BehaviorSubject(false);
     }
 
-    private _animePage: AnimePage<T>;
+    private _animePage: EpisodeAnimePageLike<T>;
 
-    get animePage(): AnimePage<T> {
+    get animePage(): EpisodeAnimePageLike<T> {
         if (!this._animePage) this._animePage = this.buildAnimePage();
 
         return this._animePage;
     }
 
-    set animePage(page: AnimePage<T>) {
+    set animePage(page: EpisodeAnimePageLike<T>) {
         this._animePage = page;
     }
 
-    abstract buildAnimePage(): AnimePage<T>;
+    abstract buildAnimePage(): EpisodeAnimePageLike<T>;
 
     abstract async getEpisodeIndex(): Promise<number | undefined>;
 
@@ -138,17 +169,21 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
 
         await this.injectEmbed(await this.buildEmbed());
 
-        await this.animePage.load();
+        if (this.animePage instanceof ServicePage)
+            await this.animePage.load();
     }
 
     async _unload() {
         if (this.epsWatchedSub) this.epsWatchedSub.unsubscribe();
-        await this.animePage.unload();
+
+        if (this.animePage instanceof ServicePage)
+            await this.animePage.unload();
+
         await super._unload()
     }
 
     async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | void> {
-        if (page instanceof AnimePage) {
+        if (page instanceof AnimePage && this.animePage instanceof ServicePage) {
             this.resetPage();
             return await this.animePage.transitionTo(page);
         } else if (page instanceof EpisodePage) {

@@ -231,6 +231,10 @@
   "anime__continue_watching__anime_unknown": {
     "message": "Couldn't load Anime"
   },
+  "anime__show_episode__failed": {
+    "message": "Couldn't show episode",
+    "description": "Message displayed when Dolos couldn't navigate the user to an episode"
+  },
   "anime__subscription_not_possible": {
     "message": "Can't subscribe",
     "description": "Tooltip text when a subscription is impossible. For instance when the user has already seen all episodes"

@@ -377,13 +377,15 @@ export default abstract class AnimePage<T extends Service> extends ServicePage<T
         if (await this.isSubscribed()) await this.updateSubscription();
     }
 
-    /** Get the URL of the provided episode for this Anime */
-    abstract async getEpisodeURL(episodeIndex: number): Promise<string>;
+    /**
+     * Get the URL of the provided episode for this Anime.
+     */
+    abstract async getEpisodeURL(episodeIndex: number): Promise<string | undefined>;
 
     /**
      * Navigate the user to the episode with the given index.
      */
-    abstract async showEpisode(episodeIndex: number): Promise<void>;
+    abstract async showEpisode(episodeIndex: number): Promise<boolean>;
 
     abstract async injectAnimeStatusBar(statusBar: Element): Promise<void>;
 

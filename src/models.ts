@@ -68,7 +68,12 @@ export interface AnimeSubscriptionInfo {
     identifier: string;
     episodesWatched: number;
     animeURL: string;
-    nextEpisodeURL: string;
+    /**
+     * Url of the next episode the user hasn't watched.
+     * This is undefined if the next episode url
+     * couldn't be determined.
+     */
+    nextEpisodeURL?: string;
     anime: AnimeInfo;
 }
 

@@ -90,8 +90,9 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         return new URL(`/anime/${animeId}/${slug}/episode/${episode + 1}`, location.origin).toString();
     }
 
-    async showEpisode(episodeIndex: number) {
+    async showEpisode(episodeIndex: number): Promise<boolean> {
         location.assign(await this.getEpisodeURL(episodeIndex));
+        return true;
     }
 
     @cacheInMemory("episodesWatched")

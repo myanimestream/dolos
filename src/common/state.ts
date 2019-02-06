@@ -122,7 +122,7 @@ export default class State<T extends Service> extends ElementMemory {
     }
 
     /** Subscribe to an Anime */
-    async subscribeAnime(animeID: string, animeURL: string, nextEpisodeURL: string, episodesWatched: number, anime: AnimeInfo): Promise<void> {
+    async subscribeAnime(animeID: string, animeURL: string, nextEpisodeURL: string | undefined, episodesWatched: number, anime: AnimeInfo): Promise<void> {
         const subscriptions = await Store.getAnimeSubscriptions();
         const identifier = await this.buildIdentifier(animeID);
 
@@ -136,7 +136,7 @@ export default class State<T extends Service> extends ElementMemory {
         };
     }
 
-    async updateAnimeSubscription(animeID: string, nextEpisodeURL: string, episodesWatched: number): Promise<void> {
+    async updateAnimeSubscription(animeID: string, nextEpisodeURL: string | undefined, episodesWatched: number): Promise<void> {
         const subscription = await this.getSubscription(animeID);
         if (subscription) {
             subscription.episodesWatched = episodesWatched;

@@ -104,8 +104,9 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return new URL(`/anime/${slug}/episodes/${episode + 1}`, location.origin).toString();
     }
 
-    async showEpisode(episodeIndex: number) {
+    async showEpisode(episodeIndex: number): Promise<boolean> {
         transitionTo("anime.show.episodes.show", episodeIndex + 1);
+        return true;
     }
 
     @cacheInMemory("episodesWatched")

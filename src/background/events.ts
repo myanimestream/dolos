@@ -100,7 +100,8 @@ state.hasNewEpisode$.subscribe(async e => {
     const sub = notification.onButtonClicked$.subscribe(event => {
         switch (event.buttonIndex) {
             case 0:
-                tabs.create({url: subscription.nextEpisodeURL,});
+                const url = subscription.nextEpisodeURL || subscription.animeURL;
+                tabs.create({url,});
                 break;
             case 1:
                 delete e.subscribedAnimes[subscription.identifier];
