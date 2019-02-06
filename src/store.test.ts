@@ -39,7 +39,7 @@ test("Store object", async () => {
     expect(chrome.storage.sync.set).toHaveBeenCalled();
 
     // @ts-ignore
-    Store.handleValueChanged({[key]: {newValue: {value: 6}}});
+    await Store.handleValueChanged({[key]: {newValue: {value: 6}}});
 
     expect(test.value).toBe(6);
     expect(test.test).toBeUndefined();
@@ -61,7 +61,7 @@ test("Store array", async () => {
     expect(chrome.storage.sync.set).toHaveBeenCalled();
 
     // @ts-ignore
-    Store.handleValueChanged({[key]: {newValue: [6]}});
+    await Store.handleValueChanged({[key]: {newValue: [6]}});
 
     expect(test[0]).toBe(6);
 });
@@ -101,7 +101,7 @@ test("Store deep", async () => {
 
     value.map.c.nested = false;
     // @ts-ignore
-    Store.handleValueChanged({[key]: {newValue: value}});
+    await Store.handleValueChanged({[key]: {newValue: value}});
 
     expect(mapC.nested).toBeFalsy();
     expect(map.c).toBe(mapC);
@@ -110,7 +110,7 @@ test("Store deep", async () => {
 
     value.items[0] = 15;
     // @ts-ignore
-    Store.handleValueChanged({[key]: {newValue: value}});
+    await Store.handleValueChanged({[key]: {newValue: value}});
 
     expect(items[0]).toBe(15);
     expect(items[items.length - 1]).toBe(itemsLast);
@@ -135,7 +135,7 @@ test("Store deep", async () => {
     // @ts-ignore
     value["newProxyList"] = ["yes", "please", "work"];
     // @ts-ignore
-    Store.handleValueChanged({[key]: {newValue: value}});
+    await Store.handleValueChanged({[key]: {newValue: value}});
 
     // @ts-ignore
     expect(test.newProxyObj).toBeInstanceOf(StoreElement);
