@@ -12,7 +12,6 @@ export type Updater = (version: string) => string | undefined | PromiseLike<stri
 
 /**
  * Perform a series of updates to update the extension context.
- * This includes performing
  */
 export async function performExtensionUpdate(fromVersion: string): Promise<void> {
     console.info(`[update] starting update from version ${fromVersion}`);
@@ -30,7 +29,9 @@ export async function performExtensionUpdate(fromVersion: string): Promise<void>
         console.info(`[update] updated from version ${before} to ${version}`);
     }
 
-    console.info(`[update] done`);
+    console.info(`[update] done, restarting`);
+
+    chrome.runtime.reload();
 }
 
 /** @ignore */

@@ -10,48 +10,54 @@ import {BrowserNotification} from "./notifications";
 import * as state from "./observables";
 import {hasNewVersion$} from "./observables";
 import {performUpdateCheck} from "./update-check";
-import Alarm = chrome.alarms.Alarm;
+import Alarm = alarms.Alarm;
+import alarms = chrome.alarms;
+import browserAction = chrome.browserAction;
 import _ = chrome.i18n.getMessage;
-import InstalledDetails = chrome.runtime.InstalledDetails;
+import runtime = chrome.runtime;
+import storage = chrome.storage;
+import tabs = chrome.tabs;
+import InstalledDetails = runtime.InstalledDetails;
 
-chrome.runtime.onInstalled.addListener(async (details: InstalledDetails) => {
+const extUpdatedKey = "ext::updated";
+
+runtime.onInstalled.addListener(async (details: InstalledDetails) => {
     if (details.reason == "update" && details.previousVersion && details.previousVersion !== getVersion()) {
+        // because we will immediately restart, store a value so we know whether we updated
+        await new Promise(res => storage.sync.set({[extUpdatedKey]: true}, res));
+
         await performExtensionUpdate(details.previousVersion);
-        await new Promise(res => chrome.storage.local.set({updated: true}, res));
-
-        chrome.runtime.reload();
     }
 });
 
-chrome.storage.local.get("updated", (items: any) => {
-    const {updated} = items;
-
-    if (updated) {
-        hasNewVersion$.next(true);
-        chrome.storage.local.remove("updated");
-    }
+// check whether we updated
+storage.sync.get(extUpdatedKey, (items: any) => {
+    const {[extUpdatedKey]: updated} = items;
+    if (updated) hasNewVersion$.next(true);
 });
 
-chrome.alarms.onAlarm.addListener((alarm: Alarm) => {
+alarms.onAlarm.addListener((alarm: Alarm) => {
     switch (alarm.name) {
         case "UpdateCheck":
             performUpdateCheck();
             break;
-        default:
-            console.warn("Unknown Alarm:", alarm);
-            break;
     }
 });
 
-chrome.alarms.create("UpdateCheck", {
+alarms.create("UpdateCheck", {
     periodInMinutes: 60,
 });
 // since the alarm doesn't trigger immediately and the delay can't be set to 0 perform a check right away!
 performUpdateCheck();
 
-state.hasNewVersion$.subscribe(
-    val => chrome.browserAction.setBadgeText({text: val ? _("ext_badge__new_version") : ""})
-);
+state.hasNewVersion$.subscribe(newVersion => {
+    if (!newVersion) {
+        storage.sync.remove(extUpdatedKey);
+    }
+
+    const text = newVersion ? _("ext_badge__new_version") : "";
+    browserAction.setBadgeText({text,});
+});
 
 state.hasNewEpisode$.subscribe(async e => {
     // ignore event if there's no unseen episode
@@ -94,7 +100,7 @@ state.hasNewEpisode$.subscribe(async e => {
     const sub = notification.onButtonClicked$.subscribe(event => {
         switch (event.buttonIndex) {
             case 0:
-                chrome.tabs.create({url: subscription.nextEpisodeURL,});
+                tabs.create({url: subscription.nextEpisodeURL,});
                 break;
             case 1:
                 delete e.subscribedAnimes[subscription.identifier];

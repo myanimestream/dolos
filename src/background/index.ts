@@ -1,5 +1,6 @@
 /**
- * Test
+ * Logic that is run in the background page of the extension.
+ *
  * @module background
  * @preferred
  */
