@@ -37,3 +37,5 @@ echo "[CHROME] downloading signed..."
 wget --quiet \
 --output-document=mas-chrome.crx \
 "https://clients2.google.com/service/update2/crx?response=redirect&prodversion=$CHROME_PRODVERSION&acceptformat=crx2,crx3&x=id%3D$CHROME_EXTENSION_ID%26uc"
+
+echo "[CHROME] done"

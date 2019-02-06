@@ -24,3 +24,5 @@ npx web-ext sign --api-key "${FIREFOX_API_KEY}" --api-secret "${FIREFOX_API_SECR
 # search xpi file and move it to the signed directory
 file=$(ls  artifact/*.xpi | tail -n1)
 cp -v "$file" "$REP_DIR/signed/mas-firefox.xpi"
+
+echo "[FIREFOX] done"
