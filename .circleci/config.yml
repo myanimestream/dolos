@@ -13,6 +13,11 @@ references:
   copy_node_modules: &copy_node_modules
     run: mv /tmp/workspace/node_modules .
 
+  tag_filters: &tag_filters
+    filters:
+      tags:
+        only: /^v.*/
+
 jobs:
   upload-localisation:
     executor: node/node
@@ -167,30 +172,22 @@ workflows:
       - upload-localisation
 
       - install:
-          filters:
-            tags:
-              only: /^v.*/
+          <<: *tag_filters
 
       - test:
+          <<: *tag_filters
           requires:
             - install
-          filters:
-            tags:
-              only: /^v.*/
 
       - compile:
+          <<: *tag_filters
           requires:
             - install
-          filters:
-            tags:
-              only: /^v.*/
 
       - build-extension:
+          <<: *tag_filters
           requires:
             - compile
-          filters:
-            tags:
-              only: /^v.*/
 
       - documentation:
           requires:
