@@ -132,6 +132,9 @@ jobs:
     steps:
       - *attach_workspace
       - run:
+          name: Creating release directory
+          command: mkdir -p release/
+      - run:
           name: Moving build artifacts
           command: mv /tmp/workspace/build/* release/
       - run:
