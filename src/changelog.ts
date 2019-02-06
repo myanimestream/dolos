@@ -11,6 +11,12 @@
  */
 type Change = string;
 
+/**
+ * Changelog interface.
+ * This is a subset of a Map.
+ *
+ * @see [[CHANGELOG]] for the actual changelog.
+ */
 interface Changelog {
     get(version: string): Change[];
 
@@ -24,6 +30,9 @@ interface Changelog {
  * This is done using a Map to make sure it can be iterated over in the right order.
  */
 const CHANGELOG: Changelog = new Map([
+    ["0.2.2", [
+        `**Kitsu**: Fixed browser crash caused by Keen. How? By simply removing Keen!`
+    ]],
     ["0.2.1", [
         `Showing loading animation for bookmark button`,
         `**Kitsu**: No longer breaks on [/explore/](https://kitsu.io/explore/anime) sites.`,
