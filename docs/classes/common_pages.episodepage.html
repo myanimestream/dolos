@@ -69,6 +69,21 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A page that will show the <a href="../modules/common_components_anime.html#episodeembed">EpisodeEmbed</a>.</p>
+					</div>
+					<p>Because often episodes are displayed in a page that is a slightly modified
+						version of the anime overview page the <a href="common_pages.episodepage.html">EpisodePage</a> will reuse the <a href="common_pages.animepage.html">AnimePage</a>
+					when transitioning.</p>
+					<p>Supported transitions:</p>
+					<ul>
+						<li><a href="common_pages.episodepage.html">EpisodePage</a> -&gt; <a href="common_pages.episodepage.html">EpisodePage</a>: <a href="common_pages.episodepage.html#animepage">EpisodePage.animePage</a> is passed</li>
+						<li><a href="common_pages.episodepage.html">EpisodePage</a> -&gt; <a href="common_pages.animepage.html">AnimePage</a>: Uses [[EpisodePage.animePage.transitionTo]] to handle the transition.</li>
+					</ul>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-type-parameters">
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
@@ -177,7 +192,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="common.servicepage.html">ServicePage</a>.<a href="common.servicepage.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L19">common/pages/episode.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L50">common/pages/episode.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -196,10 +211,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_animepage" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _anime<wbr>Page</h3>
-					<div class="tsd-signature tsd-kind-icon">_anime<wbr>Page<span class="tsd-signature-symbol">:</span> <a href="common_pages.animepage.html" class="tsd-signature-type">AnimePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">_anime<wbr>Page<span class="tsd-signature-symbol">:</span> <a href="../modules/common_pages.html#episodeanimepagelike" class="tsd-signature-type">EpisodeAnimePageLike</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L27">common/pages/episode.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L58">common/pages/episode.ts:58</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -209,7 +224,7 @@
 					<div class="tsd-signature tsd-kind-icon">episode<wbr>Bookmarked$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">BehaviorSubject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L18">common/pages/episode.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L49">common/pages/episode.ts:49</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -219,7 +234,7 @@
 					<div class="tsd-signature tsd-kind-icon">eps<wbr>Watched<wbr>Sub<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subscription</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L19">common/pages/episode.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L50">common/pages/episode.ts:50</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -231,7 +246,7 @@
 						<p>Implementation of <a href="../interfaces/memory.hasmemory.html">HasMemory</a>.<a href="../interfaces/memory.hasmemory.html#memory">memory</a></p>
 						<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#memory">memory</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/memory.ts#L138">memory.ts:138</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/memory.ts#L165">memory.ts:165</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -242,7 +257,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="common.servicepage.html">ServicePage</a>.<a href="common.servicepage.html#service">service</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/service-page.ts#L10">common/service-page.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/service-page.ts#L10">common/service-page.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -253,7 +268,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="common.servicepage.html">ServicePage</a>.<a href="common.servicepage.html#state">state</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/service-page.ts#L11">common/service-page.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/service-page.ts#L11">common/service-page.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -264,28 +279,28 @@
 					<a name="animepage" class="tsd-anchor"></a>
 					<h3>anime<wbr>Page</h3>
 					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> animePage<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="common_pages.animepage.html" class="tsd-signature-type">AnimePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> animePage<span class="tsd-signature-symbol">(</span>page<span class="tsd-signature-symbol">: </span><a href="common_pages.animepage.html" class="tsd-signature-type">AnimePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> animePage<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/common_pages.html#episodeanimepagelike" class="tsd-signature-type">EpisodeAnimePageLike</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> animePage<span class="tsd-signature-symbol">(</span>page<span class="tsd-signature-symbol">: </span><a href="../modules/common_pages.html#episodeanimepagelike" class="tsd-signature-type">EpisodeAnimePageLike</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L29">common/pages/episode.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L60">common/pages/episode.ts:60</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="common_pages.animepage.html" class="tsd-signature-type">AnimePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/common_pages.html#episodeanimepagelike" class="tsd-signature-type">EpisodeAnimePageLike</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L35">common/pages/episode.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L66">common/pages/episode.ts:66</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>page: <a href="common_pages.animepage.html" class="tsd-signature-type">AnimePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>page: <a href="../modules/common_pages.html#episodeanimepagelike" class="tsd-signature-type">EpisodeAnimePageLike</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -306,7 +321,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="common.servicepage.html">ServicePage</a>.<a href="common.servicepage.html#_load">_load</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L132">common/pages/episode.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L163">common/pages/episode.ts:163</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -324,7 +339,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="common.servicepage.html">ServicePage</a>.<a href="common.servicepage.html#_unload">_unload</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L144">common/pages/episode.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L176">common/pages/episode.ts:176</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -335,16 +350,16 @@
 					<a name="buildanimepage" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> build<wbr>Anime<wbr>Page</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Anime<wbr>Page<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="common_pages.animepage.html" class="tsd-signature-type">AnimePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Anime<wbr>Page<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/common_pages.html#episodeanimepagelike" class="tsd-signature-type">EpisodeAnimePageLike</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L39">common/pages/episode.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L70">common/pages/episode.ts:70</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="common_pages.animepage.html" class="tsd-signature-type">AnimePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/common_pages.html#episodeanimepagelike" class="tsd-signature-type">EpisodeAnimePageLike</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -358,7 +373,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L78">common/pages/episode.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L109">common/pages/episode.ts:109</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Element</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -376,9 +391,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#forget">forget</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/memory.ts#L150">memory.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/memory.ts#L189">memory.ts:189</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Delete the value of the provided namespace key.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -386,6 +406,11 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forgetNamespace: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>if true this operation behaves
+											like <a href="memory.memory-1.html#resetmemory">Memory.resetMemory</a> with the key as an argument.
+										Otherwise it merely removes the specified namespace.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -402,7 +427,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L54">common/pages/episode.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L85">common/pages/episode.ts:85</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.episode.html" class="tsd-signature-type">Episode</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -419,7 +444,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L41">common/pages/episode.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L72">common/pages/episode.ts:72</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -436,7 +461,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L43">common/pages/episode.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L74">common/pages/episode.ts:74</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -460,13 +485,18 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.elementmemory.html">ElementMemory</a>.<a href="memory.elementmemory.html#injected">injected</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/memory.ts#L192">memory.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/memory.ts#L246">memory.ts:246</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Keep track of the given element such that it can be removed later.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="memory.elementmemory.html#removeinjected">ElementMemory.removeInjected</a> to remove elements</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -492,7 +522,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="common.servicepage.html">ServicePage</a>.<a href="common.servicepage.html#load">load</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/service-page.ts#L25">common/service-page.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/service-page.ts#L25">common/service-page.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -509,7 +539,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L115">common/pages/episode.ts:115</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L146">common/pages/episode.ts:146</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -526,7 +556,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L102">common/pages/episode.ts:102</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L133">common/pages/episode.ts:133</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -543,7 +573,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L45">common/pages/episode.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L76">common/pages/episode.ts:76</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/common_components_anime.skipbutton.html" class="tsd-signature-type">SkipButton</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -560,7 +590,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L84">common/pages/episode.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L115">common/pages/episode.ts:115</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -577,7 +607,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L49">common/pages/episode.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L80">common/pages/episode.ts:80</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/common_components_anime.skipbutton.html" class="tsd-signature-type">SkipButton</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -595,7 +625,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="common.servicepage.html">ServicePage</a>.<a href="common.servicepage.html#reload">reload</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/service-page.ts#L48">common/service-page.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/service-page.ts#L48">common/service-page.ts:48</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -613,13 +643,21 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#remember">remember</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/memory.ts#L146">memory.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/memory.ts#L178">memory.ts:178</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Store the given value under the namespace key.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Namespaces are separated by a dot</p>
+									</div>
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">any</span></h5>
@@ -640,14 +678,16 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.elementmemory.html">ElementMemory</a>.<a href="memory.elementmemory.html#removeinjected">removeInjected</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/memory.ts#L204">memory.ts:204</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/memory.ts#L261">memory.ts:261</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Remove all elements from the given namespaces.
-									If no namespaces provided removes all elements.</p>
+										Removing elements of a namespace also removes all elements
+									in namespaces further down.</p>
 								</div>
+								<p>If no namespaces provided removes all elements.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -670,9 +710,21 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#resetmemory">resetMemory</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/memory.ts#L159">memory.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/memory.ts#L206">memory.ts:206</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Reset the given namespaces and all their children.</p>
+								</div>
+								<p>When called with no arguments this flushes the entire memory
+								(i.e. deletes all keys).</p>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="memory.memory-1.html#forget">Memory.forget</a> to remove a specific namespace without affecting its children.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -694,7 +746,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="common.servicepage.html">ServicePage</a>.<a href="common.servicepage.html#resetpage">resetPage</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/service-page.ts#L43">common/service-page.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/service-page.ts#L43">common/service-page.ts:43</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -711,7 +763,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L47">common/pages/episode.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L78">common/pages/episode.ts:78</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -728,7 +780,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L51">common/pages/episode.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L82">common/pages/episode.ts:82</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -746,7 +798,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="common.servicepage.html">ServicePage</a>.<a href="common.servicepage.html#transitionto">transitionTo</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/pages/episode.ts#L150">common/pages/episode.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/pages/episode.ts#L185">common/pages/episode.ts:185</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -770,7 +822,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="common.servicepage.html">ServicePage</a>.<a href="common.servicepage.html#unload">unload</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/service-page.ts#L36">common/service-page.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/service-page.ts#L36">common/service-page.ts:36</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -972,6 +1024,12 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/common_pages.html#episodeanimepage" class="tsd-kind-icon">Episode<wbr>Anime<wbr>Page</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../modules/common_pages.html#episodeanimepagelike" class="tsd-kind-icon">Episode<wbr>Anime<wbr>Page<wbr>Like</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

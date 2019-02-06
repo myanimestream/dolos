@@ -165,7 +165,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="memory.elementmemory.html">ElementMemory</a>.<a href="memory.elementmemory.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L22">common/state.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L22">common/state.ts:22</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -189,7 +189,7 @@
 						<p>Implementation of <a href="../interfaces/memory.hasmemory.html">HasMemory</a>.<a href="../interfaces/memory.hasmemory.html#memory">memory</a></p>
 						<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#memory">memory</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/memory.ts#L138">memory.ts:138</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/memory.ts#L165">memory.ts:165</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -199,7 +199,7 @@
 					<div class="tsd-signature tsd-kind-icon">page<span class="tsd-signature-symbol">:</span> <a href="common.servicepage.html" class="tsd-signature-type">ServicePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L22">common/state.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L22">common/state.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -209,7 +209,7 @@
 					<div class="tsd-signature tsd-kind-icon">service<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L21">common/state.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L21">common/state.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -226,7 +226,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L30">common/state.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L30">common/state.ts:30</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/models.config.html" class="tsd-signature-type">Config</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -246,7 +246,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L96">common/state.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L96">common/state.ts:96</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -280,9 +280,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#forget">forget</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/memory.ts#L150">memory.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/memory.ts#L189">memory.ts:189</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Delete the value of the provided namespace key.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -290,6 +295,11 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> forgetNamespace: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>if true this operation behaves
+											like <a href="memory.memory-1.html#resetmemory">Memory.resetMemory</a> with the key as an argument.
+										Otherwise it merely removes the specified namespace.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -306,7 +316,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L87">common/state.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L87">common/state.ts:87</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -338,7 +348,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L117">common/state.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L117">common/state.ts:117</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -367,7 +377,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L104">common/state.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L104">common/state.ts:104</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -397,13 +407,18 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.elementmemory.html">ElementMemory</a>.<a href="memory.elementmemory.html#injected">injected</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/memory.ts#L192">memory.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/memory.ts#L246">memory.ts:246</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Keep track of the given element such that it can be removed later.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="memory.elementmemory.html#removeinjected">ElementMemory.removeInjected</a> to remove elements</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -428,7 +443,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L50">common/state.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L50">common/state.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -451,7 +466,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L37">common/state.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L37">common/state.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -474,13 +489,21 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#remember">remember</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/memory.ts#L146">memory.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/memory.ts#L178">memory.ts:178</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Store the given value under the namespace key.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Namespaces are separated by a dot</p>
+									</div>
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">any</span></h5>
@@ -501,14 +524,16 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.elementmemory.html">ElementMemory</a>.<a href="memory.elementmemory.html#removeinjected">removeInjected</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/memory.ts#L204">memory.ts:204</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/memory.ts#L261">memory.ts:261</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Remove all elements from the given namespaces.
-									If no namespaces provided removes all elements.</p>
+										Removing elements of a namespace also removes all elements
+									in namespaces further down.</p>
 								</div>
+								<p>If no namespaces provided removes all elements.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -530,7 +555,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L71">common/state.ts:71</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L71">common/state.ts:71</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -557,9 +582,21 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#resetmemory">resetMemory</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/memory.ts#L159">memory.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/memory.ts#L206">memory.ts:206</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Reset the given namespaces and all their children.</p>
+								</div>
+								<p>When called with no arguments this flushes the entire memory
+								(i.e. deletes all keys).</p>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="memory.memory-1.html#forget">Memory.forget</a> to remove a specific namespace without affecting its children.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -580,7 +617,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L45">common/state.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L45">common/state.ts:45</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -591,13 +628,13 @@
 					<a name="subscribeanime" class="tsd-anchor"></a>
 					<h3>subscribe<wbr>Anime</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">subscribe<wbr>Anime<span class="tsd-signature-symbol">(</span>animeID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, animeURL<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, nextEpisodeURL<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, episodesWatched<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, anime<span class="tsd-signature-symbol">: </span><a href="../interfaces/grobber.animeinfo.html" class="tsd-signature-type">AnimeInfo</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">subscribe<wbr>Anime<span class="tsd-signature-symbol">(</span>animeID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, animeURL<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, nextEpisodeURL<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, episodesWatched<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, anime<span class="tsd-signature-symbol">: </span><a href="../interfaces/grobber.animeinfo.html" class="tsd-signature-type">AnimeInfo</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L125">common/state.ts:125</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L125">common/state.ts:125</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -614,7 +651,7 @@
 									<h5>animeURL: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>nextEpisodeURL: <span class="tsd-signature-type">string</span></h5>
+									<h5>nextEpisodeURL: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
 								</li>
 								<li>
 									<h5>episodesWatched: <span class="tsd-signature-type">number</span></h5>
@@ -637,7 +674,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L149">common/state.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L149">common/state.ts:149</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -659,13 +696,13 @@
 					<a name="updateanimesubscription" class="tsd-anchor"></a>
 					<h3>update<wbr>Anime<wbr>Subscription</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Anime<wbr>Subscription<span class="tsd-signature-symbol">(</span>animeID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, nextEpisodeURL<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, episodesWatched<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Anime<wbr>Subscription<span class="tsd-signature-symbol">(</span>animeID<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, nextEpisodeURL<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, episodesWatched<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/common/state.ts#L139">common/state.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/common/state.ts#L139">common/state.ts:139</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -674,7 +711,7 @@
 									<h5>animeID: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>nextEpisodeURL: <span class="tsd-signature-type">string</span></h5>
+									<h5>nextEpisodeURL: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
 								</li>
 								<li>
 									<h5>episodesWatched: <span class="tsd-signature-type">number</span></h5>

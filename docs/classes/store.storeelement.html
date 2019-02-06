@@ -69,6 +69,27 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Internal representation of every object inside of the extension storage.</p>
+					</div>
+					<p>If you want to create a <a href="../modules/store.html#storeelementproxy">StoreElementProxy</a> directly, call <a href="store.storeelement.html#create">StoreElement.create</a>.</p>
+					<dl class="tsd-comment-tags">
+						<dt>see</dt>
+						<dd><p><a href="store.store-1.html">Store</a> which manages these objects.</p>
+							<p>StoreElement itself is only used for &quot;child&quot; objects.</p>
+						</dd>
+						<dt>see</dt>
+						<dd><p><a href="store.storeelementroot.html">StoreElementRoot</a> for the root.</p>
+						</dd>
+						<dt>see</dt>
+						<dd><p><a href="../modules/store.html#storeelementproxy">StoreElementProxy</a> for a more accurate representation of the values
+							returned by <a href="store.store-1.html">Store</a></p>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-type-parameters">
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
@@ -149,7 +170,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L105">store.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L137">store.ts:137</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -174,7 +195,7 @@
 					<div class="tsd-signature tsd-kind-icon">_container<span class="tsd-signature-symbol">:</span> <a href="../interfaces/store.indexable.html" class="tsd-signature-type">Indexable</a><span class="tsd-signature-symbol">&lt;</span><a href="store.storeelement.html" class="tsd-signature-type">StoreElement</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T[keyof T]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">T[keyof T]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L105">store.ts:105</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L137">store.ts:137</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -184,7 +205,7 @@
 					<div class="tsd-signature tsd-kind-icon">_root<span class="tsd-signature-symbol">:</span> <a href="store.storeelementroot.html" class="tsd-signature-type">StoreElementRoot</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L104">store.ts:104</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L136">store.ts:136</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -194,9 +215,19 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Update$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L101">store.ts:101</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L129">store.ts:129</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Observable which pushes a new value when anything changes.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>see</dt>
+							<dd><p><a href="store.storeelement.html#value_">StoreElement.value$</a> which does the same but always pushes the current value first.</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="value_" class="tsd-anchor"></a>
@@ -204,9 +235,15 @@
 					<div class="tsd-signature tsd-kind-icon">value$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">BehaviorSubject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L102">store.ts:102</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L134">store.ts:134</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Like <a href="store.storeelement.html#onupdate_">StoreElement.onUpdate$</a> but a BeahviourSubject.
+							As such it always pushes the current value when you subscribe to it.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -221,9 +258,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L118">store.ts:118</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L157">store.ts:157</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the &quot;raw&quot; value such as the one that was used to create this element.
+										This recursively traverses the element tree and converts the nested store elements
+									to their raw value.</p>
+								</div>
+								<p>This returns a copy of the value, not the original one.</p>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
 						</li>
 					</ul>
@@ -241,7 +286,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L191">store.ts:191</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L264">store.ts:264</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -264,9 +309,25 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L152">store.ts:152</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L222">store.ts:222</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Check whether the <a href="store.storeelement.html">StoreElement</a> is equal to a raw value.
+										This is not a comparator between <a href="store.storeelement.html">StoreElement</a>. It is used by
+									<a href="store.storeelement.html#update">StoreElement.update</a> to check whether something has changed.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-typescript">
+<span class="hljs-comment">// storeEl is a StoreElement!</span>
+
+<span class="hljs-comment">// this is a tautology!</span>
+storeEl.equals(storeEl.rawValue);</code></pre>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -287,7 +348,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L165">store.ts:165</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L235">store.ts:235</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -310,9 +371,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L169">store.ts:169</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L242">store.ts:242</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the value of key or set it to the provided default value if it doesn&#39;t exist.</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -345,7 +411,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L197">store.ts:197</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L270">store.ts:270</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -371,7 +437,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L148">store.ts:148</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L204">store.ts:204</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -394,7 +460,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L241">store.ts:241</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L321">store.ts:321</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -411,9 +477,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L140">store.ts:140</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L192">store.ts:192</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Save the <a href="store.storeelement.html">StoreElement</a> to the extension storage and wait for it to complete.
+										<strong>IMPORTANT</strong>: You don&#39;t have to call this method manually.
+									<a href="store.storeelement.html">StoreElement</a> automatically saves when something changes!</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="store.storeelement.html#triggersave">StoreElement.triggerSave</a> if you don&#39;t want to wait.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -428,7 +506,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L177">store.ts:177</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L250">store.ts:250</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -454,9 +532,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L245">store.ts:245</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L331">store.ts:331</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Provide some default values for this element.
+									If a key already exists it is skipped.</p>
+								</div>
+								<p>This does not trigger <a href="store.storeelement.html#save">StoreElement.save</a>!</p>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -477,7 +562,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L258">store.ts:258</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L344">store.ts:344</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -500,9 +585,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L144">store.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L200">store.ts:200</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Calls <a href="store.storeelement.html#save">StoreElement.save</a> and logs errors.
+									If you don&#39;t want to await <a href="store.storeelement.html#save">StoreElement.save</a>, use this method!</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -517,9 +608,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L208">store.ts:208</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L288">store.ts:288</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Receive a new value and apply it to this element.
+										This is not a method you should use! It is exposed for <a href="store.store-1.html">Store</a>
+									to apply changes to this element.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="store.storeelement.html#setdefaults">StoreElement.setDefaults</a> for a way to set defaults.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -540,9 +643,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L134">store.ts:134</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L179">store.ts:179</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create a <a href="store.storeelement.html">StoreElement</a> and wrap it with <a href="store.storeelementtraps.html">StoreElementTraps</a>.</p>
+								</div>
+								<p>Note that you should use this method because it pushes the wrapped value to
+								<a href="store.storeelement.html#value_">StoreElement.value$</a> which otherwise would not be the case.</p>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>

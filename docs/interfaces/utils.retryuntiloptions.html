@@ -69,6 +69,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Options passed to <a href="../modules/utils.html#retryuntil">retryUntil</a> function.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-type-parameters">
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
@@ -109,7 +116,7 @@
 					<div class="tsd-signature tsd-kind-icon">catch<wbr>Errors<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/utils.ts#L76">utils.ts:76</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/utils.ts#L87">utils.ts:87</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -119,9 +126,15 @@
 					<div class="tsd-signature tsd-kind-icon">condition<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/utils.ts#L77">utils.ts:77</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/utils.ts#L92">utils.ts:92</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Exit condition is called after every attempt unless an error was caught
+							with <a href="utils.retryuntiloptions.html#catcherrors">RetryUntilOptions.catchErrors</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="interval" class="tsd-anchor"></a>
@@ -129,9 +142,15 @@
 					<div class="tsd-signature tsd-kind-icon">interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/utils.ts#L74">utils.ts:74</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/utils.ts#L82">utils.ts:82</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Time in milliseconds that needs to pass before the next attempt is started.
+							The time is counted before an attempt is started!</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="timeout" class="tsd-anchor"></a>
@@ -139,9 +158,14 @@
 					<div class="tsd-signature tsd-kind-icon">timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/utils.ts#L75">utils.ts:75</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/utils.ts#L86">utils.ts:86</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Time in milliseconds after which to abort.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -277,6 +301,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="../modules/utils.html#wrapsentrylogger" class="tsd-kind-icon">wrap<wbr>Sentry<wbr>Logger</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/utils.html#wrapwiththeme" class="tsd-kind-icon">wrap<wbr>With<wbr>Theme</a>
 					</li>
 				</ul>
 			</nav>

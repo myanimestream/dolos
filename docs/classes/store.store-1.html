@@ -69,6 +69,17 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>An interface between the extension storage and Dolos.
+							It uses <a href="store.storeelement.html">StoreElement</a> or rather <a href="../modules/store.html#storeelementproxy">StoreElementProxy</a> objects to
+						provide an easy-to-work-with API.</p>
+					</div>
+					<p>Each <a href="store.store-1.html">Store</a> instance manages its own cache, but there won&#39;t be a problem
+					if you use multiple instances as the cache is kept up-to-date with the storage.</p>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -125,7 +136,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L289">store.ts:289</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L398">store.ts:398</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="store.store-1.html" class="tsd-signature-type">Store</a></h4>
@@ -141,7 +152,7 @@
 					<div class="tsd-signature tsd-kind-icon">_cache<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L288">store.ts:288</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L397">store.ts:397</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -159,7 +170,7 @@
 					<div class="tsd-signature tsd-kind-icon">_get<wbr>Lock<span class="tsd-signature-symbol">:</span> <a href="lock.asynclock.html" class="tsd-signature-type">AsyncLock</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L289">store.ts:289</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L398">store.ts:398</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -176,9 +187,19 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L374">store.ts:374</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L511">store.ts:511</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Build an identifier which uniquely represents a medium for a service.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>oaram</dt>
+									<dd><p>config - if not provided <a href="store.store-1.html#getconfig">Store.getConfig</a> is used.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -205,9 +226,26 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L297">store.ts:297</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L452">store.ts:452</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the value for the provided key from the storage.
+										This method returns a <a href="../modules/store.html#storeelementproxy">StoreElementProxy</a> proxied object which
+									can interact with the underlying value directly.</p>
+								</div>
+								<p>If there&#39;s no value for the given key the provided default value is used.
+									If no default value is provided it defaults to an empty object.
+									The default value is not immediately saved to the storage. However if you
+									edit an attribute of the <a href="../modules/store.html#storeelementproxy">StoreElementProxy</a> object the saved value will
+								include the default.</p>
+								<p>Access to the storage is &quot;locked&quot; using the key. This means that if you
+									start multiple get requests at the same time they will all finish
+									at the same time and resolve to the same <a href="../modules/store.html#storeelementproxy">StoreElementProxy</a> object.
+									This is to provide consistency and ensure that the <a href="store.store-1.html#_cache">Store._cache</a> cannot
+								be overwritten, potentially creating a dead <a href="store.storeelement.html">StoreElement</a> that isn&#39;t updated.</p>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -237,9 +275,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L386">store.ts:386</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L526">store.ts:526</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the stored <a href="../interfaces/models.subscribedanimes.html">SubscribedAnimes</a> object.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/store.html#storeelementproxy" class="tsd-signature-type">StoreElementProxy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/models.subscribedanimes.html" class="tsd-signature-type">SubscribedAnimes</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -254,9 +297,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L353">store.ts:353</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L480">store.ts:480</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Load the <a href="../interfaces/models.config.html">Config</a> from the storage.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/store.html#storeelementproxy" class="tsd-signature-type">StoreElementProxy</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/models.config.html" class="tsd-signature-type">Config</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -271,7 +319,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L312">store.ts:312</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L530">store.ts:530</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -294,7 +342,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L364">store.ts:364</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L496">store.ts:496</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -323,9 +371,19 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L360">store.ts:360</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L492">store.ts:492</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get thhe <a href="../interfaces/models.storedserviceanimes.html">StoredServiceAnimes</a> for a given service from the storage.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="store.store-1.html#getstoredanimeinfo">Store.getStoredAnimeInfo</a> for accessing <a href="../interfaces/models.storedanimeinfo.html">StoredAnimeInfo</a> directly.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -340,13 +398,13 @@
 					<a name="handlevaluechanged" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> handle<wbr>Value<wbr>Changed</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">handle<wbr>Value<wbr>Changed<span class="tsd-signature-symbol">(</span>changes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">handle<wbr>Value<wbr>Changed<span class="tsd-signature-symbol">(</span>changes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L390">store.ts:390</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L540">store.ts:540</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -360,7 +418,7 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -374,9 +432,20 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L318">store.ts:318</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L473">store.ts:473</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Store the given value under the given key in the storage.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="../modules/store.html#storeelementproxy">StoreElementProxy</a> objects returned by <a href="store.store-1.html#get">Store.get</a>
+										for a more convenient access.</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -400,7 +469,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L349">store.ts:349</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L536">store.ts:536</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -424,7 +493,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L322">store.ts:322</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L406">store.ts:406</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -444,7 +513,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/store.ts#L323">store.ts:323</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/store.ts#L408">store.ts:408</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

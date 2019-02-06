@@ -69,7 +69,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Utility functions for Dolos.</p>
+						<p>Utility functions for Dolos.
+						These are some miscellaneous functions that didn&#39;t really fit anywhere else.</p>
 					</div>
 				</div>
 			</section>
@@ -95,6 +96,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="utils.html#waituntilexists" class="tsd-kind-icon">wait<wbr>Until<wbr>Exists</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="utils.html#waitwithtimeout" class="tsd-kind-icon">wait<wbr>With<wbr>Timeout</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="utils.html#wrapsentrylogger" class="tsd-kind-icon">wrap<wbr>Sentry<wbr>Logger</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="utils.html#wrapwiththeme" class="tsd-kind-icon">wrap<wbr>With<wbr>Theme</a></li>
 							</ul>
 						</section>
 					</div>
@@ -112,7 +114,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/utils.ts#L29">utils.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/utils.ts#L30">utils.ts:30</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -134,7 +136,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/utils.ts#L171">utils.ts:171</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/utils.ts#L201">utils.ts:201</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -162,7 +164,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/utils.ts#L144">utils.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/utils.ts#L178">utils.ts:178</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -196,7 +198,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/utils.ts#L85">utils.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/utils.ts#L100">utils.ts:100</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -257,7 +259,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/utils.ts#L43">utils.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/utils.ts#L44">utils.ts:44</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -294,7 +296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/utils.ts#L68">utils.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/utils.ts#L69">utils.ts:69</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -335,12 +337,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/7a32c85/src/utils.ts#L137">utils.ts:137</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/utils.ts#L154">utils.ts:154</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Wrap a React node with a Sentry logger which tracks errors.</p>
+									<p>Wrap a React node with a Sentry logger which catches errors and displays a message
+									to the user.</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>see</dt>
@@ -355,6 +358,44 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">React.ReactNode</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="wrapwiththeme" class="tsd-anchor"></a>
+					<h3>wrap<wbr>With<wbr>Theme</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">wrap<wbr>With<wbr>Theme<span class="tsd-signature-symbol">(</span>component<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">React.ReactNode</span>, theme<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Theme</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReactElement</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/utils.ts#L166">utils.ts:166</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Apply a theme to a React node.</p>
+								</div>
+								<p>This wraps the provided node with both the modern [[ThemeProvider]] and
+								the old [[MuiThemeProvider]].</p>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="utils.html#reactrenderwiththeme">reactRenderWithTheme</a> to render the result to an element.</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>component: <span class="tsd-signature-type">React.ReactNode</span></h5>
+								</li>
+								<li>
+									<h5>theme: <span class="tsd-signature-type">Theme</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ReactElement</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -474,6 +515,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="utils.html#wrapsentrylogger" class="tsd-kind-icon">wrap<wbr>Sentry<wbr>Logger</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="utils.html#wrapwiththeme" class="tsd-kind-icon">wrap<wbr>With<wbr>Theme</a>
 					</li>
 				</ul>
 			</nav>

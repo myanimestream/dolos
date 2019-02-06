@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SentryLoggerState | Dolos Documentation</title>
+	<title>AnimeSearchResult | Dolos Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,24 +56,31 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/logging.html">logging</a>
+					<a href="../modules/grobber.html">grobber</a>
 				</li>
 				<li>
-					<a href="logging.sentryloggerstate.html">SentryLoggerState</a>
+					<a href="grobber.animesearchresult.html">AnimeSearchResult</a>
 				</li>
 			</ul>
-			<h1>Interface SentryLoggerState</h1>
+			<h1>Interface AnimeSearchResult</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A search result from the anime search endpoint.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">SentryLoggerState</span>
+						<span class="target">AnimeSearchResult</span>
 					</li>
 				</ul>
 			</section>
@@ -81,35 +88,35 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-not-exported">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="logging.sentryloggerstate.html#error" class="tsd-kind-icon">error</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="logging.sentryloggerstate.html#eventid" class="tsd-kind-icon">event<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="grobber.animesearchresult.html#anime" class="tsd-kind-icon">anime</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="grobber.animesearchresult.html#certainty" class="tsd-kind-icon">certainty</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="error" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> error</h3>
-					<div class="tsd-signature tsd-kind-icon">error<span class="tsd-signature-symbol">:</span> <a href="../classes/grobber.grobberrequesterror.html#error" class="tsd-signature-type">Error</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="anime" class="tsd-anchor"></a>
+					<h3>anime</h3>
+					<div class="tsd-signature tsd-kind-icon">anime<span class="tsd-signature-symbol">:</span> <a href="grobber.animeinfo.html" class="tsd-signature-type">AnimeInfo</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/SentryLogger.tsx#L23">SentryLogger.tsx:23</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/grobber/models.ts#L56">grobber/models.ts:56</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="eventid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> event<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">event<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="certainty" class="tsd-anchor"></a>
+					<h3>certainty</h3>
+					<div class="tsd-signature tsd-kind-icon">certainty<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/SentryLogger.tsx#L24">SentryLogger.tsx:24</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/4587f89/src/grobber/models.ts#L57">grobber/models.ts:57</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -142,7 +149,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/common_pages.html">common.pages</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/grobber.html">grobber</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -160,7 +167,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/lock.html">lock</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/logging.html">logging</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -200,29 +207,68 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-						<a href="../classes/logging.sentrylogger.html" class="tsd-kind-icon">Sentry<wbr>Logger</a>
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/grobber.grobbererrortype.html" class="tsd-kind-icon">Grobber<wbr>Error<wbr>Type</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="logging.sentryloggerprops.html" class="tsd-kind-icon">Sentry<wbr>Logger<wbr>Props</a>
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/grobber.language.html" class="tsd-kind-icon">Language</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.client.html" class="tsd-kind-icon">Client</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.grobberrequesterror.html" class="tsd-kind-icon">Grobber<wbr>Request<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.grobberresponseerror.html" class="tsd-kind-icon">Grobber<wbr>Response<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="grobber.animeinfo.html" class="tsd-kind-icon">Anime<wbr>Info</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="logging.sentryloggerstate.html" class="tsd-kind-icon">Sentry<wbr>Logger<wbr>State</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="grobber.animesearchresult.html" class="tsd-kind-icon">Anime<wbr>Search<wbr>Result</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="logging.sentryloggerstate.html#error" class="tsd-kind-icon">error</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="grobber.animesearchresult.html#anime" class="tsd-kind-icon">anime</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="logging.sentryloggerstate.html#eventid" class="tsd-kind-icon">event<wbr>Id</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="grobber.animesearchresult.html#certainty" class="tsd-kind-icon">certainty</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/logging.html#release" class="tsd-kind-icon">release</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="grobber.episode.html" class="tsd-kind-icon">Episode</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="grobber.episodestream.html" class="tsd-kind-icon">Episode<wbr>Stream</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="grobber.expiringitem.html" class="tsd-kind-icon">Expiring<wbr>Item</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#staticclient" class="tsd-kind-icon">Static<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#responsecachettl" class="tsd-kind-icon">response<wbr>CacheTTL</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#animefromresp" class="tsd-kind-icon">anime<wbr>From<wbr>Resp</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/grobber.html#buildkeys" class="tsd-kind-icon">build<wbr>Keys</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="../modules/grobber.html#createexpiringitem" class="tsd-kind-icon">create<wbr>Expiring<wbr>Item</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#episodefromresp" class="tsd-kind-icon">episode<wbr>From<wbr>Resp</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#streamfromresponse" class="tsd-kind-icon">stream<wbr>From<wbr>Response</a>
 					</li>
 				</ul>
 			</nav>
