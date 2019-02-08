@@ -73,9 +73,7 @@ jobs:
       - run:
           name: Comiling & Bundling code
           command: |
-            echo "$CIRCLE_TAG"
-            [[ -z "$CIRCLE_TAG" ]] && NO_SENTRY_UPLOAD="true"
-            echo "no upload: $NO_SENTRY_UPLOAD"
+            [[ -z "$CIRCLE_TAG" ]] && export NO_SENTRY_UPLOAD="true"
             npm run build:production
       - run:
           name: Getting localisations
