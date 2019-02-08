@@ -50,13 +50,32 @@ alarms.create("UpdateCheck", {
 // since the alarm doesn't trigger immediately and the delay can't be set to 0 perform a check right away!
 performUpdateCheck();
 
+/**
+ * Show the given text on the popup badge.
+ * If the concept of a badge text does not exist
+ * (i.e. on mobile) the text is shown in the title.
+ *
+ * Passing a falsy value or omitting the text altogether
+ * will reset the text.
+ */
+function setBadgeText(text?: string): void {
+    if (browserAction.setBadgeText)
+        browserAction.setBadgeText({text: text || "",});
+    else {
+        let title = _("__MSG_ext_tooltip__");
+        if (text) title = `${title} [${text}]`;
+
+        browserAction.setTitle({title,});
+    }
+}
+
 state.hasNewVersion$.subscribe(newVersion => {
     if (!newVersion) {
         storage.sync.remove(extUpdatedKey);
     }
 
-    const text = newVersion ? _("ext_badge__new_version") : "";
-    browserAction.setBadgeText({text,});
+    const text = newVersion ? _("ext_badge__new_version") : undefined;
+    setBadgeText(text);
 });
 
 state.hasNewEpisode$.subscribe(async e => {
