@@ -33,8 +33,6 @@ If you want to dive straight in, [here's a link to the API documentation][dolos-
 ## License
 [MIT](LICENSE)
 
-
-[dolos-website]: https://myanimestream.github.io/dolos/
 [dolos-guides]: https://myanimestream.github.io/dolos/guides/
 [dolos-docs]: https://myanimestream.github.io/dolos/docs/
 [dolos-guides-getting-ready]: https://myanimestream.github.io/dolos/guides/getting-ready-for-development/

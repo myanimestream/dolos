@@ -6,14 +6,19 @@ const manifest = require("./dist/manifest.json");
 const plugins = [];
 
 if (["SENTRY_AUTH_TOKEN", "SENTRY_ORG", "SENTRY_PROJECT"].every(key => key in process.env)) {
-    plugins.push(
-        new SentryCliPlugin({
+    if (!("NO_SENTRY_UPLOAD" in process.env)) {
+        console.info("uploading source maps to Sentry!");
+        const sentryPlugin = new SentryCliPlugin({
             release: `dolos@${manifest.version}`,
             include: "dist/",
-        }));
-    console.info("uploading source maps to Sentry!");
+        });
+
+        plugins.push(sentryPlugin);
+    } else {
+        console.info(`Not uploading source maps to Sentry because "NO_SENTRY_UPLOAD" present!`);
+    }
 } else {
-    console.info("Not uploading source maps to Sentry!");
+    console.info("Not uploading source maps to Sentry because credentials are missing!");
 }
 
 module.exports = merge(common, {

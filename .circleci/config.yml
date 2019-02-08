@@ -11,7 +11,9 @@ references:
     attach_workspace:
       at: *workspace_root
   copy_node_modules: &copy_node_modules
-    run: mv /tmp/workspace/node_modules .
+    run:
+      name: Getting Node modules from workspace
+      command: mv /tmp/workspace/node_modules .
 
   tag_filters: &tag_filters
     filters:
@@ -68,11 +70,17 @@ jobs:
       - checkout
       - *attach_workspace
       - *copy_node_modules
-      - run: npm run build:production
+      - run:
+          name: Comiling & Bundling code
+          command: |
+            [[ -z "$CIRCLE_TAG" ]] && NO_SENTRY_UPLOAD="true"
+            npm run build:production
       - run:
           name: Getting localisations
           command: bash tools/crowdin_download.sh
-      - run: mv dist/ /tmp/workspace/
+      - run:
+          name: Moving dist to workspace
+          command: mv dist/ /tmp/workspace/
       - persist_to_workspace:
           root: *workspace_root
           paths:

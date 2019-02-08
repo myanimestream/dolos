@@ -2,10 +2,20 @@
   "defaultSeverity": "error",
   "extends": [
     "tslint:recommended",
-    "tslint-config-airbnb",
     "tslint-react"
   ],
   "jsRules": {},
-  "rules": {},
+  "rules": {
+    "quotemark": [
+      true,
+      "double",
+      "avoid-escape",
+      "avoid-template"
+    ],
+    "return-undefined": true,
+    "arrow-parens": false,
+    "curly": false,
+    "interface-name": false
+  },
   "rulesDirectory": []
 }
