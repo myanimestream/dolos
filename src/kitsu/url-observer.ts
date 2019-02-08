@@ -2,6 +2,8 @@
  * @module kitsu
  */
 
+export type UrlChangeCallback = (old: string | undefined, updated: string) => void;
+
 /**
  * Observes the url for any changes and calls a callback if it changes.
  *
@@ -26,9 +28,9 @@ export default class UrlObserver {
     _observing: boolean;
 
     interval: number;
-    url: string;
+    url?: string;
 
-    callback?: (old: string, updated: string) => void;
+    callback?: UrlChangeCallback;
 
     /**
      * Create a new UrlObserver.
@@ -37,7 +39,7 @@ export default class UrlObserver {
      *
      * @param interval - in milliseconds
      */
-    constructor(interval: number, callback?: (old: string, updated: string) => any) {
+    constructor(interval: number, callback?: UrlChangeCallback) {
         this.interval = interval;
         this.callback = callback;
         this._observing = false;
@@ -61,7 +63,7 @@ export default class UrlObserver {
      *
      * You can override this method when inheriting from [[UrlObserver]].
      */
-    onUrlChange(old: string, updated: string): void {
+    onUrlChange(old: string | undefined, updated: string): void {
         if (this.callback)
             this.callback(old, updated);
     }

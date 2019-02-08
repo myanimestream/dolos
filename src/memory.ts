@@ -286,7 +286,7 @@ export function cacheInMemory(name?: string) {
         const func = descriptor.value;
         let returnPromise: boolean;
 
-        descriptor.value = function () {
+        descriptor.value = function (this: HasMemory) {
             const memory = this.memory;
 
             let value;

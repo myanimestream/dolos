@@ -134,7 +134,7 @@ export class StoreElement<T> {
     readonly value$: BehaviorSubject<this>;
 
     protected readonly _root: StoreElementRoot<any>;
-    protected _container: Indexable<StoreElement<T[keyof T]> | T[keyof T]>;
+    protected _container!: Indexable<StoreElement<T[keyof T]> | T[keyof T]>;
 
     protected constructor(root: StoreElementRoot<any> | null, data: T) {
         // @ts-ignore

@@ -47,7 +47,7 @@ export type EpisodeAnimePageLike<T extends Service> =
  */
 export default abstract class EpisodePage<T extends Service> extends ServicePage<T> {
     episodeBookmarked$: rxjs.BehaviorSubject<boolean>;
-    private epsWatchedSub: rxjs.Subscription;
+    private epsWatchedSub?: rxjs.Subscription;
 
     constructor(service: T) {
         super(service);
@@ -55,7 +55,7 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         this.episodeBookmarked$ = new rxjs.BehaviorSubject(false);
     }
 
-    private _animePage: EpisodeAnimePageLike<T>;
+    private _animePage?: EpisodeAnimePageLike<T>;
 
     get animePage(): EpisodeAnimePageLike<T> {
         if (!this._animePage) this._animePage = this.buildAnimePage();

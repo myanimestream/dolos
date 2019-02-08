@@ -168,7 +168,7 @@ export function cacheInStateMemory(name?: string) {
         const func = descriptor.value;
         let returnPromise: boolean;
 
-        descriptor.value = function () {
+        descriptor.value = function (this: HasState) {
             const memory = this.state.memory;
             if (memory === undefined)
                 throw new Error("No memory found");
