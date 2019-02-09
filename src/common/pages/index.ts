@@ -6,5 +6,6 @@
  */
 
 /** @ignore */
-export {default as AnimePage} from "./anime";
-export {default as EpisodePage} from "./episode";
+
+export * from "./anime";
+export * from "./episode";

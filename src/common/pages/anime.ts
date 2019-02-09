@@ -9,16 +9,16 @@ import {wrapSentryLogger} from "dolos/utils";
 import * as React from "react";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {distinctUntilChanged, first, map} from "rxjs/operators";
+import {EpisodePage} from ".";
 import {AnimeStatusBar, RemoteAnimeSearchDialog, SearchDialogOpenCommand} from "../components/anime";
 import Service from "../service";
 import ServicePage from "../service-page";
-import EpisodePage from "./episode";
 import _ = chrome.i18n.getMessage;
 
 /**
  * AnimePage reflects a page that is dedicated to a specific Anime.
  */
-export default abstract class AnimePage<T extends Service> extends ServicePage<T> {
+export abstract class AnimePage<T extends Service> extends ServicePage<T> {
     private _episodesWatched$?: BehaviorSubject<number | undefined>;
     private readonly _animeSearchDialogOpen$: Subject<SearchDialogOpenCommand>;
 

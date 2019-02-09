@@ -7,10 +7,10 @@ import {cacheInMemory} from "dolos/memory";
 import {wrapSentryLogger} from "dolos/utils";
 import * as React from "react";
 import * as rxjs from "rxjs";
+import {AnimePage} from ".";
 import {EpisodeEmbed, SkipButton} from "../components/anime";
 import Service from "../service";
 import ServicePage from "../service-page";
-import AnimePage from "./anime";
 import _ = chrome.i18n.getMessage;
 
 /**
@@ -45,7 +45,7 @@ export type EpisodeAnimePageLike<T extends Service> =
  * - [[EpisodePage]] -> [[EpisodePage]]: [[EpisodePage.animePage]] is passed
  * - [[EpisodePage]] -> [[AnimePage]]: Uses [[EpisodePage.animePage.transitionTo]] to handle the transition.
  */
-export default abstract class EpisodePage<T extends Service> extends ServicePage<T> {
+export abstract class EpisodePage<T extends Service> extends ServicePage<T> {
 
     get animePage(): EpisodeAnimePageLike<T> {
         if (!this._animePage) this._animePage = this.buildAnimePage();
