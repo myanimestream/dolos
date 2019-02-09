@@ -54,7 +54,9 @@
  */
 
 /** @ignore */
-import {waitUntilExists} from "./utils";
+
+import {fromEvent, Observable} from "rxjs";
+import {first, map} from "rxjs/operators";
 
 /**
  * Code mix-in which when executed immediately removes the current script element from the DOM.
@@ -67,6 +69,20 @@ const DELETE_AFTER = `(${(() => {
 }).toString()})();`;
 
 /**
+ * Body of an `evalresult` event.
+ */
+interface EvalResultEventDetails extends CustomEventInit {
+    id: string;
+    result?: any;
+    error?: any;
+}
+
+/**
+ * Type of an eval result event.
+ */
+type EvalResultEvent = CustomEvent<EvalResultEventDetails>;
+
+/**
  * Code mix-in which exposes the `pushResult(value: any, key: string)` function
  * to "expose" a value in an element so that it can be accessed from the extension context.
  *
@@ -75,11 +91,15 @@ const DELETE_AFTER = `(${(() => {
  * @see [[evaluateCode]]
  */
 const PUSH_RESULT = `const pushResult = ${(
-    (value: any, key: string) => {
-        const el = document.createElement("div");
-        el.id = "{{uid}}";
-        el.setAttribute(key, JSON.stringify(value));
-        document.body.appendChild(el);
+    (value: any, key: "result" | "error") => {
+        const event = new CustomEvent("evalresult", {
+            detail: {
+                id: "{{uid}}",
+                [key]: value,
+            },
+        });
+
+        document.dispatchEvent(event);
     }
 ).toString()};`;
 
@@ -99,8 +119,8 @@ ${PUSH_RESULT}
 
 const run = async () => {{{code}}};
 run()
-    .then(value => pushResult(value, "data-result"))
-    .catch(reason => pushResult(reason.toString(), "data-error"));
+    .then(value => pushResult(value, "result"))
+    .catch(reason => pushResult(reason.toString(), "error"));
 `;
 
 /**
@@ -163,6 +183,11 @@ function getUid(): string {
 }
 
 /**
+ * Observable for all eval results
+ */
+const evalResultEvent$ = fromEvent(document, "evalresult") as Observable<EvalResultEvent>;
+
+/**
  * Evaluate `code` in the context of the page window and return its result.
  * This function can be used to get access to Javascript variables
  * because extensions don't have access to the page's Window object.
@@ -186,18 +211,13 @@ export async function evaluateCode(code: string): Promise<any> {
 
     injectCode(formatCode(EVAL_TEMPLATE, {uid, code}));
 
-    const el = await waitUntilExists(`#${uid}`);
+    const details = await evalResultEvent$.pipe(
+        map(event => event.detail),
+        first(resultDetails => resultDetails.id === uid),
+    ).toPromise();
 
-    const error = el.getAttribute("data-error");
+    const error = details.error;
     if (error) throw Error(`Evaluation error: ${error}`);
 
-    const result = el.getAttribute("data-result");
-    if (result === null)
-        throw new Error("No result passed!");
-
-    const value = (result === "undefined") ? undefined : JSON.parse(result);
-
-    el.remove();
-
-    return value;
+    return details.result;
 }

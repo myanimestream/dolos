@@ -38,7 +38,7 @@
   },
   "content_scripts": [
     {
-      "run_at": "document_end",
+      "run_at": "document_idle",
       "matches": [
         "*://kitsu.io/*"
       ],
