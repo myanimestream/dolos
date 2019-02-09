@@ -56,8 +56,6 @@ function prepareStoreElement<T extends Indexable<any>>(root: StoreElementRoot<an
  */
 class StoreElementTraps implements ProxyHandler<StoreElement<any>> {
 
-    private proxy: any;
-
     /**
      * Wrap a [[StoreElement]] in this proxy such that it becomes a [[StoreELementProxy]].
      *
@@ -69,6 +67,8 @@ class StoreElementTraps implements ProxyHandler<StoreElement<any>> {
         traps.proxy = proxy;
         return proxy;
     }
+
+    private proxy: any;
 
     public has<T>(target: StoreElement<T>, p: any): boolean {
         return target.has(p);
@@ -124,31 +124,6 @@ class StoreElementTraps implements ProxyHandler<StoreElement<any>> {
 export class StoreElement<T> {
 
     /**
-     * Observable which pushes a new value when anything changes.
-     *
-     * @see [[StoreElement.value$]] which does the same but always pushes the current value first.
-     */
-    public readonly onUpdate$: Subject<this>;
-    /**
-     * Like [[StoreElement.onUpdate$]] but a BeahviourSubject.
-     * As such it always pushes the current value when you subscribe to it.
-     */
-    public readonly value$: BehaviorSubject<this>;
-    protected readonly _root: StoreElementRoot<any>;
-    protected _container!: Indexable<StoreElement<T[keyof T]> | T[keyof T]>;
-
-    protected constructor(root: StoreElementRoot<any> | null, data: T) {
-        // @ts-ignore
-        this._root = root || this;
-        this.setValueSelf(data);
-
-        this.onUpdate$ = new Subject();
-        this.value$ = new BehaviorSubject(this);
-
-        this.onUpdate$.subscribe(this.value$);
-    }
-
-    /**
      * Return the "raw" value such as the one that was used to create this element.
      * This recursively traverses the element tree and converts the nested store elements
      * to their raw value.
@@ -181,6 +156,31 @@ export class StoreElement<T> {
         const storeEl = StoreElementTraps.wrap(new StoreElement(root, data));
         storeEl.value$.next(storeEl);
         return storeEl as StoreElementProxy<T>;
+    }
+
+    /**
+     * Observable which pushes a new value when anything changes.
+     *
+     * @see [[StoreElement.value$]] which does the same but always pushes the current value first.
+     */
+    public readonly onUpdate$: Subject<this>;
+    /**
+     * Like [[StoreElement.onUpdate$]] but a BeahviourSubject.
+     * As such it always pushes the current value when you subscribe to it.
+     */
+    public readonly value$: BehaviorSubject<this>;
+    protected readonly _root: StoreElementRoot<any>;
+    protected _container!: Indexable<StoreElement<T[keyof T]> | T[keyof T]>;
+
+    protected constructor(root: StoreElementRoot<any> | null, data: T) {
+        // @ts-ignore
+        this._root = root || this;
+        this.setValueSelf(data);
+
+        this.onUpdate$ = new Subject();
+        this.value$ = new BehaviorSubject(this);
+
+        this.onUpdate$.subscribe(this.value$);
     }
 
     /**
@@ -397,15 +397,6 @@ export type StoreElementProxy<T> = StoreElement<T> & T;
  */
 export class Store {
 
-    private readonly _cache: { [key: string]: StoreElementProxy<any> };
-    private readonly _getLock: AsyncLock;
-
-    constructor() {
-        this._cache = {};
-        this._getLock = new AsyncLock();
-        chrome.storage.onChanged.addListener(this.handleValueChanged.bind(this));
-    }
-
     public static buildLanguageIdentifier(config: Config): string;
 
     public static buildLanguageIdentifier(language: string, dubbed: boolean): string;
@@ -433,6 +424,15 @@ export class Store {
         }
 
         return `${language}_${dubbed ? "dub" : "sub"}`;
+    }
+
+    private readonly _cache: { [key: string]: StoreElementProxy<any> };
+    private readonly _getLock: AsyncLock;
+
+    constructor() {
+        this._cache = {};
+        this._getLock = new AsyncLock();
+        chrome.storage.onChanged.addListener(this.handleValueChanged.bind(this));
     }
 
     /**

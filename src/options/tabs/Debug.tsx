@@ -34,26 +34,6 @@ interface GrobberUrlCheckResult {
 
 export default class Debug extends SettingsTabContent<SettingsTabContentProps, DebugState> {
 
-    public changeGrobberUrl = AwesomeDebouncePromise(async (url: string) => {
-        if (!url.match(/https?:\/\/.+/)) {
-            this.setState({invalidUrl: _("options__grobber__url__invalid")});
-            return;
-        }
-
-        this.setState({checkingUrl: true});
-
-        const result = await Debug.checkGrobberUrl(url);
-        if (result.valid) {
-            await this.change("grobberUrl", url);
-            this.setState({invalidUrl: undefined});
-        } else {
-            const text = `options__grobber__url__${result.hint || "test_failed"}`;
-            this.setState({invalidUrl: _(text)});
-        }
-
-        this.setState({checkingUrl: false});
-    }, 500);
-
     public static async checkGrobberUrl(url: string): Promise<GrobberUrlCheckResult> {
         let resp;
 
@@ -78,6 +58,26 @@ export default class Debug extends SettingsTabContent<SettingsTabContentProps, D
 
         return {valid: true};
     }
+
+    public changeGrobberUrl = AwesomeDebouncePromise(async (url: string) => {
+        if (!url.match(/https?:\/\/.+/)) {
+            this.setState({invalidUrl: _("options__grobber__url__invalid")});
+            return;
+        }
+
+        this.setState({checkingUrl: true});
+
+        const result = await Debug.checkGrobberUrl(url);
+        if (result.valid) {
+            await this.change("grobberUrl", url);
+            this.setState({invalidUrl: undefined});
+        } else {
+            const text = `options__grobber__url__${result.hint || "test_failed"}`;
+            this.setState({invalidUrl: _(text)});
+        }
+
+        this.setState({checkingUrl: false});
+    }, 500);
 
     constructor(props: SettingsTabContentProps) {
         super(props);

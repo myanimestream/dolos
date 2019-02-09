@@ -94,6 +94,14 @@ export class BrowserNotification {
         return onClosed$.pipe(filter(ev => ev.notificationID === this.id));
     }
 
+    /**
+     * Create a new notification and return it wrapped in a BrowserNotification instance.
+     */
+    public static async create(options: chrome.notifications.NotificationOptions): Promise<BrowserNotification> {
+        const id = await createNotification(options);
+        return new BrowserNotification(id);
+    }
+
     public readonly id: string;
 
     /**
@@ -104,14 +112,6 @@ export class BrowserNotification {
      */
     constructor(id: string) {
         this.id = id;
-    }
-
-    /**
-     * Create a new notification and return it wrapped in a BrowserNotification instance.
-     */
-    public static async create(options: chrome.notifications.NotificationOptions): Promise<BrowserNotification> {
-        const id = await createNotification(options);
-        return new BrowserNotification(id);
     }
 
     /** Update the notification. */
