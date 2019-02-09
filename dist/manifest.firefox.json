@@ -43,7 +43,7 @@
         "*://kitsu.io/*"
       ],
       "js": [
-        "js/kitsu.js"
+        "js/service/kitsu.js"
       ]
     },
     {
@@ -52,7 +52,7 @@
         "*://myanimelist.net/*"
       ],
       "js": [
-        "js/myanimelist.js"
+        "js/service/myanimelist.js"
       ]
     }
   ]

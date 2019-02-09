@@ -3,10 +3,10 @@
  */
 
 import axios from "axios";
+import {AnimePage} from "dolos/common/pages";
+import {cacheInMemory} from "dolos/memory";
+import {waitUntilExists} from "dolos/utils";
 import MyAnimeList from ".";
-import {AnimePage} from "../common/pages";
-import {cacheInMemory} from "../memory";
-import {waitUntilExists} from "../utils";
 
 interface MALAnime {
     title: string;

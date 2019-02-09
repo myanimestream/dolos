@@ -5,7 +5,7 @@
  */
 
 import axios, {AxiosRequestConfig} from "axios";
-import {evaluateCode, formatCode, injectCode} from "../inject";
+import {evaluateCode, formatCode, injectCode} from "dolos/inject";
 
 /**
  * Perform a request to the Kitsu API.

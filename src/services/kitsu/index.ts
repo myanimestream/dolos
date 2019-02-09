@@ -7,8 +7,8 @@
 
 /** @ignore */
 
-import {Service} from "../common";
-import "../logging";
+import {Service} from "dolos/common";
+import "dolos/logging";
 import KitsuAnimePage from "./anime";
 import KitsuEpisodePage from "./episode";
 import UrlObserver from "./url-observer";
@@ -45,4 +45,4 @@ export default class Kitsu extends Service {
     }
 }
 
-(new Kitsu()).load();
+new Kitsu().load();

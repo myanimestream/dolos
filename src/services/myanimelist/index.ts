@@ -7,9 +7,9 @@
 
 /** @ignore */
 
-import {cacheInStateMemory, Service} from "../common";
-import {evaluateCode} from "../inject";
-import "../logging";
+import {cacheInStateMemory, Service} from "dolos/common";
+import {evaluateCode} from "dolos/inject";
+import "dolos/logging";
 import MalAnimePage from "./anime";
 import MalEpisodePage from "./episode";
 

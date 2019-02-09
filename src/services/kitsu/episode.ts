@@ -2,12 +2,12 @@
  * @module kitsu
  */
 
-import {SkipButton} from "../common/components/anime";
-import {EpisodePage} from "../common/pages";
-import {cacheInMemory} from "../memory";
-import {waitUntilExists} from "../utils";
+import {SkipButton} from "dolos/common/components/anime";
+import {EpisodePage} from "dolos/common/pages";
+import {cacheInMemory} from "dolos/memory";
+import {waitUntilExists} from "dolos/utils";
+import Kitsu from ".";
 import KitsuAnimePage from "./anime";
-import Kitsu from "./index";
 import {transitionTo} from "./utils";
 
 export default class KitsuEpisodePage extends EpisodePage<Kitsu> {

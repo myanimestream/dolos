@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
+const glob = require("glob");
 
 // load the config from the file
 const secrets = require("./dolos-secrets");
@@ -12,14 +13,22 @@ for (const key of Object.keys(secrets)) {
         secrets[key] = envValue;
 }
 
+const contentScripts = {};
+
+// dynamically detect and load content scripts
+const serviceDirs = glob.sync("src/services/*/");
+for (const serviceDir of serviceDirs) {
+    const name = path.basename(serviceDir);
+    contentScripts[`service/${name}`] = path.join(__dirname, serviceDir, "index.ts");
+}
+
 module.exports = {
     entry: {
         popup: path.join(__dirname, "src/popup/index.tsx"),
         options: path.join(__dirname, "src/options/index.tsx"),
         background: path.join(__dirname, "src/background/index.ts"),
         // Content Scripts:
-        kitsu: path.join(__dirname, "src/kitsu/index.ts"),
-        myanimelist: path.join(__dirname, "src/myanimelist/index.ts"),
+        ...contentScripts,
     },
     output: {
         path: path.join(__dirname, "dist/js"),

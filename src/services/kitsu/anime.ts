@@ -2,11 +2,11 @@
  * @module kitsu
  */
 
+import {cacheInStateMemory} from "dolos/common";
+import {AnimePage} from "dolos/common/pages";
+import {cacheInMemory} from "dolos/memory";
+import {retryUntil, waitUntilExists} from "dolos/utils";
 import Kitsu from ".";
-import {cacheInStateMemory} from "../common";
-import {AnimePage} from "../common/pages";
-import {cacheInMemory} from "../memory";
-import {retryUntil, waitUntilExists} from "../utils";
 import {
     getAccessToken,
     getAnime,

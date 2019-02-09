@@ -2,10 +2,10 @@
  * @module myanimelist
  */
 
-import {SkipButton} from "../common/components/anime";
-import {EpisodePage} from "../common/pages";
+import {SkipButton} from "dolos/common/components/anime";
+import {EpisodePage} from "dolos/common/pages";
+import MyAnimeList from ".";
 import MalAnimePage from "./anime";
-import MyAnimeList from "./index";
 
 export default class MalEpisodePage extends EpisodePage<MyAnimeList> {
     public buildAnimePage(): MalAnimePage {
