@@ -65,6 +65,17 @@ jobs:
       - store_artifacts:
           path: reports/junit
 
+  lint:
+    executor: node/node
+
+    steps:
+      - checkout
+      - *attach_workspace
+      - *copy_node_modules
+      - run:
+          name: Lint using TSLint
+          command: npm run lint
+
   compile:
     executor: node/node
 
@@ -187,6 +198,11 @@ workflows:
           <<: *tag_filters
 
       - test:
+          <<: *tag_filters
+          requires:
+            - install
+
+      - lint:
           <<: *tag_filters
           requires:
             - install
