@@ -24,7 +24,8 @@
     "interface-name": false,
     "no-console": [
       true,
-      "log"
+      "log",
+      "trace"
     ],
     "variable-name": [
       true,

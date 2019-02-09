@@ -33,6 +33,10 @@ export interface Changelog {
 const CHANGELOG: Changelog = new Map([
     ["0.2.3", [
         "Added some new embed providers",
+        (
+            "**Kitsu**: Fixed bug [DOLOS-31](https://sentry.io/share/issue/2c8e1d3970c64fea95833dccd631452d/) " +
+            "which would break directly loading kitsu sites due to Dolos being active before Kitsu."
+        ),
     ]],
     ["0.2.2", [
         "**Kitsu**: Fixed browser crash caused by Keen. How? By simply removing Keen!",
@@ -47,7 +51,10 @@ const CHANGELOG: Changelog = new Map([
     ["0.2.0", [
         "Show notifications for new episodes. Hey, read it again, **THIS IS HUGE!**",
         "Rewrote some of the storage logic. You hopefully won't notice this one. *Why did I even bring it up...*",
-        "Only continuing to next episode if there actually is one. No longer getting your hopes up for nothing, you're welcome.",
+        (
+            "Only continuing to next episode if there actually is one. " +
+            "No longer getting your hopes up for nothing, you're welcome."
+        ),
         "Added a version updater which should allow for breaking changes without affecting you.",
         "Dolos' theme is now light instead of dark.",
     ]],
@@ -74,7 +81,10 @@ const CHANGELOG: Changelog = new Map([
         "Feedback option is now somewhat viable",
     ]],
     ["0.0.10", [
-        "This version only served as a placeholder to fix the broken version of `0.0.9` that was *accidentally* deployed. Way to start a new year, eh?",
+        (
+            "This version only served as a placeholder to fix the broken version of `0.0.9` " +
+            "that was *accidentally* deployed. Way to start a new year, eh?"
+        ),
     ]],
     ["0.0.9", [
         "Added a button to manually mark an episode as watched/unwatched",

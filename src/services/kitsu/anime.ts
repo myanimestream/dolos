@@ -4,6 +4,7 @@
 
 import {cacheInStateMemory} from "dolos/common";
 import {AnimePage} from "dolos/common/pages";
+import {lockMethod} from "dolos/lock";
 import {cacheInMemory} from "dolos/memory";
 import {retryUntil, waitUntilExists} from "dolos/utils";
 import Kitsu from ".";
@@ -25,16 +26,19 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return match[1];
     }
 
+    @lockMethod()
     @cacheInMemory("animeSearchQuery")
     public async getAnimeSearchQuery(): Promise<string | undefined> {
         return (await waitUntilExists("meta[property=\"og:title\"]")).getAttribute("content") || undefined;
     }
 
+    @lockMethod()
     @cacheInStateMemory("accessToken")
     public async getAccessToken(): Promise<string | undefined> {
-        return await retryUntil(getAccessToken, {interval: 500, timeout: 2500});
+        return await retryUntil(getAccessToken, {interval: 500, timeout: 2500, catchErrors: true});
     }
 
+    @lockMethod()
     @cacheInMemory("animeId")
     public async getAnimeId(): Promise<string | undefined> {
         const resp = await kitsuAPIRequest("GET", "/anime", undefined, {
@@ -58,11 +62,13 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return `https://kitsu.io/anime/${animeID}`;
     }
 
+    @lockMethod()
     @cacheInMemory("kitsuAnime")
     public async getKitsuAnimeInfo(): Promise<KitsuAnimeInfo | undefined> {
-        return await retryUntil(getAnime, {interval: 500, timeout: 2500});
+        return await retryUntil(getAnime, {interval: 500, timeout: 2500, catchErrors: true});
     }
 
+    @lockMethod()
     @cacheInStateMemory("userId")
     public async getUserId(): Promise<string | null> {
         const token = await this.getAccessToken();
@@ -78,6 +84,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return resp && resp.data[0].id;
     }
 
+    @lockMethod()
     @cacheInMemory("libraryEntryId")
     public async getLibraryEntryId(): Promise<string | null> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
@@ -109,6 +116,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         return true;
     }
 
+    @lockMethod()
     @cacheInMemory("episodesWatched")
     public async _getEpisodesWatched(): Promise<number | undefined> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);

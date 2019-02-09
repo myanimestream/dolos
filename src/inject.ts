@@ -92,6 +92,10 @@ type EvalResultEvent = CustomEvent<EvalResultEventDetails>;
  */
 const PUSH_RESULT = `const pushResult = ${(
     (value: any, key: "result" | "error") => {
+        // "sanitise" the data, otherwise `detail` might be null
+        if (value)
+            value = JSON.parse(JSON.stringify(value));
+
         const event = new CustomEvent("evalresult", {
             detail: {
                 id: "{{uid}}",

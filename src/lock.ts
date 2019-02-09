@@ -10,6 +10,7 @@
 /**
  * Function type that can be provided to [[AsyncLock.withCallback]].
  */
+
 export type WithLockCallback<T> = (lock: AsyncLock) => PromiseLike<T> | T;
 
 /**
@@ -158,4 +159,41 @@ export default class AsyncLock {
 
         this.locked.add(key);
     }
+}
+
+/**
+ * Decorator which runs the underlying method in [[AsyncLock.withLock]].
+ *
+ * This inherently converts the method to an async method!
+ *
+ * @param keyGenerator - function used to generate the key(s).
+ * Input is the same arguments as the underlying method takes and `this` is bound to the target.
+ * Returning an array will cause each item to be used as a key. If you don't want this behaviour,
+ * wrap the array in another array:
+ * ```typescript
+ * return [["key 1"]];
+ * ```
+ * If `undefined` no keys are used.
+ */
+export function lockMethod(keyGenerator?: (...args: any[]) => any) {
+    return (target: object, propertyKey: string, descriptor: PropertyDescriptor) => {
+        const lock = new AsyncLock();
+        const func = descriptor.value;
+
+        descriptor.value = function(this: any, ...args: any[]) {
+            let keys = [];
+            if (keyGenerator) {
+                const generatedKeys = keyGenerator();
+                if (Array.isArray(generatedKeys))
+                    keys = generatedKeys;
+                else
+                    keys.push([generatedKeys]);
+            }
+
+            return lock.withLock(
+                () => func.apply(this, ...args),
+                ...keys,
+            );
+        };
+    };
 }
