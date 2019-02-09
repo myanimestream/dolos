@@ -93,7 +93,13 @@
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="lock.html#defaultlockkey" class="tsd-kind-icon">Default<wbr>Lock<wbr>Key</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="lock.html#default_lock_key" class="tsd-kind-icon">DEFAULT_<wbr>LOCK_<wbr>KEY</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="lock.html#lockmethod" class="tsd-kind-icon">lock<wbr>Method</a></li>
 							</ul>
 						</section>
 					</div>
@@ -107,7 +113,7 @@
 					<div class="tsd-signature tsd-kind-icon">With<wbr>Lock<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/lock.ts#L13">lock.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/lock.ts#L14">lock.ts:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -144,12 +150,12 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
-					<a name="defaultlockkey" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> Default<wbr>Lock<wbr>Key</h3>
-					<div class="tsd-signature tsd-kind-icon">Default<wbr>Lock<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">unique symbol</span><span class="tsd-signature-symbol"> =&nbsp;Symbol(&quot;global lock&quot;)</span></div>
+					<a name="default_lock_key" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> DEFAULT_<wbr>LOCK_<wbr>KEY</h3>
+					<div class="tsd-signature tsd-kind-icon">DEFAULT_<wbr>LOCK_<wbr>KEY<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">unique symbol</span><span class="tsd-signature-symbol"> =&nbsp;Symbol(&quot;global lock&quot;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/lock.ts#L18">lock.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/lock.ts#L19">lock.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -159,6 +165,46 @@
 					</div>
 				</section>
 			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="lockmethod" class="tsd-anchor"></a>
+					<h3>lock<wbr>Method</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">lock<wbr>Method<span class="tsd-signature-symbol">(</span>keyGenerator<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">(Anonymous function)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/lock.ts#L178">lock.ts:178</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Decorator which runs the underlying method in <a href="../classes/lock.asynclock.html#withlock">AsyncLock.withLock</a>.</p>
+								</div>
+								<p>This inherently converts the method to an async method!</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> keyGenerator: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>function used to generate the key(s).
+											Input is the same arguments as the underlying method takes and <code>this</code> is bound to the target.
+											Returning an array will cause each item to be used as a key. If you don&#39;t want this behaviour,
+										wrap the array in another array:</p>
+										<pre><code class="language-typescript"><span class="hljs-keyword">return</span> [[<span class="hljs-string">"key 1"</span>]];</code></pre>
+										<p>If <code>undefined</code> no keys are used.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">(Anonymous function)</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
@@ -166,80 +212,8 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="assets.html">assets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_components.html">common.components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_components_anime.html">common.components.anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_pages.html">common.pages</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="hooks.html">hooks</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="kitsu.html">kitsu</a>
-					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="myanimelist.html">myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="options_tabs.html">options.tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="secrets.html">secrets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="subscriptions.html">subscriptions</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -252,7 +226,10 @@
 						<a href="lock.html#withlockcallback" class="tsd-kind-icon">With<wbr>Lock<wbr>Callback</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="lock.html#defaultlockkey" class="tsd-kind-icon">Default<wbr>Lock<wbr>Key</a>
+						<a href="lock.html#default_lock_key" class="tsd-kind-icon">DEFAULT_<wbr>LOCK_<wbr>KEY</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="lock.html#lockmethod" class="tsd-kind-icon">lock<wbr>Method</a>
 					</li>
 				</ul>
 			</nav>

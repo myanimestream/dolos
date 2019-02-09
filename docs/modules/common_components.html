@@ -96,7 +96,6 @@
 								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported"><a href="../interfaces/common_components.snackbarlistenerprops.html" class="tsd-kind-icon">Snackbar<wbr>Listener<wbr>Props</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/common_components.snackbarmessage.html" class="tsd-kind-icon">Snackbar<wbr>Message</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/common_components.snackbarqueueprops.html" class="tsd-kind-icon">Snackbar<wbr>Queue<wbr>Props</a></li>
-								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported"><a href="../interfaces/common_components.stableiframeprops.html" class="tsd-kind-icon">StableIFrame<wbr>Props</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/common_components.subscriptiontoggleprops.html" class="tsd-kind-icon">Subscription<wbr>Toggle<wbr>Props</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported"><a href="../interfaces/common_components.withratioprops.html" class="tsd-kind-icon">With<wbr>Ratio<wbr>Props</a></li>
 							</ul>
@@ -105,12 +104,19 @@
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="common_components.html#plyrevents" class="tsd-kind-icon">Plyr<wbr>Events</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="common_components.html#stableiframeprops" class="tsd-kind-icon">StableIFrame<wbr>Props</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-not-exported">
+						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="common_components.html#embedplayer" class="tsd-kind-icon">Embed<wbr>Player</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="common_components.html#player" class="tsd-kind-icon">Player</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="common_components.html#snackbarlistener" class="tsd-kind-icon">Snackbar<wbr>Listener</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="common_components.html#withratio" class="tsd-kind-icon">With<wbr>Ratio</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="common_components.html#embedproviders" class="tsd-kind-icon">embed<wbr>Providers</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="common_components.html#tldmatcher" class="tsd-kind-icon">tld<wbr>Matcher</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="common_components.html#wwwmatcher" class="tsd-kind-icon">www<wbr>Matcher</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -118,14 +124,11 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="common_components.html#snackbarqueue" class="tsd-kind-icon">Snackbar<wbr>Queue</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="common_components.html#subscriptiontoggle" class="tsd-kind-icon">Subscription<wbr>Toggle</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="common_components.html#cleanhostname" class="tsd-kind-icon">clean<wbr>Hostname</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="common_components.html#getembedinfo" class="tsd-kind-icon">get<wbr>Embed<wbr>Info</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="common_components.html#getembedprovider" class="tsd-kind-icon">get<wbr>Embed<wbr>Provider</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="common_components.html#issnackbaraction" class="tsd-kind-icon">is<wbr>Snackbar<wbr>Action</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="common_components.html#resolvesnackbarmessage" class="tsd-kind-icon">resolve<wbr>Snackbar<wbr>Message</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Object literals</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-object-literal tsd-parent-kind-external-module"><a href="common_components.html#embedprovider-1" class="tsd-kind-icon">embed<wbr>Provider</a></li>
 							</ul>
 						</section>
 					</div>
@@ -139,20 +142,50 @@
 					<div class="tsd-signature tsd-kind-icon">Plyr<wbr>Events<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Plyr.StandardEvent</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Plyr.Html5Event</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/Player.tsx#L32">common/components/Player.tsx:32</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/Player.tsx#L31">common/components/Player.tsx:31</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="stableiframeprops" class="tsd-anchor"></a>
+					<h3>StableIFrame<wbr>Props</h3>
+					<div class="tsd-signature tsd-kind-icon">StableIFrame<wbr>Props<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IframeHTMLAttributes</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/StableIFrame.tsx#L8">common/components/StableIFrame.tsx:8</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
+					<a name="embedplayer" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Embed<wbr>Player</h3>
+					<div class="tsd-signature tsd-kind-icon">Embed<wbr>Player<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ComponentClass</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">StyledComponentProps</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">"embedIFrame"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"embedInfoAvatar"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"embedInfoText"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"embedSelect"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"embedToolbar"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">FunctionComponent</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">StyledComponentProps</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">"embedIFrame"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"embedInfoAvatar"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"embedInfoText"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"embedSelect"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"embedToolbar"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;withStyles(styles)(class extends React.Component&lt;EmbedPlayerProps, EmbedPlayerState&gt; {constructor(props: EmbedPlayerProps) {super(props);this.state &#x3D; {currentEmbedSelected: 0,embedSelectionOpen: false,};}public setCurrentEmbed(embedIndex: number) {this.setState({currentEmbedSelected: embedIndex});}public render() {const {classes, embeds} &#x3D; this.props;const {currentEmbedSelected, embedSelectionOpen} &#x3D; this.state;const currentEmbed &#x3D; embeds[currentEmbedSelected];const handleEmbedSelectOpen &#x3D; () &#x3D;&gt; this.setState({embedSelectionOpen: true});const handleEmbedSelectClose &#x3D; () &#x3D;&gt; this.setState({embedSelectionOpen: false});const handleEmbedSelectChange &#x3D; (event: React.ChangeEvent&lt;HTMLSelectElement&gt;) &#x3D;&gt;this.setCurrentEmbed(parseInt(event.target.value, 10));const embedSelectInputProps &#x3D; {id: &quot;embed-selection-control&quot;,name: _(&quot;episode__switch_embed&quot;),};let embeddedPlayer;if (currentEmbed)embeddedPlayer &#x3D; (&lt;StableIFramesrc&#x3D;{currentEmbed.url}className&#x3D;{classes.embedIFrame}allowFullScreen&#x3D;{true}/&gt;);return (&lt;&gt;&lt;Paper&gt;&lt;Toolbar className&#x3D;{classes.embedToolbar}&gt;&lt;Tooltip title&#x3D;{_(&quot;episode__embedded_stream__warning&quot;)} placement&#x3D;&quot;bottom&quot;&gt;&lt;span&gt;&lt;Typographyvariant&#x3D;&quot;h6&quot;color&#x3D;&quot;textSecondary&quot;style&#x3D;{{display: &quot;inline&quot;}}noWrap&#x3D;{true}&gt;{_(&quot;episode__embedded_stream&quot;)}&amp;nbsp;&lt;HelpOutlineIcon fontSize&#x3D;&quot;small&quot; color&#x3D;&quot;secondary&quot;/&gt;&lt;/Typography&gt;&lt;/span&gt;&lt;/Tooltip&gt;&lt;FormControl&gt;&lt;InputLabel htmlFor&#x3D;&quot;embed-selection-control&quot;&gt;{_(&quot;episode__switch_embed&quot;)}&lt;/InputLabel&gt;&lt;SelectclassName&#x3D;{classes.embedSelect}open&#x3D;{embedSelectionOpen}onOpen&#x3D;{handleEmbedSelectOpen}onClose&#x3D;{handleEmbedSelectClose}value&#x3D;{currentEmbedSelected}onChange&#x3D;{handleEmbedSelectChange}inputProps&#x3D;{embedSelectInputProps}&gt;{this.renderEmbedProviders()}&lt;/Select&gt;&lt;/FormControl&gt;&lt;/Toolbar&gt;&lt;/Paper&gt;&lt;WithRatio ratio&#x3D;{16 / 9}&gt;{embeddedPlayer}&lt;/WithRatio&gt;&lt;/&gt;);}private renderEmbedProviders() {const {classes, embeds} &#x3D; this.props;const onAvatarError &#x3D; (event: React.SyntheticEvent&lt;any&gt;) &#x3D;&gt; (event.target as Element).remove();const renderEmbedIcon &#x3D; (embed: EmbedInfo) &#x3D;&gt; (&lt;ListItemAvatar&gt;&lt;Avatarsrc&#x3D;{embed.icon}className&#x3D;{classes.embedInfoAvatar}onError&#x3D;{onAvatarError}/&gt;&lt;/ListItemAvatar&gt;);return (embeds.map((embed, index) &#x3D;&gt; (&lt;MenuItem value&#x3D;{index} key&#x3D;{embed.url}&gt;{embed.icon &amp;&amp; renderEmbedIcon(embed)}&lt;ListItemText className&#x3D;{classes.embedInfoText}&gt;{embed.name}&lt;/ListItemText&gt;&lt;/MenuItem&gt;)));}},)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/EmbedPlayer.tsx#L62">common/components/EmbedPlayer.tsx:62</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
+					<a name="player" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Player</h3>
+					<div class="tsd-signature tsd-kind-icon">Player<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ComponentClass</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">StyledComponentProps</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">"plyrContainer"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">FunctionComponent</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">StyledComponentProps</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">"plyrContainer"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;withStyles(styles)(class extends React.Component&lt;PlayerProps&gt; {public player?: Plyr;public componentDidMount() {const {eventListener, options} &#x3D; this.props;// normal autoplay only works when muted and doesn&#x27;t fire &quot;ended&quot; event!const autoplay &#x3D; options.autoplay;options.autoplay &#x3D; false;const domNode &#x3D; ReactDOM.findDOMNode(this);if (!(domNode &amp;&amp; domNode.firstChild))throw new Error(&quot;Couldn&#x27;t find dom node&quot;);this.player &#x3D; new Plyr(domNode.firstChild as HTMLElement, options);if (eventListener) {for (const [event, handler] of Object.entries(eventListener)) {if (!handler) continue;this.player.on(event as PlyrEvents, handler);}}if (autoplay) Promise.resolve(this.player.play()).catch();}public componentWillUnmount() {if (this.player) this.player.destroy();}public renderSource(): Array&lt;React.ReactElement&lt;any&gt;&gt; {// currently plyr breaks when not supplying a video type, this defaulting to video/mp4return this.props.sources.map((source, index) &#x3D;&gt; (&lt;sourcekey&#x3D;{index}src&#x3D;{source.url}type&#x3D;{source.type || &quot;video/mp4&quot;}/&gt;));}public render() {const {classes} &#x3D; this.props;return (&lt;div className&#x3D;{classes.plyrContainer}&gt;&lt;video poster&#x3D;{this.props.poster} playsInline&#x3D;{true} controls&#x3D;{true}&gt;{this.renderSource()}&lt;/video&gt;&lt;/div&gt;);}},)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/Player.tsx#L41">common/components/Player.tsx:41</a></li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="snackbarlistener" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Snackbar<wbr>Listener</h3>
-					<div class="tsd-signature tsd-kind-icon">Snackbar<wbr>Listener<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ComponentClass</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;withSnackbar(function SnackbarListener(props: SnackbarListenerProps &amp; InjectedNotistackProps) {useSubscription(props.snackbarMessage$, msg &#x3D;&gt; {const action &#x3D; msg.action;if (isSnackbarAction(action)) {let props: ButtonProps &#x3D; {color: &quot;secondary&quot;,size: &quot;small&quot;,};if (action.buttonProps)props &#x3D; Object.assign(props, action.buttonProps);msg.action &#x3D; (&lt;Button {...props}&gt;{action.text}&lt;/Button&gt;);if (action.onClick)msg.onClickAction &#x3D; action.onClick;}props.enqueueSnackbar(msg.message, msg);});return null;})</span></div>
+					<div class="tsd-signature tsd-kind-icon">Snackbar<wbr>Listener<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ComponentClass</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;withSnackbar((props: SnackbarListenerProps &amp; InjectedNotistackProps) &#x3D;&gt; {useSubscription(props.snackbarMessage$, msg &#x3D;&gt; {const action &#x3D; msg.action;if (isSnackbarAction(action)) {const buttonProps: ButtonProps &#x3D; {color: &quot;secondary&quot;,size: &quot;small&quot;,};if (action.buttonProps)Object.assign(buttonProps, action.buttonProps);msg.action &#x3D; (&lt;Button {...buttonProps}&gt;{action.text}&lt;/Button&gt;);if (action.onClick)msg.onClickAction &#x3D; action.onClick;}props.enqueueSnackbar(msg.message, msg);});return null;},)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/SnackbarQueue.tsx#L74">common/components/SnackbarQueue.tsx:74</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/SnackbarQueue.tsx#L74">common/components/SnackbarQueue.tsx:74</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -163,6 +196,46 @@
 						<p>This is a hidden component which subscribes to the <a href="../interfaces/common_components.snackbarlistenerprops.html#snackbarmessage_">SnackbarListenerProps.snackbarMessage$</a>
 						observable and calls [[enqueueSnackbar]].</p>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
+					<a name="withratio" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> With<wbr>Ratio</h3>
+					<div class="tsd-signature tsd-kind-icon">With<wbr>Ratio<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ComponentClass</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">StyledComponentProps</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">"ratioContainer"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"ratioSpacer"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">FunctionComponent</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">StyledComponentProps</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">"ratioContainer"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"ratioSpacer"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;withStyles(styles)(class extends React.Component&lt;WithRatioProps&gt; {public render() {const {classes, children, ratio} &#x3D; this.props;return (&lt;Paper className&#x3D;{classes.ratioSpacer} style&#x3D;{{paddingBottom: &#x60;${100 * (1 / ratio)}%&#x60;}}&gt;&lt;div className&#x3D;{classes.ratioContainer}&gt;{children}&lt;/div&gt;&lt;/Paper&gt;);}},)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/WithRatio.tsx#L33">common/components/WithRatio.tsx:33</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="embedproviders" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> embed<wbr>Providers</h3>
+					<div class="tsd-signature tsd-kind-icon">embed<wbr>Providers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/common_components.embedprovider.html" class="tsd-signature-type">EmbedProvider</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Map([[/(\w+\.)?mystream.to/, {name: &quot;MyStream&quot;}],[&quot;fembed&quot;, {name: &quot;Fembed&quot;, icon: &quot;https://www.fembed.com/asset/default/img/favicon.png&quot;}],[&quot;mp4upload.com&quot;, {name: &quot;Mp4Upload&quot;}],[&quot;oload.tv&quot;, {name: &quot;Openload&quot;}],[&quot;rapidvideo.com&quot;, {name: &quot;RapidVideo&quot;}],[&quot;stream.moe&quot;, {name: &quot;StreamMoe&quot;}],] as Array&lt;[string | RegExp, EmbedProvider]&gt;)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/embed-providers.ts#L10">common/components/embed-providers.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="tldmatcher" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> tld<wbr>Matcher</h3>
+					<div class="tsd-signature tsd-kind-icon">tld<wbr>Matcher<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> =&nbsp;/\.\w+$/</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/embed-providers.ts#L44">common/components/embed-providers.ts:44</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="wwwmatcher" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> www<wbr>Matcher</h3>
+					<div class="tsd-signature tsd-kind-icon">www<wbr>Matcher<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RegExp</span><span class="tsd-signature-symbol"> =&nbsp;/^www\./</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/embed-providers.ts#L19">common/components/embed-providers.ts:19</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -177,7 +250,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/SnackbarQueue.tsx#L113">common/components/SnackbarQueue.tsx:113</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/SnackbarQueue.tsx#L113">common/components/SnackbarQueue.tsx:113</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -206,7 +279,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/anime/SubscriptionToggle.tsx#L45">common/components/anime/SubscriptionToggle.tsx:45</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/anime/SubscriptionToggle.tsx#L45">common/components/anime/SubscriptionToggle.tsx:45</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -225,6 +298,78 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="cleanhostname" class="tsd-anchor"></a>
+					<h3>clean<wbr>Hostname</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">clean<wbr>Hostname<span class="tsd-signature-symbol">(</span>hostname<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/embed-providers.ts#L21">common/components/embed-providers.ts:21</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>hostname: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="getembedinfo" class="tsd-anchor"></a>
+					<h3>get<wbr>Embed<wbr>Info</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Embed<wbr>Info<span class="tsd-signature-symbol">(</span>rawUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">URL</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/common_components.embedinfo.html" class="tsd-signature-type">EmbedInfo</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/embed-providers.ts#L46">common/components/embed-providers.ts:46</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>rawUrl: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">URL</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/common_components.embedinfo.html" class="tsd-signature-type">EmbedInfo</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="getembedprovider" class="tsd-anchor"></a>
+					<h3>get<wbr>Embed<wbr>Provider</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Embed<wbr>Provider<span class="tsd-signature-symbol">(</span>hostname<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/common_components.embedprovider.html" class="tsd-signature-type">EmbedProvider</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/embed-providers.ts#L25">common/components/embed-providers.ts:25</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>hostname: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/common_components.embedprovider.html" class="tsd-signature-type">EmbedProvider</a>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">undefined</span>
+							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="issnackbaraction" class="tsd-anchor"></a>
 					<h3>is<wbr>Snackbar<wbr>Action</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
@@ -234,7 +379,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/SnackbarQueue.tsx#L34">common/components/SnackbarQueue.tsx:34</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/SnackbarQueue.tsx#L34">common/components/SnackbarQueue.tsx:34</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -257,7 +402,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/SnackbarQueue.tsx#L56">common/components/SnackbarQueue.tsx:56</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/SnackbarQueue.tsx#L55">common/components/SnackbarQueue.tsx:55</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -279,99 +424,6 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Object literals</h2>
-				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-external-module">
-					<a name="embedprovider-1" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> embed<wbr>Provider</h3>
-					<div class="tsd-signature tsd-kind-icon">embed<wbr>Provider<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/embed-providers.ts#L10">common/components/embed-providers.ts:10</a></li>
-						</ul>
-					</aside>
-					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal">
-						<a name="embedprovider-1.embed_mystream_to" class="tsd-anchor"></a>
-						<h3>embed.mystream.to</h3>
-						<div class="tsd-signature tsd-kind-icon">embed.mystream.to<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/embed-providers.ts#L12">common/components/embed-providers.ts:12</a></li>
-							</ul>
-						</aside>
-						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-							<a name="embedprovider-1.embed_mystream_to.name" class="tsd-anchor"></a>
-							<h3>name</h3>
-							<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;MyStream&quot;</span></div>
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/embed-providers.ts#L12">common/components/embed-providers.ts:12</a></li>
-								</ul>
-							</aside>
-						</section>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal">
-						<a name="embedprovider-1.mp4upload_com" class="tsd-anchor"></a>
-						<h3>mp4upload.com</h3>
-						<div class="tsd-signature tsd-kind-icon">mp4upload.com<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/embed-providers.ts#L11">common/components/embed-providers.ts:11</a></li>
-							</ul>
-						</aside>
-						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-							<a name="embedprovider-1.mp4upload_com.name-1" class="tsd-anchor"></a>
-							<h3>name</h3>
-							<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;Mp4Upload&quot;</span></div>
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/embed-providers.ts#L11">common/components/embed-providers.ts:11</a></li>
-								</ul>
-							</aside>
-						</section>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal">
-						<a name="embedprovider-1.stream_moe" class="tsd-anchor"></a>
-						<h3>stream.moe</h3>
-						<div class="tsd-signature tsd-kind-icon">stream.moe<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/embed-providers.ts#L14">common/components/embed-providers.ts:14</a></li>
-							</ul>
-						</aside>
-						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-							<a name="embedprovider-1.stream_moe.name-2" class="tsd-anchor"></a>
-							<h3>name</h3>
-							<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;StreamMoe&quot;</span></div>
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/embed-providers.ts#L14">common/components/embed-providers.ts:14</a></li>
-								</ul>
-							</aside>
-						</section>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal">
-						<a name="embedprovider-1.www_rapidvideo_com" class="tsd-anchor"></a>
-						<h3>www.rapidvideo.com</h3>
-						<div class="tsd-signature tsd-kind-icon">www.rapidvideo.com<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/embed-providers.ts#L13">common/components/embed-providers.ts:13</a></li>
-							</ul>
-						</aside>
-						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-							<a name="embedprovider-1.www_rapidvideo_com.name-3" class="tsd-anchor"></a>
-							<h3>name</h3>
-							<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;RapidVideo&quot;</span></div>
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/a04ee57/src/common/components/embed-providers.ts#L13">common/components/embed-providers.ts:13</a></li>
-								</ul>
-							</aside>
-						</section>
-					</section>
-				</section>
-			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
@@ -379,80 +431,8 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="assets.html">assets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common.html">common</a>
-					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="common_components.html">common.components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_components_anime.html">common.components.anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_pages.html">common.pages</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="hooks.html">hooks</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="kitsu.html">kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="myanimelist.html">myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="options_tabs.html">options.tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="secrets.html">secrets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="subscriptions.html">subscriptions</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -491,9 +471,6 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/common_components.snackbarqueueprops.html" class="tsd-kind-icon">Snackbar<wbr>Queue<wbr>Props</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../interfaces/common_components.stableiframeprops.html" class="tsd-kind-icon">StableIFrame<wbr>Props</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/common_components.subscriptiontoggleprops.html" class="tsd-kind-icon">Subscription<wbr>Toggle<wbr>Props</a>
 					</li>
@@ -503,8 +480,29 @@
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
 						<a href="common_components.html#plyrevents" class="tsd-kind-icon">Plyr<wbr>Events</a>
 					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="common_components.html#stableiframeprops" class="tsd-kind-icon">StableIFrame<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="common_components.html#embedplayer" class="tsd-kind-icon">Embed<wbr>Player</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="common_components.html#player" class="tsd-kind-icon">Player</a>
+					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="common_components.html#snackbarlistener" class="tsd-kind-icon">Snackbar<wbr>Listener</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="common_components.html#withratio" class="tsd-kind-icon">With<wbr>Ratio</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="common_components.html#embedproviders" class="tsd-kind-icon">embed<wbr>Providers</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="common_components.html#tldmatcher" class="tsd-kind-icon">tld<wbr>Matcher</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="common_components.html#wwwmatcher" class="tsd-kind-icon">www<wbr>Matcher</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="common_components.html#snackbarqueue" class="tsd-kind-icon">Snackbar<wbr>Queue</a>
@@ -513,13 +511,19 @@
 						<a href="common_components.html#subscriptiontoggle" class="tsd-kind-icon">Subscription<wbr>Toggle</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="common_components.html#cleanhostname" class="tsd-kind-icon">clean<wbr>Hostname</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="common_components.html#getembedinfo" class="tsd-kind-icon">get<wbr>Embed<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="common_components.html#getembedprovider" class="tsd-kind-icon">get<wbr>Embed<wbr>Provider</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="common_components.html#issnackbaraction" class="tsd-kind-icon">is<wbr>Snackbar<wbr>Action</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="common_components.html#resolvesnackbarmessage" class="tsd-kind-icon">resolve<wbr>Snackbar<wbr>Message</a>
-					</li>
-					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module">
-						<a href="common_components.html#embedprovider-1" class="tsd-kind-icon">embed<wbr>Provider</a>
 					</li>
 				</ul>
 			</nav>

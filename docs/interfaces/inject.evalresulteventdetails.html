@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>EmbedPlayerState | Dolos Documentation</title>
+	<title>EvalResultEventDetails | Dolos Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,24 +56,44 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/common_components.html">common.components</a>
+					<a href="../modules/inject.html">inject</a>
 				</li>
 				<li>
-					<a href="common_components.embedplayerstate.html">EmbedPlayerState</a>
+					<a href="inject.evalresulteventdetails.html">EvalResultEventDetails</a>
 				</li>
 			</ul>
-			<h1>Interface EmbedPlayerState</h1>
+			<h1>Interface EvalResultEventDetails&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Body of an <code>evalresult</code> event.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>T</h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">EmbedPlayerState</span>
+						<span class="tsd-signature-type">CustomEventInit</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">EvalResultEventDetails</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -84,8 +104,13 @@
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="common_components.embedplayerstate.html#currentembedselected" class="tsd-kind-icon">current<wbr>Embed<wbr>Selected</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="common_components.embedplayerstate.html#embedselectionopen" class="tsd-kind-icon">embed<wbr>Selection<wbr>Open</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported"><a href="inject.evalresulteventdetails.html#bubbles" class="tsd-kind-icon">bubbles</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported"><a href="inject.evalresulteventdetails.html#cancelable" class="tsd-kind-icon">cancelable</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported"><a href="inject.evalresulteventdetails.html#composed" class="tsd-kind-icon">composed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported"><a href="inject.evalresulteventdetails.html#detail" class="tsd-kind-icon">detail</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="inject.evalresulteventdetails.html#error" class="tsd-kind-icon">error</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="inject.evalresulteventdetails.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="inject.evalresulteventdetails.html#result" class="tsd-kind-icon">result</a></li>
 							</ul>
 						</section>
 					</div>
@@ -93,23 +118,77 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="currentembedselected" class="tsd-anchor"></a>
-					<h3>current<wbr>Embed<wbr>Selected</h3>
-					<div class="tsd-signature tsd-kind-icon">current<wbr>Embed<wbr>Selected<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported">
+					<a name="bubbles" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> bubbles</h3>
+					<div class="tsd-signature tsd-kind-icon">bubbles<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from EventInit.bubbles</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/EmbedPlayer.tsx#L53">common/components/EmbedPlayer.tsx:53</a></li>
+							<li>Defined in /home/circleci/project/node_modules/typedoc/node_modules/typescript/lib/lib.dom.d.ts:424</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported">
+					<a name="cancelable" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> cancelable</h3>
+					<div class="tsd-signature tsd-kind-icon">cancelable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from EventInit.cancelable</p>
+						<ul>
+							<li>Defined in /home/circleci/project/node_modules/typedoc/node_modules/typescript/lib/lib.dom.d.ts:425</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported">
+					<a name="composed" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> composed</h3>
+					<div class="tsd-signature tsd-kind-icon">composed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from EventInit.composed</p>
+						<ul>
+							<li>Defined in /home/circleci/project/node_modules/typedoc/node_modules/typescript/lib/lib.dom.d.ts:426</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported">
+					<a name="detail" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> detail</h3>
+					<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type">T</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from CustomEventInit.detail</p>
+						<ul>
+							<li>Defined in /home/circleci/project/node_modules/typedoc/node_modules/typescript/lib/lib.dom.d.ts:271</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="embedselectionopen" class="tsd-anchor"></a>
-					<h3>embed<wbr>Selection<wbr>Open</h3>
-					<div class="tsd-signature tsd-kind-icon">embed<wbr>Selection<wbr>Open<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="error" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> error</h3>
+					<div class="tsd-signature tsd-kind-icon">error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/common/components/EmbedPlayer.tsx#L54">common/components/EmbedPlayer.tsx:54</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/inject.ts#L77">inject.ts:77</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="id" class="tsd-anchor"></a>
+					<h3>id</h3>
+					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/inject.ts#L75">inject.ts:75</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="result" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> result</h3>
+					<div class="tsd-signature tsd-kind-icon">result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/inject.ts#L76">inject.ts:76</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -122,110 +201,71 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/common_components.html">common.components</a>
+						<a href="../modules/inject.html">inject</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../classes/common_components.stableiframe.html" class="tsd-kind-icon">StableIFrame</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components.embedinfo.html" class="tsd-kind-icon">Embed<wbr>Info</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="common_components.embedplayerprops.html" class="tsd-kind-icon">Embed<wbr>Player<wbr>Props</a>
-					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="common_components.embedplayerstate.html" class="tsd-kind-icon">Embed<wbr>Player<wbr>State</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="inject.evalresulteventdetails.html" class="tsd-kind-icon">Eval<wbr>Result<wbr>Event<wbr>Details</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="common_components.embedplayerstate.html#currentembedselected" class="tsd-kind-icon">current<wbr>Embed<wbr>Selected</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported">
+								<a href="inject.evalresulteventdetails.html#bubbles" class="tsd-kind-icon">bubbles</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported">
+								<a href="inject.evalresulteventdetails.html#cancelable" class="tsd-kind-icon">cancelable</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported">
+								<a href="inject.evalresulteventdetails.html#composed" class="tsd-kind-icon">composed</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-not-exported">
+								<a href="inject.evalresulteventdetails.html#detail" class="tsd-kind-icon">detail</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="common_components.embedplayerstate.html#embedselectionopen" class="tsd-kind-icon">embed<wbr>Selection<wbr>Open</a>
+								<a href="inject.evalresulteventdetails.html#error" class="tsd-kind-icon">error</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="inject.evalresulteventdetails.html#id" class="tsd-kind-icon">id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="inject.evalresulteventdetails.html#result" class="tsd-kind-icon">result</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components.embedprovider.html" class="tsd-kind-icon">Embed<wbr>Provider</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components.playerprops.html" class="tsd-kind-icon">Player<wbr>Props</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components.playersource.html" class="tsd-kind-icon">Player<wbr>Source</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components.snackbaraction.html" class="tsd-kind-icon">Snackbar<wbr>Action</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="common_components.snackbarlistenerprops.html" class="tsd-kind-icon">Snackbar<wbr>Listener<wbr>Props</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components.snackbarmessage.html" class="tsd-kind-icon">Snackbar<wbr>Message</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components.snackbarqueueprops.html" class="tsd-kind-icon">Snackbar<wbr>Queue<wbr>Props</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="common_components.subscriptiontoggleprops.html" class="tsd-kind-icon">Subscription<wbr>Toggle<wbr>Props</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="common_components.withratioprops.html" class="tsd-kind-icon">With<wbr>Ratio<wbr>Props</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="../modules/common_components.html#plyrevents" class="tsd-kind-icon">Plyr<wbr>Events</a>
+						<a href="inject.injectoptions.html" class="tsd-kind-icon">Inject<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/common_components.html#stableiframeprops" class="tsd-kind-icon">StableIFrame<wbr>Props</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/common_components.html#embedplayer" class="tsd-kind-icon">Embed<wbr>Player</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/common_components.html#player" class="tsd-kind-icon">Player</a>
+						<a href="../modules/inject.html#evalresultevent" class="tsd-kind-icon">Eval<wbr>Result<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/common_components.html#snackbarlistener" class="tsd-kind-icon">Snackbar<wbr>Listener</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/common_components.html#withratio" class="tsd-kind-icon">With<wbr>Ratio</a>
+						<a href="../modules/inject.html#delete_after" class="tsd-kind-icon">DELETE_<wbr>AFTER</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/common_components.html#embedproviders" class="tsd-kind-icon">embed<wbr>Providers</a>
+						<a href="../modules/inject.html#eval_template" class="tsd-kind-icon">EVAL_<wbr>TEMPLATE</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/common_components.html#tldmatcher" class="tsd-kind-icon">tld<wbr>Matcher</a>
+						<a href="../modules/inject.html#push_result" class="tsd-kind-icon">PUSH_<wbr>RESULT</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/common_components.html#wwwmatcher" class="tsd-kind-icon">www<wbr>Matcher</a>
+						<a href="../modules/inject.html#evalresultevent_" class="tsd-kind-icon">eval<wbr>Result<wbr>Event$</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/common_components.html#snackbarqueue" class="tsd-kind-icon">Snackbar<wbr>Queue</a>
+						<a href="../modules/inject.html#evaluatecode" class="tsd-kind-icon">evaluate<wbr>Code</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/common_components.html#subscriptiontoggle" class="tsd-kind-icon">Subscription<wbr>Toggle</a>
+						<a href="../modules/inject.html#formatcode" class="tsd-kind-icon">format<wbr>Code</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/common_components.html#cleanhostname" class="tsd-kind-icon">clean<wbr>Hostname</a>
+						<a href="../modules/inject.html#getuid" class="tsd-kind-icon">get<wbr>Uid</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/common_components.html#getembedinfo" class="tsd-kind-icon">get<wbr>Embed<wbr>Info</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/common_components.html#getembedprovider" class="tsd-kind-icon">get<wbr>Embed<wbr>Provider</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/common_components.html#issnackbaraction" class="tsd-kind-icon">is<wbr>Snackbar<wbr>Action</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/common_components.html#resolvesnackbarmessage" class="tsd-kind-icon">resolve<wbr>Snackbar<wbr>Message</a>
+						<a href="../modules/inject.html#injectcode" class="tsd-kind-icon">inject<wbr>Code</a>
 					</li>
 				</ul>
 			</nav>
