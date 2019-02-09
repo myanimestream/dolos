@@ -111,7 +111,7 @@ jobs:
             rm -rf dist/
             mv /tmp/workspace/dist .
       - run:
-          name: Deploy
+          name: Build extension
           command: bash tools/build_extension.sh
       - store_artifacts:
           path: build
@@ -122,6 +122,18 @@ jobs:
           root: *workspace_root
           paths:
             - build/
+      - run:
+          name: Build changelog
+          command: npx ts-node --transpile-only "tools/extract-changelog.ts" auto > "changes.md"
+      - store_artifacts:
+          path: changes.md
+      - run:
+          name: Moving changelog to workspace
+          command: mv changes.md /tmp/workspace/
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - changes.md
 
   documentation:
     executor: node/node
@@ -168,6 +180,9 @@ jobs:
       - run:
           name: Moving signed artifacts
           command: mv /tmp/workspace/signed/* release/
+      - run:
+          name: Getting changelog from workspace
+          command: mv /tmp/workspace/changes.md ./
       - github-release/create:
           tag: $CIRCLE_TAG
           title: Version $CIRCLE_TAG
@@ -177,6 +192,9 @@ jobs:
 
             To install the extension please use [mas-firefox.xpi] for Firefox
             and [mas-chrome.crx] for Chrome.
+
+            ## Changelog
+            $(cat changes.md)
 
             ### Links
             [Circle Workflow][workflow-url]
