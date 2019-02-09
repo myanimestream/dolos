@@ -7,8 +7,8 @@ import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import * as React from "react";
-
 import {Config} from "../models";
+import {SettingsTabContent} from "./settings-tab-content";
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -16,10 +16,10 @@ const styles = (theme: Theme) => createStyles({
         flexDirection: "column",
     },
     wrapper: {
+        alignSelf: "flex-end",
         margin: theme.spacing.unit,
         position: "relative",
-        alignSelf: "flex-end",
-    }
+    },
 });
 
 interface SettingsTabProps extends WithStyles<typeof styles> {
@@ -37,19 +37,18 @@ interface SettingsTabState {
     saved: boolean;
 }
 
-
 export default withStyles(styles)(
-    class SettingsTab extends React.Component<SettingsTabProps, SettingsTabState> {
+    class extends React.Component<SettingsTabProps, SettingsTabState> {
         constructor(props: SettingsTabProps) {
             super(props);
             this.state = {
-                showSave: false,
+                saved: true,
                 saving: false,
-                saved: true
+                showSave: false,
             };
         }
 
-        async reloadConfig() {
+        public async reloadConfig() {
             const config = await this.props.getConfig();
 
             const editConfig = new Proxy({}, {
@@ -69,17 +68,17 @@ export default withStyles(styles)(
                 },
                 has(target: {}, p: PropertyKey): boolean {
                     return p in config;
-                }
+                },
             });
 
             this.setState({config: editConfig, originalConfig: config});
         }
 
-        async componentDidMount() {
+        public async componentDidMount() {
             await this.reloadConfig();
         }
 
-        getDirty(): boolean {
+        public getDirty(): boolean {
             const config = this.state.config;
             const original = this.state.originalConfig;
 
@@ -88,13 +87,13 @@ export default withStyles(styles)(
 
             for (const [key, value] of Object.entries(config))
                 // @ts-ignore
-                if (original[key] != value)
+                if (original[key] !== value)
                     return true;
 
             return false;
         }
 
-        changeConfig(param: keyof Config, value: any) {
+        public changeConfig(param: keyof Config, value: any) {
             const config = this.state.config;
             const original = this.state.originalConfig;
 
@@ -107,11 +106,11 @@ export default withStyles(styles)(
             config[param] = value;
             original[param] = value;
 
-            let isDirty = this.getDirty();
+            const isDirty = this.getDirty();
             this.setState({config, saved: !isDirty, showSave: isDirty});
         }
 
-        render() {
+        public render() {
             if (!this.state.config) {
                 return (
                     <CircularProgress/>
@@ -122,8 +121,8 @@ export default withStyles(styles)(
 
             // @ts-ignore
             const content = React.createElement(this.props.content, {
+                changeConfig: (param: keyof Config, value: any) => this.changeConfig(param, value),
                 config: this.state.config,
-                changeConfig: (param: keyof Config, value: any) => this.changeConfig(param, value)
             });
 
             return (
@@ -132,19 +131,5 @@ export default withStyles(styles)(
                 </div>
             );
         }
-    });
-
-export interface SettingsTabContentProps {
-    config: Config;
-    changeConfig: (key: string, value: any) => void;
-}
-
-export class SettingsTabContent<P extends SettingsTabContentProps = SettingsTabContentProps, S = {}> extends React.Component<P, S> {
-    toggle(param: keyof Config) {
-        this.change(param, !this.props.config[param]);
-    }
-
-    change(param: keyof Config, value: any) {
-        this.props.changeConfig(param, value);
-    }
-}
+    },
+);

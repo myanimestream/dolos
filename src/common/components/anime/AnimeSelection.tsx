@@ -8,7 +8,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import {AnimeInfo} from "dolos/grobber";
 import * as React from "react";
-import AnimeCard from "./AnimeCard";
+import {AnimeCard} from ".";
 
 /** @ignore */
 const styles = () => createStyles({
@@ -23,29 +23,40 @@ export interface AnimeSelectionProps extends WithStyles<typeof styles, true> {
     onSelect?: (anime: AnimeInfo) => void;
 }
 
-export default withStyles(styles, {withTheme: true})(
-    class AnimeSelection extends React.Component<AnimeSelectionProps> {
-        onSelect(anime: AnimeInfo) {
+// tslint:disable-next-line:variable-name
+export const AnimeSelection = withStyles(styles, {withTheme: true})(
+    class extends React.Component<AnimeSelectionProps> {
+        public onSelect(anime: AnimeInfo) {
             const {onSelect} = this.props;
             if (onSelect) onSelect(anime);
         }
 
-        render(): React.ReactNode {
-            const {classes, theme, anime, currentUID} = this.props;
+        public render(): React.ReactNode {
+            const {theme, anime} = this.props;
+
+            const renderAnimeTile = this.renderTile.bind(this);
 
             return (
                 <GridList cellHeight="auto" cols={4} spacing={2 * theme.spacing.unit}>
-                    {anime.map(anime => (
-                        <GridListTile key={anime.uid} classes={{tile: classes.listTile}}>
-                            <AnimeCard
-                                animeInfo={anime}
-                                current={currentUID === anime.uid}
-                                onClick={() => this.onSelect(anime)}
-                            />
-                        </GridListTile>
-                    ))}
+                    {anime.map(renderAnimeTile)}
                 </GridList>
             );
         }
-    }
+
+        private renderTile(anime: AnimeInfo) {
+            const {classes, currentUID} = this.props;
+
+            const handleSelect = () => this.onSelect(anime);
+
+            return (
+                <GridListTile key={anime.uid} classes={{tile: classes.listTile}}>
+                    <AnimeCard
+                        animeInfo={anime}
+                        current={currentUID === anime.uid}
+                        onClick={handleSelect}
+                    />
+                </GridListTile>
+            );
+        }
+    },
 );

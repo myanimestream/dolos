@@ -8,7 +8,7 @@ import {reactRenderWithTheme} from "dolos/utils";
 import * as React from "react";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
-import {cacheInMemory, ElementMemory} from "../memory";
+import {ElementMemory} from "../memory";
 import {AnimeSubscriptionInfo, Config, StoredAnimeInfo} from "../models";
 import Store from "../store";
 import Service from "./service";
@@ -18,8 +18,8 @@ import ServicePage from "./service-page";
  * State handler for services.
  */
 export default class State<T extends Service> extends ElementMemory {
-    serviceId: string;
-    page?: ServicePage<T>;
+    public serviceId: string;
+    public page?: ServicePage<T>;
 
     constructor(serviceID: string) {
         super();
@@ -34,7 +34,7 @@ export default class State<T extends Service> extends ElementMemory {
     /**
      * Reset state and reload current service page.
      */
-    async reload() {
+    public async reload() {
         this.resetState();
         const page = this.page;
         if (page) {
@@ -42,12 +42,12 @@ export default class State<T extends Service> extends ElementMemory {
         }
     }
 
-    resetState() {
+    public resetState() {
         this.removeInjected();
         this.resetMemory();
     }
 
-    async loadPage(page?: ServicePage<T>) {
+    public async loadPage(page?: ServicePage<T>) {
         if (this.page) {
             try {
                 const override = await this.page.transitionTo(page);
@@ -68,7 +68,7 @@ export default class State<T extends Service> extends ElementMemory {
         this.page = page;
     }
 
-    renderWithTheme(element: React.ReactNode, tag: keyof HTMLElementTagNameMap | Element = "div"): Element {
+    public renderWithTheme(element: React.ReactNode, tag: keyof HTMLElementTagNameMap | Element = "div"): Element {
         const el = (tag instanceof Element) ? tag : document.createElement(tag);
 
         reactRenderWithTheme(element, getThemeFor(this.serviceId), el);
@@ -84,16 +84,16 @@ export default class State<T extends Service> extends ElementMemory {
      * Even if nothing is stored, this method still returns an instance of [[StoredAnimeInfo]]
      * which you may use to write to.
      */
-    async getStoredAnimeInfo(animeID: string): Promise<StoredAnimeInfo> {
+    public async getStoredAnimeInfo(animeID: string): Promise<StoredAnimeInfo> {
         return await Store.getStoredAnimeInfo(this.serviceId, animeID, await this.config);
     }
 
     /**
      * Build an identifier for the given MediaID.
      *
-     * @see [[StaticStore.buildIdentifier]]
+     * @see [[STATIC_STORE.buildIdentifier]]
      */
-    async buildIdentifier(mediaID: string): Promise<string> {
+    public async buildIdentifier(mediaID: string): Promise<string> {
         return await Store.buildIdentifier(this.serviceId, mediaID, await this.config);
     }
 
@@ -101,10 +101,10 @@ export default class State<T extends Service> extends ElementMemory {
      * Get the [[AnimeSubscriptionInfo]] for an Anime.
      * The returned value is a [[StoreElementProxy]].
      */
-    async getSubscription(animeID: string): Promise<AnimeSubscriptionInfo | undefined> {
+    public async getSubscription(animeID: string): Promise<AnimeSubscriptionInfo | undefined> {
         const [subscriptions, identifier] = await Promise.all([
             Store.getAnimeSubscriptions(),
-            this.buildIdentifier(animeID)
+            this.buildIdentifier(animeID),
         ]);
 
         return subscriptions[identifier];
@@ -114,7 +114,7 @@ export default class State<T extends Service> extends ElementMemory {
      * Get an observable which keeps track of whether the user is subscribed to the Anime
      * It immediately pushes the current state to the observer.
      */
-    async getSubscribed$(animeID: string): Promise<Observable<boolean>> {
+    public async getSubscribed$(animeID: string): Promise<Observable<boolean>> {
         const subscriptions = await Store.getAnimeSubscriptions();
         const identifier = await this.buildIdentifier(animeID);
 
@@ -122,21 +122,27 @@ export default class State<T extends Service> extends ElementMemory {
     }
 
     /** Subscribe to an Anime */
-    async subscribeAnime(animeID: string, animeURL: string, nextEpisodeURL: string | undefined, episodesWatched: number, anime: AnimeInfo): Promise<void> {
+    public async subscribeAnime(animeID: string,
+                                animeURL: string,
+                                nextEpisodeURL: string | undefined,
+                                episodesWatched: number,
+                                anime: AnimeInfo): Promise<void> {
         const subscriptions = await Store.getAnimeSubscriptions();
         const identifier = await this.buildIdentifier(animeID);
 
         subscriptions[identifier] = {
-            serviceID: this.serviceId,
             anime,
-            identifier,
-            episodesWatched,
             animeURL,
+            episodesWatched,
+            identifier,
             nextEpisodeURL,
+            serviceID: this.serviceId,
         };
     }
 
-    async updateAnimeSubscription(animeID: string, nextEpisodeURL: string | undefined, episodesWatched: number): Promise<void> {
+    public async updateAnimeSubscription(animeID: string,
+                                         nextEpisodeURL: string | undefined,
+                                         episodesWatched: number): Promise<void> {
         const subscription = await this.getSubscription(animeID);
         if (subscription) {
             subscription.episodesWatched = episodesWatched;
@@ -146,7 +152,7 @@ export default class State<T extends Service> extends ElementMemory {
 
     /** Unsubscribe from Anime */
     // noinspection JSMethodCanBeStatic
-    async unsubscribeAnime(animeID: string): Promise<void> {
+    public async unsubscribeAnime(animeID: string): Promise<void> {
         const subscriptions = await Store.getAnimeSubscriptions();
         const identifier = await this.buildIdentifier(animeID);
 
@@ -155,7 +161,7 @@ export default class State<T extends Service> extends ElementMemory {
 }
 
 export interface HasState<T extends Service = any> {
-    state: State<T>
+    state: State<T>;
 }
 
 /**
@@ -163,12 +169,12 @@ export interface HasState<T extends Service = any> {
  * @see [[cacheInMemory]]
  */
 export function cacheInStateMemory(name?: string) {
-    return function (target: Object & HasState, propertyKey: string, descriptor: PropertyDescriptor) {
+    return (target: object & HasState, propertyKey: string, descriptor: PropertyDescriptor) => {
         const keyName = name || `${target.constructor.name}-${propertyKey}`;
         const func = descriptor.value;
         let returnPromise: boolean;
 
-        descriptor.value = function (this: HasState) {
+        descriptor.value = function(this: HasState) {
             const memory = this.state.memory;
             if (memory === undefined)
                 throw new Error("No memory found");

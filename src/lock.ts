@@ -15,7 +15,7 @@ export type WithLockCallback<T> = (lock: AsyncLock) => PromiseLike<T> | T;
 /**
  * Key used if no key provided.
  */
-export const DefaultLockKey = Symbol("global lock");
+export const DEFAULT_LOCK_KEY = Symbol("global lock");
 
 /**
  * A namespaced Semaphore for asynchronous operations.
@@ -62,7 +62,7 @@ export const DefaultLockKey = Symbol("global lock");
  */
 export default class AsyncLock {
     private readonly locked: Set<any>;
-    private readonly queues: Map<any, (() => void)[]>;
+    private readonly queues: Map<any, Array<() => void>>;
 
     constructor() {
         this.locked = new Set();
@@ -75,8 +75,8 @@ export default class AsyncLock {
      * If provided with multiple keys it checks whether **any**
      * of the keys are locked.
      */
-    isLocked(...keys: any[]): boolean {
-        if (!keys.length) keys.push(DefaultLockKey);
+    public isLocked(...keys: any[]): boolean {
+        if (!keys.length) keys.push(DEFAULT_LOCK_KEY);
 
         return keys.some(key => this.locked.has(key));
     }
@@ -87,8 +87,8 @@ export default class AsyncLock {
      *
      * @see [[AsyncLock.withLock]] for a safer and more convenient approach.
      */
-    async acquire(...keys: any[]) {
-        if (!keys.length) keys.push(DefaultLockKey);
+    public async acquire(...keys: any[]) {
+        if (!keys.length) keys.push(DEFAULT_LOCK_KEY);
 
         await Promise.all(keys.map(key => this.waitForLocked(key)));
     }
@@ -100,8 +100,8 @@ export default class AsyncLock {
      *
      * @see [[AsyncLock.withLock]] for a safer and more convenient approach.
      */
-    release(...keys: any[]) {
-        if (!keys.length) keys.push(DefaultLockKey);
+    public release(...keys: any[]) {
+        if (!keys.length) keys.push(DEFAULT_LOCK_KEY);
 
         for (const key of keys) {
             this.locked.delete(key);
@@ -116,7 +116,7 @@ export default class AsyncLock {
      *
      * The provided `keys` are interpreted the same as for [[AsyncLock.acquire]].
      */
-    async withLock<T>(callback: WithLockCallback<T>, ...keys: any[]): Promise<T> {
+    public async withLock<T>(callback: WithLockCallback<T>, ...keys: any[]): Promise<T> {
         await this.acquire(...keys);
 
         let result;
@@ -130,7 +130,7 @@ export default class AsyncLock {
         return result;
     }
 
-    private getQueue(key: any): (() => void)[] {
+    private getQueue(key: any): Array<() => void> {
         let queue = this.queues.get(key);
         if (!queue) {
             queue = [];

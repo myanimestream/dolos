@@ -15,7 +15,7 @@ import {distinctUntilChanged, map} from "rxjs/operators";
 /** React hook for getting the [[SubscribedAnimes]] */
 export function useAnimeSubscriptions(): StoreElementProxy<SubscribedAnimes> | undefined {
     const subs = usePromiseMemo(() => Store.getAnimeSubscriptions());
-    let subsObservable = subs ? subs.value$ : EMPTY;
+    const subsObservable = subs ? subs.value$ : EMPTY;
 
     return useObservable(subsObservable);
 }
@@ -25,7 +25,7 @@ export async function getAnimeSubsWithUnseenEps$(): Promise<Observable<AnimeSubs
     const subscriptions = await Store.getAnimeSubscriptions();
     return subscriptions.value$.pipe(
         map(subs =>
-            Object.values(subs).filter(sub => sub.anime.episodes - sub.episodesWatched > 0)
+            Object.values(subs).filter(sub => sub.anime.episodes - sub.episodesWatched > 0),
         ),
     );
 }
@@ -39,6 +39,6 @@ export async function getAnimeSubsWithUnseenEpsCount$(): Promise<Observable<numb
     const unseen$ = await getAnimeSubsWithUnseenEps$();
     return unseen$.pipe(
         map(unseen => unseen.length),
-        distinctUntilChanged()
+        distinctUntilChanged(),
     );
 }

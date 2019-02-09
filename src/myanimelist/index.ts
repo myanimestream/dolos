@@ -6,6 +6,7 @@
  */
 
 /** @ignore */
+
 import {cacheInStateMemory, Service} from "../common";
 import {evaluateCode} from "../inject";
 import "../logging";
@@ -17,17 +18,17 @@ export default class MyAnimeList extends Service {
         super("mal", MalAnimePage, MalEpisodePage);
     }
 
-    async route(url: URL) {
+    public async route(url: URL) {
         let match;
 
         match = url.pathname.match(/^\/anime\/(\d+)\/([^\/]+)(?:\/episode\/(\d+))?/);
         if (match) {
             if (match[3]) {
-                await this.showEpisodePage({episodeIndex: parseInt(match[3]) - 1});
+                await this.showEpisodePage({episodeIndex: parseInt(match[3], 10) - 1});
             } else {
                 await this.showAnimePage({
-                    malAnimeID: parseInt(match[1]),
                     animeIdentifier: match[2],
+                    malAnimeID: parseInt(match[1], 10),
                 });
             }
 
@@ -38,13 +39,13 @@ export default class MyAnimeList extends Service {
     }
 
     @cacheInStateMemory("username")
-    async getUsername(): Promise<string | null> {
+    public async getUsername(): Promise<string | null> {
         return await evaluateCode("MAL.USER_NAME") || null;
     }
 
     @cacheInStateMemory("csrfToken")
-    getCSRFToken(): string {
-        const el = document.querySelector(`meta[name="csrf_token"]`);
+    public getCSRFToken(): string {
+        const el = document.querySelector('meta[name="csrf_token"]');
         if (!el) throw new Error("CSRF_TOKEN holder not found");
 
         const token = el.getAttribute("content");
@@ -54,9 +55,9 @@ export default class MyAnimeList extends Service {
     }
 
     @cacheInStateMemory("isMobileLayout")
-    isMobileLayout(): boolean {
+    public isMobileLayout(): boolean {
         return !!document.querySelector("a.footer-desktop-button");
     }
 }
 
-(new MyAnimeList()).load();
+new MyAnimeList().load();

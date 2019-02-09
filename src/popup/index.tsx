@@ -4,6 +4,7 @@
  */
 
 /** @ignore */
+
 import * as React from "react";
 import {HashRouter} from "react-router-dom";
 import dolosTheme from "../theme";
@@ -15,6 +16,6 @@ chrome.tabs.query({active: true, currentWindow: true}, () => {
         wrapSentryLogger(<HashRouter><Popup/></HashRouter>),
         dolosTheme,
         // @ts-ignore
-        document.getElementById("root")
+        document.getElementById("root"),
     );
 });

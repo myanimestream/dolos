@@ -22,7 +22,7 @@ import InstalledDetails = runtime.InstalledDetails;
 const extUpdatedKey = "ext::updated";
 
 runtime.onInstalled.addListener(async (details: InstalledDetails) => {
-    if (details.reason == "update" && details.previousVersion && details.previousVersion !== getVersion()) {
+    if (details.reason === "update" && details.previousVersion && details.previousVersion !== getVersion()) {
         // because we will immediately restart, store a value so we know whether we updated
         await new Promise(res => storage.sync.set({[extUpdatedKey]: true}, res));
 
@@ -60,12 +60,12 @@ performUpdateCheck();
  */
 function setBadgeText(text?: string): void {
     if (browserAction.setBadgeText)
-        browserAction.setBadgeText({text: text || "",});
+        browserAction.setBadgeText({text: text || ""});
     else {
         let title = _("__MSG_ext_tooltip__");
         if (text) title = `${title} [${text}]`;
 
-        browserAction.setTitle({title,});
+        browserAction.setTitle({title});
     }
 }
 
@@ -93,34 +93,34 @@ state.hasNewEpisode$.subscribe(async e => {
             episode = await GrobberClient.getEpisode(anime.uid, nextEpisodeIndex);
         } catch (e) {
             console.warn("Couldn't get episode", nextEpisodeIndex + 1, "for", anime.title, e);
-            return;
+            return undefined;
         }
 
         const poster = episode.poster;
         if (poster) return await getBlobURL(poster);
-        else return;
+        else return undefined;
     };
 
-    const [thumbnail, poster] = await Promise.all([getBlobURL(anime.thumbnail), getEpisodePoster()]);
+    const [thumbnail, episodePoster] = await Promise.all([getBlobURL(anime.thumbnail), getEpisodePoster()]);
 
     const notification = await BrowserNotification.create({
-        type: poster ? "image" : "basic",
-        title: anime.title,
-        iconUrl: thumbnail,
-        imageUrl: poster,
-        message: _("notification__new_episodes", [e.unseenEpisodes]),
-        contextMessage: _("ext_name"),
         buttons: [
             {title: _("notification__new_episodes__watch"), iconUrl: "img/play_arrow.svg"},
-            {title: _("notification__new_episodes__unsubscribe"), iconUrl: "img/notifications_off.svg"}
+            {title: _("notification__new_episodes__unsubscribe"), iconUrl: "img/notifications_off.svg"},
         ],
+        contextMessage: _("ext_name"),
+        iconUrl: thumbnail,
+        imageUrl: episodePoster,
+        message: _("notification__new_episodes", [e.unseenEpisodes]),
+        title: anime.title,
+        type: episodePoster ? "image" : "basic",
     });
 
     const sub = notification.onButtonClicked$.subscribe(event => {
         switch (event.buttonIndex) {
             case 0:
                 const url = subscription.nextEpisodeURL || subscription.animeURL;
-                tabs.create({url,});
+                tabs.create({url});
                 break;
             case 1:
                 delete e.subscribedAnimes[subscription.identifier];

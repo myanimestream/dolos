@@ -13,7 +13,7 @@ import {
     Episode,
     episodeFromResp,
     GrobberRequestError,
-    GrobberResponseError
+    GrobberResponseError,
 } from "./models";
 
 /**
@@ -29,13 +29,13 @@ interface ExpiringItem<T> {
 
 function createExpiringItem<T>(item: T, expireAt: number): ExpiringItem<T> {
     return {
+        expire: expireAt,
         item,
-        expire: expireAt
-    }
+    };
 
 }
 
-function buildKeys(params: [any, any][]): [string[], string] {
+function buildKeys(params: Array<[any, any]>): [string[], string] {
     const lockKeys = params.map(([key, value]) => `${key}:${value}`);
     const memoryKey = "resp-cache." + lockKeys.join(".");
 
@@ -47,7 +47,7 @@ function buildKeys(params: [any, any][]): [string[], string] {
  * Uses an internal cache.
  */
 export class Client extends Memory {
-    axiosClient: AxiosInstance;
+    public axiosClient: AxiosInstance;
 
     private readonly animeInfoLock: AsyncLock;
 
@@ -68,12 +68,12 @@ export class Client extends Memory {
      * @throws [[Error]] - When anything goes wrong while setting up the request.
      * This (probably) should't occur during normal operation.
      */
-    async request(endpoint: string, params?: Object): Promise<any> {
+    public async request(endpoint: string, params?: { [key: string]: any }): Promise<any> {
         const config = await Store.getConfig();
 
         const requestConfig: AxiosRequestConfig = {
+            baseURL: config.grobberUrl,
             params,
-            baseURL: config.grobberUrl
         };
 
         try {
@@ -102,7 +102,7 @@ export class Client extends Memory {
      *
      * @throws Same errors as [[Client.request]]
      */
-    async searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | null> {
+    public async searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | null> {
         const config = await Store.getConfig();
 
         let resp;
@@ -113,10 +113,10 @@ export class Client extends Memory {
                     ["anime", query],
                     ["language", config.language],
                     ["dubbed", config.dubbed],
-                    ["results", results || 1]
+                    ["results", results || 1],
                 ],
-                (resp) => {
-                    const searchResults = resp.anime as AnimeSearchResult[];
+                response => {
+                    const searchResults = response.anime as AnimeSearchResult[];
                     searchResults.forEach(searchResult => {
                         const anime = animeFromResp(searchResult);
 
@@ -125,7 +125,7 @@ export class Client extends Memory {
                     });
 
                     return searchResults;
-                }
+                },
             );
         } catch (e) {
             console.error("Couldn't search for anime", e);
@@ -140,32 +140,32 @@ export class Client extends Memory {
      *
      * @throws Same errors as [[Client.request]]
      */
-    async getAnimeInfo(uid: string): Promise<AnimeInfo> {
+    public async getAnimeInfo(uid: string): Promise<AnimeInfo> {
         return await this.performAnimeRequest(
             "/anime/",
             [["uid", uid]],
-            resp => animeFromResp(resp)
+            resp => animeFromResp(resp),
         );
     }
 
     /**
      * Get an Episode.
      *
-     * @param episode - **Index**
+     * @param episodeIndex - **Index**
      *
      * @throws Same errors as [[Client.request]]
      */
-    async getEpisode(uid: string, episode: number): Promise<Episode> {
+    public async getEpisode(uid: string, episodeIndex: number): Promise<Episode> {
         return await this.performAnimeRequest(
             "/anime/episode/",
-            [["uid", uid], ["episode", episode]],
+            [["uid", uid], ["episode", episodeIndex]],
             resp => {
                 const episode = episodeFromResp(resp);
 
                 this.rememberExpiring(buildKeys([["uid", uid]])[1], episode.anime, responseCacheTTL);
 
-                return episode
-            }
+                return episode;
+            },
         );
     }
 
@@ -182,13 +182,15 @@ export class Client extends Memory {
         return null;
     }
 
-    private async performAnimeRequest(endpoint: string, paramsList: [string, any][], respHandler?: (resp: any) => any): Promise<any> {
+    private async performAnimeRequest(endpoint: string,
+                                      paramsList: Array<[string, any]>,
+                                      respHandler?: (resp: any) => any): Promise<any> {
         const [lockKeys, memoryKey] = buildKeys(paramsList);
 
         const params = paramsList.reduce((prev, [key, value]) => {
             // @ts-ignore
             prev[key] = value;
-            return prev
+            return prev;
         }, {});
 
         return await this.animeInfoLock.withLock(async () => {
@@ -204,4 +206,4 @@ export class Client extends Memory {
     }
 }
 
-export const StaticClient = new Client();
+export const STATIC_CLIENT = new Client();

@@ -16,14 +16,15 @@ declare module "awesome-debounce-promise" {
     export function debounce<T extends (...args: any[]) => any>(
         func: T,
         wait?: number,
-        options?: DebounceOptions
+        options?: DebounceOptions,
     ): (...args: Parameters<T>) => ReturnType<T> extends Promise<any>
         ? ReturnType<T>
         : Promise<ReturnType<T>>;
 
     /**
-     * Given a function returning promises, wrap it so that only the promise returned from last call will actually resolve
-     * This is useful to ignore former async results and handle concurrency issues
+     * Given a function returning promises, wrap it so that only the promise returned
+     * from last call will actually resolve This is useful to ignore former async results
+     * and handle concurrency issues
      */
     export function onlyResolvesLast<T extends (...args: any[]) => Promise<any>>(func: T):
         (...args: Parameters<T>) => ReturnType<T>;
@@ -48,7 +49,8 @@ declare module "awesome-debounce-promise" {
 
     /**
      * We create a debouncing function cache, because when wrapping the original function,
-     * we may actually want to route the function call to different debounced functions depending function paameters
+     * we may actually want to route the function call to different debounced functions
+     * depending function parameters
      */
     export interface DebounceCache {
         debounceCache: { [key: string]: (...args: any[]) => any };
@@ -60,14 +62,13 @@ declare module "awesome-debounce-promise" {
             args: any[]): (...args: Parameters<T>) => ReturnType<T>;
     }
 
-
     /**
      * Returns a debounced version of func that delays invoking until after wait milliseconds.
      */
     export default function AwesomeDebouncePromise<T extends (...args: any[]) => any>(
         func: T,
         wait?: number,
-        options?: AwesomeDebounceOptions
+        options?: AwesomeDebounceOptions,
     ): (...args: Parameters<T>) => ReturnType<T> extends Promise<any>
         ? ReturnType<T>
         : Promise<ReturnType<T>>;

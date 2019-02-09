@@ -24,70 +24,60 @@ import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponen
 import VideoLibraryIcon from "@material-ui/icons/VideoLibrary";
 import classNames from "classnames";
 import * as React from "react";
-import {HashRouter, Link, Redirect, Route, Switch} from "react-router-dom";
+import {HashRouter, Link, Redirect, Route, RouteComponentProps, Switch} from "react-router-dom";
 import {Config} from "../models";
 import Store from "../store";
 import SettingsTab from "./SettingsTab";
 import {Debug, SiteIntegration, Video} from "./tabs";
-
-const _ = chrome.i18n.getMessage;
+import _ = chrome.i18n.getMessage;
 
 const drawerWidth = 240;
 
 const styles = (theme: Theme) => createStyles({
-    root: {
-        display: "flex",
+    appBar: {
+        transition: theme.transitions.create(["width", "margin"], {
+            duration: theme.transitions.duration.leavingScreen,
+            easing: theme.transitions.easing.sharp,
+        }),
+        zIndex: theme.zIndex.drawer + 1,
     },
-    title: {
+    appBarShift: {
+        marginLeft: drawerWidth,
+        transition: theme.transitions.create(["width", "margin"], {
+            duration: theme.transitions.duration.enteringScreen,
+            easing: theme.transitions.easing.sharp,
+        }),
+        width: `calc(100% - ${drawerWidth}px)`,
+    },
+    appBarSpacer: theme.mixins.toolbar,
+    content: {
         flexGrow: 1,
-    },
-    link: {
-        textDecoration: "none"
-    },
-    toolbar: {
-        paddingRight: 24, // keep right padding when drawer closed
+        height: "100vh",
+        overflow: "auto",
+        padding: theme.spacing.unit * 3,
     },
     drawerPaper: {
         position: "relative",
+        transition: theme.transitions.create("width", {
+            duration: theme.transitions.duration.enteringScreen,
+            easing: theme.transitions.easing.sharp,
+        }),
         whiteSpace: "nowrap",
         width: drawerWidth,
-        transition: theme.transitions.create("width", {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
     },
     drawerPaperClose: {
         overflowX: "hidden",
         transition: theme.transitions.create("width", {
-            easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
+            easing: theme.transitions.easing.sharp,
         }),
         width: theme.spacing.unit * 7,
         [theme.breakpoints.up("sm")]: {
             width: theme.spacing.unit * 9,
         },
     },
-    toolbarIcon: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-end",
-        padding: "0 8px",
-        ...theme.mixins.toolbar,
-    },
-    appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(["width", "margin"], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-    },
-    appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(["width", "margin"], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
+    link: {
+        textDecoration: "none",
     },
     menuButton: {
         marginLeft: 12,
@@ -96,146 +86,185 @@ const styles = (theme: Theme) => createStyles({
     menuButtonHidden: {
         display: "none",
     },
-    appBarSpacer: theme.mixins.toolbar,
-    content: {
+    root: {
+        display: "flex",
+    },
+    title: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
-        height: "100vh",
-        overflow: "auto",
+    },
+    toolbar: {
+        paddingRight: 24, // keep right padding when drawer closed
+    },
+    toolbarIcon: {
+        alignItems: "center",
+        display: "flex",
+        justifyContent: "flex-end",
+        padding: "0 8px",
+        ...theme.mixins.toolbar,
     },
 });
-
 
 interface SettingsProps extends WithStyles<typeof styles> {
 }
 
 interface SettingsState {
-    drawerOpen: boolean
-    configPromise: Promise<Config>
+    drawerOpen: boolean;
+    configPromise: Promise<Config>;
 }
 
-export default withStyles(styles)(class Settings extends React.Component<SettingsProps, SettingsState> {
-    constructor(props: SettingsProps) {
-        super(props);
-        this.state = {
-            drawerOpen: false,
-            configPromise: Store.getConfig()
-        };
-    }
-
-    handleDrawerOpen = () => this.setState({drawerOpen: true});
-
-    handleDrawerClose = () => this.setState({drawerOpen: false});
-
-    saveConfig = async (config: Config) => {
-        await Store.set("config", config);
-        this.setState({configPromise: Promise.resolve(config)});
-    };
-
-    getSettingsTab = (props: React.ComponentProps<any>) => {
-        let content;
-
-        switch (props.match.path) {
-            case "/video":
-                content = Video;
-                break;
-            case "/site-integration":
-                content = SiteIntegration;
-                break;
-            case "/debug":
-                content = Debug;
-                break;
+export default withStyles(styles)(
+    class extends React.Component<SettingsProps, SettingsState> {
+        constructor(props: SettingsProps) {
+            super(props);
+            this.state = {
+                configPromise: Store.getConfig(),
+                drawerOpen: false,
+            };
         }
 
-        if (!content) return;
+        public render() {
+            const {classes} = this.props;
 
-        return (
-            <SettingsTab getConfig={() => this.state.configPromise} saveConfig={this.saveConfig} content={content}/>);
-    };
+            const renderRoutes = this.renderRoutes.bind(this);
 
-    render() {
-        const {classes} = this.props;
+            const drawerClasses = {
+                paper: classNames(classes.drawerPaper, !this.state.drawerOpen && classes.drawerPaperClose),
+            };
 
-        return (
-            <HashRouter>
-                <div className={classes.root}>
-                    <CssBaseline/>
-                    <AppBar position="fixed"
-                            className={classNames(classes.appBar, this.state.drawerOpen && classes.appBarShift)}>
-                        <Toolbar disableGutters={!this.state.drawerOpen} className={classes.toolbar}>
-                            <IconButton
-                                color="inherit"
-                                aria-label="Open drawer"
-                                onClick={this.handleDrawerOpen}
-                                className={classNames(
-                                    classes.menuButton,
-                                    this.state.drawerOpen && classes.menuButtonHidden,
-                                )}
-                            >
-                                <MenuIcon/>
-                            </IconButton>
-                            <Typography
-                                component="h1"
-                                variant="h6"
-                                color="inherit"
-                                noWrap
-                                className={classes.title}
-                            >
-                                Dolos Settings
-                            </Typography>
-                        </Toolbar>
-                    </AppBar>
-                    <Drawer
-                        variant="permanent"
-                        classes={{
-                            paper: classNames(classes.drawerPaper, !this.state.drawerOpen && classes.drawerPaperClose),
-                        }}
-                        open={this.state.drawerOpen}
-                    >
-                        <div className={classes.toolbarIcon}>
-                            <IconButton onClick={this.handleDrawerClose}>
-                                <ChevronLeftIcon/>
-                            </IconButton>
-                        </div>
-                        <Divider/>
-                        <Route path="/" render={props =>
-                            <List>
-                                <ListSubheader inset>Options</ListSubheader>
-                                <Link className={classes.link} to="/video">
-                                    <ListItem button>
-                                        <ListItemIcon><VideoLibraryIcon
-                                            color={props.location.pathname === "/video" ? "primary" : "inherit"}/></ListItemIcon>
-                                        <ListItemText primary={_("options__video")}/>
-                                    </ListItem>
-                                </Link>
-                                <Link className={classes.link} to="/site-integration">
-                                    <ListItem button>
-                                        <ListItemIcon><SettingsInputComponentIcon
-                                            color={props.location.pathname === "/site-integration" ? "primary" : "inherit"}/></ListItemIcon>
-                                        <ListItemText primary={_("options__site_integration")}/>
-                                    </ListItem>
-                                </Link>
-                                <Link className={classes.link} to="/debug">
-                                    <ListItem button>
-                                        <ListItemIcon><BuildIcon
-                                            color={props.location.pathname === "/debug" ? "primary" : "inherit"}/></ListItemIcon>
-                                        <ListItemText primary={_("options__debug")}/>
-                                    </ListItem>
-                                </Link>
-                            </List>
-                        }/>
-                    </Drawer>
-                    <main className={classes.content}>
-                        <div className={classes.appBarSpacer}/>
-                        <Switch>
-                            <Redirect exact path="/" to="/video"/>
-                            <Route path="/video" render={this.getSettingsTab}/>
-                            <Route path="/site-integration" render={this.getSettingsTab}/>
-                            <Route path="/debug" render={this.getSettingsTab}/>
-                        </Switch>
-                    </main>
-                </div>
-            </HashRouter>
-        );
-    }
-});
+            const openDrawerClassName = classNames(
+                classes.menuButton,
+                this.state.drawerOpen && classes.menuButtonHidden,
+            );
+            return (
+                <HashRouter>
+                    <div className={classes.root}>
+                        <CssBaseline/>
+                        <AppBar
+                            position="fixed"
+                            className={classNames(classes.appBar, this.state.drawerOpen && classes.appBarShift)}
+                        >
+                            <Toolbar disableGutters={!this.state.drawerOpen} className={classes.toolbar}>
+                                <IconButton
+                                    color="inherit"
+                                    onClick={this.handleDrawerOpen}
+                                    className={openDrawerClassName}
+                                >
+                                    <MenuIcon/>
+                                </IconButton>
+                                <Typography
+                                    component="h1"
+                                    variant="h6"
+                                    color="inherit"
+                                    noWrap={true}
+                                    className={classes.title}
+                                >
+                                    Dolos Settings
+                                </Typography>
+                            </Toolbar>
+                        </AppBar>
+                        <Drawer
+                            variant="permanent"
+                            classes={drawerClasses}
+                            open={this.state.drawerOpen}
+                        >
+                            <div className={classes.toolbarIcon}>
+                                <IconButton onClick={this.handleDrawerClose}>
+                                    <ChevronLeftIcon/>
+                                </IconButton>
+                            </div>
+                            <Divider/>
+                            <Route
+                                path="/"
+                                render={renderRoutes}
+                            />
+                        </Drawer>
+                        <main className={classes.content}>
+                            <div className={classes.appBarSpacer}/>
+                            <Switch>
+                                <Redirect exact={true} path="/" to="/video"/>
+                                <Route path="/video" render={this.getSettingsTab}/>
+                                <Route path="/site-integration" render={this.getSettingsTab}/>
+                                <Route path="/debug" render={this.getSettingsTab}/>
+                            </Switch>
+                        </main>
+                    </div>
+                </HashRouter>
+            );
+        }
+
+        private handleDrawerOpen = () => this.setState({drawerOpen: true});
+
+        private handleDrawerClose = () => this.setState({drawerOpen: false});
+
+        private saveConfig = async (config: Config) => {
+            await Store.set("config", config);
+            this.setState({configPromise: Promise.resolve(config)});
+        };
+
+        private getSettingsTab = (props: React.ComponentProps<any>) => {
+            let content;
+
+            switch (props.match.path) {
+                case "/video":
+                    content = Video;
+                    break;
+                case "/site-integration":
+                    content = SiteIntegration;
+                    break;
+                case "/debug":
+                    content = Debug;
+                    break;
+            }
+
+            if (!content) return undefined;
+
+            const getConfig = () => this.state.configPromise;
+
+            return (
+                <SettingsTab
+                    getConfig={getConfig}
+                    saveConfig={this.saveConfig}
+                    content={content}
+                />);
+        };
+
+        private renderRoutes(props: RouteComponentProps<any>) {
+            const {classes} = this.props;
+            return (
+                <List>
+                    <ListSubheader inset={true}>Options</ListSubheader>
+                    <Link className={classes.link} to="/video">
+                        <ListItem button={true}>
+                            <ListItemIcon>
+                                <VideoLibraryIcon
+                                    color={props.location.pathname === "/video" ? "primary" : "inherit"}
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary={_("options__video")}/>
+                        </ListItem>
+                    </Link>
+                    <Link className={classes.link} to="/site-integration">
+                        <ListItem button={true}>
+                            <ListItemIcon>
+                                <SettingsInputComponentIcon
+                                    color={props.location.pathname === "/site-integration" ? "primary" : "inherit"}
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary={_("options__site_integration")}/>
+                        </ListItem>
+                    </Link>
+                    <Link className={classes.link} to="/debug">
+                        <ListItem button={true}>
+                            <ListItemIcon>
+                                <BuildIcon
+                                    color={props.location.pathname === "/debug" ? "primary" : "inherit"}
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary={_("options__debug")}/>
+                        </ListItem>
+                    </Link>
+                </List>
+            );
+        }
+    },
+);

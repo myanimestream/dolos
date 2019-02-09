@@ -39,7 +39,7 @@
  * const username = await evaluateCode(`USER_NAME`);
  * ```
  *
- *### Running code
+ * ### Running code
  * If you have to call a function in the page to perform some action, say,
  * changing the colour of the background (called "changeBackgroundColour"), you can use [[injectCode]]
  * to simply run it.

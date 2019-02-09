@@ -6,7 +6,6 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
@@ -15,7 +14,7 @@ import * as React from "react";
 import _ = chrome.i18n.getMessage;
 
 /** @ignore */
-const styles = (theme: Theme) => createStyles({
+const styles = () => createStyles({
     animeCard: {},
     thumbnail: {
         objectFit: "cover",
@@ -28,9 +27,10 @@ export interface AnimeCardProps extends WithStyles<typeof styles> {
     onClick?: React.ReactEventHandler;
 }
 
-export default withStyles(styles)(
-    class AnimeCard extends React.Component<AnimeCardProps> {
-        render(): React.ReactNode {
+// tslint:disable-next-line:variable-name
+export const AnimeCard = withStyles(styles)(
+    class extends React.Component<AnimeCardProps> {
+        public render(): React.ReactNode {
             const {classes, animeInfo, current, onClick} = this.props;
 
             return (
@@ -44,7 +44,7 @@ export default withStyles(styles)(
                             title={animeInfo.title}
                         />
                         <CardContent>
-                            <Typography gutterBottom variant="caption" color={current ? "primary" : "default"}>
+                            <Typography gutterBottom={true} variant="caption" color={current ? "primary" : "default"}>
                                 {animeInfo.title}
                             </Typography>
                             <Typography variant="subtitle2" color="textSecondary">
@@ -55,5 +55,5 @@ export default withStyles(styles)(
                 </Card>
             );
         }
-    }
+    },
 );

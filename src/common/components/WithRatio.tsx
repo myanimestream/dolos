@@ -9,19 +9,19 @@ import * as React from "react";
 
 /** @ignore */
 const styles = () => createStyles({
+    ratioContainer: {
+        alignItems: "center",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        justifyContent: "center",
+        position: "absolute",
+        width: "100%",
+    },
     ratioSpacer: {
         position: "relative",
         width: "100%",
     },
-    ratioContainer: {
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-    }
 });
 
 interface WithRatioProps extends WithStyles<typeof styles> {
@@ -29,16 +29,19 @@ interface WithRatioProps extends WithStyles<typeof styles> {
     ratio: number;
 }
 
-export default withStyles(styles)(class WithRatio extends React.Component<WithRatioProps> {
-    render() {
-        const {classes, children, ratio} = this.props;
+// tslint:disable-next-line:variable-name
+export const WithRatio = withStyles(styles)(
+    class extends React.Component<WithRatioProps> {
+        public render() {
+            const {classes, children, ratio} = this.props;
 
-        return (
-            <Paper className={classes.ratioSpacer} style={{paddingBottom: `${100 * (1 / ratio)}%`}}>
-                <div className={classes.ratioContainer}>
-                    {children}
-                </div>
-            </Paper>
-        );
-    }
-});
+            return (
+                <Paper className={classes.ratioSpacer} style={{paddingBottom: `${100 * (1 / ratio)}%`}}>
+                    <div className={classes.ratioContainer}>
+                        {children}
+                    </div>
+                </Paper>
+            );
+        }
+    },
+);

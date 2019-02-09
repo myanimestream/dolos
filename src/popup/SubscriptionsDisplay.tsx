@@ -54,7 +54,7 @@ export function SubscriptionItem(props: SubscriptionItemProps) {
     }
 
     return (
-        <ListItem button onClick={showAnime}>
+        <ListItem button={true} onClick={showAnime}>
             <ListItemAvatar>
                 <Avatar alt={subscription.anime.title} src={subscription.anime.thumbnail}/>
             </ListItemAvatar>
@@ -68,7 +68,7 @@ export function SubscriptionItem(props: SubscriptionItemProps) {
                 </IconButton>
             </ListItemSecondaryAction>
         </ListItem>
-    )
+    );
 }
 
 /**
@@ -100,20 +100,23 @@ function SubscriptionsDisplay() {
                 subs.push(sub);
         });
 
-        animeSubscriptions = (
-            <>
-                {featuredSubs.length > 0 && (
-                    <>
-                        <ListSubheader>{_("subscriptions__anime__featured_subscriptions")}</ListSubheader>
-                        {featuredSubs.map(sub => <SubscriptionItem key={sub.identifier} subscription={sub}/>)}
+        if (featuredSubs.length > 0)
+            animeSubscriptions = (
+                <>
+                    <ListSubheader>{_("subscriptions__anime__featured_subscriptions")}</ListSubheader>
+                    {featuredSubs.map(sub => <SubscriptionItem key={sub.identifier} subscription={sub}/>)}
 
-                        <ListSubheader>{_("subscriptions__anime__all_subscriptions")}</ListSubheader>
-                    </>
-                )}
+                    <ListSubheader>{_("subscriptions__anime__all_subscriptions")}</ListSubheader>
+                    {subs.map(sub => <SubscriptionItem key={sub.identifier} subscription={sub}/>)}
+                </>
+            );
+        else
+            animeSubscriptions = (
+                <>
+                    {subs.map(sub => <SubscriptionItem key={sub.identifier} subscription={sub}/>)}
+                </>
+            );
 
-                {subs.map(sub => <SubscriptionItem key={sub.identifier} subscription={sub}/>)}
-            </>
-        );
     } else {
         animeSubscriptions = <Typography>{_("subscriptions__no_active_subscriptions")}</Typography>;
     }

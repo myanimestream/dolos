@@ -13,7 +13,11 @@ import {evaluateCode, formatCode, injectCode} from "../inject";
  * @param auth - Authorization header value
  * @param silent - ignore errors and return null
  */
-export async function kitsuAPIRequest(method: string, endpoint: string, auth?: string, config?: AxiosRequestConfig, silent?: boolean): Promise<any | null> {
+export async function kitsuAPIRequest(method: string,
+                                      endpoint: string,
+                                      auth?: string,
+                                      config?: AxiosRequestConfig,
+                                      silent?: boolean): Promise<any | null> {
     config = config || {};
     config.method = method;
     config.url = "https://kitsu.io/api/edge" + endpoint;
@@ -23,11 +27,11 @@ export async function kitsuAPIRequest(method: string, endpoint: string, auth?: s
     };
 
     if (auth) {
-        config.headers["Authorization"] = auth;
+        config.headers.Authorization = auth;
     }
 
     try {
-        return (await axios.request(config)).data
+        return (await axios.request(config)).data;
     } catch (e) {
         if (silent) {
             console.error("Silent error in Kitsu API request:", endpoint, e);
@@ -35,7 +39,6 @@ export async function kitsuAPIRequest(method: string, endpoint: string, auth?: s
         } else throw e;
     }
 }
-
 
 /**
  * Code mix-in to get access to various Ember elements.
@@ -48,7 +51,7 @@ const EMBER_BASE = `
 const getApp = ${(
     () => {
         // @ts-ignore
-        const {Namespace, Application} = window["Ember"];
+        const {Namespace, Application} = window.Ember;
         return Namespace.NAMESPACES.find((namespace: any) => (namespace instanceof Application));
     }
 ).toString()};
@@ -63,12 +66,13 @@ const getQueryCache = () => getContainer().lookup("service:query-cache");
 export function transitionTo(view: string, ...args: any[]) {
     injectCode(EMBER_BASE +
         `getContainer().lookup("router:main").transitionTo("${view}", ${args.map(arg =>
-            JSON.stringify(arg)
+            JSON.stringify(arg),
         )});`);
 }
 
 export async function getAccessToken(): Promise<string | undefined> {
-    return await evaluateCode(EMBER_BASE + `return getContainer().lookup("session:main").content.authenticated.access_token;`);
+    return await evaluateCode(EMBER_BASE
+        + 'return getContainer().lookup("session:main").content.authenticated.access_token;');
 }
 
 /**
@@ -125,7 +129,7 @@ return await new Promise(${(
 
 export async function getProgress(animeId: string, userId: string): Promise<number | undefined> {
     const result = await evaluateCode(EMBER_BASE + formatCode(GET_PROGRESS, {animeId, userId}));
-    if (isNaN(result)) return;
+    if (isNaN(result)) return undefined;
     else return result;
 }
 
@@ -163,10 +167,11 @@ export interface KitsuAnimeInfo {
 
 export async function getAnime(): Promise<KitsuAnimeInfo | undefined> {
     try {
-        const result = await evaluateCode(EMBER_BASE + `return getContainer().lookup("controller:anime/show").media || null`);
+        const result = await evaluateCode(EMBER_BASE
+            + 'return getContainer().lookup("controller:anime/show").media || null');
         return result as KitsuAnimeInfo;
     } catch (e) {
         console.warn("Couldn't get anime info from kitsu", e);
-        return;
+        return undefined;
     }
 }

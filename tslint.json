@@ -4,6 +4,12 @@
     "tslint:recommended",
     "tslint-react"
   ],
+  "linterOptions": {
+    "exclude": [
+      "**/__tests__/**",
+      "**/*.test.ts"
+    ]
+  },
   "jsRules": {},
   "rules": {
     "quotemark": [
@@ -15,7 +21,22 @@
     "return-undefined": true,
     "arrow-parens": false,
     "curly": false,
-    "interface-name": false
+    "interface-name": false,
+    "no-console": [
+      true,
+      "log"
+    ],
+    "variable-name": [
+      true,
+      "check-format",
+      "allow-leading-underscore",
+      "ban-keywords"
+    ],
+    "semicolon": [
+      true,
+      "always",
+      "ignore-bound-class-methods"
+    ]
   },
   "rulesDirectory": []
 }

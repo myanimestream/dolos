@@ -14,121 +14,121 @@ import {
     KitsuAnimeInfo,
     kitsuAPIRequest,
     setProgress,
-    transitionTo
+    transitionTo,
 } from "./utils";
 
 export default class KitsuAnimePage extends AnimePage<Kitsu> {
     @cacheInMemory("animeIdentifier")
-    async getAnimeIdentifier(): Promise<string | undefined> {
+    public async getAnimeIdentifier(): Promise<string | undefined> {
         const match = location.pathname.match(/\/anime\/([^\/]+)(?:\/)?/);
-        if (!match) return;
+        if (!match) return undefined;
         return match[1];
     }
 
     @cacheInMemory("animeSearchQuery")
-    async getAnimeSearchQuery(): Promise<string | undefined> {
+    public async getAnimeSearchQuery(): Promise<string | undefined> {
         return (await waitUntilExists("meta[property=\"og:title\"]")).getAttribute("content") || undefined;
     }
 
     @cacheInStateMemory("accessToken")
-    async getAccessToken(): Promise<string | undefined> {
+    public async getAccessToken(): Promise<string | undefined> {
         return await retryUntil(getAccessToken, {interval: 500, timeout: 2500});
     }
 
     @cacheInMemory("animeId")
-    async getAnimeId(): Promise<string | undefined> {
+    public async getAnimeId(): Promise<string | undefined> {
         const resp = await kitsuAPIRequest("GET", "/anime", undefined, {
             params: {
                 "fields[anime]": "id",
-                "filter[slug]": await this.getAnimeIdentifier()
-            }
+                "filter[slug]": await this.getAnimeIdentifier(),
+            },
         }, true);
-        if (!resp) return;
+        if (!resp) return undefined;
 
         const results = resp.data;
-        if (!results) return;
+        if (!results) return undefined;
 
         return results[0].id;
     }
 
-    async getAnimeURL(): Promise<string | undefined> {
+    public async getAnimeURL(): Promise<string | undefined> {
         const animeID = await this.getAnimeIdentifier();
-        if (!animeID) return;
+        if (!animeID) return undefined;
 
         return `https://kitsu.io/anime/${animeID}`;
     }
 
     @cacheInMemory("kitsuAnime")
-    async getKitsuAnimeInfo(): Promise<KitsuAnimeInfo | undefined> {
+    public async getKitsuAnimeInfo(): Promise<KitsuAnimeInfo | undefined> {
         return await retryUntil(getAnime, {interval: 500, timeout: 2500});
     }
 
     @cacheInStateMemory("userId")
-    async getUserId(): Promise<string | null> {
+    public async getUserId(): Promise<string | null> {
         const token = await this.getAccessToken();
         if (!token) return null;
 
         const resp = await kitsuAPIRequest("GET", "/users", `Bearer ${token}`, {
             params: {
                 "fields[users]": "id",
-                "filter[self]": "true"
-            }
+                "filter[self]": "true",
+            },
         }, true);
 
         return resp && resp.data[0].id;
     }
 
     @cacheInMemory("libraryEntryId")
-    async getLibraryEntryId(): Promise<string | null> {
+    public async getLibraryEntryId(): Promise<string | null> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
         if (!(animeId && userId)) return null;
 
         const resp = await kitsuAPIRequest("GET", "/library-entries", undefined, {
             params: {
                 "fields[anime]": "id",
+                "filter[animeId]": animeId,
                 "filter[userId]": userId,
-                "filter[animeId]": animeId
-            }
+            },
         }, true);
 
         return resp && resp.data[0].id;
     }
 
-    async canSetEpisodesWatched(): Promise<boolean> {
+    public async canSetEpisodesWatched(): Promise<boolean> {
         // is the user logged-in?
         return !!await this.getUserId();
     }
 
-    async getEpisodeURL(episode: number): Promise<string> {
+    public async getEpisodeURL(episode: number): Promise<string> {
         const slug = await this.getAnimeIdentifier();
         return new URL(`/anime/${slug}/episodes/${episode + 1}`, location.origin).toString();
     }
 
-    async showEpisode(episodeIndex: number): Promise<boolean> {
+    public async showEpisode(episodeIndex: number): Promise<boolean> {
         transitionTo("anime.show.episodes.show", episodeIndex + 1);
         return true;
     }
 
     @cacheInMemory("episodesWatched")
-    async _getEpisodesWatched(): Promise<number | undefined> {
+    public async _getEpisodesWatched(): Promise<number | undefined> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
-        if (!(animeId && userId)) return;
+        if (!(animeId && userId)) return undefined;
 
         return await getProgress(animeId, userId);
     }
 
     @cacheInMemory("episodeCount")
-    async getEpisodeCount(): Promise<number | undefined> {
+    public async getEpisodeCount(): Promise<number | undefined> {
         const anime = await this.getKitsuAnimeInfo();
         if (anime) {
             const epCount = anime.episodeCount;
             if (epCount !== null) return epCount;
         }
 
-        return;
+        return undefined;
     }
 
-    async injectAnimeStatusBar(element: Element) {
+    public async injectAnimeStatusBar(element: Element) {
         element.setAttribute("style", "margin-top: 16px");
 
         (await waitUntilExists("span.media-poster"))

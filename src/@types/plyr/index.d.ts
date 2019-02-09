@@ -1,111 +1,113 @@
 // Type definitions for plyr 3.3.15
 // Definitions by: Michael Wagner <https://github.com/wagich>, tdaines <https://github.com/tdaines>
 
-declare module 'plyr' {
+declare module "plyr" {
 
     export default Plyr;
 
     class Plyr {
+
         /**
          * Indicates if the current player is HTML5.
          */
-        readonly isHTML5: boolean;
+        public readonly isHTML5: boolean;
         /**
          * Indicates if the current player is an embedded player.
          */
-        readonly isEmbed: boolean;
+        public readonly isEmbed: boolean;
         /**
          * Indicates if the current player is playing.
          */
-        readonly playing: boolean;
+        public readonly playing: boolean;
         /**
          * Indicates if the current player is paused.
          */
-        readonly paused: boolean;
+        public readonly paused: boolean;
         /**
          * Indicates if the current player is stopped.
          */
-        readonly stopped: boolean;
+        public readonly stopped: boolean;
         /**
          * Indicates if the current player has finished playback.
          */
-        readonly ended: boolean;
+        public readonly ended: boolean;
         /**
          * Returns a float between 0 and 1 indicating how much of the media is buffered
          */
-        readonly buffered: number;
+        public readonly buffered: number;
         /**
          * Gets or sets the currentTime for the player. The setter accepts a float in seconds.
          */
-        currentTime: number;
+        public currentTime: number;
         /**
          * Indicates if the current player is seeking.
          */
-        readonly seeking: boolean;
+        public readonly seeking: boolean;
         /**
          * Returns the duration for the current media.
          */
-        readonly duration: number;
+        public readonly duration: number;
         /**
          * Gets or sets the volume for the player. The setter accepts a float between 0 and 1.
          */
-        volume: number;
+        public volume: number;
         /**
          * Gets or sets the muted state of the player. The setter accepts a boolean.
          */
-        muted: boolean;
+        public muted: boolean;
         /**
          * Indicates if the current media has an audio track.
          */
-        readonly hasAudio: boolean;
+        public readonly hasAudio: boolean;
         /**
-         * Gets or sets the speed for the player. The setter accepts a value in the options specified in your config. Generally the minimum should be 0.5.
+         * Gets or sets the speed for the player. The setter accepts a value in the options specified in your config.
+         * Generally the minimum should be 0.5.
          */
-        speed: number;
+        public speed: number;
         /**
-         * Gets or sets the quality for the player. The setter accepts a value from the options specified in your config.
+         * Gets or sets the quality for the player.
+         * The setter accepts a value from the options specified in your config.
          * Remarks: YouTube only. HTML5 will follow.
          */
-        quality: string;
+        public quality: string;
         /**
          * Gets or sets the current loop state of the player.
          */
-        loop: boolean;
+        public loop: boolean;
         /**
          * Gets or sets the current source for the player.
          */
-        source: Plyr.SourceInfo;
+        public source: Plyr.SourceInfo;
         /**
          * Gets or sets the current poster image URL for the player.
          */
-        poster: string;
+        public poster: string;
         /**
          * Gets or sets the autoplay state of the player.
          */
-        autoplay: boolean;
+        public autoplay: boolean;
         /**
          * Gets or sets the caption track by index. 1 means the track is missing or captions is not active
          */
-        currentTrack: number;
+        public currentTrack: number;
         /**
-         * Gets or sets the preferred captions language for the player. The setter accepts an ISO twoletter language code. Support for the languages is dependent on the captions you include. If your captions don't have any language data, or if you have multiple tracks with the same language, you may want to use currentTrack instead.
+         * Gets or sets the preferred captions language for the player.
+         * The setter accepts an ISO twoletter language code.
+         * Support for the languages is dependent on the captions you include.
+         * If your captions don"t have any language data, or if you have multiple tracks with the same language,
+         * you may want to use currentTrack instead.
          */
-        language: string;
+        public language: string;
         /**
-         * Gets or sets the picture-in-picture state of the player. This currently only supported on Safari 10+ on MacOS Sierra+ and iOS 10+.
+         * Gets or sets the picture-in-picture state of the player.
+         * This currently only supported on Safari 10+ on MacOS Sierra+ and iOS 10+.
          */
-        pip: boolean;
-        readonly fullscreen: Plyr.FullscreenControl;
+        public pip: boolean;
+        public readonly fullscreen: Plyr.FullscreenControl;
 
         constructor(targets: NodeList | HTMLElement | HTMLElement[] | string, options?: Plyr.Options);
 
-        static setup(targets: NodeList, options?: Plyr.Options): Plyr[];
-
-        static setup(targets: HTMLElement, options?: Plyr.Options): Plyr[];
-
-        static setup(targets: HTMLElement[], options?: Plyr.Options): Plyr[];
-
-        static setup(targets: string, options?: Plyr.Options): Plyr[];
+        public static setup(targets: NodeList | HTMLElement | HTMLElement[] | string, options?: Plyr.Options): Plyr[];
 
         /**
          * Check for support
@@ -113,93 +115,100 @@ declare module 'plyr' {
          * @param provider
          * @param playsInline Whether the player has the playsinline attribute (only applicable to iOS 10+)
          */
-        static supported(mediaType?: Plyr.MediaType, provider?: Plyr.Provider, playsInline?: boolean): Plyr.Support;
+        public static supported(
+            mediaType?: Plyr.MediaType,
+            provider?: Plyr.Provider,
+            playsInline?: boolean): Plyr.Support;
 
         /**
          * Start playback.
-         * For HTML5 players, play() will return a Promise in some browsers - WebKit and Mozilla according to MDN at time of writing.
+         * For HTML5 players, play() will return a Promise in some browsers - WebKit and
+         * Mozilla according to MDN at time of writing.
          */
-        play(): Promise<void> | void;
+        public play(): Promise<void> | void;
 
         /**
          * Pause playback.
          */
-        pause(): void;
+        public pause(): void;
 
         /**
          * Toggle playback, if no parameters are passed, it will toggle based on current status.
          */
-        togglePlay(toggle?: boolean): boolean;
+        public togglePlay(toggle?: boolean): boolean;
 
         /**
          * Stop playback and reset to start.
          */
-        stop(): void;
+        public stop(): void;
 
         /**
          * Restart playback.
          */
-        restart(): void;
+        public restart(): void;
 
         /**
          * Rewind playback by the specified seek time. If no parameter is passed, the default seek time will be used.
          */
-        rewind(seekTime?: number): void;
+        public rewind(seekTime?: number): void;
 
         /**
          * Fast forward by the specified seek time. If no parameter is passed, the default seek time will be used.
          */
-        forward(seekTime?: number): void;
+        public forward(seekTime?: number): void;
 
         /**
          * Increase volume by the specified step. If no parameter is passed, the default step will be used.
          */
-        increaseVolume(step?: number): void;
+        public increaseVolume(step?: number): void;
 
         /**
          * Increase volume by the specified step. If no parameter is passed, the default step will be used.
          */
-        decreaseVolume(step?: number): void;
+        public decreaseVolume(step?: number): void;
 
         /**
          * Toggle captions display. If no parameter is passed, it will toggle based on current status.
          */
-        toggleCaptions(toggle?: boolean): void;
+        public toggleCaptions(toggle?: boolean): void;
 
         /**
          * Trigger the airplay dialog on supported devices.
          */
-        airplay(): void;
+        public airplay(): void;
 
         /**
          * Toggle the controls (video only). Takes optional truthy value to force it on/off.
          */
-        toggleControls(toggle: boolean): void;
+        public toggleControls(toggle: boolean): void;
 
         /**
          * Add an event listener for the specified event.
          */
-        on(event: Plyr.StandardEvent | Plyr.Html5Event | Plyr.YoutubeEvent, callback: (this: this, event: Plyr.PlyrEvent) => void): void;
+        public on(event: Plyr.StandardEvent | Plyr.Html5Event | Plyr.YoutubeEvent,
+                  callback: (this: this, event: Plyr.PlyrEvent) => void): void;
 
         /**
          * Add an event listener for the specified event once.
          */
-        once(event: Plyr.StandardEvent | Plyr.Html5Event | Plyr.YoutubeEvent, callback: (this: this, event: Plyr.PlyrEvent) => void): void;
+        public once(event: Plyr.StandardEvent | Plyr.Html5Event | Plyr.YoutubeEvent,
+                    callback: (this: this, event: Plyr.PlyrEvent) => void): void;
 
         /**
          * Remove an event listener for the specified event.
          */
-        off(event: Plyr.StandardEvent | Plyr.Html5Event | Plyr.YoutubeEvent, callback: (this: this, event: Plyr.PlyrEvent) => void): void;
+        public off(event: Plyr.StandardEvent | Plyr.Html5Event | Plyr.YoutubeEvent,
+                   callback: (this: this, event: Plyr.PlyrEvent) => void): void;
 
         /**
          * Check support for a mime type.
          */
-        supports(type: string): boolean;
+        public supports(type: string): boolean;
 
         /**
          * Destroy lib instance
          */
-        destroy(): void;
+        public destroy(): void;
     }
 
     namespace Plyr {
@@ -266,7 +275,8 @@ declare module 'plyr' {
 
         export interface Options {
             /**
-             * Completely disable Plyr. This would allow you to do a User Agent check or similar to programmatically enable or disable Plyr for a certain UA. Example below.
+             * Completely disable Plyr. This would allow you to do a User Agent check or similar to
+             * programmatically enable or disable Plyr for a certain UA. Example below.
              */
             enabled?: boolean;
 
@@ -276,14 +286,18 @@ declare module 'plyr' {
             debug?: boolean;
 
             /**
-             * If a function is passed, it is assumed your method will return either an element or HTML string for the controls. Three arguments will be passed to your function; id (the unique id for the player), seektime (the seektime step in seconds), and title (the media title). See controls.md for more info on how the html needs to be structured.
-             * Defaults to ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen']
+             * If a function is passed, it is assumed your method will return either an element or
+             * HTML string for the controls. Three arguments will be passed to your function;
+             * id (the unique id for the player), seektime (the seektime step in seconds), and title (the media title).
+             * See controls.md for more info on how the html needs to be structured.
+             * Defaults to ["play-large", "play", "progress", "current-time", "mute", "volume",
+             * "captions", "settings", "pip", "airplay", "fullscreen"]
              */
-            controls?: string[] | Function | Element;
+            controls?: string[] | ((id: string, seektime: number, title: string) => Element | string) | Element;
 
             /**
-             * If you're using the default controls are used then you can specify which settings to show in the menu
-             * Defaults to ['captions', 'quality', 'speed', 'loop']
+             * If you"re using the default controls are used then you can specify which settings to show in the menu
+             * Defaults to ["captions", "quality", "speed", "loop"]
              */
             settings?: string[];
 
@@ -293,7 +307,8 @@ declare module 'plyr' {
             i18n?: any;
 
             /**
-             * Load the SVG sprite specified as the iconUrl option (if a URL). If false, it is assumed you are handling sprite loading yourself.
+             * Load the SVG sprite specified as the iconUrl option (if a URL).
+             * If false, it is assumed you are handling sprite loading yourself.
              */
             loadSprite?: boolean;
 
@@ -303,7 +318,9 @@ declare module 'plyr' {
             iconUrl?: string;
 
             /**
-             * Specify the id prefix for the icons used in the default controls (e.g. plyr-play would be plyr). This is to prevent clashes if you're using your own SVG sprite but with the default controls. Most people can ignore this option.
+             * Specify the id prefix for the icons used in the default controls (e.g. plyr-play would be plyr).
+             * This is to prevent clashes if you"re using your own SVG sprite but with the default controls.
+             * Most people can ignore this option.
              */
             iconPrefix?: string;
 
@@ -313,7 +330,10 @@ declare module 'plyr' {
             blankUrl?: string;
 
             /**
-             * Autoplay the media on load. This is generally advised against on UX grounds. It is also disabled by default in some browsers. If the autoplay attribute is present on a <video> or <audio> element, this will be automatically set to true.
+             * Autoplay the media on load. This is generally advised against on UX grounds.
+             * It is also disabled by default in some browsers.
+             * If the autoplay attribute is present on a <video> or <audio> element,
+             * this will be automatically set to true.
              */
             autoplay?: boolean;
 
@@ -333,7 +353,8 @@ declare module 'plyr' {
             volume?: number;
 
             /**
-             * Whether to start playback muted. If the muted attribute is present on a <video> or <audio> element, this will be automatically set to true.
+             * Whether to start playback muted. If the muted attribute is present on a <video> or <audio> element,
+             * this will be automatically set to true.
              */
             muted?: boolean;
 
@@ -348,7 +369,10 @@ declare module 'plyr' {
             disableContextMenu?: boolean;
 
             /**
-             * Hide video controls automatically after 2s of no mouse or focus movement, on control element blur (tab out), on playback start or entering fullscreen. As soon as the mouse is moved, a control element is focused or playback is paused, the controls reappear instantly.
+             * Hide video controls automatically after 2s of no mouse or focus movement,
+             * on control element blur (tab out), on playback start or entering fullscreen.
+             * As soon as the mouse is moved, a control element is focused or playback is paused,
+             * the controls reappear instantly.
              */
             hideControls?: boolean;
 
@@ -363,7 +387,9 @@ declare module 'plyr' {
             keyboard?: KeyboardOptions;
 
             /**
-             * controls: Display control labels as tooltips on :hover & :focus (by default, the labels are screen reader only). seek: Display a seek tooltip to indicate on click where the media would seek to.
+             * controls: Display control labels as tooltips on :hover & :focus
+             * (by default, the labels are screen reader only).
+             * seek: Display a seek tooltip to indicate on click where the media would seek to.
              */
             tooltips?: TooltipOptions;
 
@@ -373,7 +399,9 @@ declare module 'plyr' {
             duration?: number;
 
             /**
-             * Displays the duration of the media on the metadataloaded event (on startup) in the current time display. This will only work if the preload attribute is not set to none (or is not set at all) and you choose not to display the duration (see controls option).
+             * Displays the duration of the media on the metadataloaded event (on startup)
+             * in the current time display. This will only work if the preload attribute is not
+             * set to none (or is not set at all) and you choose not to display the duration (see controls option).
              */
             displayDuration?: boolean;
 
@@ -388,17 +416,25 @@ declare module 'plyr' {
             toggleInvert?: boolean;
 
             /**
-             * Allows binding of event listeners to the controls before the default handlers. See the defaults.js for available listeners. If your handler prevents default on the event (event.preventDefault()), the default handler will not fire.
+             * Allows binding of event listeners to the controls before the default handlers.
+             * See the defaults.js for available listeners.
+             * If your handler prevents default on the event (event.preventDefault()),
+             * the default handler will not fire.
              */
             listeners?: Object;
 
             /**
-             * active: Toggles if captions should be active by default. language: Sets the default language to load (if available). 'auto' uses the browser language. update: Listen to changes to tracks and update menu. This is needed for some streaming libraries, but can result in unselectable language options).
+             * active: Toggles if captions should be active by default.
+             * language: Sets the default language to load (if available).
+             * "auto" uses the browser language. update: Listen to changes to tracks and update menu.
+             * This is needed for some streaming libraries, but can result in unselectable language options).
              */
             captions?: CaptionOptions;
 
             /**
-             * enabled: Toggles whether fullscreen should be enabled. fallback: Allow fallback to a full-window solution. iosNative: whether to use native iOS fullscreen when entering fullscreen (no custom controls)
+             * enabled: Toggles whether fullscreen should be enabled.
+             * fallback: Allow fallback to a full-window solution.
+             * iosNative: whether to use native iOS fullscreen when entering fullscreen (no custom controls)
              */
             fullscreen?: FullScreenOptions;
 
@@ -408,22 +444,27 @@ declare module 'plyr' {
             ratio?: string;
 
             /**
-             * enabled: Allow use of local storage to store user settings. key: The key name to use.
+             * enabled: Allow use of local storage to store user settings.
+             * key: The key name to use.
              */
             storage?: StorageOptions;
 
             /**
-             * selected: The default speed for playback. options: Options to display in the menu. Most browsers will refuse to play slower than 0.5.
+             * selected: The default speed for playback. options: Options to display in the menu.
+             * Most browsers will refuse to play slower than 0.5.
              */
             speed?: SpeedOptions;
 
             /**
-             * Currently only supported by YouTube. default is the default quality level, determined by YouTube. options are the options to display.
+             * Currently only supported by YouTube. default is the default quality level,
+             * determined by YouTube. options are the options to display.
              */
             quality?: QualityOptions;
 
             /**
-             * active: Whether to loop the current video. If the loop attribute is present on a <video> or <audio> element, this will be automatically set to true This is an object to support future functionality.
+             * active: Whether to loop the current video.
+             * If the loop attribute is present on a <video> or <audio> element,
+             * this will be automatically set to true This is an object to support future functionality.
              */
             loop?: LoopOptions;
 
@@ -486,12 +527,14 @@ declare module 'plyr' {
             type: MediaType;
 
             /**
-             * Title of the new media. Used for the aria-label attribute on the play button, and outer container. YouTube and Vimeo are populated automatically.
+             * Title of the new media. Used for the aria-label attribute on the play button, and outer container.
+             * YouTube and Vimeo are populated automatically.
              */
             title?: string;
 
             /**
-             * This is an array of sources. For HTML5 media, the properties of this object are mapped directly to HTML attributes so more can be added to the object if required.
+             * This is an array of sources. For HTML5 media, the properties of this object are mapped directly to
+             * HTML attributes so more can be added to the object if required.
              */
             sources: Source[];
 
@@ -501,7 +544,13 @@ declare module 'plyr' {
             poster?: string;
 
             /**
-             * An array of track objects. Each element in the array is mapped directly to a track element and any keys mapped directly to HTML attributes so as in the example above, it will render as <track kind="captions" label="English" srclang="en_GB" src="https://cdn.selz.com/plyr/1.0/example_captions_en.vtt" default> and similar for the French version. Booleans are converted to HTML5 value-less attributes.
+             * An array of track objects. Each element in the array is mapped directly to a track element
+             * and any keys mapped directly to HTML attributes so as in the example above,
+             * it will render as
+             * <track kind="captions" label="English" srclang="en_GB"
+             * src="https://cdn.selz.com/plyr/1.0/example_captions_en.vtt" default>
+             *
+             * and similar for the French version. Booleans are converted to HTML5 value-less attributes.
              */
             tracks?: Track[];
         }
@@ -531,7 +580,8 @@ declare module 'plyr' {
              */
             label: string;
             /**
-             * The language of the track text data. It must be a valid BCP 47 language tag. If the kind attribute is set to subtitles, then srclang must be defined.
+             * The language of the track text data. It must be a valid BCP 47 language tag.
+             * If the kind attribute is set to subtitles, then srclang must be defined.
              */
             srcLang?: string;
             /**

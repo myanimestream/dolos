@@ -8,17 +8,17 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import Tooltip from "@material-ui/core/Tooltip";
 import PlayCircleIcon from "@material-ui/icons/PlayCircleFilled";
+import {AnimePage} from "dolos/common/pages";
 import Service from "dolos/common/service";
 import * as React from "react";
 import {Subscription} from "rxjs";
-import {AnimePage} from "../../pages";
 import _ = chrome.i18n.getMessage;
 
 /** @ignore */
 const styles = (theme: Theme) => createStyles({
     buttonIconLeft: {
         marginRight: theme.spacing.unit,
-    }
+    },
 });
 
 export interface ContinueWatchingButtonState {
@@ -33,31 +33,32 @@ export interface ContinueWatchingButtonProps extends WithStyles<typeof styles> {
     animePage: AnimePage<Service>;
 }
 
-export default withStyles(styles)(
-    class ContinueWatchingButton extends React.Component<ContinueWatchingButtonProps, ContinueWatchingButtonState> {
+// tslint:disable-next-line:variable-name
+export const ContinueWatchingButton = withStyles(styles)(
+    class extends React.Component<ContinueWatchingButtonProps, ContinueWatchingButtonState> {
         private episodesWatchedSub?: Subscription;
 
         constructor(props: ContinueWatchingButtonProps) {
             super(props);
 
             this.state = {
-                tooltip: _("anime__continue_watching__loading"),
                 buttonText: _("anime__continue_watching"),
                 disabled: true,
-            }
+                tooltip: _("anime__continue_watching__loading"),
+            };
         }
 
-        async componentDidMount() {
+        public async componentDidMount() {
             const {animePage} = this.props;
             this.episodesWatchedSub = (await animePage.getEpisodesWatched$())
                 .subscribe((epsWatched) => this.handleEpisodesWatchedChanged(epsWatched));
         }
 
-        componentWillUnmount(): void {
+        public componentWillUnmount(): void {
             if (this.episodesWatchedSub) this.episodesWatchedSub.unsubscribe();
         }
 
-        async showEpisode(episodeIndex: number) {
+        public async showEpisode(episodeIndex: number) {
             const {animePage} = this.props;
 
             const success = await animePage.showEpisode(episodeIndex);
@@ -65,7 +66,7 @@ export default withStyles(styles)(
                 animePage.service.showErrorSnackbar(_("anime__show_episode__failed"));
         }
 
-        async handleEpisodesWatchedChanged(epsWatched?: number) {
+        public async handleEpisodesWatchedChanged(epsWatched?: number) {
             const {animePage} = this.props;
             const anime = await animePage.getAnime();
 
@@ -73,8 +74,8 @@ export default withStyles(styles)(
                 const msg = _("anime__continue_watching__anime_unknown");
 
                 this.setState({
-                    tooltip: msg,
                     disabled: true,
+                    tooltip: msg,
                 });
 
                 animePage.service.showWarningSnackbar(msg);
@@ -104,18 +105,18 @@ export default withStyles(styles)(
                 const href = await animePage.getEpisodeURL(epsWatched);
                 if (href) {
                     this.setState({
-                        href,
                         buttonText,
+                        disabled: false,
+                        href,
                         onClick: () => this.showEpisode(epsWatched as number),
                         tooltip: _("anime__continue_watching__available", [epsWatched + 1]),
-                        disabled: false,
                     });
                 } else {
                     // this isn't technically the truth but sometimes it's easier to lie
                     this.setState({
                         buttonText,
-                        tooltip: _("anime__continue_watching__unavailable", [epsWatched + 1]),
                         disabled: true,
+                        tooltip: _("anime__continue_watching__unavailable", [epsWatched + 1]),
                     });
                 }
             } else {
@@ -123,22 +124,28 @@ export default withStyles(styles)(
                 if (epsWatched === totalEpisodes) {
                     this.setState({
                         buttonText,
-                        tooltip: _("anime__continue_watching__completed"),
                         disabled: true,
+                        tooltip: _("anime__continue_watching__completed"),
                     });
                 } else {
                     this.setState({
                         buttonText,
-                        tooltip: _("anime__continue_watching__unavailable", [epsWatched + 1]),
                         disabled: true,
+                        tooltip: _("anime__continue_watching__unavailable", [epsWatched + 1]),
                     });
                 }
             }
         }
 
-        render() {
+        public render() {
             const {classes} = this.props;
             const {tooltip, buttonText, href, onClick, disabled} = this.state;
+
+            const handleClick = (event: React.MouseEvent) => {
+                event.preventDefault();
+                if (onClick)
+                    onClick();
+            };
 
             return (
                 <Tooltip title={tooltip}>
@@ -146,12 +153,8 @@ export default withStyles(styles)(
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={event => {
-                                event.preventDefault();
-                                if (onClick)
-                                    onClick();
-                            }}
-                            fullWidth
+                            onClick={handleClick}
+                            fullWidth={true}
                             {...{href, disabled}}
                         >
                             <PlayCircleIcon className={classes.buttonIconLeft}/>
@@ -161,5 +164,5 @@ export default withStyles(styles)(
                 </Tooltip>
             );
         }
-    }
+    },
 );

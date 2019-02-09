@@ -18,44 +18,36 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import * as React from "react";
-import StableIFrame from "./StableIFrame";
-import WithRatio from "./WithRatio";
+import {EmbedInfo, StableIFrame, WithRatio} from ".";
 import _ = chrome.i18n.getMessage;
-
 
 /** @ignore */
 const styles = (theme: Theme) => createStyles({
     embedIFrame: {
-        width: "100%",
-        height: "100%",
         border: "none",
+        height: "100%",
+        width: "100%",
     },
-    embedToolbar: {
-        marginBottom: theme.spacing.unit,
-        justifyContent: "space-between",
-        flexWrap: "wrap",
+    embedInfoAvatar: {
+        borderRadius: 0,
+        height: 2 * theme.spacing.unit,
+        width: 2 * theme.spacing.unit,
     },
+    embedInfoText: {},
     embedSelect: {
         "& $embedInfoAvatar": {
             display: "none",
         },
         "& $embedInfoText": {
             padding: 0,
-        }
+        },
     },
-    embedInfoAvatar: {
-        width: 2 * theme.spacing.unit,
-        height: 2 * theme.spacing.unit,
-        borderRadius: 0,
+    embedToolbar: {
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+        marginBottom: theme.spacing.unit,
     },
-    embedInfoText: {},
 });
-
-export interface EmbedInfo {
-    name: string,
-    icon?: string,
-    url: string,
-}
 
 interface EmbedPlayerState {
     currentEmbedSelected: number;
@@ -66,79 +58,111 @@ interface EmbedPlayerProps extends WithStyles<typeof styles> {
     embeds: EmbedInfo[];
 }
 
-export default withStyles(styles)(class EmbedPlayer extends React.Component<EmbedPlayerProps, EmbedPlayerState> {
-    constructor(props: EmbedPlayerProps) {
-        super(props);
-        this.state = {
-            currentEmbedSelected: 0,
-            embedSelectionOpen: false,
-        };
-    }
+// tslint:disable-next-line:variable-name
+export const EmbedPlayer = withStyles(styles)(
+    class extends React.Component<EmbedPlayerProps, EmbedPlayerState> {
+        constructor(props: EmbedPlayerProps) {
+            super(props);
+            this.state = {
+                currentEmbedSelected: 0,
+                embedSelectionOpen: false,
+            };
+        }
 
+        public setCurrentEmbed(embedIndex: number) {
+            this.setState({currentEmbedSelected: embedIndex});
+        }
 
-    setCurrentEmbed(embedIndex: number) {
-        this.setState({currentEmbedSelected: embedIndex});
-    }
+        public render() {
+            const {classes, embeds} = this.props;
+            const {currentEmbedSelected, embedSelectionOpen} = this.state;
 
-    render() {
-        const {classes, embeds} = this.props;
-        const {currentEmbedSelected, embedSelectionOpen} = this.state;
+            const currentEmbed = embeds[currentEmbedSelected];
 
-        const currentEmbed = embeds[currentEmbedSelected];
+            const handleEmbedSelectOpen = () => this.setState({embedSelectionOpen: true});
+            const handleEmbedSelectClose = () => this.setState({embedSelectionOpen: false});
+            const handleEmbedSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
+                this.setCurrentEmbed(parseInt(event.target.value, 10));
+            const embedSelectInputProps = {
+                id: "embed-selection-control",
+                name: _("episode__switch_embed"),
+            };
 
-        return (
-            <>
-                <Paper>
-                    <Toolbar className={classes.embedToolbar}>
-                        <Tooltip title={_("episode__embedded_stream__warning")} placement="bottom">
+            let embeddedPlayer;
+
+            if (currentEmbed)
+                embeddedPlayer = (
+                    <StableIFrame
+                        src={currentEmbed.url}
+                        className={classes.embedIFrame}
+                        allowFullScreen={true}
+                    />
+                );
+
+            return (
+                <>
+                    <Paper>
+                        <Toolbar className={classes.embedToolbar}>
+                            <Tooltip title={_("episode__embedded_stream__warning")} placement="bottom">
                                 <span>
-                                    <Typography variant="h6" color="textSecondary"
-                                                style={{display: "inline"}}
-                                                noWrap
+                                    <Typography
+                                        variant="h6"
+                                        color="textSecondary"
+                                        style={{display: "inline"}}
+                                        noWrap={true}
                                     >
                                         {_("episode__embedded_stream")}&nbsp;
                                         <HelpOutlineIcon fontSize="small" color="secondary"/>
                                     </Typography>
                                 </span>
-                        </Tooltip>
+                            </Tooltip>
 
-                        <FormControl>
-                            <InputLabel htmlFor="embed-selection-control">{_("episode__switch_embed")}</InputLabel>
-                            <Select
-                                className={classes.embedSelect}
-                                open={embedSelectionOpen}
-                                onOpen={() => this.setState({embedSelectionOpen: true})}
-                                onClose={() => this.setState({embedSelectionOpen: false})}
-                                value={currentEmbedSelected}
-                                onChange={event => this.setCurrentEmbed(parseInt(event.target.value))}
-                                inputProps={{
-                                    name: _("episode__switch_embed"),
-                                    id: "embed-selection-control"
-                                }}
-                            >
-                                {embeds.map((embed, index) => (
-                                    <MenuItem value={index} key={embed.url}>
-                                        {embed.icon &&
-                                        <ListItemAvatar>
-                                            <Avatar src={embed.icon} className={classes.embedInfoAvatar}
-                                                    onError={event => (event.target as Element).remove()}/>
-                                        </ListItemAvatar>
-                                        }
-                                        <ListItemText className={classes.embedInfoText}>{embed.name}</ListItemText>
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Toolbar>
-                </Paper>
+                            <FormControl>
+                                <InputLabel htmlFor="embed-selection-control">{_("episode__switch_embed")}</InputLabel>
+                                <Select
+                                    className={classes.embedSelect}
+                                    open={embedSelectionOpen}
+                                    onOpen={handleEmbedSelectOpen}
+                                    onClose={handleEmbedSelectClose}
+                                    value={currentEmbedSelected}
+                                    onChange={handleEmbedSelectChange}
+                                    inputProps={embedSelectInputProps}
+                                >
+                                    {this.renderEmbedProviders()}
+                                </Select>
+                            </FormControl>
+                        </Toolbar>
+                    </Paper>
 
-                <WithRatio ratio={16 / 9}>
-                    {currentEmbed && (
-                        <StableIFrame src={currentEmbed.url} className={classes.embedIFrame}
-                                      allowFullScreen/>
-                    )}
-                </WithRatio>
-            </>
-        );
-    }
-});
+                    <WithRatio ratio={16 / 9}>
+                        {embeddedPlayer}
+                    </WithRatio>
+                </>
+            );
+        }
+
+        private renderEmbedProviders() {
+            const {classes, embeds} = this.props;
+
+            const onAvatarError = (event: React.SyntheticEvent<any>) => (event.target as Element).remove();
+            const renderEmbedIcon = (embed: EmbedInfo) => (
+                <ListItemAvatar>
+                    <Avatar
+                        src={embed.icon}
+                        className={classes.embedInfoAvatar}
+                        onError={onAvatarError}
+                    />
+                </ListItemAvatar>
+            );
+
+            return (
+                embeds.map((embed, index) => (
+                    <MenuItem value={index} key={embed.url}>
+                        {embed.icon && renderEmbedIcon(embed)}
+                        <ListItemText className={classes.embedInfoText}>{embed.name}</ListItemText>
+                    </MenuItem>
+                ))
+            );
+        }
+    },
+);

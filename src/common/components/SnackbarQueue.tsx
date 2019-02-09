@@ -37,10 +37,9 @@ function isSnackbarAction(action: any): action is SnackbarAction {
         return false;
 
     return [
-        "text"
+        "text",
     ].every(attr => attr in action);
 }
-
 
 /**
  * Template for a Snackbar which can be displayed using [[SnackbarQueue]].
@@ -54,7 +53,7 @@ export interface SnackbarMessage extends OptionsObject {
  * Convenience function to create a snackbar message.
  */
 export function resolveSnackbarMessage(message: string | SnackbarMessage, variant?: VariantType): SnackbarMessage {
-    if (typeof message === "string") message = {message,};
+    if (typeof message === "string") message = {message};
 
     message.variant = variant;
     return message;
@@ -71,21 +70,22 @@ interface SnackbarListenerProps {
  * This is a hidden component which subscribes to the [[SnackbarListenerProps.snackbarMessage$]]
  * observable and calls [[enqueueSnackbar]].
  */
+// tslint:disable-next-line:variable-name
 const SnackbarListener = withSnackbar(
-    function SnackbarListener(props: SnackbarListenerProps & InjectedNotistackProps) {
+    (props: SnackbarListenerProps & InjectedNotistackProps) => {
         useSubscription(props.snackbarMessage$, msg => {
             const action = msg.action;
             if (isSnackbarAction(action)) {
-                let props: ButtonProps = {
+                const buttonProps: ButtonProps = {
                     color: "secondary",
                     size: "small",
                 };
 
                 if (action.buttonProps)
-                    props = Object.assign(props, action.buttonProps);
+                    Object.assign(buttonProps, action.buttonProps);
 
                 msg.action = (
-                    <Button {...props}>
+                    <Button {...buttonProps}>
                         {action.text}
                     </Button>
                 );
@@ -98,7 +98,7 @@ const SnackbarListener = withSnackbar(
         });
 
         return null;
-    }
+    },
 );
 
 export interface SnackbarQueueProps extends SnackbarListenerProps {
@@ -113,14 +113,16 @@ export interface SnackbarQueueProps extends SnackbarListenerProps {
 export function SnackbarQueue(props: SnackbarQueueProps) {
     const {maxMessages} = props;
 
+    const snackbarAction = (
+        <Button color="secondary" size="small">
+            {_("snackbar__dismiss")}
+        </Button>
+    );
+
     return (
         <SnackbarProvider
             maxSnack={maxMessages || 3}
-            action={
-                <Button color="secondary" size="small">
-                    {_("snackbar__dismiss")}
-                </Button>
-            }
+            action={snackbarAction}
         >
             <SnackbarListener {...props}/>
         </SnackbarProvider>

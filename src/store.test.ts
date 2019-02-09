@@ -21,7 +21,6 @@ test("StoreElementTraps", () => {
     expect(Object.keys(element)).toEqual(["test"]);
 });
 
-
 test("Store object", async () => {
     const key = "test";
 
@@ -75,7 +74,7 @@ test("Store deep", async () => {
             b: "b",
             c: {
                 nested: true,
-            }
+            },
         },
         items: [
             5,
@@ -83,8 +82,8 @@ test("Store deep", async () => {
             3,
             {
                 a: 5,
-            }
-        ]
+            },
+        ],
     };
 
     const test = await Store.get(key, value);
@@ -107,7 +106,6 @@ test("Store deep", async () => {
     expect(map.c).toBe(mapC);
     expect(test.rawValue).toEqual(value);
 
-
     value.items[0] = 15;
     // @ts-ignore
     await Store.handleValueChanged({[key]: {newValue: value}});
@@ -129,11 +127,11 @@ test("Store deep", async () => {
 
     value = test.rawValue;
     // @ts-ignore
-    value["newProxyObj"] = {
-        yes: "it works"
+    value.newProxyObj = {
+        yes: "it works",
     };
     // @ts-ignore
-    value["newProxyList"] = ["yes", "please", "work"];
+    value.newProxyList = ["yes", "please", "work"];
     // @ts-ignore
     await Store.handleValueChanged({[key]: {newValue: value}});
 

@@ -12,25 +12,25 @@ import ServicePage from "./service-page";
 import State from "./state";
 
 export default abstract class Service {
-    AnimePage: Type<AnimePage<this>>;
-    EpisodePage: Type<EpisodePage<this>>;
+    public animePageType: Type<AnimePage<this>>;
+    public episodePageType: Type<EpisodePage<this>>;
 
-    state: State<this>;
+    public state: State<this>;
 
-    snackbarMessage$: Subject<SnackbarMessage>;
+    public snackbarMessage$: Subject<SnackbarMessage>;
 
-    protected constructor(serviceID: string, animePage: Type<AnimePage<any>>, episodePage: Type<EpisodePage<any>>,) {
+    protected constructor(serviceID: string, animePage: Type<AnimePage<any>>, episodePage: Type<EpisodePage<any>>) {
         this.state = new State(serviceID);
 
         this.snackbarMessage$ = new Subject();
 
-        this.AnimePage = animePage;
-        this.EpisodePage = episodePage;
+        this.animePageType = animePage;
+        this.episodePageType = episodePage;
     }
 
-    abstract async route(url: URL): Promise<void>;
+    public abstract async route(url: URL): Promise<void>;
 
-    async load(noRoute?: boolean) {
+    public async load(noRoute?: boolean) {
         const snackbar = await this.buildSnackbarQueue();
 
         await Promise.all([
@@ -42,9 +42,9 @@ export default abstract class Service {
     }
 
     // noinspection JSMethodCanBeStatic
-    async insertNoReferrerPolicy(): Promise<void> {
+    public async insertNoReferrerPolicy(): Promise<void> {
         const temp = document.createElement("template");
-        temp.innerHTML = `<meta name="referrer" content="never">`;
+        temp.innerHTML = '<meta name="referrer" content="never">';
         const node = temp.content.firstElementChild;
         if (!node) throw new Error("Couldn't create template");
 
@@ -52,23 +52,23 @@ export default abstract class Service {
         this.state.injected(node);
     }
 
-    async buildSnackbarQueue(): Promise<Element> {
+    public async buildSnackbarQueue(): Promise<Element> {
         return this.state.renderWithTheme(
             React.createElement(SnackbarQueue, {
-                snackbarMessage$: this.snackbarMessage$
-            })
+                snackbarMessage$: this.snackbarMessage$,
+            }),
         );
     }
 
     // noinspection JSMethodCanBeStatic
-    async insertSnackbarQueue(snackbarQueue: Element): Promise<void> {
+    public async insertSnackbarQueue(snackbarQueue: Element): Promise<void> {
         document.body.appendChild(snackbarQueue);
     }
 
-    buildServicePage<T extends ServicePage<any>>(cls: Type<T>, memory?: { [key: string]: any }): T {
+    public buildServicePage<T extends ServicePage<any>>(cls: Type<T>, memory?: { [key: string]: any }): T {
         const page = new cls(this);
         if (memory) {
-            for (let [key, value] of Object.entries(memory))
+            for (const [key, value] of Object.entries(memory))
                 page.remember(key, value);
         }
 
@@ -76,27 +76,25 @@ export default abstract class Service {
     }
 
     /** Shortcut for [[Service.snackbarMessage$.next]] */
-    showSnackbar(message: SnackbarMessage): void {
+    public showSnackbar(message: SnackbarMessage): void {
         this.snackbarMessage$.next(message);
     }
 
     /** Shortcut for [[Service.snackbarMessage$.next]] with variant error */
-    showErrorSnackbar(message: string | SnackbarMessage): void {
+    public showErrorSnackbar(message: string | SnackbarMessage): void {
         this.showSnackbar(resolveSnackbarMessage(message, "error"));
     }
 
     /** Shortcut for [[Service.snackbarMessage$.next]] with variant warning */
-    showWarningSnackbar(message: string | SnackbarMessage): void {
+    public showWarningSnackbar(message: string | SnackbarMessage): void {
         this.showSnackbar(resolveSnackbarMessage(message, "warning"));
     }
 
-
-    async showAnimePage(memory?: { [key: string]: any }) {
-        await this.state.loadPage(this.buildServicePage(this.AnimePage, memory));
+    public async showAnimePage(memory?: { [key: string]: any }) {
+        await this.state.loadPage(this.buildServicePage(this.animePageType, memory));
     }
 
-
-    async showEpisodePage(memory?: { [key: string]: any }) {
-        await this.state.loadPage(this.buildServicePage(this.EpisodePage, memory));
+    public async showEpisodePage(memory?: { [key: string]: any }) {
+        await this.state.loadPage(this.buildServicePage(this.episodePageType, memory));
     }
 }

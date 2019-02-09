@@ -19,19 +19,19 @@ import _ = chrome.i18n.getMessage;
 
 /** @ignore */
 const useStyles = makeStyles((theme: Theme) => ({
-    container: {
-        position: "relative",
-        display: "inline-block",
-    },
-    progress: {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        marginTop: -12,
-        marginLeft: -12,
-    },
     buttonIconLeft: {
         marginRight: theme.spacing.unit,
+    },
+    container: {
+        display: "inline-block",
+        position: "relative",
+    },
+    progress: {
+        left: "50%",
+        marginLeft: -12,
+        marginTop: -12,
+        position: "absolute",
+        top: "50%",
     },
 }));
 
@@ -67,13 +67,15 @@ export function SubscriptionToggle(props: SubscriptionToggleProps) {
             animePage.service.showErrorSnackbar(_(
                 "anime__" +
                 (subscribed ? "unsubscribe" : "subscribe") +
-                "__failed"
+                "__failed",
             ));
 
         setLoading(false);
     }
 
-    const Icon = subscribed ? NotificationsActiveIcon : NotificationsNoneIcon;
+    const icon = subscribed
+        ? (<NotificationsActiveIcon className={classes.buttonIconLeft}/>)
+        : (<NotificationsNoneIcon className={classes.buttonIconLeft}/>);
 
     // only disable button if the user isn't already subscribed.
     const disableAction = !subscribed && !canSubscribe;
@@ -86,15 +88,18 @@ export function SubscriptionToggle(props: SubscriptionToggleProps) {
     return (
         <Tooltip title={tooltipText}>
             <div className={classes.container}>
-                <Button variant="contained" color="secondary" fullWidth
-                        disabled={buttonDisabled}
-                        onClick={toggleSubscription}
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    fullWidth={true}
+                    disabled={buttonDisabled}
+                    onClick={toggleSubscription}
                 >
-                    <Icon className={classes.buttonIconLeft}/>
+                    {icon}
                     {_("anime__" + (subscribed ? "unsubscribe" : "subscribe"))}
                 </Button>
                 {loading && <CircularProgress size={24} className={classes.progress}/>}
             </div>
         </Tooltip>
-    )
+    );
 }

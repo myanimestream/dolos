@@ -24,57 +24,57 @@ import {AnimeInfo, GrobberClient} from "dolos/grobber";
 import {useSubscription} from "dolos/hooks";
 import * as React from "react";
 import {Observable} from "rxjs";
-import AnimeSelection from "./AnimeSelection";
+import {AnimeSelection} from ".";
 import _ = chrome.i18n.getMessage;
 
 /** @ignore */
 const styles = (theme: Theme) => createStyles({
+    content: {
+        textAlign: "center",
+    },
     grow: {
         flexGrow: 1,
     },
+    inputInput: {
+        paddingBottom: theme.spacing.unit,
+        paddingLeft: theme.spacing.unit * 5,
+        paddingRight: theme.spacing.unit,
+        paddingTop: theme.spacing.unit,
+        transition: theme.transitions.create("width"),
+        width: "100%",
+        [theme.breakpoints.up("sm")]: {
+            "&:focus": {
+                width: 200,
+            },
+            "width": 120,
+        },
+    },
+    inputRoot: {
+        color: "inherit",
+        width: "100%",
+    },
     search: {
-        position: "relative",
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.secondary.main, 0.15),
         "&:hover": {
             backgroundColor: fade(theme.palette.secondary.main, 0.25),
         },
-        marginLeft: 0,
-        width: "100%",
+        "backgroundColor": fade(theme.palette.secondary.main, 0.15),
+        "borderRadius": theme.shape.borderRadius,
+        "marginLeft": 0,
+        "position": "relative",
+        "width": "100%",
         [theme.breakpoints.up("sm")]: {
             marginLeft: theme.spacing.unit,
             width: "auto",
         },
     },
     searchIcon: {
-        width: theme.spacing.unit * 4,
-        height: "100%",
-        position: "absolute",
-        pointerEvents: "none",
-        display: "flex",
         alignItems: "center",
+        display: "flex",
+        height: "100%",
         justifyContent: "center",
-    },
-    inputRoot: {
-        color: "inherit",
-        width: "100%",
-    },
-    inputInput: {
-        paddingTop: theme.spacing.unit,
-        paddingRight: theme.spacing.unit,
-        paddingBottom: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit * 5,
-        transition: theme.transitions.create("width"),
-        width: "100%",
-        [theme.breakpoints.up("sm")]: {
-            width: 120,
-            "&:focus": {
-                width: 200,
-            },
-        },
-    },
-    content: {
-        textAlign: "center",
+        pointerEvents: "none",
+        position: "absolute",
+        width: theme.spacing.unit * 4,
     },
 });
 
@@ -100,10 +100,10 @@ export interface AnimeSearchDialogState {
     currentAnime?: AnimeInfo;
 }
 
-
+// tslint:disable-next-line:variable-name
 export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearchDialogProps>()(
-    class AnimeSearchResultDialog extends React.Component<AnimeSearchDialogProps, AnimeSearchDialogState> {
-        searchDebounced = AwesomeDebouncePromise(async (query: string) => {
+    class extends React.Component<AnimeSearchDialogProps, AnimeSearchDialogState> {
+        public searchDebounced = AwesomeDebouncePromise(async (query: string) => {
             await this.search(query);
         }, 500);
 
@@ -114,7 +114,7 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
             };
         }
 
-        async handleDialogEnter() {
+        public async handleDialogEnter() {
             const {animePage} = this.props;
 
             (async () => {
@@ -131,14 +131,14 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
             await this.search(searchQuery);
         }
 
-        async search(query: string) {
+        public async search(query: string) {
             const {animePage} = this.props;
             const state = animePage.state;
 
             if (!query) {
                 this.setState({
-                    searchQuery: query,
                     results: undefined,
+                    searchQuery: query,
                 });
                 return;
             }
@@ -161,15 +161,17 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
             this.setState({loading: false, results});
         }
 
-        handleSelect(anime: AnimeInfo) {
+        public handleSelect(anime: AnimeInfo) {
             const {currentAnimeUID} = this.state;
-            if (anime.uid == currentAnimeUID) return;
+            if (anime.uid === currentAnimeUID) return;
 
             this.setState({currentAnimeUID: anime.uid, currentAnime: anime});
         }
 
-        renderContent(): React.ReactNode {
+        public renderContent(): React.ReactNode {
             const {loading, results, currentAnimeUID, searchQuery} = this.state;
+
+            const handleSelect = this.handleSelect.bind(this);
 
             if (loading) {
                 return (
@@ -177,8 +179,11 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
                 );
             } else if (results && results.length > 0) {
                 return (
-                    <AnimeSelection anime={results} currentUID={currentAnimeUID}
-                                    onSelect={(anime) => this.handleSelect(anime)}/>
+                    <AnimeSelection
+                        anime={results}
+                        currentUID={currentAnimeUID}
+                        onSelect={handleSelect}
+                    />
                 );
             } else if (!searchQuery) {
                 return (
@@ -191,9 +196,52 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
             }
         }
 
-        render(): React.ReactNode {
+        public render(): React.ReactNode {
             const {classes, open, onClose, fullScreen} = this.props;
             const {searchQuery, currentAnime} = this.state;
+
+            const handleDialogEnter = this.handleDialogEnter.bind(this);
+            const handleClose = () => onClose && onClose();
+
+            const handleSearchInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                this.searchDebounced(event.target.value);
+
+            const searchInputClasses = {
+                input: classes.inputInput,
+                root: classes.inputRoot,
+            };
+
+            let searchInputField;
+
+            // searchQuery is only undefined right at the beginning
+            if (searchQuery !== undefined)
+                searchInputField = (
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon/>
+                        </div>
+                        <InputBase
+                            placeholder={_("anime__search__search_placeholder")}
+                            defaultValue={searchQuery}
+                            onChange={handleSearchInputChange}
+                            classes={searchInputClasses}
+                        />
+                    </div>
+                );
+
+            let pickButton;
+            if (currentAnime) {
+                const handlePickClick = () => onClose && onClose(currentAnime);
+                pickButton = (
+                    <Button
+                        onClick={handlePickClick}
+                        variant="contained"
+                        color="primary"
+                    >
+                        {_("anime__search__pick")}
+                    </Button>
+                );
+            }
 
             return (
                 <Dialog
@@ -201,8 +249,8 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
                     maxWidth="md"
                     fullWidth={true}
                     open={open}
-                    onEnter={() => this.handleDialogEnter()}
-                    onBackdropClick={() => onClose && onClose()}
+                    onEnter={handleDialogEnter}
+                    onBackdropClick={handleClose}
                     scroll="paper"
                     aria-labelledby="anime-search-result-dialog-title"
                     style={{zIndex: 10000}}
@@ -212,44 +260,21 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
                             {_("anime__search__title")}
                         </DialogTitle>
                         <div className={classes.grow}/>
-                        {
-                            // searchQuery is only undefined right at the beginning
-                            searchQuery !== undefined && (
-                                <div className={classes.search}>
-                                    <div className={classes.searchIcon}>
-                                        <SearchIcon/>
-                                    </div>
-                                    <InputBase
-                                        placeholder={_("anime__search__search_placeholder")}
-                                        defaultValue={searchQuery}
-                                        onChange={event => this.searchDebounced(event.target.value)}
-                                        classes={{
-                                            root: classes.inputRoot,
-                                            input: classes.inputInput,
-                                        }}
-                                    />
-                                </div>
-                            )
-                        }
+                        {searchInputField}
                     </Toolbar>
                     <DialogContent className={classes.content}>
                         {this.renderContent()}
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => onClose && onClose()} color="primary">
+                        <Button onClick={handleClose} color="primary">
                             {_("anime__search__abort")}
                         </Button>
-                        {currentAnime && (
-                            <Button onClick={() => onClose && onClose(currentAnime)} variant="contained"
-                                    color="primary">
-                                {_("anime__search__pick")}
-                            </Button>
-                        )}
+                        {pickButton}
                     </DialogActions>
                 </Dialog>
             );
         }
-    }
+    },
 ));
 
 export interface SearchDialogOpenCommand {
@@ -277,9 +302,11 @@ export function RemoteAnimeSearchDialog(props: RemoteAnimeSearchDialogProps) {
         setOpen({open: false});
     }
 
-    return <AnimeSearchDialog
-        open={open.open}
-        animePage={props.animePage}
-        onClose={handleClose}
-    />;
+    return (
+        <AnimeSearchDialog
+            open={open.open}
+            animePage={props.animePage}
+            onClose={handleClose}
+        />
+    );
 }

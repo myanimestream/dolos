@@ -99,7 +99,7 @@ export interface RetryUntilOptions<T> {
  */
 export async function retryUntil<T>(
     func: (attempt: number) => T | PromiseLike<T>,
-    opts: RetryUntilOptions<T>
+    opts: RetryUntilOptions<T>,
 ): Promise<T | undefined> {
     const condition = opts.condition || (val => Boolean(val));
 
@@ -108,12 +108,12 @@ export async function retryUntil<T>(
 
     async function runner() {
         while (running) {
-            const delay = new Promise(res => setTimeout(res, opts.interval));
+            const delay = new Promise(resolve => setTimeout(resolve, opts.interval));
 
             // use a separate flag because the res might be undefined intentionally!
             let gotRes = false;
             // @ts-ignore
-            let res: T = undefined;
+            let res: T | undefined;
 
             try {
                 res = await Promise.resolve(func(attempt));
@@ -122,27 +122,23 @@ export async function retryUntil<T>(
                 if (!opts.catchErrors) throw e;
             }
 
-            if (gotRes) {
-                if (await Promise.resolve(condition(res, attempt))) {
-                    return res;
-                }
-            }
+            if (gotRes && await Promise.resolve(condition(res as T, attempt)))
+                return res;
 
             attempt += 1;
             await delay;
         }
-        return;
+        return undefined;
     }
 
-    let res;
-    if (opts.timeout) {
-        res = await waitWithTimeout(runner(), opts.timeout);
-    } else {
-        res = await runner();
-    }
+    let result;
+    if (opts.timeout)
+        result = await waitWithTimeout(runner(), opts.timeout);
+    else
+        result = await runner();
 
     running = false;
-    return res;
+    return result;
 }
 
 /**
@@ -191,9 +187,7 @@ export function reactRenderWithTheme(component: React.ReactNode, theme: Theme, r
  * }
  * ```
  */
-export interface Type<T> extends Function {
-    new(...args: any[]): T;
-}
+export type Type<T> = new(...args: any[]) => T;
 
 /**
  * Download the data and return a url pointing to it.

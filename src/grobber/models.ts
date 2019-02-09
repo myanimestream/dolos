@@ -1,3 +1,5 @@
+/* tslint:disable:max-classes-per-file */
+
 /**
  * @module grobber
  */
@@ -6,7 +8,7 @@
  * When a request was made but there was no response.
  */
 export class GrobberRequestError extends Error {
-    request: XMLHttpRequest;
+    public request: XMLHttpRequest;
 
     constructor(request: XMLHttpRequest) {
         super(`Grobber Request Error: ${request.statusText}`);
@@ -23,21 +25,21 @@ export enum GrobberErrorType {
      * This means you should drop the uid and
      * perform a search for a new one.
      */
-    UIDUnknown = "UIDUnknown"
+    UIDUnknown = "UIDUnknown",
 }
 
 /**
  * Represents an error returned by Grobber.
  */
 export class GrobberResponseError extends Error {
-    name: GrobberErrorType;
+    public name: GrobberErrorType;
     /** Indicates that the error had nothing to do with Grobber */
-    clientError: boolean;
+    public clientError: boolean;
 
     constructor(name: GrobberErrorType, msg: string, clientError: boolean) {
         super(msg);
         this.name = name;
-        this.clientError = clientError
+        this.clientError = clientError;
     }
 }
 

@@ -13,13 +13,13 @@ import {ContinueWatchingButton, SubscriptionToggle} from ".";
 /** @ignore */
 const useStyles = makeStyles((theme: Theme) => ({
     bar: {
-        display: "flex",
-        width: "100%",
-        flexDirection: "column",
-        justifyContent: "space-between",
         "& > * + *": {
             marginTop: theme.spacing.unit,
         },
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+        "width": "100%",
     },
 }));
 
@@ -36,5 +36,5 @@ export function AnimeStatusBar({animePage}: AnimeStatusBarProps) {
             <ContinueWatchingButton animePage={animePage}/>
             <SubscriptionToggle animePage={animePage}/>
         </span>
-    )
+    );
 }

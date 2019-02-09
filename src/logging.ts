@@ -15,8 +15,8 @@ import Secrets from "./secrets";
 const release = `dolos@${getVersion()}`;
 
 Sentry.init({
-    release,
     dsn: Secrets.sentryDSN,
+    release,
 });
 
 export {default as SentryLogger} from "./SentryLogger";

@@ -7,8 +7,8 @@ import Service from "./service";
 import State from "./state";
 
 export default abstract class ServicePage<T extends Service> extends ElementMemory {
-    service: T;
-    state: State<T>;
+    public service: T;
+    public state: State<T>;
 
     private loaded: boolean;
 
@@ -20,40 +20,42 @@ export default abstract class ServicePage<T extends Service> extends ElementMemo
         this.loaded = false;
     }
 
-    abstract async _load(): Promise<void>;
+    public abstract async _load(): Promise<void>;
 
-    async load() {
+    public async load(): Promise<void> {
         if (this.loaded) return;
 
         await this._load();
         this.loaded = true;
     }
 
-    async _unload() {
+    public async _unload(): Promise<void> {
         this.resetPage();
     }
 
-    async unload() {
+    public async unload(): Promise<void> {
         if (!this.loaded) return;
 
         await this._unload();
         this.loaded = false;
     }
 
-    resetPage() {
+    public resetPage(): void {
         this.resetMemory();
         this.removeInjected();
     }
 
-    async reload() {
+    public async reload(): Promise<void> {
         await this.unload();
         await this.load();
     }
 
-    async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | void> {
+    public async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | undefined> {
         await this.unload();
 
-        if (!page) return;
-        await page.load();
+        if (page)
+            await page.load();
+
+        return undefined;
     }
 }

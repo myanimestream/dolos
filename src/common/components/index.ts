@@ -7,12 +7,10 @@
 
 /** @ignore */
 
+export * from "./embed-providers";
+export * from "./EmbedPlayer";
 export * from "./Player";
 export * from "./SnackbarQueue";
-export * from "./anime";
+export * from "./StableIFrame";
 export * from "./Toggle";
-export * from "./EmbedPlayer";
-export {default as Player} from "./Player";
-export {default as WithRatio} from "./WithRatio";
-export {default as EmbedPlayer} from "./EmbedPlayer";
-export {default as embedProviders} from "./embed-providers";
+export * from "./WithRatio";

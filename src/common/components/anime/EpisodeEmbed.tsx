@@ -25,7 +25,7 @@ import {AnimeInfo} from "dolos/grobber";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
 import * as rxjs from "rxjs";
-import {EmbedInfo, EmbedPlayer, embedProviders, Player, PlayerProps, PlayerSource, Toggle, WithRatio} from "..";
+import {EmbedInfo, EmbedPlayer, getEmbedInfo, Player, PlayerProps, PlayerSource, Toggle, WithRatio} from "..";
 import _ = chrome.i18n.getMessage;
 
 export interface SkipButton {
@@ -36,27 +36,38 @@ export interface SkipButton {
 /** @ignore */
 const styles = (theme: Theme) => {
     const flexCenterColumn: CSSProperties = {
+        alignItems: "center",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "space-evenly"
+        justifyContent: "space-evenly",
     };
 
     return createStyles({
-        root: {
-            marginTop: 3 * theme.spacing.unit,
-        },
         buttonIconRight: {
             marginLeft: theme.spacing.unit,
         },
         flexCenterColumn,
         playerBar: {
-            marginTop: theme.spacing.unit,
             display: "flex",
             justifyContent: "space-between",
-        }
-    })
+            marginTop: theme.spacing.unit,
+        },
+        root: {
+            marginTop: 3 * theme.spacing.unit,
+        },
+    });
 };
+
+function getPlayerTypeName(type: PlayerType): string | null {
+    switch (type) {
+        case PlayerType.DOLOS:
+            return _("episode__player_type_name__dolos");
+        case PlayerType.EMBED:
+            return _("episode__player_type_name__embed");
+    }
+
+    return null;
+}
 
 export interface EpisodeEmbedProps extends WithStyles<typeof styles> {
     episodePage: EpisodePage<any>;
@@ -65,12 +76,12 @@ export interface EpisodeEmbedProps extends WithStyles<typeof styles> {
 export enum PlayerType {
     NONE,
     DOLOS,
-    EMBED
+    EMBED,
 }
 
 interface EpisodeEmbedState {
     playersAvailable: PlayerType[];
-    failReason?: "episode_unavailable" | "no_streams"
+    failReason?: "episode_unavailable" | "no_streams";
     currentPlayer?: PlayerType;
     playerProps?: Partial<PlayerProps>;
     episodeEmbeds?: EmbedInfo[];
@@ -82,31 +93,21 @@ interface EpisodeEmbedState {
     menuAnchorElement?: HTMLElement;
 }
 
+// tslint:disable-next-line:variable-name
 export const EpisodeEmbed = withStyles(styles)(
-    class EpisodeEmbed extends React.Component<EpisodeEmbedProps, EpisodeEmbedState> {
-        episodeBookmarkedSubscription?: rxjs.Subscription;
+    class extends React.Component<EpisodeEmbedProps, EpisodeEmbedState> {
+        public episodeBookmarkedSubscription?: rxjs.Subscription;
 
         constructor(props: EpisodeEmbedProps) {
             super(props);
             this.state = {
-                playersAvailable: [],
-                canSetProgress: false,
                 bookmarked: false,
+                canSetProgress: false,
+                playersAvailable: [],
             };
         }
 
-        static getPlayerTypeName(type: PlayerType): string | null {
-            switch (type) {
-                case PlayerType.DOLOS:
-                    return _("episode__player_type_name__dolos");
-                case PlayerType.EMBED:
-                    return _("episode__player_type_name__embed");
-            }
-
-            return null;
-        }
-
-        getNextPlayerType(): PlayerType {
+        public getNextPlayerType(): PlayerType {
             switch (this.state.currentPlayer) {
                 case PlayerType.DOLOS:
                     return PlayerType.EMBED;
@@ -117,15 +118,14 @@ export const EpisodeEmbed = withStyles(styles)(
             }
         }
 
-        switchPlayerType() {
+        public switchPlayerType(): void {
             const nextPlayerType = this.getNextPlayerType();
             this.setState({currentPlayer: nextPlayerType});
         }
 
-        getEmbedInfos(urls: string[]): EmbedInfo[] {
-            const embeds: EmbedInfo[] = [];
+        public getEmbedInfos(urls: string[]): EmbedInfo[] {
             let embedRawURLs = urls.filter(url => url.startsWith("https://"));
-            if (embedRawURLs.length < 3) {
+            if (embedRawURLs.length < 5) {
                 // maybe they support https anyway, who knows?
                 embedRawURLs = urls;
             }
@@ -136,35 +136,18 @@ export const EpisodeEmbed = withStyles(styles)(
                 return url;
             });
 
-            const nameCounter = {};
-            for (const url of embedURLs) {
-                let providerInfo = embedProviders[url.hostname] || {};
-
-                let name = providerInfo.name || url.hostname.replace(/(^www\.)|(\.\w+$)/, "");
-                let icon = providerInfo.icon || new URL("/favicon.ico", url).href;
-
-                // @ts-ignore
-                const count = nameCounter[name] = (nameCounter[name] || 0) + 1;
-
-                embeds.push({
-                    name: `${name} ${count}`,
-                    icon,
-                    url: url.href,
-                });
-            }
-
-            return embeds;
+            return embedURLs.map(getEmbedInfo);
         }
 
-        componentWillUnmount() {
+        public componentWillUnmount() {
             if (this.episodeBookmarkedSubscription) this.episodeBookmarkedSubscription.unsubscribe();
         }
 
-        async componentDidMount() {
+        public async componentDidMount() {
             const {episodePage} = this.props;
 
             this.episodeBookmarkedSubscription = episodePage.episodeBookmarked$.subscribe({
-                next: (episodeBookmarked) => this.setState({bookmarked: episodeBookmarked})
+                next: (episodeBookmarked) => this.setState({bookmarked: episodeBookmarked}),
             });
 
             const canSetProgress = await episodePage.animePage.canSetEpisodesWatched();
@@ -173,7 +156,7 @@ export const EpisodeEmbed = withStyles(styles)(
             const [config, epIndex, episode] = await Promise.all([
                 episodePage.state.config,
                 episodePage.getEpisodeIndex(),
-                episodePage.getEpisode()
+                episodePage.getEpisode(),
             ]);
 
             if (!episode) {
@@ -204,16 +187,16 @@ export const EpisodeEmbed = withStyles(styles)(
                 // @ts-ignore
                 updateState.playersAvailable.push(PlayerType.DOLOS);
                 updateState.playerProps = {
-                    sources,
-                    poster: episode.poster,
+                    eventListener: {ended: () => episodePage.onEpisodeEnd()},
                     options: {
+                        autoplay: config.autoplay,
                         title: _("player__video_title_format", [
                             episode.anime.title,
-                            epIndex !== undefined ? epIndex + 1 : "?"
+                            epIndex !== undefined ? epIndex + 1 : "?",
                         ]),
-                        autoplay: config.autoplay
                     },
-                    eventListener: {"ended": () => episodePage.onEpisodeEnd()}
+                    poster: episode.poster,
+                    sources,
                 };
             }
 
@@ -222,12 +205,13 @@ export const EpisodeEmbed = withStyles(styles)(
 
             this.setState(updateState as EpisodeEmbedState);
 
-
             const loadSkipButtons = (async () => {
                 if (epIndex === undefined) return;
 
                 const prevEpPromise = epIndex > 0 ? episodePage.prevEpisodeButton() : Promise.resolve(null);
-                const nextEpPromise = epIndex < episode.anime.episodes - 1 ? episodePage.nextEpisodeButton() : Promise.resolve(null);
+                const nextEpPromise = epIndex < episode.anime.episodes - 1
+                    ? episodePage.nextEpisodeButton()
+                    : Promise.resolve(null);
 
                 const skipButtons = await Promise.all([prevEpPromise, nextEpPromise]) as [SkipButton, SkipButton];
 
@@ -237,13 +221,13 @@ export const EpisodeEmbed = withStyles(styles)(
             await Promise.all([loadSkipButtons]);
         }
 
-        renderPlayer(): React.ReactElement<any> {
+        public renderPlayer(): React.ReactElement<any> {
             const {classes} = this.props;
             const {
                 currentPlayer,
                 failReason,
                 episodeEmbeds,
-                playerProps
+                playerProps,
             } = this.state;
 
             const view = () => {
@@ -279,34 +263,50 @@ export const EpisodeEmbed = withStyles(styles)(
             return view();
         }
 
-        renderSkipButtons() {
+        public renderSkipButtons() {
             const {skipButtons} = this.state;
             const [skipPrev, skipNext] = skipButtons || [undefined, undefined];
+
+            let handleSkipPrevClick;
+            if (skipPrev && skipPrev.onClick)
+                handleSkipPrevClick = (e: React.MouseEvent) => {
+                    e.preventDefault();
+                    // @ts-ignore
+                    skipPrev.onClick(e);
+                };
+
+            let handleSkipNextClick;
+            if (skipNext && skipNext.onClick)
+                handleSkipNextClick = (e: React.MouseEvent) => {
+                    e.preventDefault();
+                    // @ts-ignore
+                    skipNext.onClick(e);
+                };
 
             return (
                 <span>
                 <Tooltip title={_("episode__skip_previous")}>
                         <span>
-                        <IconButton color="primary" aria-label={_("episode__skip_previous")} disabled={!skipPrev}
-                                    href={skipPrev && skipPrev.href}
-                                    onClick={skipPrev && skipPrev.onClick && ((e) => {
-                                        e.preventDefault();
-                                        // @ts-ignore
-                                        skipPrev.onClick(e);
-                                    })}>
+                        <IconButton
+                            color="primary"
+                            aria-label={_("episode__skip_previous")}
+                            disabled={!skipPrev}
+                            href={skipPrev && skipPrev.href}
+                            onClick={handleSkipPrevClick}
+                        >
                             <SkipPreviousIcon/>
                         </IconButton>
                         </span>
                 </Tooltip>
                 <Tooltip title={_("episode__skip_next")}>
                         <span>
-                        <IconButton color="primary" aria-label={_("episode__skip_next")} disabled={!skipNext}
-                                    href={skipNext && skipNext.href}
-                                    onClick={skipNext && skipNext.onClick && ((e) => {
-                                        e.preventDefault();
-                                        // @ts-ignore
-                                        skipNext.onClick(e);
-                                    })}>
+                        <IconButton
+                            color="primary"
+                            aria-label={_("episode__skip_next")}
+                            disabled={!skipNext}
+                            href={skipNext && skipNext.href}
+                            onClick={handleSkipNextClick}
+                        >
                             <SkipNextIcon/>
                         </IconButton>
                         </span>
@@ -315,48 +315,54 @@ export const EpisodeEmbed = withStyles(styles)(
             );
         }
 
-        async toggleBookmark() {
+        public async toggleBookmark() {
             const {episodePage} = this.props;
             const {bookmarked} = this.state;
             if (bookmarked) await episodePage.markEpisodeUnwatched();
             else await episodePage.markEpisodeWatched();
         }
 
-        renderBookmarkButton() {
+        public renderBookmarkButton() {
             const {bookmarked, canSetProgress} = this.state;
 
-            return <Toggle
-                tooltip={_(`episode__bookmark_unseen`)}
-                tooltipToggled={_(`episode__bookmark_seen`)}
+            const handleToggle = () => this.toggleBookmark();
 
-                icon={<BookmarkBorderIcon/>}
-                iconToggled={<BookmarkIcon/>}
+            return (
+                <Toggle
+                    tooltip={_("episode__bookmark_unseen")}
+                    tooltipToggled={_("episode__bookmark_seen")}
 
-                toggled={bookmarked}
-                canToggle={canSetProgress}
-                onToggle={() => this.toggleBookmark()}
-            />;
+                    icon={<BookmarkBorderIcon/>}
+                    iconToggled={<BookmarkIcon/>}
+
+                    toggled={bookmarked}
+                    canToggle={canSetProgress}
+                    onToggle={handleToggle}
+                />
+            );
         }
 
-        renderSwitchPlayerTypeButton() {
+        public renderSwitchPlayerTypeButton() {
             const {classes} = this.props;
             const {playersAvailable} = this.state;
 
             if (playersAvailable.length > 1) {
+                const handleClick = this.switchPlayerType.bind(this);
+
                 return (
                     <Tooltip title={_("episode__switch_player_type")}>
-                        <Button type="contained" color="primary" onClick={() => this.switchPlayerType()}>
-                            {EpisodeEmbed.getPlayerTypeName(this.getNextPlayerType())}
+                        <Button type="contained" color="primary" onClick={handleClick}>
+                            {getPlayerTypeName(this.getNextPlayerType())}
                             <SwitchVideoIcon className={classes.buttonIconRight}/>
                         </Button>
                     </Tooltip>
                 );
             }
 
-            return;
+            return undefined;
         }
 
-        async handleSearchDialogClose(anime?: AnimeInfo) {
+        public async handleSearchDialogClose(anime?: AnimeInfo) {
             // close the menu because it's served its purpose
             this.setState({menuAnchorElement: undefined});
 
@@ -366,8 +372,7 @@ export const EpisodeEmbed = withStyles(styles)(
             await episodePage.reload();
         }
 
-
-        renderMenuButton() {
+        public renderMenuButton() {
             const {episodePage} = this.props;
             const {menuAnchorElement} = this.state;
 
@@ -376,6 +381,10 @@ export const EpisodeEmbed = withStyles(styles)(
                     this.handleSearchDialogClose.bind(this));
             };
 
+            const onMenuClick = (event: React.MouseEvent<HTMLElement>) =>
+                this.setState({menuAnchorElement: event.currentTarget});
+            const onMenuClose = () => this.setState({menuAnchorElement: undefined});
+
             return (
                 <div>
                     <IconButton
@@ -383,7 +392,7 @@ export const EpisodeEmbed = withStyles(styles)(
                         aria-owns={open ? "episode-embed-menu" : undefined}
                         aria-haspopup="true"
                         color="primary"
-                        onClick={(event: React.MouseEvent<HTMLElement>) => this.setState({menuAnchorElement: event.currentTarget})}
+                        onClick={onMenuClick}
                     >
                         <MoreVertIcon/>
                     </IconButton>
@@ -391,7 +400,7 @@ export const EpisodeEmbed = withStyles(styles)(
                         id="episode-embed-menu"
                         anchorEl={menuAnchorElement}
                         open={!!menuAnchorElement}
-                        onClose={() => this.setState({menuAnchorElement: undefined})}
+                        onClose={onMenuClose}
                     >
                         <MenuItem onClick={handleSearchAnimeClick}>
                             {_("episode__menu__search_anime")}
@@ -401,7 +410,7 @@ export const EpisodeEmbed = withStyles(styles)(
             );
         }
 
-        render() {
+        public render() {
             const {classes} = this.props;
 
             return (
@@ -422,5 +431,5 @@ export const EpisodeEmbed = withStyles(styles)(
                 </div>
             );
         }
-    }
+    },
 );

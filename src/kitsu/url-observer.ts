@@ -25,12 +25,12 @@ export type UrlChangeCallback = (old: string | undefined, updated: string) => vo
  * ```
  */
 export default class UrlObserver {
-    _observing: boolean;
+    public _observing: boolean;
 
-    interval: number;
-    url?: string;
+    public interval: number;
+    public url?: string;
 
-    callback?: UrlChangeCallback;
+    public callback?: UrlChangeCallback;
 
     /**
      * Create a new UrlObserver.
@@ -50,7 +50,7 @@ export default class UrlObserver {
      *
      * @throws TypeError is the
      */
-    start(): void {
+    public start(): void {
         if (this._observing)
             throw new TypeError("Already observing!");
 
@@ -63,14 +63,14 @@ export default class UrlObserver {
      *
      * You can override this method when inheriting from [[UrlObserver]].
      */
-    onUrlChange(old: string | undefined, updated: string): void {
+    public onUrlChange(old: string | undefined, updated: string): void {
         if (this.callback)
             this.callback(old, updated);
     }
 
     private _observeUrl() {
         const currentUrl = location.href;
-        if (currentUrl != this.url) {
+        if (currentUrl !== this.url) {
             this.onUrlChange(this.url, currentUrl);
             this.url = currentUrl;
         }

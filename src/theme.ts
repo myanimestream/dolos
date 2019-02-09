@@ -16,9 +16,6 @@ import createMuiTheme, {Theme} from "@material-ui/core/styles/createMuiTheme";
  * Theme used for "extension pages" such as options and popup.
  */
 const mainTheme = createMuiTheme({
-    typography: {
-        useNextVariants: true,
-    },
     palette: {
         primary: {
             main: "#43a047",
@@ -26,6 +23,9 @@ const mainTheme = createMuiTheme({
         secondary: {
             main: "#cddc39",
         },
+    },
+    typography: {
+        useNextVariants: true,
     },
 });
 
@@ -35,9 +35,6 @@ export default mainTheme;
  * Theme applied to Kitsu elements
  */
 export const kitsuTheme = createMuiTheme({
-    typography: {
-        useNextVariants: true,
-    },
     palette: {
         primary: {
             main: "#ef5350",
@@ -46,15 +43,15 @@ export const kitsuTheme = createMuiTheme({
             main: "#4527a0",
         },
     },
+    typography: {
+        useNextVariants: true,
+    },
 });
 
 /**
  * Theme applied to MyAnimeList elements
  */
 export const malTheme = createMuiTheme({
-    typography: {
-        useNextVariants: true,
-    },
     palette: {
         primary: {
             main: "#1d439b",
@@ -62,6 +59,9 @@ export const malTheme = createMuiTheme({
         secondary: {
             main: "#4f74c8",
         },
+    },
+    typography: {
+        useNextVariants: true,
     },
 });
 

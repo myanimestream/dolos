@@ -4,6 +4,7 @@
  */
 
 /** @ignore */
+
 import * as React from "react";
 import dolosTheme from "../theme";
 import {reactRenderWithTheme, wrapSentryLogger} from "../utils";
@@ -14,6 +15,6 @@ chrome.tabs.query({active: true, currentWindow: true}, () => {
         wrapSentryLogger(<Settings/>),
         dolosTheme,
         // @ts-ignore
-        document.getElementById("root")
+        document.getElementById("root"),
     );
 });

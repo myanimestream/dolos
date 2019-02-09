@@ -11,14 +11,15 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 import Switch from "@material-ui/core/Switch";
 import UpdateIcon from "@material-ui/icons/Update";
 import * as React from "react";
-import {SettingsTabContent} from "../SettingsTab";
-
-const _ = chrome.i18n.getMessage;
+import {SettingsTabContent} from "../settings-tab-content";
+import _ = chrome.i18n.getMessage;
 
 export default class SiteIntegration extends SettingsTabContent {
 
-    render() {
+    public render() {
         const {config} = this.props;
+
+        const onUpdateAnimeProgressChange = () => this.toggle("updateAnimeProgress");
 
         return (
             <>
@@ -30,7 +31,7 @@ export default class SiteIntegration extends SettingsTabContent {
                         <ListItemText primary={_("options__site_integration__update_anime_progress")}/>
                         <ListItemSecondaryAction>
                             <Switch
-                                onChange={() => this.toggle("updateAnimeProgress")}
+                                onChange={onUpdateAnimeProgressChange}
                                 checked={config.updateAnimeProgress}
                             />
                         </ListItemSecondaryAction>

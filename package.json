@@ -4,6 +4,7 @@
     "test": "jest",
     "build:dev": "webpack --config webpack.dev.js",
     "build:production": "webpack --config webpack.prod.js",
+    "lint": "tslint --project .",
     "watch": "webpack -w --config webpack.dev.js",
     "docs": "typedoc --options typedoc.json src/"
   },

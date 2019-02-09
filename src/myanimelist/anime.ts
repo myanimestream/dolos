@@ -19,31 +19,31 @@ interface MALAnime {
 
 function malAnimeFromData(data: any): MALAnime {
     return {
-        title: data["title"],
-        episodeNum: parseInt(data["episode_num"]),
-        inOwnlist: data["in_ownlist"],
-        status: data["status"],
-        score: parseInt(data["score"]),
-        completedEpisodeNum: parseInt(data["completed_episode_num"]) || 0,
+        completedEpisodeNum: parseInt(data.completed_episode_num, 10) || 0,
+        episodeNum: parseInt(data.episode_num, 10),
+        inOwnlist: data.in_ownlist,
+        score: parseInt(data.score, 10),
+        status: data.status,
+        title: data.title,
     };
 }
 
 export default class MalAnimePage extends AnimePage<MyAnimeList> {
     @cacheInMemory("malAnimeID")
-    getMALAnimeID(): number | undefined {
+    public getMALAnimeID(): number | undefined {
         const match = location.pathname.match(/\/anime\/(\d+)/);
-        if (!match) return;
-        return parseInt(match[1]);
+        if (!match) return undefined;
+        return parseInt(match[1], 10);
     }
 
     @cacheInMemory("malAnime")
-    async getMALAnime(): Promise<MALAnime | null> {
+    public async getMALAnime(): Promise<MALAnime | null> {
         try {
             const resp = await axios.get("https://myanimelist.net/ownlist/get_list_item", {
                 params: {
                     id: await this.getMALAnimeID(),
-                    list: "anime"
-                }
+                    list: "anime",
+                },
             });
 
             return malAnimeFromData(resp.data);
@@ -54,49 +54,49 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
     }
 
     @cacheInMemory("animeIdentifier")
-    async getAnimeIdentifier(): Promise<string | undefined> {
+    public async getAnimeIdentifier(): Promise<string | undefined> {
         const match = location.pathname.match(/\/anime\/(\d+)\/([^\/]+)/);
-        if (!match) return;
+        if (!match) return undefined;
         return match[2];
     }
 
     @cacheInMemory("animeSearchQuery")
-    async getAnimeSearchQuery(): Promise<string | undefined> {
+    public async getAnimeSearchQuery(): Promise<string | undefined> {
         const el = document.querySelector("meta[property=\"og:title\"]");
-        if (!el) return;
+        if (!el) return undefined;
 
         const title = el.getAttribute("content");
-        if (!title) return;
+        if (!title) return undefined;
 
         const match = title.match(/(.+?)(?: Episode \d+)?$/);
-        if (!match) return;
+        if (!match) return undefined;
 
         return match[1];
     }
 
-    async canSetEpisodesWatched(): Promise<boolean> {
+    public async canSetEpisodesWatched(): Promise<boolean> {
         return !!await this.service.getUsername();
     }
 
-    async getAnimeURL(): Promise<string | undefined> {
+    public async getAnimeURL(): Promise<string | undefined> {
         const [animeID, animeSlug] = await Promise.all([this.getMALAnimeID(), this.getAnimeIdentifier()]);
-        if (!(animeID && animeSlug)) return;
+        if (!(animeID && animeSlug)) return undefined;
 
         return `https://myanimelist.net/anime/${animeID}/${animeSlug}`;
     }
 
-    async getEpisodeURL(episode: number): Promise<string> {
+    public async getEpisodeURL(episode: number): Promise<string> {
         const [animeId, slug] = await Promise.all([this.getMALAnimeID(), this.getAnimeIdentifier()]);
         return new URL(`/anime/${animeId}/${slug}/episode/${episode + 1}`, location.origin).toString();
     }
 
-    async showEpisode(episodeIndex: number): Promise<boolean> {
+    public async showEpisode(episodeIndex: number): Promise<boolean> {
         location.assign(await this.getEpisodeURL(episodeIndex));
         return true;
     }
 
     @cacheInMemory("episodesWatched")
-    async _getEpisodesWatched(): Promise<number | undefined> {
+    public async _getEpisodesWatched(): Promise<number | undefined> {
         if (this.service.isMobileLayout()) {
             const anime = await this.getMALAnime();
 
@@ -104,19 +104,19 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         }
 
         const el = document.querySelector("#myinfo_watchedeps");
-        if (!el) return;
+        if (!el) return undefined;
 
         const value = el.getAttribute("value");
-        if (!value) return;
+        if (!value) return undefined;
 
-        const epsWatched = parseInt(value);
+        const epsWatched = parseInt(value, 10);
         if (epsWatched || epsWatched === 0) return epsWatched;
         else if (isNaN(epsWatched)) return 0;
-        else return;
+        else return undefined;
     }
 
     @cacheInMemory("totalEpisodes")
-    async getEpisodeCount(): Promise<number | undefined> {
+    public async getEpisodeCount(): Promise<number | undefined> {
         if (this.service.isMobileLayout()) {
             const anime = await this.getMALAnime();
 
@@ -124,13 +124,13 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         }
 
         const el = document.querySelector("span#curEps");
-        if (!el) return;
+        if (!el) return undefined;
 
-        const eps = parseInt(el.innerHTML);
+        const eps = parseInt(el.innerHTML, 10);
         return isNaN(eps) ? undefined : eps;
     }
 
-    async injectAnimeStatusBar(element: Element) {
+    public async injectAnimeStatusBar(element: Element) {
         if (this.service.isMobileLayout()) {
             element.setAttribute("style", "margin-top: 8px;" +
                 "display: flex;" +
@@ -147,7 +147,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
             // (because evil MAL applies its own styles to a tags [which are ugly btw])
             waitUntilExists("a", element).then(el =>
                 el.setAttribute("style", "color: #fff !important;" +
-                    "text-decoration: none !important")
+                    "text-decoration: none !important"),
             );
 
             const title = document.querySelector("div div h2");
@@ -174,10 +174,10 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         const status = !isNaN(episodeCount) && progress >= episodeCount ? 2 : 1;
 
         const data = {
-            csrf_token: this.service.getCSRFToken(),
             anime_id: this.getMALAnimeID(),
+            csrf_token: this.service.getCSRFToken(),
+            num_watched_episodes: progress,
             status,
-            num_watched_episodes: progress
         };
 
         // brute-force our way through this. First try to edit it
@@ -186,7 +186,7 @@ export default class MalAnimePage extends AnimePage<MyAnimeList> {
         const strategies = ["edit", "add"].map(strat => async () => {
             const resp = await axios.post(
                 `https://myanimelist.net/ownlist/anime/${strat}.json`, JSON.stringify(data),
-                {headers: {"Content-Type": "application/x-www-form-urlencoded"}}
+                {headers: {"Content-Type": "application/x-www-form-urlencoded"}},
             );
 
             if (resp.data !== null) console.warn("unknown response after setting progress", resp.data);

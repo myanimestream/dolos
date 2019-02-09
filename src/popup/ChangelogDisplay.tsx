@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import * as React from "react";
 import * as ReactMarkdown from "react-markdown";
-import CHANGELOG from "../changelog";
+import CHANGELOG, {Change} from "../changelog";
 import {getBackgroundWindow} from "../utils";
 
 const styles = () => createStyles({
@@ -36,7 +36,21 @@ class ChangelogDisplay extends React.Component<ChangelogDisplayProps, ChangelogD
         };
     }
 
-    togglePanel(key: string) {
+    public async componentDidMount() {
+        const background = await getBackgroundWindow();
+        background.hasNewVersion$.next(false);
+    }
+
+    public render() {
+        const renderedPanels = Array.from(CHANGELOG.entries())
+            .map(([version, changes]) => this.renderVersionPanel(version, changes));
+
+        return (
+            <>{renderedPanels}</>
+        );
+    }
+
+    private togglePanel(key: string) {
         const {panelsOpen} = this.state;
 
         if (panelsOpen.has(key)) {
@@ -45,49 +59,45 @@ class ChangelogDisplay extends React.Component<ChangelogDisplayProps, ChangelogD
             panelsOpen.add(key);
         }
 
-        this.setState({panelsOpen,});
+        this.setState({panelsOpen});
     }
 
-    async componentDidMount() {
-        const background = await getBackgroundWindow();
-        background.hasNewVersion$.next(false);
+    private renderChange(changes: Change[]) {
+        return changes.map((change, index) => (
+            <div key={index}>
+                <Typography component="div" paragraph={true}>
+                    <ReactMarkdown
+                        source={change}
+                        linkTarget="_blank"
+                    />
+                </Typography>
+                {index < changes.length - 1 && (<Divider/>)}
+            </div>
+        ));
     }
 
-
-    render() {
+    private renderVersionPanel(version: string, changes: Change[]) {
         const {classes} = this.props;
         const {panelsOpen} = this.state;
 
-        return (
-            <>
-                {Array.from(CHANGELOG.entries()).map(([version, changes]) => (
-                    <ExpansionPanel key={version}
-                                    expanded={panelsOpen.has(version)}
-                                    onChange={() => this.togglePanel(version)}
-                    >
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                            <Typography color="primary" variant="h6">Version {version}</Typography>
-                        </ExpansionPanelSummary>
+        const renderedChange = this.renderChange(changes);
 
-                        <ExpansionPanelDetails className={classes.expansionPanelDetails}>
-                            {changes.map((change, index) => (
-                                <div key={index}>
-                                    <Typography component="div" paragraph>
-                                        <ReactMarkdown
-                                            source={change}
-                                            linkTarget="_blank"
-                                        />
-                                    </Typography>
-                                    {index < changes.length - 1 && (
-                                        <Divider/>
-                                    )}
-                                </div>
-                            ))}
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                ))
-                }
-            </>
+        const handleTogglePanel = () => this.togglePanel(version);
+
+        return (
+            <ExpansionPanel
+                key={version}
+                expanded={panelsOpen.has(version)}
+                onChange={handleTogglePanel}
+            >
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                    <Typography color="primary" variant="h6">Version {version}</Typography>
+                </ExpansionPanelSummary>
+
+                <ExpansionPanelDetails className={classes.expansionPanelDetails}>
+                    {renderedChange}
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
         );
     }
 }

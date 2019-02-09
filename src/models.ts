@@ -7,7 +7,6 @@
 /** @ignore */
 import {AnimeInfo, Language} from "dolos/grobber";
 
-
 export interface Config {
     grobberUrl: string;
 
@@ -41,11 +40,11 @@ export interface Config {
 export const DEFAULT_CONFIG: Config = {
     grobberUrl: "https://mas.dokkeral.com",
 
-    autoplay: true,
     autoNext: true,
+    autoplay: true,
 
-    language: Language.ENGLISH,
     dubbed: false,
+    language: Language.ENGLISH,
 
     updateAnimeProgress: true,
 

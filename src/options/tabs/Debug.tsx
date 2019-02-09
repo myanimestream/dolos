@@ -19,7 +19,7 @@ import WifiIcon from "@material-ui/icons/Wifi";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import axios from "axios";
 import * as React from "react";
-import {SettingsTabContent, SettingsTabContentProps} from "../SettingsTab";
+import {SettingsTabContent, SettingsTabContentProps} from "../settings-tab-content";
 import _ = chrome.i18n.getMessage;
 
 interface DebugState {
@@ -33,7 +33,8 @@ interface GrobberUrlCheckResult {
 }
 
 export default class Debug extends SettingsTabContent<SettingsTabContentProps, DebugState> {
-    changeGrobberUrl = AwesomeDebouncePromise(async (url: string) => {
+
+    public changeGrobberUrl = AwesomeDebouncePromise(async (url: string) => {
         if (!url.match(/https?:\/\/.+/)) {
             this.setState({invalidUrl: _("options__grobber__url__invalid")});
             return;
@@ -53,14 +54,7 @@ export default class Debug extends SettingsTabContent<SettingsTabContentProps, D
         this.setState({checkingUrl: false});
     }, 500);
 
-    constructor(props: SettingsTabContentProps) {
-        super(props);
-        this.state = {
-            checkingUrl: false,
-        };
-    }
-
-    static async checkGrobberUrl(url: string): Promise<GrobberUrlCheckResult> {
+    public static async checkGrobberUrl(url: string): Promise<GrobberUrlCheckResult> {
         let resp;
 
         try {
@@ -85,8 +79,32 @@ export default class Debug extends SettingsTabContent<SettingsTabContentProps, D
         return {valid: true};
     }
 
-    render() {
+    constructor(props: SettingsTabContentProps) {
+        super(props);
+        this.state = {
+            checkingUrl: false,
+        };
+    }
+
+    public render() {
         const config = this.props.config;
+        const {checkingUrl, invalidUrl} = this.state;
+
+        const onGrobberURLChange = (e: React.ChangeEvent<HTMLInputElement>) => this.changeGrobberUrl(e.target.value);
+
+        let grobberURLAdornmentIcon;
+        if (checkingUrl)
+            grobberURLAdornmentIcon = (<CircularProgress/>);
+        else if (invalidUrl)
+            grobberURLAdornmentIcon = (<ErrorOutlineIcon/>);
+        else
+            grobberURLAdornmentIcon = (<CheckIcon/>);
+
+        const grobberURLAdornment = (
+            <InputAdornment position="end">
+                {grobberURLAdornmentIcon}
+            </InputAdornment>
+        );
 
         return (
             <>
@@ -99,18 +117,13 @@ export default class Debug extends SettingsTabContent<SettingsTabContentProps, D
                         <ListItemSecondaryAction>
                             <FormControl>
                                 <InputLabel htmlFor="grobber-url-input">{this.state.invalidUrl}</InputLabel>
-                                <Input id="grobber-url-input"
-                                       onChange={e => this.changeGrobberUrl(e.target.value)}
-                                       defaultValue={config.grobberUrl}
-                                       error={Boolean(this.state.invalidUrl)}
-                                       type="url"
-                                       endAdornment={
-                                           <InputAdornment position="end">
-                                               {this.state.checkingUrl && <CircularProgress/> ||
-                                               this.state.invalidUrl && <ErrorOutlineIcon/> ||
-                                               <CheckIcon/>}
-                                           </InputAdornment>
-                                       }
+                                <Input
+                                    id="grobber-url-input"
+                                    onChange={onGrobberURLChange}
+                                    defaultValue={config.grobberUrl}
+                                    error={Boolean(this.state.invalidUrl)}
+                                    type="url"
+                                    endAdornment={grobberURLAdornment}
                                 />
                             </FormControl>
                         </ListItemSecondaryAction>
@@ -120,4 +133,3 @@ export default class Debug extends SettingsTabContent<SettingsTabContentProps, D
         );
     }
 }
-

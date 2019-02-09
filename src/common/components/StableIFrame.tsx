@@ -5,15 +5,14 @@
 import * as React from "react";
 import {IframeHTMLAttributes} from "react";
 
-interface StableIFrameProps extends IframeHTMLAttributes<any> {
-}
+type StableIFrameProps = IframeHTMLAttributes<any>;
 
-export default class StableIFrame extends React.Component<StableIFrameProps> {
-    shouldComponentUpdate(nextProps: Readonly<StableIFrameProps>): boolean {
-        return nextProps != this.props;
+export class StableIFrame extends React.Component<StableIFrameProps> {
+    public shouldComponentUpdate(nextProps: Readonly<StableIFrameProps>): boolean {
+        return nextProps !== this.props;
     }
 
-    render() {
+    public render() {
         return <iframe {...this.props}/>;
     }
 }

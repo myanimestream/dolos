@@ -1,3 +1,4 @@
+/* tslint:disable:max-classes-per-file */
 /**
  * Namespaced data storage.
  *
@@ -34,7 +35,7 @@ export function enterNamespace<T>(start: Namespace<T>, namespace: string | strin
     const parts = Array.isArray(namespace) ? namespace : namespace.split(".");
 
     for (const part of parts) {
-        if (part == "__value")
+        if (part === "__value")
             throw new Error(`Cannot use reserved name __value in namespace: ${namespace}`);
 
         if (part in target)
@@ -94,7 +95,7 @@ export function flattenNamespace<T>(ns: Namespace<T>): { [key: string]: T } {
 }
 
 /**
- * Type of a [[Namespace]] using [[NamespaceTraps]] to grant easy access to its values.
+ * Type of a [[Namespace]] using [[NAMESPACE_TRAPS]] to grant easy access to its values.
  */
 export interface ProxiedNamespace<VT = any> {
     [key: string]: VT;
@@ -103,7 +104,7 @@ export interface ProxiedNamespace<VT = any> {
 /**
  * Traps passed to the Proxy for Namespace objects.
  */
-export const NamespaceTraps: ProxyHandler<Namespace> = {
+export const NAMESPACE_TRAPS: ProxyHandler<Namespace> = {
     get<T>(target: Namespace<T>, p: PropertyKey, receiver?: any): T {
         if (typeof p === "string")
             return Reflect.get(enterNamespace(target, p), "__value");
@@ -127,7 +128,7 @@ export const NamespaceTraps: ProxyHandler<Namespace> = {
     ownKeys(target: Namespace): PropertyKey[] {
         const keys = Reflect.ownKeys(target);
         return keys.filter(key => key !== "__value");
-    }
+    },
 };
 
 /**
@@ -162,12 +163,12 @@ export interface HasMemory<T extends Memory = any> {
  * anything else.
  */
 export class Memory implements HasMemory {
-    readonly memory: ProxiedNamespace;
+    public readonly memory: ProxiedNamespace;
     private readonly internalMemory: Namespace;
 
     constructor() {
         this.internalMemory = {};
-        this.memory = new Proxy(this.internalMemory, NamespaceTraps);
+        this.memory = new Proxy(this.internalMemory, NAMESPACE_TRAPS);
     }
 
     /**
@@ -175,7 +176,7 @@ export class Memory implements HasMemory {
      *
      * @param key - Namespaces are separated by a dot
      */
-    remember(key: string, value: any) {
+    public remember(key: string, value: any) {
         this.memory[key] = value;
     }
 
@@ -186,7 +187,7 @@ export class Memory implements HasMemory {
      * like [[Memory.resetMemory]] with the key as an argument.
      * Otherwise it merely removes the specified namespace.
      */
-    forget(key: string, forgetNamespace?: boolean) {
+    public forget(key: string, forgetNamespace?: boolean) {
         let target;
         if (forgetNamespace) {
             [target, key] = enterParentNamespace(this.internalMemory, key);
@@ -203,7 +204,7 @@ export class Memory implements HasMemory {
      *
      * @see [[Memory.forget]] to remove a specific namespace without affecting its children.
      */
-    resetMemory(...namespaces: string[]) {
+    public resetMemory(...namespaces: string[]) {
         namespaces = namespaces.length > 0 ? namespaces : Object.keys(this.memory);
 
         namespaces.forEach(ns => {
@@ -234,16 +235,15 @@ export class ElementMemory extends Memory implements HasElementMemory {
         super();
         this.internalInjectedMemory = {};
         // @ts-ignore
-        this.injectedMemory = new Proxy(this.internalInjectedMemory, NamespaceTraps) as ProxiedNamespace<Element[]>;
+        this.injectedMemory = new Proxy(this.internalInjectedMemory, NAMESPACE_TRAPS) as ProxiedNamespace<Element[]>;
     }
-
 
     /**
      * Keep track of the given element such that it can be removed later.
      *
      * @see [[ElementMemory.removeInjected]] to remove elements
      */
-    injected(el: Node, ns?: string) {
+    public injected(el: Node, ns?: string) {
         ns = ns || "global";
         const elements = this.injectedMemory[ns];
 
@@ -258,7 +258,7 @@ export class ElementMemory extends Memory implements HasElementMemory {
      *
      * If no namespaces provided removes all elements.
      */
-    removeInjected(...namespaces: string[]) {
+    public removeInjected(...namespaces: string[]) {
         namespaces = namespaces.length > 0 ? namespaces : Object.keys(this.injectedMemory);
 
         namespaces.forEach(key => {
@@ -281,12 +281,12 @@ export class ElementMemory extends Memory implements HasElementMemory {
  * The method must not take any arguments (i.e. be a nullary function)
  */
 export function cacheInMemory(name?: string) {
-    return function (target: Object & HasMemory, propertyKey: string, descriptor: PropertyDescriptor) {
+    return (target: object & HasMemory, propertyKey: string, descriptor: PropertyDescriptor) => {
         const keyName: string = name || `${target.constructor.name}-${propertyKey}`;
         const func = descriptor.value;
         let returnPromise: boolean;
 
-        descriptor.value = function (this: HasMemory) {
+        descriptor.value = function(this: HasMemory) {
             const memory = this.memory;
 
             let value;

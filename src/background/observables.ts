@@ -9,8 +9,8 @@ import {NewEpisodeEvent} from "./update-check";
 
 export const hasNewVersion$ = new BehaviorSubject(false);
 // @ts-ignore
-window["hasNewVersion$"] = hasNewVersion$;
+window.hasNewVersion$ = hasNewVersion$;
 
 export const hasNewEpisode$: Subject<NewEpisodeEvent> = new Subject();
 // @ts-ignore
-window["hasNewEpisode$"] = hasNewEpisode$;
+window.hasNewEpisode$ = hasNewEpisode$;

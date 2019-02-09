@@ -1,4 +1,4 @@
-import {enterNamespace, enterParentNamespace, flattenNamespace, Memory, Namespace, NamespaceTraps} from "./memory";
+import {enterNamespace, enterParentNamespace, flattenNamespace, Memory, Namespace, NAMESPACE_TRAPS} from "./memory";
 
 const namespace: Namespace<any> = {
     __value: 5,
@@ -12,9 +12,9 @@ const namespace: Namespace<any> = {
                 __value: null,
             },
             e: {
-                __value: true
-            }
-        }
+                __value: true,
+            },
+        },
     },
 };
 
@@ -42,7 +42,7 @@ test("enter parent namespace", () => {
 test("namespace traps", () => {
     const ns = JSON.parse(JSON.stringify(namespace));
 
-    const proxy = new Proxy(ns, NamespaceTraps);
+    const proxy = new Proxy(ns, NAMESPACE_TRAPS);
 
     expect(Object.keys(proxy)).toEqual(["a", "b"]);
     expect(proxy.a).toBe(ns.a.__value);

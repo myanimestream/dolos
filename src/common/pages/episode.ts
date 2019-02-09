@@ -7,7 +7,7 @@ import {cacheInMemory} from "dolos/memory";
 import {wrapSentryLogger} from "dolos/utils";
 import * as React from "react";
 import * as rxjs from "rxjs";
-import {EpisodeEmbed, SkipButton} from "../components";
+import {EpisodeEmbed, SkipButton} from "../components/anime";
 import Service from "../service";
 import ServicePage from "../service-page";
 import AnimePage from "./anime";
@@ -46,16 +46,6 @@ export type EpisodeAnimePageLike<T extends Service> =
  * - [[EpisodePage]] -> [[AnimePage]]: Uses [[EpisodePage.animePage.transitionTo]] to handle the transition.
  */
 export default abstract class EpisodePage<T extends Service> extends ServicePage<T> {
-    episodeBookmarked$: rxjs.BehaviorSubject<boolean>;
-    private epsWatchedSub?: rxjs.Subscription;
-
-    constructor(service: T) {
-        super(service);
-
-        this.episodeBookmarked$ = new rxjs.BehaviorSubject(false);
-    }
-
-    private _animePage?: EpisodeAnimePageLike<T>;
 
     get animePage(): EpisodeAnimePageLike<T> {
         if (!this._animePage) this._animePage = this.buildAnimePage();
@@ -67,58 +57,68 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         this._animePage = page;
     }
 
-    abstract buildAnimePage(): EpisodeAnimePageLike<T>;
+    public episodeBookmarked$: rxjs.BehaviorSubject<boolean>;
+    private epsWatchedSub?: rxjs.Subscription;
 
-    abstract async getEpisodeIndex(): Promise<number | undefined>;
+    private _animePage?: EpisodeAnimePageLike<T>;
 
-    abstract async injectEmbed(embed: Element): Promise<void>;
+    constructor(service: T) {
+        super(service);
 
-    abstract async nextEpisodeButton(): Promise<SkipButton | undefined>;
+        this.episodeBookmarked$ = new rxjs.BehaviorSubject(false);
+    }
 
-    abstract async showNextEpisode(): Promise<void>;
+    public abstract buildAnimePage(): EpisodeAnimePageLike<T>;
 
-    abstract async prevEpisodeButton(): Promise<SkipButton | undefined>;
+    public abstract async getEpisodeIndex(): Promise<number | undefined>;
 
-    abstract async showPrevEpisode(): Promise<void>;
+    public abstract async injectEmbed(embed: Element): Promise<void>;
+
+    public abstract async nextEpisodeButton(): Promise<SkipButton | undefined>;
+
+    public abstract async showNextEpisode(): Promise<void>;
+
+    public abstract async prevEpisodeButton(): Promise<SkipButton | undefined>;
+
+    public abstract async showPrevEpisode(): Promise<void>;
 
     @cacheInMemory("episode")
-    async getEpisode(): Promise<Episode | undefined> {
-        let [uid, epIndex] = await Promise.all([this.animePage.getAnimeUID(), this.getEpisodeIndex()]);
-        if (!uid || (!epIndex && epIndex !== 0)) return;
+    public async getEpisode(): Promise<Episode | undefined> {
+        const [uid, epIndex] = await Promise.all([this.animePage.getAnimeUID(), this.getEpisodeIndex()]);
+        if (!uid || (!epIndex && epIndex !== 0)) return undefined;
 
         try {
             return await GrobberClient.getEpisode(uid, epIndex);
         } catch (e) {
             if (e.name === GrobberErrorType.UIDUnknown) {
                 console.warn("Grobber didn't recognise uid, updating...");
-                uid = await this.animePage.getAnimeUID(true);
-                if (uid === undefined)
-                    return;
+                const newUID = await this.animePage.getAnimeUID(true);
+                if (newUID === undefined)
+                    return undefined;
 
                 try {
-                    return await GrobberClient.getEpisode(uid, epIndex);
+                    return await GrobberClient.getEpisode(newUID, epIndex);
                 } catch (e) {
                     console.error("couldn't get episode after updating uid", e);
                 }
             }
 
-            return;
+            return undefined;
         }
     }
 
-    async buildEmbed(): Promise<Element> {
+    public async buildEmbed(): Promise<Element> {
         return this.state.renderWithTheme(
-            wrapSentryLogger(React.createElement(EpisodeEmbed, {episodePage: this}))
+            wrapSentryLogger(React.createElement(EpisodeEmbed, {episodePage: this})),
         );
     }
 
-    async onEpisodeEnd() {
+    public async onEpisodeEnd() {
         const [config, epIndex] = await Promise.all([
             this.state.config, this.getEpisodeIndex()]);
 
         if (epIndex === undefined)
             return;
-
 
         if (config.updateAnimeProgress)
             await this.markEpisodeWatched();
@@ -130,8 +130,11 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         }
     }
 
-    async markEpisodeWatched() {
-        const [epIndex, canSetProgress] = await Promise.all([this.getEpisodeIndex(), this.animePage.canSetEpisodesWatched()]);
+    public async markEpisodeWatched() {
+        const [epIndex, canSetProgress] = await Promise.all([
+            this.getEpisodeIndex(),
+            this.animePage.canSetEpisodesWatched(),
+        ]);
         if (!canSetProgress) return;
 
         if (epIndex === undefined) {
@@ -143,10 +146,10 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
             this.service.showErrorSnackbar(_("episode__bookmark_failed"));
     }
 
-    async markEpisodeUnwatched() {
+    public async markEpisodeUnwatched() {
         const [epIndex, canSetProgress] = await Promise.all([
             this.getEpisodeIndex(),
-            this.animePage.canSetEpisodesWatched()
+            this.animePage.canSetEpisodesWatched(),
         ]);
 
         if (!canSetProgress) return;
@@ -160,8 +163,11 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
         else this.service.showErrorSnackbar(_("episode__bookmark_failed"));
     }
 
-    async _load() {
-        const [epIndex, epsWatched$] = await Promise.all([this.getEpisodeIndex(), this.animePage.getEpisodesWatched$()]);
+    public async _load() {
+        const [epIndex, epsWatched$] = await Promise.all([
+            this.getEpisodeIndex(),
+            this.animePage.getEpisodesWatched$(),
+        ]);
         this.epsWatchedSub = epsWatched$.subscribe(epsWatched => {
             if (epsWatched !== undefined && epIndex !== undefined)
                 this.episodeBookmarked$.next(epsWatched >= epIndex + 1);
@@ -173,16 +179,16 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
             await this.animePage.load();
     }
 
-    async _unload() {
+    public async _unload() {
         if (this.epsWatchedSub) this.epsWatchedSub.unsubscribe();
 
         if (this.animePage instanceof ServicePage)
             await this.animePage.unload();
 
-        await super._unload()
+        await super._unload();
     }
 
-    async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | void> {
+    public async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | undefined> {
         if (page instanceof AnimePage && this.animePage instanceof ServicePage) {
             this.resetPage();
             return await this.animePage.transitionTo(page);
@@ -190,9 +196,9 @@ export default abstract class EpisodePage<T extends Service> extends ServicePage
             page.animePage = this.animePage;
             this.resetPage();
             await page.load();
-            return;
+            return undefined;
         }
 
-        await super.transitionTo(page);
+        return await super.transitionTo(page);
     }
 }

@@ -15,9 +15,7 @@ import * as React from "react";
 import * as CopyToClipboard from "react-copy-to-clipboard";
 import _ = chrome.i18n.getMessage;
 
-
-interface SentryLoggerProps extends WithTheme {
-}
+type SentryLoggerProps = WithTheme;
 
 interface SentryLoggerState {
     error?: Error;
@@ -39,7 +37,7 @@ class SentryLogger extends React.Component<SentryLoggerProps, SentryLoggerState>
         this.state = {};
     }
 
-    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    public componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
         this.setState({error});
 
         Sentry.withScope(scope => {
@@ -53,38 +51,45 @@ class SentryLogger extends React.Component<SentryLoggerProps, SentryLoggerState>
         });
     }
 
-    render() {
+    public render() {
         const {error, eventId} = this.state;
         const {theme} = this.props;
 
-        if (error) return (
-            <Card>
-                <CardActionArea>
-                    <CardContent>
-                        <Typography gutterBottom variant="h5">{_("sentry__title")}</Typography>
-                        <Typography>{_("sentry__description")}</Typography>
-                        {eventId && <>
-                            <Typography>
-                                {_("sentry__event_id")}
-                                <span style={{color: theme.palette.error.main}}> {eventId}</span>
-                            </Typography>
-                        </>}
+        if (error) {
+            let eventIDDisplay;
+            if (eventId)
+                eventIDDisplay = (
+                    <Typography>
+                        {_("sentry__event_id")}
+                        <span style={{color: theme.palette.error.main}}> {eventId}</span>
+                    </Typography>
+                );
 
-                    </CardContent>
-                </CardActionArea>
-                <CardActions>
-                    <Button size="small" color="primary" onClick={() => Sentry.showReportDialog()}>
-                        {_("sentry__report")}
-                    </Button>
-                    <CopyToClipboard text={eventId || "?"}>
-                        <Button size="small" color="primary">
-                            {_("sentry__copy_event_id")}
+            const showReportDialog = () => Sentry.showReportDialog();
+
+            return (
+                <Card>
+                    <CardActionArea>
+                        <CardContent>
+                            <Typography gutterBottom={true} variant="h5">{_("sentry__title")}</Typography>
+                            <Typography>{_("sentry__description")}</Typography>
+                            {eventIDDisplay}
+
+                        </CardContent>
+                    </CardActionArea>
+                    <CardActions>
+                        <Button size="small" color="primary" onClick={showReportDialog}>
+                            {_("sentry__report")}
                         </Button>
-                    </CopyToClipboard>
-                </CardActions>
-            </Card>
-        );
-        else return this.props.children;
+                        <CopyToClipboard text={eventId || "?"}>
+                            <Button size="small" color="primary">
+                                {_("sentry__copy_event_id")}
+                            </Button>
+                        </CopyToClipboard>
+                    </CardActions>
+                </Card>
+            );
+        } else return this.props.children;
     }
 }
 

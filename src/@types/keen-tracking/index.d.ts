@@ -2,19 +2,19 @@ declare module "keen-tracking" {
     export default class KeenTracking {
         constructor(options: { projectId: string; writeKey: string; requestType?: string });
 
-        extendEvents(data: any): void;
+        public extendEvents(data: any): void;
 
-        recordEvent(
+        public recordEvent(
             collectionName: string,
-            event: object
+            event: object,
         ): Promise<{ created: boolean }>;
 
-        recordEvents(events: {
+        public recordEvents(events: {
             [collectionName: string]: object[];
         }): Promise<{
             [collectionName: string]: boolean[];
         }>;
 
-        initAutoTracking(options?: any): KeenTracking;
+        public initAutoTracking(options?: any): KeenTracking;
     }
 }

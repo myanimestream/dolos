@@ -14,14 +14,13 @@ import * as ReactDOM from "react-dom";
 /** @ignore */
 const styles = () => createStyles({
     plyrContainer: {
-        width: "100%",
-        height: "100%",
-
         "& .plyr": {
-            width: "100%",
             height: "100%",
-        }
-    }
+            width: "100%",
+        },
+        "height": "100%",
+        "width": "100%",
+    },
 });
 
 export interface PlayerSource {
@@ -38,50 +37,58 @@ export interface PlayerProps extends WithStyles<typeof styles> {
     sources: PlayerSource[];
 }
 
-export default withStyles(styles)(class Player extends React.Component<PlayerProps> {
-    player?: Plyr;
+// tslint:disable-next-line:variable-name
+export const Player = withStyles(styles)(
+    class extends React.Component<PlayerProps> {
+        public player?: Plyr;
 
-    componentDidMount() {
-        const {eventListener, options} = this.props;
-        // normal autoplay only works when muted and doesn't fire "ended" event!
-        const autoplay = options.autoplay;
-        options.autoplay = false;
+        public componentDidMount() {
+            const {eventListener, options} = this.props;
+            // normal autoplay only works when muted and doesn't fire "ended" event!
+            const autoplay = options.autoplay;
+            options.autoplay = false;
 
-        const domNode = ReactDOM.findDOMNode(this);
-        if (!(domNode && domNode.firstChild))
-            throw new Error("Couldn't find dom node");
+            const domNode = ReactDOM.findDOMNode(this);
+            if (!(domNode && domNode.firstChild))
+                throw new Error("Couldn't find dom node");
 
-        this.player = new Plyr(domNode.firstChild as HTMLElement, options);
+            this.player = new Plyr(domNode.firstChild as HTMLElement, options);
 
-        if (eventListener) {
-            for (const [event, handler] of Object.entries(eventListener)) {
-                if (!handler) continue;
-                this.player.on(event as PlyrEvents, handler);
+            if (eventListener) {
+                for (const [event, handler] of Object.entries(eventListener)) {
+                    if (!handler) continue;
+                    this.player.on(event as PlyrEvents, handler);
+                }
             }
+
+            if (autoplay) Promise.resolve(this.player.play()).catch();
         }
 
-        if (autoplay) Promise.resolve(this.player.play()).catch();
-    }
+        public componentWillUnmount() {
+            if (this.player) this.player.destroy();
+        }
 
-    componentWillUnmount() {
-        if (this.player) this.player.destroy();
-    }
+        public renderSource(): Array<React.ReactElement<any>> {
+            // currently plyr breaks when not supplying a video type, this defaulting to video/mp4
+            return this.props.sources.map((source, index) => (
+                <source
+                    key={index}
+                    src={source.url}
+                    type={source.type || "video/mp4"}
+                />
+            ));
+        }
 
-    renderSource(): React.ReactElement<any>[] {
-        // currently plyr breaks when not supplying a video type, this defaulting to video/mp4
-        return this.props.sources.map((source, index) => <source key={index} src={source.url}
-                                                                 type={source.type || "video/mp4"}/>);
-    }
+        public render() {
+            const {classes} = this.props;
 
-    render() {
-        const {classes} = this.props;
-
-        return (
-            <div className={classes.plyrContainer}>
-                <video poster={this.props.poster} playsInline controls>
-                    {this.renderSource()}
-                </video>
-            </div>
-        );
-    }
-});
+            return (
+                <div className={classes.plyrContainer}>
+                    <video poster={this.props.poster} playsInline={true} controls={true}>
+                        {this.renderSource()}
+                    </video>
+                </div>
+            );
+        }
+    },
+);

@@ -12,15 +12,15 @@ import * as React from "react";
 /** @ignore */
 const useStyles = makeStyles(() => ({
     container: {
-        position: "relative",
         display: "inline-block",
+        position: "relative",
     },
     progress: {
+        left: "50%",
+        marginLeft: -12,
+        marginTop: -12,
         position: "absolute",
         top: "50%",
-        left: "50%",
-        marginTop: -12,
-        marginLeft: -12,
     },
 }));
 
@@ -47,7 +47,7 @@ export function Toggle(props: ToggleProps) {
         icon, iconToggled,
         tooltip, tooltipToggled,
         toggled, canToggle,
-        onToggle
+        onToggle,
     } = props;
 
     const classes = useStyles();
@@ -65,6 +65,10 @@ export function Toggle(props: ToggleProps) {
 
     const toggleDisabled = loading || !canToggle;
 
+    const fadeStyle = {
+        transitionDelay: loading ? "800ms" : "0ms",
+    };
+
     return (
         <Tooltip title={toggled ? tooltipToggled : tooltip}>
             <div className={classes.container}>
@@ -73,10 +77,8 @@ export function Toggle(props: ToggleProps) {
                 </IconButton>
                 <Fade
                     in={loading}
-                    style={{
-                        transitionDelay: loading ? "800ms" : "0ms",
-                    }}
-                    unmountOnExit
+                    style={fadeStyle}
+                    unmountOnExit={true}
                 >
                     <CircularProgress size={24} className={classes.progress}/>
                 </Fade>

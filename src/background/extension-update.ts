@@ -18,10 +18,10 @@ export async function performExtensionUpdate(fromVersion: string): Promise<void>
     let version: string | undefined = fromVersion;
 
     while (true) {
-        let updater = getUpdater(version);
+        const updater = getUpdater(version);
         if (!updater) break;
 
-        let before = version;
+        const before = version;
 
         version = await Promise.resolve(updater(version));
         if (!version) break;
@@ -29,7 +29,7 @@ export async function performExtensionUpdate(fromVersion: string): Promise<void>
         console.info(`[update] updated from version ${before} to ${version}`);
     }
 
-    console.info(`[update] done, restarting`);
+    console.info("[update] done, restarting");
 
     chrome.runtime.reload();
 }
@@ -50,7 +50,7 @@ const updaters: Map<string | RegExp, Updater> = new Map([
         const storage = await new Promise(res => chrome.storage.sync.get(res));
         for (const [key, value] of Object.entries(storage)) {
             if (key === "config") {
-                newStorage["config"] = value;
+                newStorage.config = value;
                 continue;
             }
 
@@ -96,5 +96,5 @@ export function getUpdater(version: string): Updater | undefined {
         }
     }
 
-    return;
+    return undefined;
 }

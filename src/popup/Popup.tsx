@@ -53,50 +53,50 @@ const styles = (theme: Theme) => {
     };
 
     return createStyles({
-        root: {
-            display: "flex",
-            minWidth: 300,
-            minHeight: 400,
+        activeDrawerLink: {
+            "& *": {
+                color: theme.palette.primary.main,
+            },
+            "backgroundColor": fade(theme.palette.primary.main, .12),
         },
-        grow,
         appBar: {
             marginLeft: drawerWidth,
             [theme.breakpoints.up("sm")]: {
                 width: `calc(100% - ${drawerWidth}px)`,
             },
         },
+        badge: {
+            paddingRight: 2 * theme.spacing.unit,
+        },
+        buttonIconLeft: {
+            marginRight: theme.spacing.unit,
+        },
+        content: {
+            flexGrow: 1,
+            padding: 2 * theme.spacing.unit,
+        },
+        drawer: {
+            [theme.breakpoints.up("sm")]: {
+                flexShrink: 0,
+                width: drawerWidth,
+            },
+        },
+        drawerPaper: {
+            width: drawerWidth,
+        },
+        grow,
         menuButton: {
             marginRight: 20,
             [theme.breakpoints.up("sm")]: {
                 display: "none",
             },
         },
-        badge: {
-            paddingRight: 2 * theme.spacing.unit,
-        },
-        drawer: {
-            [theme.breakpoints.up("sm")]: {
-                width: drawerWidth,
-                flexShrink: 0,
-            },
-        },
-        drawerPaper: {
-            width: drawerWidth,
-        },
-        activeDrawerLink: {
-            backgroundColor: fade(theme.palette.primary.main, .12),
-            "& *": {
-                color: theme.palette.primary.main
-            },
+        root: {
+            display: "flex",
+            minHeight: 400,
+            minWidth: 300,
         },
         toolbar: theme.mixins.toolbar,
-        content: {
-            flexGrow: 1,
-            padding: 2 * theme.spacing.unit,
-        },
-        buttonIconLeft: {
-            marginRight: theme.spacing.unit,
-        }
     });
 };
 
@@ -113,24 +113,24 @@ interface PopupState {
  * Main react component for the extension popup.
  */
 class Popup extends React.Component<PopupProps, PopupState> {
-    hasNewVersionSub?: rxjs.Subscription;
-    unseenEpsCountSub?: rxjs.Subscription;
+    public hasNewVersionSub?: rxjs.Subscription;
+    public unseenEpsCountSub?: rxjs.Subscription;
 
     constructor(props: PopupProps) {
         super(props);
         this.state = {
-            drawerOpen: false,
             changelogBadgeVisible: false,
+            drawerOpen: false,
             unseenEpisodesCount: 0,
-        }
+        };
     }
 
-    componentWillUnmount() {
+    public componentWillUnmount() {
         if (this.hasNewVersionSub) this.hasNewVersionSub.unsubscribe();
         if (this.unseenEpsCountSub) this.unseenEpsCountSub.unsubscribe();
     }
 
-    async componentDidMount() {
+    public async componentDidMount() {
         const {history} = this.props;
 
         const background = await getBackgroundWindow();
@@ -144,40 +144,44 @@ class Popup extends React.Component<PopupProps, PopupState> {
             .subscribe(unseenEpisodesCount => this.setState({unseenEpisodesCount}));
     }
 
-    toggleDrawer() {
+    public toggleDrawer() {
         this.setState({drawerOpen: !this.state.drawerOpen});
     }
 
-    renderHome = () => {
+    public renderHome = () => {
         return (
-            <Typography paragraph>
+            <Typography paragraph={true}>
                 Hello World!
             </Typography>);
     };
 
-    renderSubscriptions = () => {
+    public renderSubscriptions = () => {
         return <SubscriptionsDisplay/>;
     };
 
-    renderChangelog = () => {
+    public renderChangelog = () => {
         return <Changelog/>;
     };
 
-    renderFeedback = () => {
+    public renderFeedback = () => {
         const {classes} = this.props;
+
+        const handleOpenIssues = () => window.open("https://github.com/MyAnimeStream/dolos/issues");
 
         return (
             <Card>
                 <CardActionArea>
                     <CardContent>
-                        <Typography gutterBottom variant="h5">GitHub Issues</Typography>
+                        <Typography gutterBottom={true} variant="h5">GitHub Issues</Typography>
                         <Typography>{_("popup__feedback__github_issues__text")}</Typography>
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
 
-                    <Button variant="contained" color="primary"
-                            onClick={() => window.open("https://github.com/MyAnimeStream/dolos/issues")}
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleOpenIssues}
                     >
                         <GitHubIcon className={classes.buttonIconLeft}/>
                         {_("popup__feedback__github_issues__action")}
@@ -187,52 +191,64 @@ class Popup extends React.Component<PopupProps, PopupState> {
         );
     };
 
-    renderHelp = () => {
+    public renderHelp = () => {
         return (
-            <Typography paragraph>
+            <Typography paragraph={true}>
                 There's no help yet, sorry boi!
                 Version {info.getVersion()}
             </Typography>
         );
     };
 
-    render() {
+    public render() {
         const {classes, theme} = this.props;
         const {changelogBadgeVisible, unseenEpisodesCount} = this.state;
 
-        const getLink = (target: string) => (props: {}) => <NavLink to={target}
-                                                                    activeClassName={classes.activeDrawerLink} {...props} />;
-        const HomeLink = getLink("/home");
-        const SubscriptionsLink = getLink("/subscriptions");
-        const ChangelogLink = getLink("/changelog");
+        const getLink = (target: string) => (props: {}) => (
+            <NavLink
+                to={target}
+                activeClassName={classes.activeDrawerLink}
+                {...props}
+            />
+        );
 
-        const FeedbackLink = getLink("/feedback");
-        const HelpLink = getLink("/help");
+        const homeLink = getLink("/home");
+        const subscriptionsLink = getLink("/subscriptions");
+        const changelogLink = getLink("/changelog");
+
+        const feedbackLink = getLink("/feedback");
+        const helpLink = getLink("/help");
+
+        const handleOpenOptions = () => chrome.runtime.openOptionsPage();
 
         const drawer = (
             <>
                 <List>
-                    <ListItem button component={HomeLink}>
+                    <ListItem button={true} component={homeLink}>
                         <ListItemIcon><HomeIcon/></ListItemIcon>
                         <ListItemText primary={_("popup__nav__home")}/>
                     </ListItem>
-                    <ListItem button component={SubscriptionsLink}>
+                    <ListItem button={true} component={subscriptionsLink}>
                         <ListItemIcon><SubscriptionsIcon/></ListItemIcon>
                         <ListItemText>
-                            <Badge badgeContent={unseenEpisodesCount} max={9}
-                                   className={classes.badge}
-                                   color="secondary"
+                            <Badge
+                                badgeContent={unseenEpisodesCount}
+                                max={9}
+                                className={classes.badge}
+                                color="secondary"
                             >
                                 {_("popup__nav__subscriptions")}
                             </Badge>
                         </ListItemText>
                     </ListItem>
-                    <ListItem button component={ChangelogLink}>
+                    <ListItem button={true} component={changelogLink}>
                         <ListItemIcon><HistoryIcon/></ListItemIcon>
                         <ListItemText>
-                            <Badge variant="dot" invisible={!changelogBadgeVisible}
-                                   className={classes.badge}
-                                   color="secondary"
+                            <Badge
+                                variant="dot"
+                                invisible={!changelogBadgeVisible}
+                                className={classes.badge}
+                                color="secondary"
                             >
                                 {_("popup__nav__changelog")}
                             </Badge>
@@ -241,16 +257,16 @@ class Popup extends React.Component<PopupProps, PopupState> {
                 </List>
                 <Divider/>
                 <List>
-                    <ListItem button onClick={() => chrome.runtime.openOptionsPage()}>
+                    <ListItem button={true} onClick={handleOpenOptions}>
                         <ListItemIcon><SettingsIcon/></ListItemIcon>
                         <ListItemText primary={_("popup__nav__settings")}/>
                         <OpenInNewIcon fontSize="small"/>
                     </ListItem>
-                    <ListItem button component={FeedbackLink}>
+                    <ListItem button={true} component={feedbackLink}>
                         <ListItemIcon><FeedbackIcon/></ListItemIcon>
                         <ListItemText primary={_("popup__nav__feedback")}/>
                     </ListItem>
-                    <ListItem button component={HelpLink}>
+                    <ListItem button={true} component={helpLink}>
                         <ListItemIcon><HelpIcon/></ListItemIcon>
                         <ListItemText primary={_("popup__nav__help")}/>
                     </ListItem>
@@ -258,14 +274,19 @@ class Popup extends React.Component<PopupProps, PopupState> {
             </>
         );
 
+        const handleToggleDrawer = this.toggleDrawer.bind(this);
+
         return (
             <div className={classes.root}>
                 <CssBaseline/>
 
                 <AppBar position="fixed" className={classes.appBar}>
                     <Toolbar>
-                        <IconButton color="inherit" aria-label="Menu" className={classes.menuButton}
-                                    onClick={() => this.toggleDrawer()}>
+                        <IconButton
+                            color="inherit"
+                            className={classes.menuButton}
+                            onClick={handleToggleDrawer}
+                        >
                             <MenuIcon/>
                         </IconButton>
                         <Typography variant="h6" color="inherit" className={classes.grow}>
@@ -274,31 +295,25 @@ class Popup extends React.Component<PopupProps, PopupState> {
                     </Toolbar>
                 </AppBar>
                 <nav className={classes.drawer}>
-                    <Hidden smUp implementation="css">
+                    <Hidden smUp={true} implementation="css">
                         <SwipeableDrawer
                             variant="temporary"
                             anchor={theme.direction === "rtl" ? "right" : "left"}
                             open={this.state.drawerOpen}
-                            onOpen={() => this.toggleDrawer()}
-                            onClick={() => this.toggleDrawer()}
-                            onClose={() => this.toggleDrawer()}
-                            classes={{
-                                paper: classes.drawerPaper,
-                            }}
-                            ModalProps={{
-                                keepMounted: true, // Better open performance on mobile.
-                            }}
+                            onOpen={handleToggleDrawer}
+                            onClick={handleToggleDrawer}
+                            onClose={handleToggleDrawer}
+                            classes={{paper: classes.drawerPaper}}
+                            ModalProps={{keepMounted: true}}
                         >
                             {drawer}
                         </SwipeableDrawer>
                     </Hidden>
-                    <Hidden xsDown implementation="css">
+                    <Hidden xsDown={true} implementation="css">
                         <Drawer
-                            classes={{
-                                paper: classes.drawerPaper,
-                            }}
+                            classes={{paper: classes.drawerPaper}}
                             variant="permanent"
-                            open
+                            open={true}
                         >
                             {drawer}
                         </Drawer>
@@ -307,7 +322,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
                 <main className={classes.content}>
                     <div className={classes.toolbar}/>
                     <Switch>
-                        <Redirect exact path="/" to="/home"/>
+                        <Redirect exact={true} path="/" to="/home"/>
                         <Route path="/home" render={this.renderHome}/>
                         <Route path="/subscriptions" render={this.renderSubscriptions}/>
                         <Route path="/changelog" render={this.renderChangelog}/>
@@ -317,7 +332,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
                     </Switch>
                 </main>
             </div>
-        )
+        );
     }
 }
 
