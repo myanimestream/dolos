@@ -1,7 +1,7 @@
 /**
  * Exposes functions related to internal Ember data.
  *
- * @module kitsu
+ * @module services/kitsu
  */
 
 import axios, {AxiosRequestConfig} from "axios";

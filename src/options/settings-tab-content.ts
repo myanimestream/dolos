@@ -1,3 +1,7 @@
+/**
+ * @module options
+ */
+
 import {Config} from "dolos/models";
 import * as React from "react";
 

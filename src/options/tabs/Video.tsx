@@ -1,5 +1,5 @@
 /**
- * @module options.tabs
+ * @module options/tabs
  */
 
 import FormControlLabel from "@material-ui/core/FormControlLabel";

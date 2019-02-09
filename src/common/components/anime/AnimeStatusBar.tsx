@@ -1,5 +1,5 @@
 /**
- * @module common.components.anime
+ * @module common/components/anime
  */
 
 /** @ignore */

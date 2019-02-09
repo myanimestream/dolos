@@ -1,5 +1,5 @@
 /**
- * @module options.tabs
+ * @module options/tabs
  */
 
 import CircularProgress from "@material-ui/core/CircularProgress";

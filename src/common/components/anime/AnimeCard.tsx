@@ -1,5 +1,5 @@
 /**
- * @module common.components.anime
+ * @module common/components/anime
  */
 
 import Card from "@material-ui/core/Card";

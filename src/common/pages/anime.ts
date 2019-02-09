@@ -1,5 +1,5 @@
 /**
- * @module common.pages
+ * @module common/pages
  */
 
 import {AnimeInfo, GrobberClient, GrobberErrorType} from "dolos/grobber";

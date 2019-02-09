@@ -1,5 +1,5 @@
 /**
- * @module kitsu
+ * @module services/kitsu
  */
 
 export type UrlChangeCallback = (old: string | undefined, updated: string) => void;

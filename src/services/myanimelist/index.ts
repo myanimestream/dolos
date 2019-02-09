@@ -1,7 +1,7 @@
 /**
  * Service for [myanimelist.net](https://myanimelist.net).
  *
- * @module myanimelist
+ * @module services/myanimelist
  * @preferred
  */
 

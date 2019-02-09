@@ -1,5 +1,5 @@
 /**
- * @module options.tabs
+ * @module options/tabs
  */
 
 import List from "@material-ui/core/List";

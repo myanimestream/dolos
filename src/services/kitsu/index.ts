@@ -1,7 +1,7 @@
 /**
  * Service for [kitsu.io](https://kitsu.io).
  *
- * @module kitsu
+ * @module services/kitsu
  * @preferred
  */
 

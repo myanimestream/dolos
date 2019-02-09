@@ -1,5 +1,5 @@
 /**
- * @module kitsu
+ * @module services/kitsu
  */
 
 import {SkipButton} from "dolos/common/components/anime";

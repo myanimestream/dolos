@@ -1,7 +1,7 @@
 /**
  * Abstract classes for database Pages.
  *
- * @module common.pages
+ * @module common/pages
  * @preferred
  */
 

@@ -1,5 +1,5 @@
 /**
- * @module kitsu
+ * @module services/kitsu
  */
 
 import {cacheInStateMemory} from "dolos/common";

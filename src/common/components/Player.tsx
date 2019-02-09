@@ -1,5 +1,5 @@
 /**
- * @module common.components
+ * @module common/components
  */
 
 import {WithStyles} from "@material-ui/core/styles";

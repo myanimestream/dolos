@@ -1,5 +1,5 @@
 /**
- * @module myanimelist
+ * @module services/myanimelist
  */
 
 import axios from "axios";

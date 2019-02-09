@@ -1,5 +1,5 @@
 /**
- * @module common.components.anime
+ * @module common/components/anime
  */
 
 import GridList from "@material-ui/core/GridList";
