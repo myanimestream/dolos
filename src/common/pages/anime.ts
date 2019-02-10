@@ -109,7 +109,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
     /**
      * Set the UID associated with the [[AnimePage.getAnimeIdentifier]] identifier
      * and update the subscription if subscribed.
-     * **This will cause the [[AnimePage]] to be reloaded!**
+     * **This will cause the current [[ServicePage]] to be reloaded!**
      */
     public async setAnimeUID(uid: string | AnimeInfo) {
         let anime: AnimeInfo;
@@ -130,9 +130,9 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
         if (subscription)
             subscription.anime = anime;
 
-        if (this.state.page)
         // this handles the case of a page "abusing" the AnimePage
         // such as the EpisodePage
+        if (this.state.page)
             await this.state.page.reload();
         else
             await this.reload();

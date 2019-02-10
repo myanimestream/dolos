@@ -7,6 +7,8 @@
 
 /** @ignore */
 
+import * as ReactDOM from "react-dom";
+
 /**
  * Abstract representation of a Namespace.
  */
@@ -222,6 +224,15 @@ export interface HasElementMemory<T extends ElementMemory = any> {
 }
 
 /**
+ * Remove an element but also try to unmount
+ * its React component if there is any.
+ */
+function removeElement(el: Element): void {
+    ReactDOM.unmountComponentAtNode(el);
+    el.remove();
+}
+
+/**
  * [[Memory]] that can also keep track of injected DOM elements.
  *
  * This class doesn't actually touch the [[Memory.memory]] at all,
@@ -265,7 +276,8 @@ export class ElementMemory extends Memory implements HasElementMemory {
             const [parentNS, nsKey] = enterParentNamespace(this.internalInjectedMemory, key);
 
             const flattened = flattenNamespace(parentNS[nsKey] as Namespace);
-            Object.values(flattened).forEach(elements => elements.forEach((el: Element) => el.remove()));
+            Object.values(flattened).forEach(elements =>
+                elements.forEach(removeElement));
 
             delete parentNS[nsKey];
         });

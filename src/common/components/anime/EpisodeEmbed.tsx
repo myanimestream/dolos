@@ -369,7 +369,8 @@ export const EpisodeEmbed = withStyles(styles)(
             if (!anime) return;
 
             const {episodePage} = this.props;
-            await episodePage.reload();
+
+            await episodePage.animePage.setAnimeUID(anime);
         }
 
         public renderMenuButton() {

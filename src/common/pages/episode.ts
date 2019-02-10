@@ -20,6 +20,7 @@ import _ = chrome.i18n.getMessage;
  */
 export type EpisodeAnimePage = Pick<AnimePage<Service>,
     | "getAnimeUID"
+    | "setAnimeUID"
     | "getAnime"
     | "getEpisodesWatched$"
     | "canSetEpisodesWatched"

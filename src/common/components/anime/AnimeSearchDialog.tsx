@@ -148,9 +148,22 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
             let results: AnimeInfo[] | undefined;
             const config = await state.config;
             const searchResults = await GrobberClient.searchAnime(query, 10);
+            const resultUIDs = new Set();
+
             if (searchResults) {
                 let consideration = searchResults
-                    .filter(res => res.certainty >= config.minCertaintyForSearchResult);
+                    .filter(res => {
+                        // make absolutely sure that there are no duplicate UIDs
+                        // it shouldn't happen anyway, but Grobber seems to have
+                        // some issues which causes duplicates
+                        const uid = res.anime.uid;
+                        if (resultUIDs.has(uid))
+                            return false;
+                        else
+                            resultUIDs.add(uid);
+
+                        return res.certainty >= config.minCertaintyForSearchResult;
+                    });
 
                 if (consideration.length === 0) consideration = searchResults;
 
@@ -178,6 +191,7 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
                     <CircularProgress/>
                 );
             } else if (results && results.length > 0) {
+                // noinspection RequiredAttributes
                 return (
                     <AnimeSelection
                         anime={results}

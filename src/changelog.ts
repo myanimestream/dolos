@@ -31,6 +31,9 @@ export interface Changelog {
  * This is done using a Map to make sure it can be iterated over in the right order.
  */
 const CHANGELOG: Changelog = new Map([
+    ["0.2.4", [
+        "Fixed anime search.",
+    ]],
     ["0.2.3", [
         "Added some new embed providers",
         (
