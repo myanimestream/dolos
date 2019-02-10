@@ -86,7 +86,13 @@ jobs:
       - run:
           name: Comiling & Bundling code
           command: |
-            [[ -z "$CIRCLE_TAG" ]] && export NO_SENTRY_UPLOAD="true"
+            if [[ -z "$CIRCLE_TAG" ]]; then
+              export NO_SENTRY_UPLOAD="true"
+              export DOLOS_SENTRYENVIRONMENT="development"
+            else
+              export DOLOS_SENTRYENVIRONMENT="production"
+            fi
+
             npm run build:production
       - run:
           name: Getting localisations

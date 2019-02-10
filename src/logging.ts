@@ -16,6 +16,7 @@ const release = `dolos@${getVersion()}`;
 
 Sentry.init({
     dsn: Secrets.sentryDSN,
+    environment: Secrets.sentryEnvironment,
     release,
 });
 

@@ -8,6 +8,7 @@ const plugins = [];
 if (["SENTRY_AUTH_TOKEN", "SENTRY_ORG", "SENTRY_PROJECT"].every(key => key in process.env)) {
     if (!("NO_SENTRY_UPLOAD" in process.env)) {
         console.info("uploading source maps to Sentry!");
+
         const sentryPlugin = new SentryCliPlugin({
             release: `dolos@${manifest.version}`,
             include: "dist/",
