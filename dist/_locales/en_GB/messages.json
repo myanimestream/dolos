@@ -70,6 +70,12 @@
   "popup__feedback__github_issues__action": {
     "message": "Open"
   },
+  "changelog__current_version__header": {
+    "message": "Current Version"
+  },
+  "changelog__previous_versions__header": {
+    "message": "Previous Versions"
+  },
   "subscriptions__anime__subscription_header": {
     "message": "Anime Subscriptions"
   },

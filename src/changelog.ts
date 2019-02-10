@@ -33,6 +33,7 @@ export interface Changelog {
 const CHANGELOG: Changelog = new Map([
     ["0.2.4", [
         "Fixed anime search.",
+        "Changelog split in current version and old versions. This should make it a bit cleaner",
     ]],
     ["0.2.3", [
         "Added some new embed providers",
@@ -112,7 +113,7 @@ const CHANGELOG: Changelog = new Map([
         "Added button to player to switch between dolos player (if possible) and embedded players",
     ]],
     ["0.0.4", [
-        "Added this changelog. *Oh and I won't translate this to other languages so you may f*ck right off!*",
+        "Added this changelog. *Oh and I won't translate this to other languages so you may f\\*ck right off!*",
         "**Embed selection** for episodes without direct streams",
         "Automatic Anime **progress update**",
     ]],
