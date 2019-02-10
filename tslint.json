@@ -37,6 +37,10 @@
       true,
       "always",
       "ignore-bound-class-methods"
+    ],
+    "jsx-boolean-value": [
+      true,
+      "never"
     ]
   },
   "rulesDirectory": []

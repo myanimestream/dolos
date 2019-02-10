@@ -78,7 +78,7 @@ export function Toggle(props: ToggleProps) {
                 <Fade
                     in={loading}
                     style={fadeStyle}
-                    unmountOnExit={true}
+                    unmountOnExit
                 >
                     <CircularProgress size={24} className={classes.progress}/>
                 </Fade>

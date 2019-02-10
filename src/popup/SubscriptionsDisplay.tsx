@@ -54,7 +54,7 @@ export function SubscriptionItem(props: SubscriptionItemProps) {
     }
 
     return (
-        <ListItem button={true} onClick={showAnime}>
+        <ListItem button onClick={showAnime}>
             <ListItemAvatar>
                 <Avatar alt={subscription.anime.title} src={subscription.anime.thumbnail}/>
             </ListItemAvatar>

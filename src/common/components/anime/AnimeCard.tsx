@@ -44,7 +44,7 @@ export const AnimeCard = withStyles(styles)(
                             title={animeInfo.title}
                         />
                         <CardContent>
-                            <Typography gutterBottom={true} variant="caption" color={current ? "primary" : "default"}>
+                            <Typography gutterBottom variant="caption" color={current ? "primary" : "default"}>
                                 {animeInfo.title}
                             </Typography>
                             <Typography variant="subtitle2" color="textSecondary">

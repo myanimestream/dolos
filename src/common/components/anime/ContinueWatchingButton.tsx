@@ -154,7 +154,7 @@ export const ContinueWatchingButton = withStyles(styles)(
                             variant="contained"
                             color="primary"
                             onClick={handleClick}
-                            fullWidth={true}
+                            fullWidth
                             {...{href, disabled}}
                         >
                             <PlayCircleIcon className={classes.buttonIconLeft}/>

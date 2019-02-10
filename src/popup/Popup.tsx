@@ -150,7 +150,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
 
     public renderHome = () => {
         return (
-            <Typography paragraph={true}>
+            <Typography paragraph>
                 Hello World!
             </Typography>);
     };
@@ -172,7 +172,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
             <Card>
                 <CardActionArea>
                     <CardContent>
-                        <Typography gutterBottom={true} variant="h5">GitHub Issues</Typography>
+                        <Typography gutterBottom variant="h5">GitHub Issues</Typography>
                         <Typography>{_("popup__feedback__github_issues__text")}</Typography>
                     </CardContent>
                 </CardActionArea>
@@ -193,7 +193,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
 
     public renderHelp = () => {
         return (
-            <Typography paragraph={true}>
+            <Typography paragraph>
                 There's no help yet, sorry boi!
                 Version {info.getVersion()}
             </Typography>
@@ -224,11 +224,11 @@ class Popup extends React.Component<PopupProps, PopupState> {
         const drawer = (
             <>
                 <List>
-                    <ListItem button={true} component={homeLink}>
+                    <ListItem button component={homeLink}>
                         <ListItemIcon><HomeIcon/></ListItemIcon>
                         <ListItemText primary={_("popup__nav__home")}/>
                     </ListItem>
-                    <ListItem button={true} component={subscriptionsLink}>
+                    <ListItem button component={subscriptionsLink}>
                         <ListItemIcon><SubscriptionsIcon/></ListItemIcon>
                         <ListItemText>
                             <Badge
@@ -241,7 +241,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
                             </Badge>
                         </ListItemText>
                     </ListItem>
-                    <ListItem button={true} component={changelogLink}>
+                    <ListItem button component={changelogLink}>
                         <ListItemIcon><HistoryIcon/></ListItemIcon>
                         <ListItemText>
                             <Badge
@@ -257,16 +257,16 @@ class Popup extends React.Component<PopupProps, PopupState> {
                 </List>
                 <Divider/>
                 <List>
-                    <ListItem button={true} onClick={handleOpenOptions}>
+                    <ListItem button onClick={handleOpenOptions}>
                         <ListItemIcon><SettingsIcon/></ListItemIcon>
                         <ListItemText primary={_("popup__nav__settings")}/>
                         <OpenInNewIcon fontSize="small"/>
                     </ListItem>
-                    <ListItem button={true} component={feedbackLink}>
+                    <ListItem button component={feedbackLink}>
                         <ListItemIcon><FeedbackIcon/></ListItemIcon>
                         <ListItemText primary={_("popup__nav__feedback")}/>
                     </ListItem>
-                    <ListItem button={true} component={helpLink}>
+                    <ListItem button component={helpLink}>
                         <ListItemIcon><HelpIcon/></ListItemIcon>
                         <ListItemText primary={_("popup__nav__help")}/>
                     </ListItem>
@@ -295,7 +295,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
                     </Toolbar>
                 </AppBar>
                 <nav className={classes.drawer}>
-                    <Hidden smUp={true} implementation="css">
+                    <Hidden smUp implementation="css">
                         <SwipeableDrawer
                             variant="temporary"
                             anchor={theme.direction === "rtl" ? "right" : "left"}
@@ -309,11 +309,11 @@ class Popup extends React.Component<PopupProps, PopupState> {
                             {drawer}
                         </SwipeableDrawer>
                     </Hidden>
-                    <Hidden xsDown={true} implementation="css">
+                    <Hidden xsDown implementation="css">
                         <Drawer
                             classes={{paper: classes.drawerPaper}}
                             variant="permanent"
-                            open={true}
+                            open
                         >
                             {drawer}
                         </Drawer>
@@ -322,7 +322,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
                 <main className={classes.content}>
                     <div className={classes.toolbar}/>
                     <Switch>
-                        <Redirect exact={true} path="/" to="/home"/>
+                        <Redirect exact path="/" to="/home"/>
                         <Route path="/home" render={this.renderHome}/>
                         <Route path="/subscriptions" render={this.renderSubscriptions}/>
                         <Route path="/changelog" render={this.renderChangelog}/>

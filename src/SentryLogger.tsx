@@ -71,7 +71,7 @@ class SentryLogger extends React.Component<SentryLoggerProps, SentryLoggerState>
                 <Card>
                     <CardActionArea>
                         <CardContent>
-                            <Typography gutterBottom={true} variant="h5">{_("sentry__title")}</Typography>
+                            <Typography gutterBottom variant="h5">{_("sentry__title")}</Typography>
                             <Typography>{_("sentry__description")}</Typography>
                             {eventIDDisplay}
 

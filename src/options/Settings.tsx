@@ -155,7 +155,7 @@ export default withStyles(styles)(
                                     component="h1"
                                     variant="h6"
                                     color="inherit"
-                                    noWrap={true}
+                                    noWrap
                                     className={classes.title}
                                 >
                                     Dolos Settings
@@ -181,7 +181,7 @@ export default withStyles(styles)(
                         <main className={classes.content}>
                             <div className={classes.appBarSpacer}/>
                             <Switch>
-                                <Redirect exact={true} path="/" to="/video"/>
+                                <Redirect exact path="/" to="/video"/>
                                 <Route path="/video" render={this.getSettingsTab}/>
                                 <Route path="/site-integration" render={this.getSettingsTab}/>
                                 <Route path="/debug" render={this.getSettingsTab}/>
@@ -232,9 +232,9 @@ export default withStyles(styles)(
             const {classes} = this.props;
             return (
                 <List>
-                    <ListSubheader inset={true}>Options</ListSubheader>
+                    <ListSubheader inset>Options</ListSubheader>
                     <Link className={classes.link} to="/video">
-                        <ListItem button={true}>
+                        <ListItem button>
                             <ListItemIcon>
                                 <VideoLibraryIcon
                                     color={props.location.pathname === "/video" ? "primary" : "inherit"}
@@ -244,7 +244,7 @@ export default withStyles(styles)(
                         </ListItem>
                     </Link>
                     <Link className={classes.link} to="/site-integration">
-                        <ListItem button={true}>
+                        <ListItem button>
                             <ListItemIcon>
                                 <SettingsInputComponentIcon
                                     color={props.location.pathname === "/site-integration" ? "primary" : "inherit"}
@@ -254,7 +254,7 @@ export default withStyles(styles)(
                         </ListItem>
                     </Link>
                     <Link className={classes.link} to="/debug">
-                        <ListItem button={true}>
+                        <ListItem button>
                             <ListItemIcon>
                                 <BuildIcon
                                     color={props.location.pathname === "/debug" ? "primary" : "inherit"}

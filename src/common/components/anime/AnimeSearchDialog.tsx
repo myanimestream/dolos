@@ -261,7 +261,7 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
                 <Dialog
                     fullScreen={fullScreen}
                     maxWidth="md"
-                    fullWidth={true}
+                    fullWidth
                     open={open}
                     onEnter={handleDialogEnter}
                     onBackdropClick={handleClose}

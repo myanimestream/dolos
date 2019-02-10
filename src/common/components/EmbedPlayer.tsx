@@ -95,7 +95,7 @@ export const EmbedPlayer = withStyles(styles)(
                     <StableIFrame
                         src={currentEmbed.url}
                         className={classes.embedIFrame}
-                        allowFullScreen={true}
+                        allowFullScreen
                     />
                 );
 
@@ -109,7 +109,7 @@ export const EmbedPlayer = withStyles(styles)(
                                         variant="h6"
                                         color="textSecondary"
                                         style={{display: "inline"}}
-                                        noWrap={true}
+                                        noWrap
                                     >
                                         {_("episode__embedded_stream")}&nbsp;
                                         <HelpOutlineIcon fontSize="small" color="secondary"/>

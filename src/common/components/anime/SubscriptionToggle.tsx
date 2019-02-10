@@ -91,7 +91,7 @@ export function SubscriptionToggle(props: SubscriptionToggleProps) {
                 <Button
                     variant="contained"
                     color="secondary"
-                    fullWidth={true}
+                    fullWidth
                     disabled={buttonDisabled}
                     onClick={toggleSubscription}
                 >

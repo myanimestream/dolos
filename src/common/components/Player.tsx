@@ -84,7 +84,7 @@ export const Player = withStyles(styles)(
 
             return (
                 <div className={classes.plyrContainer}>
-                    <video poster={this.props.poster} playsInline={true} controls={true}>
+                    <video poster={this.props.poster} playsInline controls>
                         {this.renderSource()}
                     </video>
                 </div>
