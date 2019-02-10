@@ -56,7 +56,7 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/options_tabs.html">options.tabs</a>
+					<a href="../modules/options_tabs.html">options/tabs</a>
 				</li>
 				<li>
 					<a href="options_tabs.debug.html">Debug</a>
@@ -81,7 +81,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_options_settings_tab_content_.settingstabcontent.html" class="tsd-signature-type">SettingsTabContent</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">, </span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span>
+						<a href="options.settingstabcontent.html" class="tsd-signature-type">SettingsTabContent</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">, </span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">Debug</span>
@@ -136,19 +136,19 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Debug<span class="tsd-signature-symbol">(</span>props<span class="tsd-signature-symbol">: </span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="options_tabs.debug.html" class="tsd-signature-type">Debug</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Debug<span class="tsd-signature-symbol">(</span>props<span class="tsd-signature-symbol">: </span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="options_tabs.debug.html" class="tsd-signature-type">Debug</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/options/tabs/Debug.tsx#L80">options/tabs/Debug.tsx:80</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/options/tabs/Debug.tsx#L80">options/tabs/Debug.tsx:80</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>props: <a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a></h5>
+									<h5>props: <a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="options_tabs.debug.html" class="tsd-signature-type">Debug</a></h4>
@@ -164,7 +164,7 @@
 					<div class="tsd-signature tsd-kind-icon">change<wbr>Grobber<wbr>Url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;AwesomeDebouncePromise(async (url: string) &#x3D;&gt; {if (!url.match(/https?:\/\/.+/)) {this.setState({invalidUrl: _(&quot;options__grobber__url__invalid&quot;)});return;}this.setState({checkingUrl: true});const result &#x3D; await Debug.checkGrobberUrl(url);if (result.valid) {await this.change(&quot;grobberUrl&quot;, url);this.setState({invalidUrl: undefined});} else {const text &#x3D; &#x60;options__grobber__url__${result.hint || &quot;test_failed&quot;}&#x60;;this.setState({invalidUrl: _(text)});}this.setState({checkingUrl: false});}, 500)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/options/tabs/Debug.tsx#L62">options/tabs/Debug.tsx:62</a></li>
+							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/options/tabs/Debug.tsx#L62">options/tabs/Debug.tsx:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -234,7 +234,7 @@
 					<a name="unsafe_componentwillreceiveprops" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> UNSAFE_<wbr>component<wbr>Will<wbr>Receive<wbr>Props</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">UNSAFE_<wbr>component<wbr>Will<wbr>Receive<wbr>Props<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">UNSAFE_<wbr>component<wbr>Will<wbr>Receive<wbr>Props<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -269,7 +269,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>nextProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>nextProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>nextContext: <span class="tsd-signature-type">any</span></h5>
@@ -283,7 +283,7 @@
 					<a name="unsafe_componentwillupdate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> UNSAFE_<wbr>component<wbr>Will<wbr>Update</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">UNSAFE_<wbr>component<wbr>Will<wbr>Update<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, nextState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">UNSAFE_<wbr>component<wbr>Will<wbr>Update<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, nextState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -316,7 +316,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>nextProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>nextProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>nextState: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span></h5>
@@ -338,9 +338,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_options_settings_tab_content_.settingstabcontent.html">SettingsTabContent</a>.<a href="_options_settings_tab_content_.settingstabcontent.html#change">change</a></p>
+								<p>Inherited from <a href="options.settingstabcontent.html">SettingsTabContent</a>.<a href="options.settingstabcontent.html#change">change</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/options/settings-tab-content.ts#L15">options/settings-tab-content.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/options/settings-tab-content.ts#L19">options/settings-tab-content.ts:19</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -416,7 +416,7 @@
 					<a name="componentdidupdate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> component<wbr>Did<wbr>Update</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">component<wbr>Did<wbr>Update<span class="tsd-signature-symbol">(</span>prevProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, prevState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span>, snapshot<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">SS</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">component<wbr>Did<wbr>Update<span class="tsd-signature-symbol">(</span>prevProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, prevState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span>, snapshot<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">SS</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -435,7 +435,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>prevProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>prevProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>prevState: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span></h5>
@@ -489,7 +489,7 @@
 					<a name="componentwillreceiveprops" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> component<wbr>Will<wbr>Receive<wbr>Props</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">component<wbr>Will<wbr>Receive<wbr>Props<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">component<wbr>Will<wbr>Receive<wbr>Props<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -523,7 +523,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>nextProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>nextProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>nextContext: <span class="tsd-signature-type">any</span></h5>
@@ -561,7 +561,7 @@
 					<a name="componentwillupdate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> component<wbr>Will<wbr>Update</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">component<wbr>Will<wbr>Update<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, nextState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">component<wbr>Will<wbr>Update<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, nextState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -593,7 +593,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>nextProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>nextProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>nextState: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span></h5>
@@ -610,7 +610,7 @@
 					<a name="getsnapshotbeforeupdate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> get<wbr>Snapshot<wbr>Before<wbr>Update</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Snapshot<wbr>Before<wbr>Update<span class="tsd-signature-symbol">(</span>prevProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, prevState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SS</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Snapshot<wbr>Before<wbr>Update<span class="tsd-signature-symbol">(</span>prevProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, prevState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SS</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -632,7 +632,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>prevProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>prevProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>prevState: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span></h5>
@@ -655,7 +655,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/options/tabs/Debug.tsx#L89">options/tabs/Debug.tsx:89</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/options/tabs/Debug.tsx#L89">options/tabs/Debug.tsx:89</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Element</span></h4>
@@ -666,7 +666,7 @@
 					<a name="shouldcomponentupdate" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> should<wbr>Component<wbr>Update</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">should<wbr>Component<wbr>Update<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, nextState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">should<wbr>Component<wbr>Update<span class="tsd-signature-symbol">(</span>nextProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span>, nextState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span>, nextContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -689,7 +689,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>nextProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_options_settings_tab_content_.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>nextProps: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options.settingstabcontentprops.html" class="tsd-signature-type">SettingsTabContentProps</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5>nextState: <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/options_tabs.debugstate.html" class="tsd-signature-type">DebugState</a><span class="tsd-signature-symbol">&gt;</span></h5>
@@ -711,9 +711,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_options_settings_tab_content_.settingstabcontent.html">SettingsTabContent</a>.<a href="_options_settings_tab_content_.settingstabcontent.html#toggle">toggle</a></p>
+								<p>Inherited from <a href="options.settingstabcontent.html">SettingsTabContent</a>.<a href="options.settingstabcontent.html#toggle">toggle</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/options/settings-tab-content.ts#L11">options/settings-tab-content.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/options/settings-tab-content.ts#L15">options/settings-tab-content.ts:15</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -736,7 +736,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/2e24fc0/src/options/tabs/Debug.tsx#L37">options/tabs/Debug.tsx:37</a></li>
+									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/options/tabs/Debug.tsx#L37">options/tabs/Debug.tsx:37</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -757,8 +757,80 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/assets.html">assets</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/background.html">background</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/changelog.html">changelog</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common.html">common</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common_components.html">common/components</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common_components_anime.html">common/components/anime</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/common_pages.html">common/pages</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/grobber.html">grobber</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/hooks.html">hooks</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/info.html">info</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/inject.html">inject</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/lock.html">lock</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/logging.html">logging</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/memory.html">memory</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/models.html">models</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/options.html">options</a>
+					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/options_tabs.html">options.tabs</a>
+						<a href="../modules/options_tabs.html">options/tabs</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/popup.html">popup</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/secrets.html">secrets</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/services_kitsu.html">services/kitsu</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/services_myanimelist.html">services/myanimelist</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/store.html">store</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/subscriptions.html">subscriptions</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/theme.html">theme</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
