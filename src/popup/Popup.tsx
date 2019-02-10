@@ -100,8 +100,10 @@ const styles = (theme: Theme) => {
     });
 };
 
-interface PopupProps extends WithStyles<typeof styles, true>, RouteComponentProps<any> {
-}
+/**
+ * Props for [[Popup]].
+ */
+type PopupProps = WithStyles<typeof styles, true> & RouteComponentProps<any>;
 
 interface PopupState {
     drawerOpen: boolean;

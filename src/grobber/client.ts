@@ -22,11 +22,17 @@ import {
  */
 export let responseCacheTTL = 1000 * 60 * 60;
 
+/**
+ * Wrapper which adds a due date.
+ */
 interface ExpiringItem<T> {
     item: T;
     expire: number;
 }
 
+/**
+ * Create an [[ExpiringItem]].
+ */
 function createExpiringItem<T>(item: T, expireAt: number): ExpiringItem<T> {
     return {
         expire: expireAt,
@@ -35,6 +41,9 @@ function createExpiringItem<T>(item: T, expireAt: number): ExpiringItem<T> {
 
 }
 
+/**
+ * Create lock keys and the memory key from the parameters.
+ */
 function buildKeys(params: Array<[any, any]>): [string[], string] {
     const lockKeys = params.map(([key, value]) => `${key}:${value}`);
     const memoryKey = "resp-cache." + lockKeys.join(".");
@@ -44,7 +53,7 @@ function buildKeys(params: Array<[any, any]>): [string[], string] {
 
 /**
  * A client for interacting with the Grobber API.
- * Uses an internal cache.
+ * Uses an internal cache with [[ExpiringItem]].
  */
 export class Client extends Memory {
     public axiosClient: AxiosInstance;

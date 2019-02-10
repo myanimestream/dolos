@@ -17,8 +17,16 @@ import CHANGELOG, {Change} from "../changelog";
 import {getBackgroundWindow} from "../utils";
 import _ = chrome.i18n.getMessage;
 
+/**
+ * Regex which matches `MAJOR.MINOR`.
+ *
+ * @see [[getMinorVersion]]
+ */
 const MINOR_MATCHER = /\d+\.\d+/;
 
+/**
+ * Extract `MAJOR.MINOR` from a version string.
+ */
 function getMinorVersion(version: string): string | undefined {
     const match = MINOR_MATCHER.exec(version);
 
@@ -26,6 +34,9 @@ function getMinorVersion(version: string): string | undefined {
     else return undefined;
 }
 
+/**
+ * Get the latest version string from the changelog.
+ */
 function getCurrentVersion(): string {
     return CHANGELOG.keys().next().value;
 }
@@ -39,13 +50,26 @@ const styles = (theme: Theme) => createStyles({
     },
 });
 
-interface ChangelogDisplayProps extends WithStyles<typeof styles> {
-}
+/**
+ * Props for [[ChangelogDisplay]].
+ */
+type ChangelogDisplayProps = WithStyles<typeof styles>;
 
 interface ChangelogDisplayState {
     panelsOpen: Set<string>;
 }
 
+/**
+ * React component to display a [[Changelog]].
+ * Uses an [[ExpansionPanel]] for each version.
+ *
+ * The current version, determined by [[getCurrentVersion]], is
+ * automatically expanded.
+ *
+ * "Old" changelogs, i.e. versions which have a different MINOR.MAJOR version
+ * from the "current" version are merged based on the MAJOR.MINOR version
+ * and labelled with "Previous Versions".
+ */
 class ChangelogDisplay extends React.Component<ChangelogDisplayProps, ChangelogDisplayState> {
     constructor(props: ChangelogDisplayProps) {
         super(props);

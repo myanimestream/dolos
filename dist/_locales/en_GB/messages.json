@@ -71,10 +71,12 @@
     "message": "Open"
   },
   "changelog__current_version__header": {
-    "message": "Current Version"
+    "message": "Current Version",
+    "description": "Title shown above the changes for the current version."
   },
   "changelog__previous_versions__header": {
-    "message": "Previous Versions"
+    "message": "Previous Versions",
+    "description": "Title shown above the old changelogs."
   },
   "subscriptions__anime__subscription_header": {
     "message": "Anime Subscriptions"
