@@ -134,7 +134,7 @@ export const NAMESPACE_TRAPS: ProxyHandler<Namespace> = {
 };
 
 /**
- * @see [[HasMemory]] for an implementation.
+ * @see [[Memory]] for an implementation.
  */
 export interface HasMemory<T extends Memory = any> {
     memory: Namespace;

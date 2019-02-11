@@ -7,7 +7,7 @@
 
 import runtime = chrome.runtime;
 import {marshalError, unmarshalError} from "dolos/utils";
-import {GrobberClient} from "./client";
+import {GrobberClient, GrobberClientLike} from "./client";
 import {AnimeInfo, AnimeSearchResult, Episode} from "./models";
 
 interface Message {
@@ -36,10 +36,7 @@ function createMessage(procedure: string, body: any): Message {
  * This client ought to be used by the content scripts in order
  * to create a shared cache.
  */
-export class RemoteGrobberClient implements Pick<GrobberClient,
-    | "getAnimeInfo"
-    | "getEpisode"
-    | "searchAnime"> {
+export class RemoteGrobberClient implements GrobberClientLike {
 
     private get port(): runtime.Port {
         if (!this._port) this.connect();
@@ -57,14 +54,17 @@ export class RemoteGrobberClient implements Pick<GrobberClient,
         this.waitingPromises = {};
     }
 
+    /** @inheritDoc */
     public async getAnimeInfo(uid: string): Promise<AnimeInfo> {
         return await this.sendMessage("getAnimeInfo", [uid]);
     }
 
+    /** @inheritDoc */
     public async getEpisode(uid: string, episodeIndex: number): Promise<Episode> {
         return await this.sendMessage("getEpisode", [uid, episodeIndex]);
     }
 
+    /** @inheritDoc */
     public async searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | undefined> {
         return await this.sendMessage("searchAnime", [query, results]);
     }
@@ -108,12 +108,17 @@ export class RemoteGrobberClient implements Pick<GrobberClient,
  * on [[GrobberClient]].
  *
  * @see [[RemoteGrobberClient]]
+ *
+ * **Must call [[RemoteGrobberClientServer.serve]] to start serving!
  */
 export class RemoteGrobberClientServer {
     private readonly portName: string;
-    private readonly grobberClient: GrobberClient;
+    private readonly grobberClient: GrobberClientLike;
 
-    constructor(client?: GrobberClient, portName: string = "grobber") {
+    /**
+     * @param portName - Must be the same as [[RemoteGrobberClient.portName]].
+     */
+    constructor(client?: GrobberClientLike, portName: string = "grobber") {
         this.portName = portName;
         this.grobberClient = client || new GrobberClient();
     }

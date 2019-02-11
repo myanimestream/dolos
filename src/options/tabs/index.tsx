@@ -1,4 +1,6 @@
 /**
+ * [[SettingsTabContent]] used by [[SettingsTab]].
+ *
  * @module options/tabs
  * @preferred
  */

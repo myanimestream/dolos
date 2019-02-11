@@ -23,10 +23,17 @@ import {
 export let responseCacheTTL = 1000 * 60 * 60;
 
 /**
- * Wrapper which adds a due date.
+ * Wrapper which adds a due date to the item.
+ * Doesn't impose any rules itself.
+ *
+ * @see [[createExpiringItem]]
  */
 interface ExpiringItem<T> {
     item: T;
+    /**
+     * Absolute timestamp at which this item is set to expire.
+     * After this point the item should be deleted and no longer available.
+     */
     expire: number;
 }
 
@@ -51,12 +58,46 @@ function buildKeys(params: Array<[any, any]>): [string[], string] {
 }
 
 /**
+ * Client which can interact with the Grobber API.
+ *
+ * @see [[GrobberClient]] for the implementation.
+ */
+export interface GrobberClientLike {
+    /**
+     * Search for Animes.
+     * Results are stored in the cache.
+     *
+     * @param results - Defaults to 1 and may go up to 20 (Hard limit by Grobber)
+     *
+     * @return - List of [[AnimeSearchResult]]. Length will not exceed the provided `results`.
+     * `undefined` if there was an error.
+     */
+    searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | undefined>;
+
+    /**
+     * Get the Anime info for the given uid.
+     *
+     * @throws Same errors as [[GrobberClient.request]]
+     */
+    getAnimeInfo(uid: string): Promise<AnimeInfo>;
+
+    /**
+     * Get an Episode.
+     *
+     * @param episodeIndex - **Index**
+     *
+     * @throws Same errors as [[GrobberClient.request]]
+     */
+    getEpisode(uid: string, episodeIndex: number): Promise<Episode>;
+}
+
+/**
  * A client for interacting with the Grobber API.
  * Uses an internal cache with [[ExpiringItem]].
  *
- * The cache is realised using [[BackgroundMemory]].
+ * The cache is realised using [[Memory]].
  */
-export class GrobberClient extends Memory {
+export class GrobberClient extends Memory implements GrobberClientLike {
     public axiosClient: AxiosInstance;
 
     private readonly animeInfoLock: AsyncLock;
@@ -101,15 +142,7 @@ export class GrobberClient extends Memory {
         }
     }
 
-    /**
-     * Search for Anime.
-     * Results are stored in the cache.
-     *
-     * @param results - Defaults to 1 and may go up to 20 (Hard limit by Grobber)
-     *
-     * @return - List of [[AnimeSearchResult]]. Length will not exceed the provided `results`.
-     * `undefined` if there was an error.
-     */
+    /** @inheritDoc */
     public async searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | undefined> {
         const config = await Store.getConfig();
 
@@ -143,11 +176,7 @@ export class GrobberClient extends Memory {
         return resp;
     }
 
-    /**
-     * Get the Anime info for the given uid.
-     *
-     * @throws Same errors as [[GrobberClient.request]]
-     */
+    /** @inheritDoc */
     public async getAnimeInfo(uid: string): Promise<AnimeInfo> {
         return await this.performAnimeRequest(
             "/anime/",
@@ -156,13 +185,7 @@ export class GrobberClient extends Memory {
         );
     }
 
-    /**
-     * Get an Episode.
-     *
-     * @param episodeIndex - **Index**
-     *
-     * @throws Same errors as [[GrobberClient.request]]
-     */
+    /** @inheritDoc */
     public async getEpisode(uid: string, episodeIndex: number): Promise<Episode> {
         return await this.performAnimeRequest(
             "/anime/episode/",
@@ -187,6 +210,7 @@ export class GrobberClient extends Memory {
         if (expiring && expiring.expire > Date.now())
             return expiring.item;
 
+        this.forget(key);
         return null;
     }
 

@@ -212,6 +212,11 @@ export function marshalError(error: Error): string {
 /**
  * Build an error from a marshalled representation.
  *
+ * This creates an error of type `Error`, **custom errors
+ * are not supported** and `instanceof` checks should not be used.
+ * Instead use the [[Error.name]] property to distinguish between
+ * error types!
+ *
  * @see [[marshalError]] to marshal an error.
  */
 export function unmarshalError(error: string): Error {
