@@ -9,4 +9,8 @@ if (!chrome.browserAction) throw new Error("Background imported in non-backgroun
 
 /** @ignore */
 
+import {grobberClient, RemoteGrobberClientServer} from "dolos/grobber";
 import "./events";
+
+const remoteGrobberClientServer = new RemoteGrobberClientServer(grobberClient);
+remoteGrobberClientServer.serve();

@@ -108,10 +108,9 @@ export class GrobberClient extends Memory {
      * @param results - Defaults to 1 and may go up to 20 (Hard limit by Grobber)
      *
      * @return - List of [[AnimeSearchResult]]. Length will not exceed the provided `results`.
-     *
-     * @throws Same errors as [[GrobberClient.request]]
+     * `undefined` if there was an error.
      */
-    public async searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | null> {
+    public async searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | undefined> {
         const config = await Store.getConfig();
 
         let resp;
@@ -138,7 +137,7 @@ export class GrobberClient extends Memory {
             );
         } catch (e) {
             console.error("Couldn't search for anime", e);
-            return null;
+            return undefined;
         }
 
         return resp;
@@ -214,8 +213,3 @@ export class GrobberClient extends Memory {
         }, lockKeys);
     }
 }
-
-/**
- * Default client which can be used.
- */
-export const grobberClient = new GrobberClient();

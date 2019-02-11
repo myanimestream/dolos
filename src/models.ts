@@ -6,7 +6,10 @@
 
 /** @ignore */
 
-import {AnimeInfo, Language} from "dolos/grobber";
+// using dolos/grobber/models instead of dolos/grobber because
+// there seems to be a bug which causes Language to be undefined
+// otherwise.
+import {AnimeInfo, Language} from "dolos/grobber/models";
 
 export interface Config {
     grobberUrl: string;

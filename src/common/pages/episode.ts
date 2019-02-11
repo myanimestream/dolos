@@ -2,7 +2,7 @@
  * @module common/pages
  */
 
-import {Episode, grobberClient, GrobberErrorType} from "dolos/grobber";
+import {Episode, GrobberErrorType, remoteGrobberClient} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
 import {wrapSentryLogger} from "dolos/utils";
 import * as React from "react";
@@ -89,7 +89,7 @@ export abstract class EpisodePage<T extends Service> extends ServicePage<T> {
         if (!uid || (!epIndex && epIndex !== 0)) return undefined;
 
         try {
-            return await grobberClient.getEpisode(uid, epIndex);
+            return await remoteGrobberClient.getEpisode(uid, epIndex);
         } catch (e) {
             if (e.name === GrobberErrorType.UIDUnknown) {
                 console.warn("Grobber didn't recognise uid, updating...");
@@ -98,7 +98,7 @@ export abstract class EpisodePage<T extends Service> extends ServicePage<T> {
                     return undefined;
 
                 try {
-                    return await grobberClient.getEpisode(newUID, epIndex);
+                    return await remoteGrobberClient.getEpisode(newUID, epIndex);
                 } catch (e) {
                     console.error("couldn't get episode after updating uid", e);
                 }

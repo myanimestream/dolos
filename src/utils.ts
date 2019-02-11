@@ -198,3 +198,26 @@ export async function getBlobURL(url: string): Promise<string> {
     const resp = await axios.get(url, {responseType: "blob"});
     return URL.createObjectURL(resp.data);
 }
+
+/**
+ * Serialise an error so that it can persist outside
+ * of the Javascript environment.
+ *
+ * @see [[unmarshalError]] to recreate an Error
+ */
+export function marshalError(error: Error): string {
+    return JSON.stringify(error, Object.getOwnPropertyNames(error));
+}
+
+/**
+ * Build an error from a marshalled representation.
+ *
+ * @see [[marshalError]] to marshal an error.
+ */
+export function unmarshalError(error: string): Error {
+    const rawError = JSON.parse(error);
+    if (!rawError)
+        throw new Error(`Couldn't recreate error from: ${error}`);
+
+    return Object.assign(new Error(), rawError);
+}
