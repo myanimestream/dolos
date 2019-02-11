@@ -31,6 +31,13 @@ export interface Changelog {
  * This is done using a Map to make sure it can be iterated over in the right order.
  */
 const CHANGELOG: Changelog = new Map([
+    ["0.3.0", [
+        (
+            "The [Grobber API](https://grobber.docs.apiary.io/) client used by Dolos " +
+            "now runs exclusively in the background. This improves result caching by a lot" +
+            "and your subscriptions will play almost instantly!"
+        ),
+    ]],
     ["0.2.4", [
         "Fixed anime search.",
         "Changelog split in current version and old versions. This should make it a bit cleaner",
@@ -43,7 +50,7 @@ const CHANGELOG: Changelog = new Map([
         ),
     ]],
     ["0.2.2", [
-        "**Kitsu**: Fixed browser crash caused by Keen. How? By simply removing Keen!",
+        "**Kitsu**: Fixed browser crash caused by [Keen](https://keen.io/). How? By simply removing Keen!",
     ]],
     ["0.2.1", [
         "Showing loading animation for bookmark button",
@@ -64,7 +71,10 @@ const CHANGELOG: Changelog = new Map([
     ]],
     ["0.1.1", [
         "Firefox Bugs have been fixed which means that it's now on the same level as the Chrome extension.",
-        "If Dolos doesn't know how many episodes there are, it will just hope for the best and continue to the next episode anyway.",
+        (
+            "If Dolos doesn't know how many episodes there are, " +
+            "it will just hope for the best and continue to the next episode anyway."
+        ),
         "Oh and while we're at it, Dolos now respects the **auto next** setting",
     ]],
     ["0.1.0", [
