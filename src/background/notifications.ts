@@ -7,8 +7,10 @@
  */
 
 /** ignore */
+
 import AsyncLock from "dolos/lock";
-import {fromEventPattern, merge, Observable} from "rxjs";
+import {fromExtensionEventPattern, mapArrayToObject} from "dolos/observable-utils";
+import {merge, Observable} from "rxjs";
 import {filter, first} from "rxjs/operators";
 
 /** Event emitted for all interactions with a notification. */
@@ -21,23 +23,9 @@ export interface NotificationEvent {
 /** Build an Observable for the notification event `name`. */
 function getObservable(name: string): Observable<NotificationEvent> {
     // @ts-ignore
-    const eventTarget = chrome.notifications[name] as chrome.events.Event<any>;
-
-    type HandlerType = (event: NotificationEvent) => void;
-
-    // because rxjs deprecated the resultSelector, wrap the handler in a
-    // function which creates the NotificationEvent we want. Return the wrapper function
-    // so that the removeHandler function can access it and remove it.
-    const addHandler = (handler: HandlerType) => {
-        const wrapper = (notificationID: string, buttonIndex?: number) => handler({notificationID, buttonIndex});
-        eventTarget.addListener(wrapper);
-
-        return wrapper;
-    };
-    // the handler function was wrapped, we need to remove the wrapped function
-    const removeHandler = (_: () => void, wrapped: HandlerType) => eventTarget.removeListener(wrapped);
-
-    return fromEventPattern(addHandler, removeHandler);
+    return fromExtensionEventPattern(chrome.notifications[name]).pipe(
+        mapArrayToObject<NotificationEvent>(["notificationID", "buttonIndex"]),
+    );
 }
 
 export const onClicked$ = getObservable("onClicked");
