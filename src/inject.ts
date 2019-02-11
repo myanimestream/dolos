@@ -55,6 +55,7 @@
 
 /** @ignore */
 
+import {marshalError, unmarshalError} from "dolos/utils";
 import {fromEvent, Observable} from "rxjs";
 import {first, map} from "rxjs/operators";
 
@@ -74,7 +75,10 @@ const DELETE_AFTER = `(${(() => {
 interface EvalResultEventDetails extends CustomEventInit {
     id: string;
     result?: any;
-    error?: any;
+    /**
+     * Marshalled error using [[marshalError]]
+     */
+    error?: string;
 }
 
 /**
@@ -90,22 +94,26 @@ type EvalResultEvent = CustomEvent<EvalResultEventDetails>;
  *
  * @see [[evaluateCode]]
  */
-const PUSH_RESULT = `const pushResult = ${(
-    (value: any, key: "result" | "error") => {
-        // "sanitise" the data, otherwise `detail` might be null
-        if (value)
-            value = JSON.parse(JSON.stringify(value));
+const PUSH_RESULT = `const pushResultMarshalError = ${marshalError.toString()};\n`
+    + `const pushResult = ${(
+        (value: any, key: "result" | "error") => {
+            // "sanitise" the data, otherwise `detail` might be null
+            if (key === "error") {
+                // @ts-ignore
+                value = pushResultMarshalError(value);
+            } else if (value)
+                value = JSON.parse(JSON.stringify(value));
 
-        const event = new CustomEvent("evalresult", {
-            detail: {
-                id: "{{uid}}",
-                [key]: value,
-            },
-        });
+            const event = new CustomEvent("evalresult", {
+                detail: {
+                    id: "{{uid}}",
+                    [key]: value,
+                },
+            });
 
-        document.dispatchEvent(event);
-    }
-).toString()};`;
+            document.dispatchEvent(event);
+        }
+    ).toString()};`;
 
 /**
  * Code mix-in to evaluate some code and expose the return value in the DOM.
@@ -124,7 +132,7 @@ ${PUSH_RESULT}
 const run = async () => {{{code}}};
 run()
     .then(value => pushResult(value, "result"))
-    .catch(reason => pushResult(reason.toString(), "error"));
+    .catch(reason => pushResult(reason, "error"));
 `;
 
 /**
@@ -220,8 +228,7 @@ export async function evaluateCode(code: string): Promise<any> {
         first(resultDetails => resultDetails.id === uid),
     ).toPromise();
 
-    const error = details.error;
-    if (error) throw Error(`Evaluation error: ${error}`);
+    if (details.error) throw unmarshalError(details.error);
 
     return details.result;
 }
