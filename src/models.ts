@@ -5,6 +5,7 @@
  */
 
 /** @ignore */
+
 import {AnimeInfo, Language} from "dolos/grobber";
 
 export interface Config {

@@ -8,7 +8,7 @@
 /** @ignore */
 
 import {MuiThemeProvider, Theme} from "@material-ui/core/styles";
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import {ThemeProvider} from "@material-ui/styles";
 import axios from "axios";
 import {NewEpisodeEvent} from "dolos/background/update-check";
 import * as React from "react";
@@ -28,6 +28,9 @@ interface BackgroundWindow extends Window {
  * Get access to the extension's background window.
  */
 export async function getBackgroundWindow(): Promise<BackgroundWindow> {
+    if (!chrome.runtime.getBackgroundPage)
+        throw new Error("Cannot access background page from the current context!");
+
     return await new Promise((res: (window?: Window) => void) => chrome.runtime.getBackgroundPage(res))
         .then(window => {
             if (window) return window as BackgroundWindow;
@@ -112,7 +115,6 @@ export async function retryUntil<T>(
 
             // use a separate flag because the res might be undefined intentionally!
             let gotRes = false;
-            // @ts-ignore
             let res: T | undefined;
 
             try {

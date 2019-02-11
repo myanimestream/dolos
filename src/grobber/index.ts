@@ -6,5 +6,6 @@
  */
 
 /** @ignore */
+
+export * from "./client";
 export * from "./models";
-export {STATIC_CLIENT as GrobberClient} from "./client";

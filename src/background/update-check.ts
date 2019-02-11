@@ -2,7 +2,7 @@
  * @module background
  */
 
-import {AnimeInfo, GrobberClient} from "dolos/grobber";
+import {AnimeInfo, grobberClient} from "dolos/grobber";
 import AsyncLock from "dolos/lock";
 import {AnimeSubscriptionInfo, SubscribedAnimes} from "dolos/models";
 import Store from "dolos/store";
@@ -29,7 +29,7 @@ async function checkAnimeUpdate() {
 
         let newAnime: AnimeInfo;
         try {
-            newAnime = await GrobberClient.getAnimeInfo(uid);
+            newAnime = await grobberClient.getAnimeInfo(uid);
         } catch (e) {
             console.error("Couldn't get anime info", e);
             continue;

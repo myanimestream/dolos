@@ -20,7 +20,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import {Service} from "dolos/common";
 import {AnimePage} from "dolos/common/pages";
-import {AnimeInfo, GrobberClient} from "dolos/grobber";
+import {AnimeInfo, grobberClient} from "dolos/grobber";
 import {useSubscription} from "dolos/hooks";
 import * as React from "react";
 import {Observable} from "rxjs";
@@ -147,7 +147,7 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
 
             let results: AnimeInfo[] | undefined;
             const config = await state.config;
-            const searchResults = await GrobberClient.searchAnime(query, 10);
+            const searchResults = await grobberClient.searchAnime(query, 10);
             const resultUIDs = new Set();
 
             if (searchResults) {

@@ -2,7 +2,7 @@
  * @module common/pages
  */
 
-import {AnimeInfo, GrobberClient, GrobberErrorType} from "dolos/grobber";
+import {AnimeInfo, grobberClient, GrobberErrorType} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
 import {AnimeSubscriptionInfo, StoredAnimeInfo} from "dolos/models";
 import {wrapSentryLogger} from "dolos/utils";
@@ -76,7 +76,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
         if (!query)
             return undefined;
 
-        const results = await GrobberClient.searchAnime(query);
+        const results = await grobberClient.searchAnime(query);
         if (!results || !results.length) return undefined;
 
         const searchResult = results[0];
@@ -115,7 +115,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
         let anime: AnimeInfo;
 
         if (typeof uid === "string") {
-            anime = await GrobberClient.getAnimeInfo(uid);
+            anime = await grobberClient.getAnimeInfo(uid);
         } else {
             anime = uid;
             uid = anime.uid;
@@ -147,7 +147,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
         if (!uid) return undefined;
 
         try {
-            return await GrobberClient.getAnimeInfo(uid);
+            return await grobberClient.getAnimeInfo(uid);
         } catch (e) {
             if (e.name === GrobberErrorType.UIDUnknown) {
                 console.warn("Grobber didn't recognise uid, updating...");
@@ -156,7 +156,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
                     return undefined;
 
                 try {
-                    return await GrobberClient.getAnimeInfo(uid);
+                    return await grobberClient.getAnimeInfo(uid);
                 } catch (e) {
                     console.error("didn't work rip", e);
                 }

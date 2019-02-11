@@ -17,7 +17,7 @@ import {
 } from "./models";
 
 /**
- * Time-to-live for cached [[Client]] objects.
+ * Time-to-live for cached [[GrobberClient]] objects.
  * Defaults to an hour.
  */
 export let responseCacheTTL = 1000 * 60 * 60;
@@ -38,7 +38,6 @@ function createExpiringItem<T>(item: T, expireAt: number): ExpiringItem<T> {
         expire: expireAt,
         item,
     };
-
 }
 
 /**
@@ -54,8 +53,10 @@ function buildKeys(params: Array<[any, any]>): [string[], string] {
 /**
  * A client for interacting with the Grobber API.
  * Uses an internal cache with [[ExpiringItem]].
+ *
+ * The cache is realised using [[BackgroundMemory]].
  */
-export class Client extends Memory {
+export class GrobberClient extends Memory {
     public axiosClient: AxiosInstance;
 
     private readonly animeInfoLock: AsyncLock;
@@ -63,9 +64,8 @@ export class Client extends Memory {
     constructor() {
         super();
 
-        this.animeInfoLock = new AsyncLock();
-
         this.axiosClient = axios.create();
+        this.animeInfoLock = new AsyncLock();
     }
 
     /**
@@ -109,7 +109,7 @@ export class Client extends Memory {
      *
      * @return - List of [[AnimeSearchResult]]. Length will not exceed the provided `results`.
      *
-     * @throws Same errors as [[Client.request]]
+     * @throws Same errors as [[GrobberClient.request]]
      */
     public async searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | null> {
         const config = await Store.getConfig();
@@ -147,7 +147,7 @@ export class Client extends Memory {
     /**
      * Get the Anime info for the given uid.
      *
-     * @throws Same errors as [[Client.request]]
+     * @throws Same errors as [[GrobberClient.request]]
      */
     public async getAnimeInfo(uid: string): Promise<AnimeInfo> {
         return await this.performAnimeRequest(
@@ -162,7 +162,7 @@ export class Client extends Memory {
      *
      * @param episodeIndex - **Index**
      *
-     * @throws Same errors as [[Client.request]]
+     * @throws Same errors as [[GrobberClient.request]]
      */
     public async getEpisode(uid: string, episodeIndex: number): Promise<Episode> {
         return await this.performAnimeRequest(
@@ -215,4 +215,7 @@ export class Client extends Memory {
     }
 }
 
-export const STATIC_CLIENT = new Client();
+/**
+ * Default client which can be used.
+ */
+export const grobberClient = new GrobberClient();

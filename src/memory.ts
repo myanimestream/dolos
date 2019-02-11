@@ -166,7 +166,7 @@ export interface HasMemory<T extends Memory = any> {
  */
 export class Memory implements HasMemory {
     public readonly memory: ProxiedNamespace;
-    private readonly internalMemory: Namespace;
+    protected readonly internalMemory: Namespace;
 
     constructor() {
         this.internalMemory = {};
@@ -212,6 +212,16 @@ export class Memory implements HasMemory {
         namespaces.forEach(ns => {
             this.forget(ns, true);
         });
+    }
+
+    /**
+     * Assign a [[Namespace]] to the memory.
+     * This does not remove the current memory.
+     *
+     * Calls `Object.assign`.
+     */
+    protected assignMemory(memory: Namespace): void {
+        Object.assign(this.internalMemory, memory);
     }
 }
 

@@ -2,7 +2,7 @@
  * @module background
  */
 
-import {Episode, GrobberClient} from "dolos/grobber";
+import {Episode, grobberClient} from "dolos/grobber";
 import {getVersion} from "dolos/info";
 import {getBlobURL} from "dolos/utils";
 import {performExtensionUpdate} from "./extension-update";
@@ -90,7 +90,7 @@ state.hasNewEpisode$.subscribe(async e => {
     const getEpisodePoster = async () => {
         let episode: Episode;
         try {
-            episode = await GrobberClient.getEpisode(anime.uid, nextEpisodeIndex);
+            episode = await grobberClient.getEpisode(anime.uid, nextEpisodeIndex);
         } catch (e) {
             console.warn("Couldn't get episode", nextEpisodeIndex + 1, "for", anime.title, e);
             return undefined;
