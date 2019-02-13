@@ -13,123 +13,141 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListSubheader from "@material-ui/core/ListSubheader";
+import Switch from "@material-ui/core/Switch";
+import BuildIcon from "@material-ui/icons/Build";
 import CheckIcon from "@material-ui/icons/Check";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import WifiIcon from "@material-ui/icons/Wifi";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import axios from "axios";
 import * as React from "react";
-import {SettingsTabContent, SettingsTabContentProps} from "../settings-tab-content";
+import {SettingsTabContentProps, useConfigChange, useConfigToggle} from "../SettingsTab";
 import _ = chrome.i18n.getMessage;
 
-interface DebugState {
-    invalidUrl?: string;
-    checkingUrl: boolean;
-}
-
+/**
+ * Result of a grobber url check.
+ *
+ * @see [[checkGrobberUrl]]
+ */
 interface GrobberUrlCheckResult {
     valid: boolean;
     hint?: "trailing_slash" | "version_mismatch" | "no_grobber";
 }
 
-export default class Debug extends SettingsTabContent<SettingsTabContentProps, DebugState> {
+/**
+ * Check whether a given Grobber URL is valid.
+ */
+async function checkGrobberUrl(url: string): Promise<GrobberUrlCheckResult> {
+    let resp;
 
-    public static async checkGrobberUrl(url: string): Promise<GrobberUrlCheckResult> {
-        let resp;
+    try {
+        resp = await axios.get(url + "/dolos-info", {timeout: 1000});
+    } catch (e) {
+        const result: GrobberUrlCheckResult = {valid: false};
 
-        try {
-            resp = await axios.get(url + "/dolos-info", {timeout: 1000});
-        } catch (e) {
-            const result: GrobberUrlCheckResult = {valid: false};
-
-            if (url.endsWith("/")) {
-                result.hint = "trailing_slash";
-            }
-
-            return result;
+        if (url.endsWith("/")) {
+            result.hint = "trailing_slash";
         }
 
-        const data = resp.data;
-        if (data.id !== "grobber") return {valid: false, hint: "no_grobber"};
-
-        if (!data.version.startsWith("3.0")) {
-            return {valid: false, hint: "version_mismatch"};
-        }
-
-        return {valid: true};
+        return result;
     }
 
-    public changeGrobberUrl = AwesomeDebouncePromise(async (url: string) => {
+    const data = resp.data;
+    if (data.id !== "grobber") return {valid: false, hint: "no_grobber"};
+
+    if (!data.version.startsWith("3.0")) {
+        return {valid: false, hint: "version_mismatch"};
+    }
+
+    return {valid: true};
+}
+
+/**
+ * Get the correct input adornment based on the current grobber url checking state.
+ */
+function getGrobberURLAdornment(checkingURL: boolean, invalidURL: boolean) {
+    let grobberURLAdornmentIcon;
+    if (checkingURL) grobberURLAdornmentIcon = (<CircularProgress/>);
+    else if (invalidURL) grobberURLAdornmentIcon = (<ErrorOutlineIcon/>);
+    else grobberURLAdornmentIcon = (<CheckIcon/>);
+
+    return (
+        <InputAdornment position="end">
+            {grobberURLAdornmentIcon}
+        </InputAdornment>
+    );
+}
+
+/**
+ * [[SettingsTabContent]] for debug and developer settings.
+ */
+export function Debug(props: SettingsTabContentProps) {
+    const {config} = props;
+
+    const [checkingURL, setCheckingURL] = React.useState(false);
+    const [invalidURL, setInvalidURL] = React.useState(undefined as string | undefined);
+
+    const [grobberURL, setGrobberURL] = useConfigChange(config, "grobberUrl");
+
+    const changeGrobberURL = AwesomeDebouncePromise(async (url: string) => {
         if (!url.match(/https?:\/\/.+/)) {
-            this.setState({invalidUrl: _("options__grobber__url__invalid")});
+            setInvalidURL(_("options__grobber__url__invalid"));
             return;
         }
 
-        this.setState({checkingUrl: true});
+        setCheckingURL(true);
 
-        const result = await Debug.checkGrobberUrl(url);
+        const result = await checkGrobberUrl(url);
         if (result.valid) {
-            await this.change("grobberUrl", url);
-            this.setState({invalidUrl: undefined});
+            setGrobberURL(url);
+            setInvalidURL(undefined);
         } else {
             const text = `options__grobber__url__${result.hint || "test_failed"}`;
-            this.setState({invalidUrl: _(text)});
+            setInvalidURL(_(text));
         }
 
-        this.setState({checkingUrl: false});
+        setCheckingURL(false);
     }, 500);
 
-    constructor(props: SettingsTabContentProps) {
-        super(props);
-        this.state = {
-            checkingUrl: false,
-        };
-    }
+    const onGrobberURLChange = (e: React.ChangeEvent<HTMLInputElement>) => changeGrobberURL(e.target.value);
 
-    public render() {
-        const config = this.props.config;
-        const {checkingUrl, invalidUrl} = this.state;
+    const grobberURLAdornment = getGrobberURLAdornment(checkingURL, !!invalidURL);
 
-        const onGrobberURLChange = (e: React.ChangeEvent<HTMLInputElement>) => this.changeGrobberUrl(e.target.value);
+    const [debugMode, handleDebugModeChange] = useConfigToggle(config, "debugMode");
 
-        let grobberURLAdornmentIcon;
-        if (checkingUrl)
-            grobberURLAdornmentIcon = (<CircularProgress/>);
-        else if (invalidUrl)
-            grobberURLAdornmentIcon = (<ErrorOutlineIcon/>);
-        else
-            grobberURLAdornmentIcon = (<CheckIcon/>);
-
-        const grobberURLAdornment = (
-            <InputAdornment position="end">
-                {grobberURLAdornmentIcon}
-            </InputAdornment>
-        );
-
-        return (
-            <>
-                <List subheader={<ListSubheader>{_("options__grobber__title")}</ListSubheader>}>
-                    <ListItem>
-                        <ListItemIcon>
-                            <WifiIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary={_("options__grobber__url")}/>
-                        <ListItemSecondaryAction>
-                            <FormControl>
-                                <InputLabel htmlFor="grobber-url-input">{this.state.invalidUrl}</InputLabel>
-                                <Input
-                                    id="grobber-url-input"
-                                    onChange={onGrobberURLChange}
-                                    defaultValue={config.grobberUrl}
-                                    error={Boolean(this.state.invalidUrl)}
-                                    type="url"
-                                    endAdornment={grobberURLAdornment}
-                                />
-                            </FormControl>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                </List>
-            </>
-        );
-    }
+    return (
+        <>
+            <List subheader={<ListSubheader>{_("options__grobber__title")}</ListSubheader>}>
+                <ListItem>
+                    <ListItemIcon><WifiIcon/></ListItemIcon>
+                    <ListItemText primary={_("options__grobber__url")}/>
+                    <ListItemSecondaryAction>
+                        <FormControl>
+                            <InputLabel htmlFor="grobber-url-input">{invalidURL}</InputLabel>
+                            <Input
+                                id="grobber-url-input"
+                                onChange={onGrobberURLChange}
+                                defaultValue={grobberURL}
+                                error={!!invalidURL}
+                                type="url"
+                                endAdornment={grobberURLAdornment}
+                            />
+                        </FormControl>
+                    </ListItemSecondaryAction>
+                </ListItem>
+            </List>
+            <List subheader={<ListSubheader>{_("options__debug__advanced__header")}</ListSubheader>}>
+                <ListItem>
+                    <ListItemIcon><BuildIcon/></ListItemIcon>
+                    <ListItemText primary={_("options__debug__advanced__debug_mode")}/>
+                    <ListItemSecondaryAction>
+                        <Switch
+                            onChange={handleDebugModeChange}
+                            checked={debugMode}
+                        />
+                    </ListItemSecondaryAction>
+                </ListItem>
+            </List>
+        </>
+    );
 }

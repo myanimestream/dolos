@@ -2,134 +2,143 @@
  * @module options
  */
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-import {Theme} from "@material-ui/core/styles/createMuiTheme";
-import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+import {SvgIconProps} from "@material-ui/core/SvgIcon";
+import Switch from "@material-ui/core/Switch";
+import {makeStyles} from "@material-ui/styles";
+import {Config} from "dolos/models";
+import {StoreElementProxy} from "dolos/store";
 import * as React from "react";
-import {Config} from "../models";
-import {SettingsTabContent} from "./settings-tab-content";
+import _ = chrome.i18n.getMessage;
 
-const styles = (theme: Theme) => createStyles({
+/**
+ * Props passed to [[SettingsTabContent]].
+ */
+export interface SettingsTabContentProps {
+    config: StoreElementProxy<Config>;
+}
+
+/**
+ * Group of settings that can be displayed by [[SettingsTab]].
+ */
+export type SettingsTabContent = React.ComponentType<SettingsTabContentProps>;
+
+/** @ignore */
+const useStyles = makeStyles(() => ({
     root: {
         display: "flex",
         flexDirection: "column",
     },
-    wrapper: {
-        alignSelf: "flex-end",
-        margin: theme.spacing.unit,
-        position: "relative",
-    },
-});
+}));
 
-interface SettingsTabProps extends WithStyles<typeof styles> {
-    getConfig: () => Promise<Config>;
-    content: typeof SettingsTabContent;
-    saveConfig: (config: Config) => Promise<void>;
+/**
+ * @see [[SettingsTab]]
+ */
+export interface SettingsTabProps extends SettingsTabContentProps {
+    content: SettingsTabContent;
 }
 
-interface SettingsTabState {
-    originalConfig?: Config;
-    config?: Partial<Config>;
+/**
+ * Wrapper around [[SettingsTabContent]].
+ */
+export function SettingsTab(props: SettingsTabProps) {
+    const {config} = props;
 
-    showSave: boolean;
-    saving: boolean;
-    saved: boolean;
+    const classes = useStyles();
+    const content = React.createElement(props.content, {config});
+
+    return (
+        <div className={classes.root}>
+            {content}
+        </div>
+    );
 }
 
-export default withStyles(styles)(
-    class extends React.Component<SettingsTabProps, SettingsTabState> {
-        constructor(props: SettingsTabProps) {
-            super(props);
-            this.state = {
-                saved: true,
-                saving: false,
-                showSave: false,
-            };
-        }
+/**
+ * React props for [[SettingsToggle]]
+ */
+export interface SettingsToggleProps extends SettingsTabContentProps {
+    configKey: keyof Config;
+    messageKey: string;
+    icon: React.ComponentType<SvgIconProps>;
+}
 
-        public async reloadConfig() {
-            const config = await this.props.getConfig();
+/**
+ * React Component for boolean [[Config]] keys.
+ *
+ * Displays the text specified by the `messageKey` with the subtitle
+ * `messageKey`__on / `messageKey`__off based on the current value.
+ *
+ * Shows a switch which controls the [[Config]] value specified by `configKey`
+ */
+export function SettingsToggle({config, configKey, messageKey, icon}: SettingsToggleProps) {
+    const [value, toggleValue] = useConfigToggle(config, configKey);
 
-            const editConfig = new Proxy({}, {
-                get(target: {}, p: PropertyKey): any {
-                    // @ts-ignore
-                    if (p in target) return target[p];
-                    // @ts-ignore
-                    else return config[p];
-                },
-                set(target: {}, p: PropertyKey, value: any): boolean {
-                    // @ts-ignore
-                    if (value === config[p]) delete target[p];
-                    // @ts-ignore
-                    else target[p] = value;
+    const iconEl = React.createElement(icon);
 
-                    return true;
-                },
-                has(target: {}, p: PropertyKey): boolean {
-                    return p in config;
-                },
-            });
+    return (
+        <ListItem alignItems="flex-start">
+            <ListItemIcon>
+                {iconEl}
+            </ListItemIcon>
 
-            this.setState({config: editConfig, originalConfig: config});
-        }
+            <ListItemText
+                primary={_(messageKey)}
+                secondary={_(`${messageKey}__${value ? "on" : "off"}`)}
+            />
 
-        public async componentDidMount() {
-            await this.reloadConfig();
-        }
+            <ListItemSecondaryAction>
+                <Switch
+                    onChange={toggleValue}
+                    checked={value}
+                />
+            </ListItemSecondaryAction>
+        </ListItem>
+    );
+}
 
-        public getDirty(): boolean {
-            const config = this.state.config;
-            const original = this.state.originalConfig;
+export function useConfigChange<T extends keyof Config, V extends Config[T], U>(
+    config: StoreElementProxy<Config>,
+    key: T,
+    valueCallback?: (currentValue: V, newValue?: U) => V): [V, (newValue?: U) => void];
+export function useConfigChange<T extends keyof Config, V extends Config[T], U>(
+    config: StoreElementProxy<Config>,
+    key: T,
+    valueCallback?: (currentValue: V, newValue: U) => V): [V, (newValue: U) => void];
+export function useConfigChange<T extends keyof Config, V extends Config[T]>(
+    config: StoreElementProxy<Config>,
+    key: T): [V, (newValue: V) => void];
 
-            if (config === undefined || original === undefined)
-                throw new Error("not ready yet");
+/**
+ * Similar to React's `useState` but specifically for the [[Config]].
+ */
+export function useConfigChange<T extends keyof Config, V extends Config[T], U>(
+    config: StoreElementProxy<Config>,
+    key: T,
+    valueCallback?: (currentValue: V, newValue?: U) => V): [V, (newValue?: U) => void] {
+    // @ts-ignore
+    const [configValue, setConfigValue] = React.useState(config[key] as V);
 
-            for (const [key, value] of Object.entries(config))
-                // @ts-ignore
-                if (original[key] !== value)
-                    return true;
-
-            return false;
-        }
-
-        public changeConfig(param: keyof Config, value: any) {
-            const config = this.state.config;
-            const original = this.state.originalConfig;
-
-            if (config === undefined || original === undefined)
-                throw new Error("not ready yet");
-
-            if (!(param in config))
-                return;
-
-            config[param] = value;
-            original[param] = value;
-
-            const isDirty = this.getDirty();
-            this.setState({config, saved: !isDirty, showSave: isDirty});
-        }
-
-        public render() {
-            if (!this.state.config) {
-                return (
-                    <CircularProgress/>
-                );
-            }
-
-            const {classes} = this.props;
-
+    const changer = (value?: U) => {
+        if (valueCallback) {
             // @ts-ignore
-            const content = React.createElement(this.props.content, {
-                changeConfig: (param: keyof Config, value: any) => this.changeConfig(param, value),
-                config: this.state.config,
-            });
-
-            return (
-                <div className={classes.root}>
-                    {content}
-                </div>
-            );
+            value = valueCallback(config[key], value);
         }
-    },
-);
+
+        // @ts-ignore
+        config[key] = value;
+        setConfigValue(value as unknown as V);
+    };
+
+    return [configValue, changer];
+}
+
+/**
+ * Specialised [[useConfigChange]] for boolean values.
+ */
+export function useConfigToggle(config: StoreElementProxy<Config>, key: keyof Config): [boolean, () => void] {
+    return useConfigChange(config, key, (current) => !current);
+}

@@ -16,84 +16,76 @@ import LanguageIcon from "@material-ui/icons/Language";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PlaylistPlayIcon from "@material-ui/icons/PlaylistPlay";
 import SubtitlesIcon from "@material-ui/icons/Subtitles";
+import {Language} from "dolos/grobber";
 import * as React from "react";
-import {SettingsTabContent} from "../settings-tab-content";
+import {SettingsTabContentProps, SettingsToggle, useConfigChange, useConfigToggle} from "../SettingsTab";
 import _ = chrome.i18n.getMessage;
 
-export default class Video extends SettingsTabContent {
-    public render() {
-        const config = this.props.config;
+/**
+ * [[SettingsTabContent]] for settings related to the video player.
+ */
+export function Video({config}: SettingsTabContentProps) {
+    const [dubbed, handleTranslationTypeChange] = useConfigToggle(config, "dubbed");
 
-        const onAutoplayChange = () => this.toggle("autoplay");
-        const onAutoNextChange = () => this.toggle("autoNext");
-        const onLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => this.change("language", e.target.value);
-        const onTranslationTypeChange = () => this.toggle("dubbed");
-        const translationTypeSwitch = (
-            <Switch
-                onChange={onTranslationTypeChange}
-                checked={config.dubbed}
-            />
-        );
-        return (
-            <>
-                <List subheader={<ListSubheader>{_("options__general__title")}</ListSubheader>}>
-                    <ListItem>
-                        <ListItemIcon>
-                            <PlayArrowIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary={_("options__general__autoplay")}/>
-                        <ListItemSecondaryAction>
-                            <Switch
-                                onChange={onAutoplayChange}
-                                checked={config.autoplay}
-                            />
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemIcon>
-                            <PlaylistPlayIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary={_("options__general__auto_next")}/>
-                        <ListItemSecondaryAction>
-                            <Switch
-                                onChange={onAutoNextChange}
-                                checked={config.autoNext}
-                            />
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                </List>
+    const [language, handleLanguageChange] = useConfigChange(config, "language",
+        (current, e: React.ChangeEvent<HTMLSelectElement>) => e.target.value as Language);
 
-                <List subheader={<ListSubheader>{_("options__language__title")}</ListSubheader>}>
-                    <ListItem>
-                        <ListItemIcon>
-                            <LanguageIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary={_("options__language__language")}/>
-                        <ListItemSecondaryAction>
-                            <Select
-                                onChange={onLanguageChange}
-                                value={config.language}
-                            >
-                                <MenuItem value="en">{_("language__en")}</MenuItem>
-                                <MenuItem value="de">{_("language__de")}</MenuItem>
-                            </Select>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemIcon>
-                            <SubtitlesIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary={_("options__language__translation_type")}/>
-                        <ListItemSecondaryAction>
-                            <FormControlLabel
-                                control={translationTypeSwitch}
-                                label={_(`language__translation_type__${config.dubbed ? "dubbed" : "subbed"}`)}
-                                labelPlacement="start"
-                            />
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                </List>
-            </>
-        );
-    }
+    const translationTypeSwitch = (
+        <Switch
+            onChange={handleTranslationTypeChange}
+            checked={dubbed}
+        />
+    );
+
+    return (
+        <>
+            <List subheader={<ListSubheader>{_("options__video__general__title")}</ListSubheader>}>
+                <SettingsToggle
+                    configKey="autoplay"
+                    messageKey="options__video__general__autoplay"
+                    icon={PlayArrowIcon}
+                    config={config}
+                />
+
+                <SettingsToggle
+                    configKey="autoNext"
+                    messageKey="options__video__general__auto_next"
+                    icon={PlaylistPlayIcon}
+                    config={config}
+                />
+            </List>
+
+            <List subheader={<ListSubheader>{_("options__video__language__title")}</ListSubheader>}>
+                <ListItem>
+                    <ListItemIcon>
+                        <LanguageIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary={_("options__video__language__language")}/>
+                    <ListItemSecondaryAction>
+                        <Select
+                            onChange={handleLanguageChange}
+                            value={language}
+                        >
+                            <MenuItem value="en">{_("language__en")}</MenuItem>
+                            <MenuItem value="de">{_("language__de")}</MenuItem>
+                        </Select>
+                    </ListItemSecondaryAction>
+                </ListItem>
+
+                <ListItem>
+                    <ListItemIcon>
+                        <SubtitlesIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary={_("options__video__language__translation_type")}/>
+                    <ListItemSecondaryAction>
+                        <FormControlLabel
+                            control={translationTypeSwitch}
+                            label={_(`language__translation_type__${dubbed ? "dubbed" : "subbed"}`)}
+                            labelPlacement="start"
+                        />
+                    </ListItemSecondaryAction>
+                </ListItem>
+            </List>
+        </>
+    );
 }

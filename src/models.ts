@@ -13,6 +13,7 @@ import {AnimeInfo, Language} from "dolos/grobber/models";
 
 export interface Config {
     grobberUrl: string;
+    debugMode: boolean;
 
     autoplay: boolean;
     autoNext: boolean;
@@ -35,6 +36,11 @@ export interface Config {
      * prompting the user to manually check?
      */
     maxCertaintyForWarning: number;
+
+    embedProviders: {
+        blocked: string[];
+        order: string[];
+    };
 }
 
 /**
@@ -42,6 +48,7 @@ export interface Config {
  * corresponding value.
  */
 export const DEFAULT_CONFIG: Config = {
+    debugMode: false,
     grobberUrl: "https://mas.dokkeral.com",
 
     autoNext: true,
@@ -54,8 +61,12 @@ export const DEFAULT_CONFIG: Config = {
 
     minCertaintyForSearchResult: .4,
 
-    maxCertaintyForWarning: .7,
+    maxCertaintyForWarning: .8,
 
+    embedProviders: {
+        blocked: ["mcloud", "mp4upload"],
+        order: [],
+    },
 };
 
 export interface StoredServiceAnimes {

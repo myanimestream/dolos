@@ -2,46 +2,97 @@
  * @module common/components
  */
 
+/**
+ * Metadata for a website providing embedded streams
+ */
 export interface EmbedProvider {
-    name?: string;
-    icon?: string;
+    hostname: string;
+    match: string | RegExp;
+    name: string;
+    icon: string;
 }
 
-const embedProviders: Map<string | RegExp, EmbedProvider> = new Map([
-    [/(\w+\.)?mystream.to/, {name: "MyStream"}],
-    ["fembed", {name: "Fembed", icon: "https://www.fembed.com/asset/default/img/favicon.png"}],
-    ["mp4upload.com", {name: "Mp4Upload"}],
-    ["oload.tv", {name: "Openload"}],
-    ["rapidvideo.com", {name: "RapidVideo"}],
-    ["stream.moe", {name: "StreamMoe"}],
-] as Array<[string | RegExp, EmbedProvider]>);
+export const embedProviders: EmbedProvider[] = fillEmbedProviders([
+    {
+        hostname: "mystream.to",
+        match: /(\w+\.)?mystream.to/,
+        name: "MyStream",
+    },
+    {
+        hostname: "fembed.com",
+        icon: "https://www.fembed.com/asset/default/img/favicon.png",
+        name: "Fembed",
+    },
+    {
+        hostname: "mp4upload.com",
+        name: "Mp4Upload",
+    },
+    {
+        hostname: "oload.tv",
+        name: "openload",
+    },
+    {
+        hostname: "rapidvideo.com",
+        name: "RapidVideo",
+    },
+    {
+        hostname: "stream.moe",
+        icon: "https://stream.moe/themes/flow/frontend_assets/images/icons/favicon/favicon.ico",
+        name: "Stream.moe",
+    },
+]);
 
 const wwwMatcher = /^www\./;
+const tldMatcher = /\.\w+$/;
+
+export function createEmbedProvider(hostname: string): EmbedProvider {
+    return {
+        hostname,
+        icon: `https://${hostname}/favicon.ico`,
+        match: hostname,
+        name: getDomain(hostname),
+    };
+}
+
+function fillEmbedProviders(providers: Array<{ hostname: string } & Partial<EmbedProvider>>): EmbedProvider[] {
+    return providers.map(provider => Object.assign(createEmbedProvider(provider.hostname), provider));
+}
 
 function cleanHostname(hostname: string): string {
-    return hostname.replace(wwwMatcher, "");
+    return hostname
+        .replace(wwwMatcher, "")
+        .toLowerCase();
+}
+
+function getDomain(hostname: string): string {
+    return cleanHostname(hostname)
+        .replace(tldMatcher, "");
 }
 
 function getEmbedProvider(hostname: string): EmbedProvider | undefined {
+    const domain = getDomain(hostname);
     hostname = cleanHostname(hostname);
-    const info = embedProviders.get(hostname);
-    if (info) return info;
 
-    for (const [key, value] of embedProviders.entries()) {
-        if (key instanceof RegExp) {
-            if (key.test(hostname)) return value;
+    let domainMatch: EmbedProvider | undefined;
+
+    for (const provider of embedProviders) {
+        const match = provider.match;
+
+        if (match instanceof RegExp) {
+            if (match.test(hostname)) return provider;
+        } else if (match === hostname) {
+            return provider;
+        } else if (match === domain) {
+            domainMatch = provider;
         }
     }
 
-    return undefined;
+    return domainMatch;
 }
 
 export interface EmbedInfo extends EmbedProvider {
-    name: string;
     url: string;
 }
-
-const tldMatcher = /\.\w+$/;
 
 export function getEmbedInfo(rawUrl: string | URL): EmbedInfo {
     const url = rawUrl instanceof URL ? rawUrl : new URL(rawUrl);
@@ -52,9 +103,7 @@ export function getEmbedInfo(rawUrl: string | URL): EmbedInfo {
 
     const providerInfo = getEmbedProvider(url.hostname);
     if (providerInfo) Object.assign(info, providerInfo);
-
-    if (!info.name) info.name = url.hostname.replace(tldMatcher, "");
-    if (!info.icon) info.icon = new URL("/favicon.ico", url).href;
+    else Object.assign(info, createEmbedProvider(url.hostname));
 
     return info as EmbedInfo;
 }

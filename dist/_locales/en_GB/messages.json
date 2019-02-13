@@ -103,8 +103,16 @@
   "subscriptions__remove_subscription": {
     "message": "Remove subscription"
   },
-  "options__video": {
+  "options__header": {
+    "message": "Settings",
+    "description": "App bar title for the settings page"
+  },
+  "options__video__title": {
     "message": "Video"
+  },
+  "options__embed_providers__title": {
+    "message": "Embed Providers",
+    "description": "Title for the embed providers settings"
   },
   "options__site_integration": {
     "message": "Site Integration"
@@ -112,23 +120,43 @@
   "options__debug": {
     "message": "Debug"
   },
-  "options__general__title": {
+  "options__video__general__title": {
     "message": "General Settings"
   },
-  "options__general__autoplay": {
+  "options__video__general__autoplay": {
     "message": "Autoplay"
   },
-  "options__general__auto_next": {
+  "options__video__general__autoplay__on": {
+    "message": "Episodes will automatically start playing",
+    "description": "Text displayed when autoplay is turned on"
+  },
+  "options__video__general__autoplay__off": {
+    "message": "Episodes start playing when requested to",
+    "description": "Text displayed when autoplay is turned off"
+  },
+  "options__video__general__auto_next": {
     "message": "Auto next"
   },
-  "options__language__title": {
+  "options__video__general__auto_next__on": {
+    "message": "Automatically continue to the next episode after the current one ends",
+    "description": "Text displayed when auto_next is turned on"
+  },
+  "options__video__general__auto_next__off": {
+    "message": "Stay on the current episode after it finishes",
+    "description": "Text displayed when auto_next is turned off"
+  },
+  "options__video__language__title": {
     "message": "Language Settings"
   },
-  "options__language__language": {
+  "options__video__language__language": {
     "message": "Language"
   },
-  "options__language__translation_type": {
+  "options__video__language__translation_type": {
     "message": "Translation Type"
+  },
+  "options__embed_providers__blacklist__title": {
+    "message": "Blocked Embed providers",
+    "description": "Title shown for the blacklisted embed providers settings"
   },
   "options__site_integration__title": {
     "message": "Site Integration"
@@ -156,6 +184,14 @@
   },
   "options__grobber__url__no_grobber": {
     "message": "No Grobber response"
+  },
+  "options__debug__advanced__header": {
+    "message": "Advanced",
+    "description": "Title for advanced settings in the dolos debug menu"
+  },
+  "options__debug__advanced__debug_mode": {
+    "message": "Debug mode",
+    "description": "Switch for the advanced debug mode."
   },
   "player__video_title_format": {
     "message": "$TITLE$ Episode $EPISODE_NUMBER$",

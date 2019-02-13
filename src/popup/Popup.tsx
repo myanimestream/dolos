@@ -33,7 +33,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import SettingsIcon from "@material-ui/icons/Settings";
 import SubscriptionsIcon from "@material-ui/icons/Subscriptions";
-import GitHubIcon from "dolos/assets/GitHubIcon";
+import {GitHubIcon} from "dolos/assets";
 import * as info from "dolos/info";
 import {getAnimeSubsWithUnseenEpsCount$} from "dolos/subscriptions";
 import {getBackgroundWindow} from "dolos/utils";
@@ -292,10 +292,11 @@ class Popup extends React.Component<PopupProps, PopupState> {
                             <MenuIcon/>
                         </IconButton>
                         <Typography variant="h6" color="inherit" className={classes.grow}>
-                            MyAnimeStream
+                            {_("ext_name")}
                         </Typography>
                     </Toolbar>
                 </AppBar>
+
                 <nav className={classes.drawer}>
                     <Hidden smUp implementation="css">
                         <SwipeableDrawer
@@ -311,6 +312,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
                             {drawer}
                         </SwipeableDrawer>
                     </Hidden>
+
                     <Hidden xsDown implementation="css">
                         <Drawer
                             classes={{paper: classes.drawerPaper}}
@@ -321,8 +323,10 @@ class Popup extends React.Component<PopupProps, PopupState> {
                         </Drawer>
                     </Hidden>
                 </nav>
+
                 <main className={classes.content}>
                     <div className={classes.toolbar}/>
+
                     <Switch>
                         <Redirect exact path="/" to="/home"/>
                         <Route path="/home" render={this.renderHome}/>

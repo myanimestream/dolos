@@ -11,33 +11,34 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 import Switch from "@material-ui/core/Switch";
 import UpdateIcon from "@material-ui/icons/Update";
 import * as React from "react";
-import {SettingsTabContent} from "../settings-tab-content";
+import {SettingsTabContentProps, useConfigToggle} from "../SettingsTab";
 import _ = chrome.i18n.getMessage;
 
-export default class SiteIntegration extends SettingsTabContent {
+/**
+ * [[SettingsTabContent]] settings related to how Dolos interacts
+ * with the Anime database sites.
+ */
+export function SiteIntegration(props: SettingsTabContentProps) {
+    const {config} = props;
 
-    public render() {
-        const {config} = this.props;
+    const [updateAnimeProgress, handleUpdateAnimeProgressChange] = useConfigToggle(config, "updateAnimeProgress");
 
-        const onUpdateAnimeProgressChange = () => this.toggle("updateAnimeProgress");
-
-        return (
-            <>
-                <List subheader={<ListSubheader>{_("options__site_integration__title")}</ListSubheader>}>
-                    <ListItem>
-                        <ListItemIcon>
-                            <UpdateIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary={_("options__site_integration__update_anime_progress")}/>
-                        <ListItemSecondaryAction>
-                            <Switch
-                                onChange={onUpdateAnimeProgressChange}
-                                checked={config.updateAnimeProgress}
-                            />
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                </List>
-            </>
-        );
-    }
+    return (
+        <>
+            <List subheader={<ListSubheader>{_("options__site_integration__title")}</ListSubheader>}>
+                <ListItem>
+                    <ListItemIcon>
+                        <UpdateIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary={_("options__site_integration__update_anime_progress")}/>
+                    <ListItemSecondaryAction>
+                        <Switch
+                            onChange={handleUpdateAnimeProgressChange}
+                            checked={updateAnimeProgress}
+                        />
+                    </ListItemSecondaryAction>
+                </ListItem>
+            </List>
+        </>
+    );
 }
