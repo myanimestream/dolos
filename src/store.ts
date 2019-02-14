@@ -131,7 +131,7 @@ export class StoreElement<T> {
      * This returns a copy of the value, not the original one.
      */
     get rawValue(): T {
-        if (Array.isArray(this._container)) {
+        if (this.isArray) {
             // @ts-ignore
             return this._container.map(item => (item instanceof StoreElement) ? item.rawValue : item);
         }
@@ -144,6 +144,13 @@ export class StoreElement<T> {
 
         // @ts-ignore
         return raw;
+    }
+
+    /**
+     * Find out whether this store element represents an array instead of an object.
+     */
+    get isArray(): boolean {
+        return Array.isArray(this._container);
     }
 
     /**
@@ -364,7 +371,7 @@ export class StoreElement<T> {
  * A special type of [[StoreElement]] that represents the top level object from the
  * extension storage.
  */
-class StoreElementRoot<T> extends StoreElement<T> {
+export class StoreElementRoot<T> extends StoreElement<T> {
 
     public static createRoot<T>(store: Store, key: string, data: T): StoreElementProxy<T> {
         const storeEl = StoreElementTraps.wrap(new StoreElementRoot(store, key, data));
@@ -481,6 +488,28 @@ export class Store {
     }
 
     /**
+     * Get a [[StoreElementProxy]] for every non-primitive element in the storage.
+     */
+    public async getAllStoreElements(keys?: string[]): Promise<{ [key: string]: StoreElementProxy<any> }> {
+        return await this._getLock.withLock(async () => {
+            const data = await this.getRaw(keys || null);
+
+            const res: Record<string, StoreElementProxy<any>> = {};
+
+            for (const [key, value] of Object.entries(data)) {
+                if (!isPrimitive(value)) {
+                    if (!(key in this._cache))
+                        this._cache[key] = StoreElementRoot.createRoot(this, key, value);
+
+                    res[key] = this._cache[key];
+                }
+            }
+
+            return res;
+        }, ...(keys || []));
+    }
+
+    /**
      * Store the given value under the given key in the storage.
      *
      * @see [[StoreElementProxy]] objects returned by [[Store.get]]
@@ -545,7 +574,7 @@ export class Store {
         return await this.get("subscriptions::anime", {} as SubscribedAnimes);
     }
 
-    private async getRaw(keys: string | string[] | object): Promise<{ [key: string]: any }> {
+    private async getRaw(keys: string | string[] | null): Promise<{ [key: string]: any }> {
         return await new Promise(res => {
             chrome.storage.sync.get(keys, res);
         });

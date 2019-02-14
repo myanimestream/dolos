@@ -36,9 +36,7 @@ export interface SubscriptionItemProps {
  *
  * @see [[SubscriptionDisplay]] for a list of all active subscriptions
  */
-export function SubscriptionItem(props: SubscriptionItemProps) {
-    const {subscription} = props;
-
+export function SubscriptionItem({subscription}: SubscriptionItemProps) {
     function showAnime(): void {
         chrome.tabs.create({url: subscription.animeURL});
     }

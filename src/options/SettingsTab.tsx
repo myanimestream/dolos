@@ -9,6 +9,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {SvgIconProps} from "@material-ui/core/SvgIcon";
 import Switch from "@material-ui/core/Switch";
 import {makeStyles} from "@material-ui/styles";
+import AwesomeDebouncePromise from "awesome-debounce-promise";
+import {useSubscription} from "dolos/hooks";
 import {Config} from "dolos/models";
 import {StoreElementProxy} from "dolos/store";
 import * as React from "react";
@@ -121,17 +123,23 @@ export function useConfigChange<TConfig, K extends keyof TConfig, VConfig extend
     key: K,
     valueCallback?: (currentValue: VConfig, newValue?: V) => VConfig): [VConfig, (newValue?: V) => void] {
     // @ts-ignore
-    const [configValue, setConfigValue] = React.useState(config[key] as VConfig);
+    const [configValue, setInternalConfigValue] = React.useState(config[key] as VConfig);
+    const debouncedSetConfigValue = React.useMemo(() => AwesomeDebouncePromise(
+        val => config[key] = val,
+        750,
+    ), []);
+
+    // @ts-ignore
+    useSubscription(config.onUpdate$, newConfig => setInternalConfigValue(newConfig[key]));
 
     const changer = (value?: V) => {
         if (valueCallback) {
             // @ts-ignore
-            value = valueCallback(config[key], value);
+            value = valueCallback(configValue, value);
         }
 
-        // @ts-ignore
-        config[key] = value;
-        setConfigValue(value as unknown as VConfig);
+        debouncedSetConfigValue(value);
+        setInternalConfigValue(value as unknown as VConfig);
     };
 
     return [configValue, changer];
