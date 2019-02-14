@@ -159,11 +159,23 @@
   },
   "options__video__general__auto_next__on": {
     "message": "Automatically continue to the next episode after the current one ends",
-    "description": "Text displayed when auto_next is turned on"
+    "description": "Text displayed when autoNext is turned on"
   },
   "options__video__general__auto_next__off": {
     "message": "Stay on the current episode after it finishes",
-    "description": "Text displayed when auto_next is turned off"
+    "description": "Text displayed when autoNext is turned off"
+  },
+  "options__video__general__prefer_dolos_player": {
+    "message": "Prefer Dolos player",
+    "description": "Switch for the preferDolosPlayer setting"
+  },
+  "options__video__general__prefer_dolos_player__on": {
+    "message": "Show Dolos player first",
+    "description": "Text displayed when preferDolosPlayer is turned on"
+  },
+  "options__video__general__prefer_dolos_player__off": {
+    "message": "Show embedded players first",
+    "description": "Text displayed when preferDolosPlayer is turned off"
   },
   "options__video__language__title": {
     "message": "Language Settings"

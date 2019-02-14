@@ -16,6 +16,7 @@ import LanguageIcon from "@material-ui/icons/Language";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PlaylistPlayIcon from "@material-ui/icons/PlaylistPlay";
 import SubtitlesIcon from "@material-ui/icons/Subtitles";
+import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
 import {Language} from "dolos/grobber";
 import * as React from "react";
 import {SettingsTabContentProps, SettingsToggle, useConfigChange, useConfigToggle} from "../SettingsTab";
@@ -51,6 +52,13 @@ export function Video({config}: SettingsTabContentProps) {
                     configKey="autoNext"
                     messageKey="options__video__general__auto_next"
                     icon={PlaylistPlayIcon}
+                    config={config}
+                />
+
+                <SettingsToggle
+                    configKey="preferDolosPlayer"
+                    messageKey="options__video__general__prefer_dolos_player"
+                    icon={SwitchVideoIcon}
                     config={config}
                 />
             </List>

@@ -25,7 +25,7 @@ import {AnimeInfo} from "dolos/grobber";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
 import * as rxjs from "rxjs";
-import {EmbedInfo, EmbedPlayer, getEmbedInfo, Player, PlayerProps, PlayerSource, Toggle, WithRatio} from "..";
+import {EmbedInfo, EmbedPlayer, Player, PlayerProps, PlayerSource, prepareEmbedInfos, Toggle, WithRatio} from "..";
 import _ = chrome.i18n.getMessage;
 
 export interface SkipButton {
@@ -123,22 +123,6 @@ export const EpisodeEmbed = withStyles(styles)(
             this.setState({currentPlayer: nextPlayerType});
         }
 
-        public getEmbedInfos(urls: string[]): EmbedInfo[] {
-            let embedRawURLs = urls.filter(url => url.startsWith("https://"));
-            if (embedRawURLs.length < 5) {
-                // maybe they support https anyway, who knows?
-                embedRawURLs = urls;
-            }
-
-            const embedURLs = embedRawURLs.sort().map(rawUrl => {
-                const url = new URL(rawUrl);
-                url.protocol = "https:";
-                return url;
-            });
-
-            return embedURLs.map(getEmbedInfo);
-        }
-
         public componentWillUnmount() {
             if (this.episodeBookmarkedSubscription) this.episodeBookmarkedSubscription.unsubscribe();
         }
@@ -169,7 +153,7 @@ export const EpisodeEmbed = withStyles(styles)(
             };
 
             if (episode.embeds.length > 0) {
-                const embedInfos = this.getEmbedInfos(episode.embeds);
+                const embedInfos = prepareEmbedInfos(episode.embeds, config.embedProviders);
                 if (embedInfos.length > 0) {
                     updateState.currentPlayer = PlayerType.EMBED;
                     // @ts-ignore
@@ -183,7 +167,9 @@ export const EpisodeEmbed = withStyles(styles)(
                     return {url: link};
                 });
 
-                updateState.currentPlayer = PlayerType.DOLOS;
+                if (config.preferDolosPlayer)
+                    updateState.currentPlayer = PlayerType.DOLOS;
+
                 // @ts-ignore
                 updateState.playersAvailable.push(PlayerType.DOLOS);
                 updateState.playerProps = {

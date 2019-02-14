@@ -172,6 +172,13 @@ export class StoreElement<T> {
     protected readonly _root: StoreElementRoot<any>;
     protected _container!: Indexable<StoreElement<T[keyof T]> | T[keyof T]>;
 
+    /**
+     * Create a new store element. I can't see any reason why you would EVER have
+     * to call this yourself.
+     *
+     * @see [[StoreElement.create]] to create a [[StoreElementProxy]]
+     * @see [[StoreElemenrRoot]] for an actual "storage" element.
+     */
     protected constructor(root: StoreElementRoot<any> | null, data: T) {
         // @ts-ignore
         this._root = root || this;
@@ -332,7 +339,13 @@ export class StoreElement<T> {
     public setDefaults(defaults: T): void {
         for (const [key, value] of Object.entries(defaults)) {
             const el = this.get(key);
-            if (el !== undefined) continue;
+
+            if (el instanceof StoreElement) {
+                el.setDefaults(value);
+                continue;
+            } else if (el !== undefined) {
+                continue;
+            }
 
             if (isPrimitive(value)) {
                 this._container[key] = value;

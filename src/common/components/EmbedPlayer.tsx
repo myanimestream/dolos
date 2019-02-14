@@ -83,6 +83,7 @@ export const EmbedPlayer = withStyles(styles)(
             const handleEmbedSelectClose = () => this.setState({embedSelectionOpen: false});
             const handleEmbedSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
                 this.setCurrentEmbed(parseInt(event.target.value, 10));
+
             const embedSelectInputProps = {
                 id: "embed-selection-control",
                 name: _("episode__switch_embed"),
@@ -159,7 +160,7 @@ export const EmbedPlayer = withStyles(styles)(
                 embeds.map((embed, index) => (
                     <MenuItem value={index} key={embed.url}>
                         {embed.icon && renderEmbedIcon(embed)}
-                        <ListItemText className={classes.embedInfoText}>{embed.name}</ListItemText>
+                        <ListItemText className={classes.embedInfoText}>{embed.name} {embed.number}</ListItemText>
                     </MenuItem>
                 ))
             );

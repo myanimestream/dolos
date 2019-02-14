@@ -17,6 +17,7 @@ export interface Config {
 
     autoplay: boolean;
     autoNext: boolean;
+    preferDolosPlayer: boolean;
 
     language: Language;
     dubbed: boolean;
@@ -38,6 +39,11 @@ export interface Config {
     maxCertaintyForWarning: number;
 
     embedProviders: {
+        /**
+         * Show embeds that Dolos doesn't know about.
+         */
+        allowUnknown: boolean;
+
         blocked: string[];
         order: string[];
     };
@@ -53,6 +59,7 @@ export const DEFAULT_CONFIG: Config = {
 
     autoNext: true,
     autoplay: true,
+    preferDolosPlayer: true,
 
     dubbed: false,
     language: Language.ENGLISH,
@@ -64,6 +71,7 @@ export const DEFAULT_CONFIG: Config = {
     maxCertaintyForWarning: .8,
 
     embedProviders: {
+        allowUnknown: true,
         blocked: ["mcloud", "mp4upload"],
         order: [],
     },
