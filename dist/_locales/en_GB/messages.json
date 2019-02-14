@@ -186,6 +186,22 @@
   "options__video__language__translation_type": {
     "message": "Translation Type"
   },
+  "options__embed_providers__general__title": {
+    "message": "General",
+    "description": "Title shown for the general embed providers settings"
+  },
+  "options__embed_providers__general__allow_unknown": {
+    "message": "Unknown embeds",
+    "description": "Switch which specifies whether Dolos should show unknown embeds"
+  },
+  "options__embed_providers__general__allow_unknown__on": {
+    "message": "Showing unknown embeds",
+    "description": "Text shown when allowUnknown is turned on"
+  },
+  "options__embed_providers__general__allow_unknown__off": {
+    "message": "Only showing known embeds",
+    "description": "Text shown when allowUnknown is turned off"
+  },
   "options__embed_providers__blacklist__title": {
     "message": "Blocked Embed providers",
     "description": "Title shown for the blacklisted embed providers settings"

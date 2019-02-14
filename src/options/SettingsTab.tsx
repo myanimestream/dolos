@@ -60,8 +60,9 @@ export function SettingsTab(props: SettingsTabProps) {
 /**
  * React props for [[SettingsToggle]]
  */
-export interface SettingsToggleProps extends SettingsTabContentProps {
-    configKey: keyof Config;
+export interface SettingsToggleProps<T> {
+    config: StoreElementProxy<T>;
+    configKey: keyof T;
     messageKey: string;
     icon: React.ComponentType<SvgIconProps>;
 }
@@ -74,7 +75,7 @@ export interface SettingsToggleProps extends SettingsTabContentProps {
  *
  * Shows a switch which controls the [[Config]] value specified by `configKey`
  */
-export function SettingsToggle({config, configKey, messageKey, icon}: SettingsToggleProps) {
+export function SettingsToggle<T>({config, configKey, messageKey, icon}: SettingsToggleProps<T>) {
     const [value, toggleValue] = useConfigToggle(config, configKey);
 
     const iconEl = React.createElement(icon);
@@ -100,29 +101,29 @@ export function SettingsToggle({config, configKey, messageKey, icon}: SettingsTo
     );
 }
 
-export function useConfigChange<T extends keyof Config, V extends Config[T], U>(
-    config: StoreElementProxy<Config>,
-    key: T,
-    valueCallback?: (currentValue: V, newValue?: U) => V): [V, (newValue?: U) => void];
-export function useConfigChange<T extends keyof Config, V extends Config[T], U>(
-    config: StoreElementProxy<Config>,
-    key: T,
-    valueCallback?: (currentValue: V, newValue: U) => V): [V, (newValue: U) => void];
-export function useConfigChange<T extends keyof Config, V extends Config[T]>(
-    config: StoreElementProxy<Config>,
-    key: T): [V, (newValue: V) => void];
+export function useConfigChange<TConfig, K extends keyof TConfig, VConfig extends TConfig[K]>(
+    config: StoreElementProxy<TConfig>,
+    key: K): [VConfig, (newValue: VConfig) => void];
+export function useConfigChange<TConfig, K extends keyof TConfig, VConfig extends TConfig[K], V>(
+    config: StoreElementProxy<TConfig>,
+    key: K,
+    valueCallback?: (currentValue: VConfig, newValue: V) => VConfig): [VConfig, (newValue: V) => void];
+export function useConfigChange<TConfig, K extends keyof TConfig, VConfig extends TConfig[K], V>(
+    config: StoreElementProxy<TConfig>,
+    key: K,
+    valueCallback?: (currentValue: VConfig, newValue?: V) => VConfig): [VConfig, (newValue?: V) => void];
 
 /**
  * Similar to React's `useState` but specifically for the [[Config]].
  */
-export function useConfigChange<T extends keyof Config, V extends Config[T], U>(
-    config: StoreElementProxy<Config>,
-    key: T,
-    valueCallback?: (currentValue: V, newValue?: U) => V): [V, (newValue?: U) => void] {
+export function useConfigChange<TConfig, K extends keyof TConfig, VConfig extends TConfig[K], V>(
+    config: StoreElementProxy<TConfig>,
+    key: K,
+    valueCallback?: (currentValue: VConfig, newValue?: V) => VConfig): [VConfig, (newValue?: V) => void] {
     // @ts-ignore
-    const [configValue, setConfigValue] = React.useState(config[key] as V);
+    const [configValue, setConfigValue] = React.useState(config[key] as VConfig);
 
-    const changer = (value?: U) => {
+    const changer = (value?: V) => {
         if (valueCallback) {
             // @ts-ignore
             value = valueCallback(config[key], value);
@@ -130,7 +131,7 @@ export function useConfigChange<T extends keyof Config, V extends Config[T], U>(
 
         // @ts-ignore
         config[key] = value;
-        setConfigValue(value as unknown as V);
+        setConfigValue(value as unknown as VConfig);
     };
 
     return [configValue, changer];
@@ -139,6 +140,9 @@ export function useConfigChange<T extends keyof Config, V extends Config[T], U>(
 /**
  * Specialised [[useConfigChange]] for boolean values.
  */
-export function useConfigToggle(config: StoreElementProxy<Config>, key: keyof Config): [boolean, () => void] {
-    return useConfigChange(config, key, (current) => !current);
+export function useConfigToggle<TConfig, K extends keyof TConfig>(
+    config: StoreElementProxy<TConfig>,
+    key: K): [boolean, () => void] {
+    // @ts-ignore
+    return useConfigChange(config, key, (current: boolean) => !current);
 }
