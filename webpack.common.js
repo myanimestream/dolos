@@ -27,6 +27,9 @@ module.exports = {
         popup: path.join(__dirname, "src/popup/index.tsx"),
         options: path.join(__dirname, "src/options/index.tsx"),
         background: path.join(__dirname, "src/background/index.ts"),
+
+        debug: path.join(__dirname, "src/debug/index.tsx"),
+
         // Content Scripts:
         ...contentScripts,
     },

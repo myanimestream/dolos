@@ -12,6 +12,7 @@ import {
     AnimeSearchResult,
     Episode,
     episodeFromResp,
+    GrobberInfo,
     GrobberRequestError,
     GrobberResponseError,
 } from "./models";
@@ -64,6 +65,11 @@ function buildKeys(params: Array<[any, any]>): [string[], string] {
  */
 export interface GrobberClientLike {
     /**
+     * Get the grobber information.
+     */
+    getGrobberInfo(): Promise<GrobberInfo>;
+
+    /**
      * Search for Animes.
      * Results are stored in the cache.
      *
@@ -100,13 +106,13 @@ export interface GrobberClientLike {
 export class GrobberClient extends Memory implements GrobberClientLike {
     public axiosClient: AxiosInstance;
 
-    private readonly animeInfoLock: AsyncLock;
+    private readonly cachedRequestLock: AsyncLock;
 
     constructor() {
         super();
 
         this.axiosClient = axios.create();
-        this.animeInfoLock = new AsyncLock();
+        this.cachedRequestLock = new AsyncLock();
     }
 
     /**
@@ -143,12 +149,17 @@ export class GrobberClient extends Memory implements GrobberClientLike {
     }
 
     /** @inheritDoc */
+    public async getGrobberInfo(): Promise<GrobberInfo> {
+        return await this.performCachedRequest("/dolos-info", []);
+    }
+
+    /** @inheritDoc */
     public async searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | undefined> {
         const config = await Store.getConfig();
 
         let resp;
         try {
-            resp = await this.performAnimeRequest(
+            resp = await this.performCachedRequest(
                 "/anime/search/",
                 [
                     ["anime", query],
@@ -178,7 +189,7 @@ export class GrobberClient extends Memory implements GrobberClientLike {
 
     /** @inheritDoc */
     public async getAnimeInfo(uid: string): Promise<AnimeInfo> {
-        return await this.performAnimeRequest(
+        return await this.performCachedRequest(
             "/anime/",
             [["uid", uid]],
             resp => animeFromResp(resp),
@@ -187,7 +198,7 @@ export class GrobberClient extends Memory implements GrobberClientLike {
 
     /** @inheritDoc */
     public async getEpisode(uid: string, episodeIndex: number): Promise<Episode> {
-        return await this.performAnimeRequest(
+        return await this.performCachedRequest(
             "/anime/episode/",
             [["uid", uid], ["episode", episodeIndex]],
             resp => {
@@ -214,9 +225,9 @@ export class GrobberClient extends Memory implements GrobberClientLike {
         return null;
     }
 
-    private async performAnimeRequest(endpoint: string,
-                                      paramsList: Array<[string, any]>,
-                                      respHandler?: (resp: any) => any): Promise<any> {
+    private async performCachedRequest(endpoint: string,
+                                       paramsList: Array<[string, any]>,
+                                       respHandler?: (resp: any) => any): Promise<any> {
         const [lockKeys, memoryKey] = buildKeys(paramsList);
 
         const params = paramsList.reduce((prev, [key, value]) => {
@@ -225,7 +236,7 @@ export class GrobberClient extends Memory implements GrobberClientLike {
             return prev;
         }, {});
 
-        return await this.animeInfoLock.withLock(async () => {
+        return await this.cachedRequestLock.withLock(async () => {
             const cached = this.getExpiringItemFromMemory(memoryKey);
             if (cached) return cached;
 

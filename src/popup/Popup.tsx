@@ -25,6 +25,7 @@ import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import BuildIcon from "@material-ui/icons/Build";
 import FeedbackIcon from "@material-ui/icons/Feedback";
 import HelpIcon from "@material-ui/icons/Help";
 import HistoryIcon from "@material-ui/icons/History";
@@ -34,7 +35,9 @@ import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import SettingsIcon from "@material-ui/icons/Settings";
 import SubscriptionsIcon from "@material-ui/icons/Subscriptions";
 import {GitHubIcon} from "dolos/assets";
-import * as info from "dolos/info";
+import {usePromiseMemo} from "dolos/hooks";
+import {Help} from "dolos/popup/Help";
+import Store from "dolos/store";
 import {getAnimeSubsWithUnseenEpsCount$} from "dolos/subscriptions";
 import {getBackgroundWindow} from "dolos/utils";
 import * as React from "react";
@@ -146,62 +149,6 @@ class Popup extends React.Component<PopupProps, PopupState> {
             .subscribe(unseenEpisodesCount => this.setState({unseenEpisodesCount}));
     }
 
-    public toggleDrawer() {
-        this.setState({drawerOpen: !this.state.drawerOpen});
-    }
-
-    public renderHome = () => {
-        return (
-            <Typography paragraph>
-                Hello World!
-            </Typography>);
-    };
-
-    public renderSubscriptions = () => {
-        return <SubscriptionsDisplay/>;
-    };
-
-    public renderChangelog = () => {
-        return <Changelog/>;
-    };
-
-    public renderFeedback = () => {
-        const {classes} = this.props;
-
-        const handleOpenIssues = () => window.open("https://github.com/MyAnimeStream/dolos/issues");
-
-        return (
-            <Card>
-                <CardActionArea>
-                    <CardContent>
-                        <Typography gutterBottom variant="h5">GitHub Issues</Typography>
-                        <Typography>{_("popup__feedback__github_issues__text")}</Typography>
-                    </CardContent>
-                </CardActionArea>
-                <CardActions>
-
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleOpenIssues}
-                    >
-                        <GitHubIcon className={classes.buttonIconLeft}/>
-                        {_("popup__feedback__github_issues__action")}
-                    </Button>
-                </CardActions>
-            </Card>
-        );
-    };
-
-    public renderHelp = () => {
-        return (
-            <Typography paragraph>
-                There's no help yet, sorry boi!
-                Version {info.getVersion()}
-            </Typography>
-        );
-    };
-
     public render() {
         const {classes, theme} = this.props;
         const {changelogBadgeVisible, unseenEpisodesCount} = this.state;
@@ -230,6 +177,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
                         <ListItemIcon><HomeIcon/></ListItemIcon>
                         <ListItemText primary={_("popup__nav__home")}/>
                     </ListItem>
+
                     <ListItem button component={subscriptionsLink}>
                         <ListItemIcon><SubscriptionsIcon/></ListItemIcon>
                         <ListItemText>
@@ -243,6 +191,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
                             </Badge>
                         </ListItemText>
                     </ListItem>
+
                     <ListItem button component={changelogLink}>
                         <ListItemIcon><HistoryIcon/></ListItemIcon>
                         <ListItemText>
@@ -257,21 +206,26 @@ class Popup extends React.Component<PopupProps, PopupState> {
                         </ListItemText>
                     </ListItem>
                 </List>
+
                 <Divider/>
+
                 <List>
                     <ListItem button onClick={handleOpenOptions}>
                         <ListItemIcon><SettingsIcon/></ListItemIcon>
                         <ListItemText primary={_("popup__nav__settings")}/>
                         <OpenInNewIcon fontSize="small"/>
                     </ListItem>
+
                     <ListItem button component={feedbackLink}>
                         <ListItemIcon><FeedbackIcon/></ListItemIcon>
                         <ListItemText primary={_("popup__nav__feedback")}/>
                     </ListItem>
+
                     <ListItem button component={helpLink}>
                         <ListItemIcon><HelpIcon/></ListItemIcon>
                         <ListItemText primary={_("popup__nav__help")}/>
                     </ListItem>
+                    <DebugLink/>
                 </List>
             </>
         );
@@ -340,6 +294,80 @@ class Popup extends React.Component<PopupProps, PopupState> {
             </div>
         );
     }
+
+    private toggleDrawer() {
+        this.setState({drawerOpen: !this.state.drawerOpen});
+    }
+
+    private renderHome = () => {
+        return (
+            <Typography paragraph>
+                Hello World!
+            </Typography>);
+    };
+
+    private renderSubscriptions = () => {
+        return <SubscriptionsDisplay/>;
+    };
+
+    private renderChangelog = () => {
+        return <Changelog/>;
+    };
+
+    private renderFeedback = () => {
+        const {classes} = this.props;
+
+        const handleOpenIssues = () => window.open("https://github.com/MyAnimeStream/dolos/issues");
+
+        return (
+            <Card>
+                <CardActionArea>
+                    <CardContent>
+                        <Typography gutterBottom variant="h5">GitHub Issues</Typography>
+                        <Typography>{_("popup__feedback__github_issues__text")}</Typography>
+                    </CardContent>
+                </CardActionArea>
+                <CardActions>
+
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleOpenIssues}
+                    >
+                        <GitHubIcon className={classes.buttonIconLeft}/>
+                        {_("popup__feedback__github_issues__action")}
+                    </Button>
+                </CardActions>
+            </Card>
+        );
+    };
+
+    private renderHelp = () => {
+        return (<Help/>);
+    };
 }
 
 export default withStyles(styles, {withTheme: true})(withRouter(Popup));
+
+/**
+ * React component link which is only visible when [[Config.debugMode]] is true.
+ */
+function DebugLink() {
+    const config = usePromiseMemo(() => Store.getConfig());
+
+    if (!(config && config.debugMode)) return null;
+
+    const handleOpenDebug = () => window.open(chrome.runtime.getURL("debug.html"));
+
+    return (
+        <>
+            <Divider/>
+
+            <ListItem button onClick={handleOpenDebug}>
+                <ListItemIcon><BuildIcon/></ListItemIcon>
+                <ListItemText primary={_("popup__nav__debug")}/>
+                <OpenInNewIcon fontSize="small"/>
+            </ListItem>
+        </>
+    );
+}

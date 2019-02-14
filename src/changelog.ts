@@ -37,6 +37,9 @@ const CHANGELOG: Changelog = new Map([
             "now runs exclusively in the background. This improves result caching by a lot" +
             "and your subscriptions will play almost instantly!"
         ),
+        "Added a Debug mode which is entirely irrelevant to you",
+        "Reworked the Settings page",
+        "Finally added the content for the help page",
     ]],
     ["0.2.4", [
         "Fixed anime search.",

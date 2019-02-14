@@ -15,6 +15,10 @@
     "message": "new",
     "description": "Text displayed on the logo if the extension updated. Should be as short as possible"
   },
+  "general__loading": {
+    "message": "Loading",
+    "description": "General loading text for when things are being loaded"
+  },
   "sentry__event_id": {
     "message": "Event id: "
   },
@@ -55,6 +59,10 @@
   "popup__nav__changelog": {
     "message": "Changelog"
   },
+  "popup__nav__debug": {
+    "message": "Debug",
+    "description": "Link to open the debug page. Only visible when debug mode is activated"
+  },
   "popup__nav__settings": {
     "message": "Settings"
   },
@@ -69,6 +77,18 @@
   },
   "popup__feedback__github_issues__action": {
     "message": "Open"
+  },
+  "popup__help__information__header": {
+    "message": "Information",
+    "description": "Title shown above the information table"
+  },
+  "popup__help__information__dolos_version": {
+    "message": "Dolos Version",
+    "description": "Name of the table row containing the version of Dolos"
+  },
+  "popup__help__information__grobber_version": {
+    "message": "Grobber Version",
+    "description": "Name of the table row containing the version of Grobber"
   },
   "changelog__current_version__header": {
     "message": "Current Version",

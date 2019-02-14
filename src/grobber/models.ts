@@ -44,6 +44,14 @@ export class GrobberResponseError extends Error {
 }
 
 /**
+ * Grobber info returned by the /dolos-info endpoint
+ */
+export interface GrobberInfo {
+    id: string;
+    version: string;
+}
+
+/**
  * Supported languages of Grobber
  */
 export enum Language {

@@ -226,3 +226,21 @@ export function unmarshalError(error: string): Error {
 
     return Object.assign(new Error(), rawError);
 }
+
+export async function promisifyCallback<T extends any>(func: (callback: (arg: T) => void) => void): Promise<T>;
+export async function promisifyCallback<T extends any[]>(func: (callback: (...args: T) => void) => void): Promise<T>;
+/**
+ * Convert a function which takes a callback to a Promise.
+ */
+export async function promisifyCallback<T extends any[]>(func: (callback: (...args: T) => void) => void): Promise<T> {
+    const receiver = (...args: T) => {
+        if (args.length === 1)
+            return args[0];
+        else
+            return args;
+    };
+
+    return new Promise((res: (args: T) => void) => {
+        func((...args) => res(receiver(...args)));
+    });
+}
