@@ -202,9 +202,17 @@
     "message": "Only showing known embeds",
     "description": "Text shown when allowUnknown is turned off"
   },
-  "options__embed_providers__blacklist__title": {
+  "options__embed_providers__blocked__title": {
     "message": "Blocked Embed providers",
-    "description": "Title shown for the blacklisted embed providers settings"
+    "description": "Title shown for the blocked embed providers settings"
+  },
+  "options__embed_providers__blocked__placeholder": {
+    "message": "Select blocked embed providers",
+    "description": "Place holder shown when no embed providers have been blocked"
+  },
+  "options__embed_providers__order__title": {
+    "message": "Embed provider order",
+    "description": "Title shown for the custom embed provider ordering"
   },
   "options__site_integration__title": {
     "message": "Site Integration"

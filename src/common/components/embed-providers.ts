@@ -54,7 +54,7 @@ function getDomain(hostname: string): string {
         .replace(tldMatcher, "");
 }
 
-function getEmbedProvider(hostname: string): EmbedProvider | undefined {
+function getEmbedProviderFromHostname(hostname: string): EmbedProvider | undefined {
     const domain = getDomain(hostname);
     hostname = cleanHostname(hostname);
 
@@ -73,6 +73,13 @@ function getEmbedProvider(hostname: string): EmbedProvider | undefined {
     }
 
     return domainMatch;
+}
+
+/**
+ * Get the internal embed provider with the provided id.
+ */
+export function getEmbedProviderFromID(id: string): EmbedProvider | undefined {
+    return embedProvidersByID[id];
 }
 
 /**
@@ -97,7 +104,7 @@ export function getEmbedInfo(rawUrl: string | URL, allowUnknown?: boolean): Embe
         url: url.href,
     };
 
-    const providerInfo = getEmbedProvider(url.hostname);
+    const providerInfo = getEmbedProviderFromHostname(url.hostname);
     if (providerInfo) Object.assign(info, providerInfo);
     else if (allowUnknown) Object.assign(info, createEmbedProvider(url.hostname));
     else return undefined;
@@ -265,3 +272,8 @@ export const embedProviders: EmbedProvider[] = [
     embed.external = false;
     return embed;
 });
+
+const embedProvidersByID = embedProviders.reduce((prev, current) => {
+    prev[current.id] = current;
+    return prev;
+}, {} as { [id: string]: EmbedProvider });

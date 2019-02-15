@@ -11,6 +11,7 @@ import {MuiThemeProvider, Theme} from "@material-ui/core/styles";
 import {ThemeProvider} from "@material-ui/styles";
 import axios from "axios";
 import {NewEpisodeEvent} from "dolos/background/update-check";
+import {GrobberClient} from "dolos/grobber";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {BehaviorSubject, Subject} from "rxjs";
@@ -22,6 +23,8 @@ import {SentryLogger} from "./logging";
 interface BackgroundWindow extends Window {
     hasNewVersion$: BehaviorSubject<boolean>;
     hasNewEpisode$: Subject<NewEpisodeEvent>;
+
+    backgroundGrobberClient: GrobberClient;
 }
 
 /**
