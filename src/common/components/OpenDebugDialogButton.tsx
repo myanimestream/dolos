@@ -1,7 +1,7 @@
 /** @module common/components */
 
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton} from "@material-ui/core";
-import BuildIcon from "@material-ui/icons/Build";
+import {BuildOutlined as BuildOutlinedIcon} from "@material-ui/icons";
 import {Debug, DebugProps} from "dolos/debug";
 import * as React from "react";
 
@@ -15,7 +15,7 @@ export function OpenDebugDialogButton(props: DebugProps) {
 
     return (
         <>
-            <IconButton color="secondary" onClick={handleOpen}><BuildIcon/></IconButton>
+            <IconButton color="secondary" onClick={handleOpen}><BuildOutlinedIcon/></IconButton>
 
             <Dialog
                 open={open}
