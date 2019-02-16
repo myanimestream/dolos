@@ -78,7 +78,7 @@ export function SubscriptionItem({subscription}: SubscriptionItemProps) {
  *
  * The list also comes with a header.
  */
-function SubscriptionsDisplay() {
+export function SubscriptionsDisplay() {
     const subscriptions = useAnimeSubscriptions();
 
     // TODO: center circular progress
@@ -128,5 +128,3 @@ function SubscriptionsDisplay() {
         </>
     );
 }
-
-export default SubscriptionsDisplay;

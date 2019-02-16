@@ -1,4 +1,6 @@
-import {Table, TableBody, TableCell, TableRow, Typography} from "@material-ui/core/";
+/** @module popup */
+
+import {Table, TableBody, TableCell, TableRow, Typography} from "@material-ui/core";
 import {remoteGrobberClient} from "dolos/grobber";
 import {usePromiseMemo} from "dolos/hooks";
 import {getVersion} from "dolos/info";

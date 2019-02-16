@@ -1,4 +1,6 @@
-/** @ignore */
+/**
+ * @module options
+ */
 
 import {install} from "@material-ui/styles";
 

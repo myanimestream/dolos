@@ -19,16 +19,17 @@ const contentScripts = {};
 const serviceDirs = glob.sync("src/services/*/");
 for (const serviceDir of serviceDirs) {
     const name = path.basename(serviceDir);
-    contentScripts[`service/${name}`] = path.join(__dirname, serviceDir, "index.ts");
+    contentScripts[`service/${name}`] = path.join(__dirname, serviceDir, "index");
 }
 
 module.exports = {
     entry: {
-        popup: path.join(__dirname, "src/popup/index.tsx"),
-        options: path.join(__dirname, "src/options/index.tsx"),
-        background: path.join(__dirname, "src/background/index.ts"),
+        background: path.join(__dirname, "src/background"),
 
-        debug: path.join(__dirname, "src/debug/index.tsx"),
+        popup: path.join(__dirname, "src/popup/render"),
+        options: path.join(__dirname, "src/options/render"),
+
+        debug: path.join(__dirname, "src/debug/render"),
 
         // Content Scripts:
         ...contentScripts,
