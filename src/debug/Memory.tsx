@@ -12,13 +12,12 @@ import {DynamicInput} from "./DynamicInput";
  * Component for displaying a memory [[Namespace]].
  */
 function NamespaceComponent({namespace}: { namespace: Namespace }) {
-    const value = namespace.__value;
     let valueDisplay;
-    if (value) {
-        const handleChange = () => null;
+    if ("__value" in namespace) {
+        const handleChange = (newValue: any) => namespace.__value = newValue;
 
         valueDisplay = (
-            <DynamicInput value={value} onChange={handleChange}/>
+            <DynamicInput value={namespace.__value} onChange={handleChange}/>
         );
     }
 
@@ -55,8 +54,9 @@ export function MemoryComponent({memory}: { memory: Memory }) {
 
     let elementNamespace;
     if (memory instanceof ElementMemory) {
-        // @ts-ignore
-        elementNamespace = (<NamespaceComponent namespace={memory.internalInjectedMemory}/>);
+        // // @ts-ignore
+        // elementNamespace = (<NamespaceComponent namespace={memory.internalInjectedMemory}/>);
+        elementNamespace = null;
     }
 
     return (

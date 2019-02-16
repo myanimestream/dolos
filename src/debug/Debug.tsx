@@ -5,6 +5,7 @@
 import {AppBar, CssBaseline, Paper, Tabs, Theme, Typography} from "@material-ui/core";
 import Tab from "@material-ui/core/Tab";
 import {makeStyles} from "@material-ui/styles";
+import Service from "dolos/common/service";
 import {grobberClient as localGrobberClient} from "dolos/grobber";
 import {usePromiseMemo} from "dolos/hooks";
 import Store from "dolos/store";
@@ -30,13 +31,13 @@ function StoreTab() {
 }
 
 function GrobberClientTab() {
-    let background;
-
-    try {
-        background = usePromiseMemo(() => getBackgroundWindow());
-    } catch {
-        background = undefined;
-    }
+    const background = usePromiseMemo(() => (async () => {
+        try {
+            return await getBackgroundWindow();
+        } catch {
+            return undefined;
+        }
+    })());
 
     let grobberClient;
     if (background)
@@ -47,7 +48,7 @@ function GrobberClientTab() {
     return (
         <>
             <Typography paragraph>
-                Grobber client cache.
+                {"Grobber client cache. "}
                 {`Showing ${!!background ? "background" : "local"} grobber client`}
             </Typography>
             <MemoryComponent memory={grobberClient}/>
@@ -55,9 +56,35 @@ function GrobberClientTab() {
     );
 }
 
-const tabs = [
+function ServiceTab({service}: DebugProps) {
+    if (!service) return null;
+
+    const state = service.state;
+    const page = state.page;
+
+    let pageComponent;
+    if (page)
+        pageComponent = (
+            <>
+                <Typography variant="h4" gutterBottom>Service page memory</Typography>
+                <MemoryComponent memory={page}/>
+            </>
+        );
+
+    return (
+        <>
+            <Typography variant="h4" gutterBottom>State memory</Typography>
+            <MemoryComponent memory={state}/>
+
+            {pageComponent}
+        </>
+    );
+}
+
+const tabContents = [
     StoreTab,
     GrobberClientTab,
+    ServiceTab,
 ];
 
 const useDebugStyles = makeStyles((theme: Theme) => ({
@@ -71,7 +98,17 @@ const useDebugStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export function Debug() {
+/**
+ * Props for [[Debug]].
+ */
+export interface DebugProps {
+    service?: Service;
+}
+
+/**
+ * Debug utility which shows various internal things.
+ */
+export function Debug(props: DebugProps) {
     const classes = useDebugStyles();
     const [currentTab, setCurrentTab] = React.useState(0);
 
@@ -79,7 +116,17 @@ export function Debug() {
         setCurrentTab(newTab);
     }
 
-    const tab = React.createElement(tabs[currentTab]);
+    const tabs = [
+        "Store",
+        "Grobber Client",
+    ];
+
+    if (props.service) {
+        tabs.push("Service");
+    }
+
+    const tabContent = React.createElement(tabContents[currentTab], props);
+    const tabNav = tabs.map(tab => (<Tab key={tab} label={tab}/>));
 
     return (
         <Paper className={classes.root}>
@@ -94,13 +141,12 @@ export function Debug() {
                     variant="scrollable"
                     scrollButtons="auto"
                 >
-                    <Tab label="Store"/>
-                    <Tab label="Grobber Client"/>
+                    {tabNav}
                 </Tabs>
             </AppBar>
 
             <main className={classes.tabValue}>
-                {tab}
+                {tabContent}
             </main>
         </Paper>
     );

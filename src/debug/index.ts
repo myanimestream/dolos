@@ -1,4 +1,6 @@
 /**
+ * Debugging utilities for Dolos.
+ *
  * @module debug
  * @preferred
  */

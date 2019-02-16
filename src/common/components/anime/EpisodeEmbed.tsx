@@ -20,6 +20,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
+import {OpenDebugDialogButton} from "dolos/common/components/OpenDebugDialogButton";
 import {EpisodePage} from "dolos/common/pages";
 import {AnimeInfo} from "dolos/grobber";
 import "plyr/src/sass/plyr.scss";
@@ -80,6 +81,8 @@ export enum PlayerType {
 }
 
 interface EpisodeEmbedState {
+    debugMode: boolean;
+
     playersAvailable: PlayerType[];
     failReason?: "episode_unavailable" | "no_streams";
     currentPlayer?: PlayerType;
@@ -101,26 +104,12 @@ export const EpisodeEmbed = withStyles(styles)(
         constructor(props: EpisodeEmbedProps) {
             super(props);
             this.state = {
+                debugMode: false,
+
                 bookmarked: false,
                 canSetProgress: false,
                 playersAvailable: [],
             };
-        }
-
-        public getNextPlayerType(): PlayerType {
-            switch (this.state.currentPlayer) {
-                case PlayerType.DOLOS:
-                    return PlayerType.EMBED;
-                case PlayerType.EMBED:
-                    return PlayerType.DOLOS;
-                default:
-                    throw new Error(`Unhandled player type: ${this.state.currentPlayer} cannot switch!`);
-            }
-        }
-
-        public switchPlayerType(): void {
-            const nextPlayerType = this.getNextPlayerType();
-            this.setState({currentPlayer: nextPlayerType});
         }
 
         public componentWillUnmount() {
@@ -134,11 +123,13 @@ export const EpisodeEmbed = withStyles(styles)(
                 next: (episodeBookmarked) => this.setState({bookmarked: episodeBookmarked}),
             });
 
+            const config = await episodePage.state.config;
+            this.setState({debugMode: config.debugMode});
+
             const canSetProgress = await episodePage.animePage.canSetEpisodesWatched();
             this.setState({canSetProgress});
 
-            const [config, epIndex, episode] = await Promise.all([
-                episodePage.state.config,
+            const [epIndex, episode] = await Promise.all([
                 episodePage.getEpisodeIndex(),
                 episodePage.getEpisode(),
             ]);
@@ -207,7 +198,47 @@ export const EpisodeEmbed = withStyles(styles)(
             await Promise.all([loadSkipButtons]);
         }
 
-        public renderPlayer(): React.ReactElement<any> {
+        public render() {
+            const {classes} = this.props;
+
+            return (
+                <div className={classes.root}>
+                    {this.renderPlayer()}
+
+                    <Paper className={classes.playerBar}>
+                        <div>
+                            {this.renderSkipButtons()}
+                            {this.renderBookmarkButton()}
+                        </div>
+
+                        <div style={{display: "flex"}}>
+                            {this.renderSwitchPlayerTypeButton()}
+                            {this.renderMenuButton()}
+
+                            {this.renderOpenDebugDialogButton()}
+                        </div>
+                    </Paper>
+                </div>
+            );
+        }
+
+        private getNextPlayerType(): PlayerType {
+            switch (this.state.currentPlayer) {
+                case PlayerType.DOLOS:
+                    return PlayerType.EMBED;
+                case PlayerType.EMBED:
+                    return PlayerType.DOLOS;
+                default:
+                    throw new Error(`Unhandled player type: ${this.state.currentPlayer} cannot switch!`);
+            }
+        }
+
+        private switchPlayerType(): void {
+            const nextPlayerType = this.getNextPlayerType();
+            this.setState({currentPlayer: nextPlayerType});
+        }
+
+        private renderPlayer(): React.ReactElement<any> {
             const {classes} = this.props;
             const {
                 currentPlayer,
@@ -249,7 +280,7 @@ export const EpisodeEmbed = withStyles(styles)(
             return view();
         }
 
-        public renderSkipButtons() {
+        private renderSkipButtons() {
             const {skipButtons} = this.state;
             const [skipPrev, skipNext] = skipButtons || [undefined, undefined];
 
@@ -301,14 +332,14 @@ export const EpisodeEmbed = withStyles(styles)(
             );
         }
 
-        public async toggleBookmark() {
+        private async toggleBookmark() {
             const {episodePage} = this.props;
             const {bookmarked} = this.state;
             if (bookmarked) await episodePage.markEpisodeUnwatched();
             else await episodePage.markEpisodeWatched();
         }
 
-        public renderBookmarkButton() {
+        private renderBookmarkButton() {
             const {bookmarked, canSetProgress} = this.state;
 
             const handleToggle = () => this.toggleBookmark();
@@ -328,7 +359,7 @@ export const EpisodeEmbed = withStyles(styles)(
             );
         }
 
-        public renderSwitchPlayerTypeButton() {
+        private renderSwitchPlayerTypeButton() {
             const {classes} = this.props;
             const {playersAvailable} = this.state;
 
@@ -348,7 +379,7 @@ export const EpisodeEmbed = withStyles(styles)(
             return undefined;
         }
 
-        public async handleSearchDialogClose(anime?: AnimeInfo) {
+        private async handleSearchDialogClose(anime?: AnimeInfo) {
             // close the menu because it's served its purpose
             this.setState({menuAnchorElement: undefined});
 
@@ -359,7 +390,7 @@ export const EpisodeEmbed = withStyles(styles)(
             await episodePage.animePage.setAnimeUID(anime);
         }
 
-        public renderMenuButton() {
+        private renderMenuButton() {
             const {episodePage} = this.props;
             const {menuAnchorElement} = this.state;
 
@@ -397,26 +428,13 @@ export const EpisodeEmbed = withStyles(styles)(
             );
         }
 
-        public render() {
-            const {classes} = this.props;
+        private renderOpenDebugDialogButton() {
+            const {debugMode} = this.state;
 
-            return (
-                <div className={classes.root}>
-                    {this.renderPlayer()}
+            if (!debugMode) return undefined;
 
-                    <Paper className={classes.playerBar}>
-                    <span>
-                        {this.renderSkipButtons()}
-                        {this.renderBookmarkButton()}
-                    </span>
-
-                        <span style={{display: "flex"}}>
-                        {this.renderSwitchPlayerTypeButton()}
-                            {this.renderMenuButton()}
-                    </span>
-                    </Paper>
-                </div>
-            );
+            const {episodePage} = this.props;
+            return (<OpenDebugDialogButton service={episodePage.service}/>);
         }
     },
 );

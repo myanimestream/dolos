@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {usePromiseMemo} from "dolos/hooks";
-import {useConfigChange} from "dolos/options/SettingsTab";
+import {useConfigChange} from "dolos/options";
 import {Store, StoreElement} from "dolos/store";
 import * as React from "react";
 import {DynamicInput} from "./DynamicInput";
