@@ -2,7 +2,7 @@
  * @module common/components
  */
 
-import {Config} from "dolos/models";
+import {Config} from "src/models";
 
 /**
  * Metadata for a website providing embedded streams

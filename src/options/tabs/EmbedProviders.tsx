@@ -2,9 +2,12 @@
  * @module options/tabs
  */
 
-import {Avatar, Chip, List, ListSubheader} from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
+import Chip from "@material-ui/core/Chip";
+import List from "@material-ui/core/List";
+import ListSubheader from "@material-ui/core/ListSubheader";
 import WebAssetIcon from "@material-ui/icons/WebAsset";
-import {embedProviders, getEmbedProviderFromID} from "dolos/common/components";
+import {embedProviders, getEmbedProviderFromID} from "dolos/common";
 import {Config} from "dolos/models";
 import {StoreElementProxy} from "dolos/store";
 import * as React from "react";

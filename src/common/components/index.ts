@@ -7,8 +7,8 @@
 
 /** @ignore */
 
-export * from "./embed-providers";
 export * from "./EmbedPlayer";
+export * from "./OpenDebugDialogButton";
 export * from "./Player";
 export * from "./SnackbarQueue";
 export * from "./StableIFrame";

@@ -7,8 +7,9 @@
 
 /** @ignore */
 
-import {MuiThemeProvider, Theme} from "@material-ui/core/styles";
-import {ThemeProvider} from "@material-ui/styles";
+import {Theme} from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
 import axios from "axios";
 import {NewEpisodeEvent} from "dolos/background/update-check";
 import {GrobberClient} from "dolos/grobber";

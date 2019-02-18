@@ -21,14 +21,14 @@ import FeaturedVideoIcon from "@material-ui/icons/FeaturedVideo";
 import MenuIcon from "@material-ui/icons/Menu";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import VideoLibraryIcon from "@material-ui/icons/VideoLibrary";
-import {makeStyles, useTheme} from "@material-ui/styles";
+import makeStyles from "@material-ui/styles/makeStyles";
+import useTheme from "@material-ui/styles/useTheme";
 import {usePromiseMemo} from "dolos/hooks";
-import {EmbedProviders} from "dolos/options/tabs/EmbedProviders";
 import * as React from "react";
 import {HashRouter, NavLink, Redirect, Route, Switch} from "react-router-dom";
 import Store from "../store";
 import {SettingsTab, SettingsTabContentProps} from "./SettingsTab";
-import {Debug, SiteIntegration, Video} from "./tabs";
+import {Debug, EmbedProviders, SiteIntegration, Video} from "./tabs";
 import _ = chrome.i18n.getMessage;
 
 /** @ignore */

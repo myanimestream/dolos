@@ -2,12 +2,9 @@
  * @module common/components
  */
 
-import {WithStyles} from "@material-ui/core/styles";
 import createStyles from "@material-ui/core/styles/createStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
-// @ts-ignore
-import Plyr from "plyr/src/js/plyr";
-import "plyr/src/sass/plyr.scss";
+import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
+import {Plyr} from "dolos/plyr";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 

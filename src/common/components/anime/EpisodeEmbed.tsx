@@ -20,13 +20,14 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
-import {OpenDebugDialogButton} from "dolos/common/components/OpenDebugDialogButton";
+import {EmbedInfo, prepareEmbedInfos} from "dolos/common";
+import {OpenDebugDialogButton} from "dolos/common/components";
 import {EpisodePage} from "dolos/common/pages";
 import {AnimeInfo} from "dolos/grobber";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
 import * as rxjs from "rxjs";
-import {EmbedInfo, EmbedPlayer, Player, PlayerProps, PlayerSource, prepareEmbedInfos, Toggle, WithRatio} from "..";
+import {EmbedPlayer, Player, PlayerProps, PlayerSource, Toggle, WithRatio} from "..";
 import _ = chrome.i18n.getMessage;
 
 export interface SkipButton {

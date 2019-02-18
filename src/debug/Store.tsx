@@ -2,17 +2,14 @@
  * @module debug
  */
 
-import {
-    ExpansionPanel,
-    ExpansionPanelDetails,
-    ExpansionPanelSummary,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Typography,
-} from "@material-ui/core";
+import {ListItem} from "@material-ui/core";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import List from "@material-ui/core/List";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {usePromiseMemo} from "dolos/hooks";
 import {useConfigChange} from "dolos/options";
@@ -37,35 +34,36 @@ function StoreElementValue({element, propKey}: { element: StoreElement<any>, pro
 export function StoreElementComponent({element}: { element: StoreElement<any> }) {
     const entries = element.ownKeys().map(key => [key, element.get(key)]);
 
-    const fieldRows = entries.map(([key, value]) => {
-        let valueCellContent;
+    const elements = entries.map(([key, value]) => {
 
         if (value instanceof StoreElement)
-            valueCellContent = (<StoreElementComponent element={value}/>);
-        else
-            valueCellContent = (<StoreElementValue element={element} propKey={key}/>);
+            return (
+                <ExpansionPanel key={key}>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                        <Typography variant="h6">{key}</Typography>
+                    </ExpansionPanelSummary>
 
-        return (
-            <TableRow key={key}>
-                <TableCell>{key}</TableCell>
-                <TableCell>{valueCellContent}</TableCell>
-            </TableRow>
-        );
+                    <ExpansionPanelDetails>
+                        <StoreElementComponent element={value}/>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+            );
+        else
+            return (
+                <ListItem key={key}>
+                    <ListItemText primary={key}/>
+                    <ListItemSecondaryAction>
+                        <StoreElementValue element={element} propKey={key}/>
+                    </ListItemSecondaryAction>
+                </ListItem>
+            );
+
     });
 
     return (
-        <Table>
-            <TableHead>
-                <TableRow>
-                    <TableCell>Key</TableCell>
-                    <TableCell>Value</TableCell>
-                </TableRow>
-            </TableHead>
-
-            <TableBody>
-                {fieldRows}
-            </TableBody>
-        </Table>
+        <List style={{width: "100%"}}>
+            {elements}
+        </List>
     );
 }
 

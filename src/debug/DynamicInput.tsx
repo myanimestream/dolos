@@ -2,9 +2,15 @@
  * @module debug
  */
 
-import {Switch, Table, TableBody, TableCell, TableRow, TextField, Theme} from "@material-ui/core";
-import {Slider} from "@material-ui/lab";
-import {makeStyles} from "@material-ui/styles";
+import {Theme} from "@material-ui/core/styles/createMuiTheme";
+import Switch from "@material-ui/core/Switch";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
+import TextField from "@material-ui/core/TextField";
+import Slider from "@material-ui/lab/Slider";
+import makeStyles from "@material-ui/styles/makeStyles";
 import {isPrimitive} from "dolos/store";
 import * as React from "react";
 

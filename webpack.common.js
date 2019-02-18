@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const path = require("path");
 const glob = require("glob");
+// const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 // load the config from the file
 const secrets = require("./dolos-secrets");
@@ -71,5 +72,6 @@ module.exports = {
         new webpack.DefinePlugin({
             WEBPACK_SECRETS: JSON.stringify(secrets),
         }),
+        // new BundleAnalyzerPlugin(),
     ],
 };

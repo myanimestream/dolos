@@ -2,9 +2,14 @@
  * @module debug
  */
 
-import {AppBar, CssBaseline, Paper, Tabs, Theme, Typography} from "@material-ui/core";
+import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Paper from "@material-ui/core/Paper";
+import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import Tab from "@material-ui/core/Tab";
-import {makeStyles} from "@material-ui/styles";
+import Tabs from "@material-ui/core/Tabs";
+import Typography from "@material-ui/core/Typography";
+import makeStyles from "@material-ui/styles/makeStyles";
 import Service from "dolos/common/service";
 import {grobberClient as localGrobberClient} from "dolos/grobber";
 import {usePromiseMemo} from "dolos/hooks";

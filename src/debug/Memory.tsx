@@ -2,7 +2,11 @@
  * @module debug
  */
 
-import {ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, List, Typography} from "@material-ui/core";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import List from "@material-ui/core/List";
+import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {ElementMemory, Memory, Namespace} from "dolos/memory";
 import * as React from "react";

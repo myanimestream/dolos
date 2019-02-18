@@ -6,11 +6,11 @@
 
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import {Theme} from "@material-ui/core/styles";
+import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import Tooltip from "@material-ui/core/Tooltip";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
-import {makeStyles} from "@material-ui/styles";
+import makeStyles from "@material-ui/styles/makeStyles";
 import {Service} from "dolos/common";
 import {AnimePage} from "dolos/common/pages";
 import {useObservablePromiseMemo} from "dolos/hooks";

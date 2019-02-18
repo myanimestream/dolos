@@ -18,7 +18,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import * as React from "react";
-import {EmbedInfo, StableIFrame, WithRatio} from ".";
+import {StableIFrame, WithRatio} from ".";
+import {EmbedInfo} from "../embed-providers";
 import _ = chrome.i18n.getMessage;
 
 /** @ignore */

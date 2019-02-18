@@ -8,7 +8,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import {SvgIconProps} from "@material-ui/core/SvgIcon";
 import Switch from "@material-ui/core/Switch";
-import {makeStyles} from "@material-ui/styles";
+import makeStyles from "@material-ui/styles/makeStyles";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import {useSubscription} from "dolos/hooks";
 import {Config} from "dolos/models";

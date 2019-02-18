@@ -4,8 +4,8 @@
 
 /** @ignore */
 
-import {Theme} from "@material-ui/core/styles";
-import {makeStyles} from "@material-ui/styles";
+import {Theme} from "@material-ui/core/styles/createMuiTheme";
+import makeStyles from "@material-ui/styles/makeStyles";
 import {AnimePage} from "dolos/common/pages";
 import * as React from "react";
 import {ContinueWatchingButton, SubscriptionToggle} from ".";

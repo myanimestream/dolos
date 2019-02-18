@@ -10,5 +10,6 @@
 /** @ignore */
 
 export * from "./Debug";
+export * from "./EmbedProviders";
 export * from "./SiteIntegration";
 export * from "./Video";

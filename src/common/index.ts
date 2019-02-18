@@ -7,5 +7,6 @@
 
 /** @ignore */
 
+export * from "./embed-providers";
 export {default as Service} from "./service";
 export {default as State, cacheInStateMemory} from "./state";
