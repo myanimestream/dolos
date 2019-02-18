@@ -49,12 +49,27 @@ export type EpisodeAnimePageLike<T extends Service> =
 export abstract class EpisodePage<T extends Service> extends ServicePage<T> {
 
     get animePage(): EpisodeAnimePageLike<T> {
-        if (!this._animePage) this._animePage = this.buildAnimePage();
+        if (!this._animePage) {
+            let animePage: EpisodeAnimePageLike<T>;
+
+            const registeredAnimePage = this.getBackgroundPage("anime");
+            if (registeredAnimePage instanceof AnimePage) {
+                animePage = registeredAnimePage;
+            } else {
+                animePage = this.buildAnimePage();
+                this.animePage = animePage;
+            }
+
+            this._animePage = animePage;
+        }
 
         return this._animePage;
     }
 
     set animePage(page: EpisodeAnimePageLike<T>) {
+        if (page instanceof AnimePage)
+            this.registerBackgroundPage(page, "anime");
+
         this._animePage = page;
     }
 
@@ -183,16 +198,16 @@ export abstract class EpisodePage<T extends Service> extends ServicePage<T> {
     public async _unload() {
         if (this.epsWatchedSub) this.epsWatchedSub.unsubscribe();
 
-        if (this.animePage instanceof ServicePage)
-            await this.animePage.unload();
-
         await super._unload();
     }
 
     public async transitionTo(page?: ServicePage<T>): Promise<ServicePage<T> | undefined> {
-        if (page instanceof AnimePage && this.animePage instanceof ServicePage) {
-            this.resetPage();
-            return await this.animePage.transitionTo(page);
+        if (page instanceof AnimePage) {
+            const animePage = this.getBackgroundPage("anime");
+            if (animePage) {
+                this.resetPage();
+                return await animePage.transitionTo(page);
+            }
         } else if (page instanceof EpisodePage) {
             page.animePage = this.animePage;
             this.resetPage();

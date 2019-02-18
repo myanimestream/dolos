@@ -25,6 +25,7 @@ export function OpenDebugDialogButton(props: DebugProps) {
             <Dialog
                 open={open}
                 onClose={handleClose}
+                maxWidth="lg"
             >
                 <DialogTitle>Debug</DialogTitle>
 

@@ -68,13 +68,22 @@ function ServiceTab({service}: DebugProps) {
     const page = state.page;
 
     let pageComponent;
-    if (page)
+    if (page) {
+        const backgroundPages = Array.from(page.backgroundPages.entries()).map(([key, bPage]) => (
+            <div key={key}>
+                <Typography variant="h4" gutterBottom>Background page #{key.toString()}</Typography>
+                <MemoryComponent memory={bPage}/>
+            </div>
+        ));
+
         pageComponent = (
             <>
                 <Typography variant="h4" gutterBottom>Service page memory</Typography>
                 <MemoryComponent memory={page}/>
+                {backgroundPages}
             </>
         );
+    }
 
     return (
         <>
