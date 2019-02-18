@@ -8,7 +8,7 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import {ElementMemory, Memory, Namespace} from "dolos/memory";
+import {ElementMemory, flattenNamespace, Memory, Namespace} from "dolos/memory";
 import * as React from "react";
 import {DynamicInput} from "./DynamicInput";
 
@@ -60,7 +60,10 @@ export function MemoryComponent({memory}: { memory: Memory }) {
     if (memory instanceof ElementMemory) {
         // // @ts-ignore
         // elementNamespace = (<NamespaceComponent namespace={memory.internalInjectedMemory}/>);
-        elementNamespace = null;
+
+        // @ts-ignore
+        const injectedAmount = Object.keys(flattenNamespace(memory.internalInjectedMemory)).length;
+        elementNamespace = (<Typography>{injectedAmount.toString()} injected element(s)</Typography>);
     }
 
     return (
