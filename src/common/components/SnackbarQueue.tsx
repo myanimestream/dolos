@@ -73,6 +73,9 @@ interface SnackbarListenerProps {
 // tslint:disable-next-line:variable-name
 const SnackbarListener = withSnackbar(
     (props: SnackbarListenerProps & InjectedNotistackProps) => {
+        // this isn't another function, tslint, it's just a wrapped component.
+        // you can just chill.
+        // tslint:disable-next-line:react-hooks-nesting
         useSubscription(props.snackbarMessage$, msg => {
             const action = msg.action;
             if (isSnackbarAction(action)) {

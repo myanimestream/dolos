@@ -22,6 +22,7 @@
     "storage",
     "https://*/"
   ],
+  "content_security_policy": "default-src 'self'; script-src 'self' https://sentry.io; style-src 'unsafe-inline' https:; img-src * 'self' data: https:; media-src *; font-src https:; connect-src *; report-uri https://sentry.io/api/1361461/security/?sentry_key=cd0b73d8cc56445ca49d154ca6e7f12d",
   "options_ui": {
     "page": "options.html",
     "open_in_tab": true

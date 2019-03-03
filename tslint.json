@@ -2,7 +2,8 @@
   "defaultSeverity": "error",
   "extends": [
     "tslint:recommended",
-    "tslint-react"
+    "tslint-react",
+    "tslint-react-hooks"
   ],
   "linterOptions": {
     "exclude": [
@@ -41,7 +42,8 @@
     "jsx-boolean-value": [
       true,
       "never"
-    ]
+    ],
+    "react-hooks-nesting": "error"
   },
   "rulesDirectory": []
 }
