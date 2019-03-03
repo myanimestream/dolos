@@ -25,7 +25,16 @@ export function usePromise<T, V>(promise: PromiseLike<T>, defaultValue?: V): T |
     const [value, setValue] = React.useState(defaultValue as T | V);
 
     React.useEffect(() => {
-        promise.then(setValue);
+        let cancelled = false;
+
+        promise.then((result: T) => {
+            if (!cancelled)
+                setValue(result);
+        });
+
+        return () => {
+            cancelled = true;
+        };
     }, [promise]);
 
     return value;
@@ -54,7 +63,7 @@ export function useSubscription<T>(observable: Observable<T>,
         // @ts-ignore
         const subscription = observable.subscribe(observerOrNext, error, complete);
         return () => subscription.unsubscribe();
-    }, [observable]);
+    }, [observable, observerOrNext, error, complete]);
 }
 
 export function useObservable<T>(observable: BehaviorSubject<T>): T;
