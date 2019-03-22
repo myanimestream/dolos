@@ -14,3 +14,4 @@ export * from "./SnackbarQueue";
 export * from "./StableIFrame";
 export * from "./Toggle";
 export * from "./WithRatio";
+export * from "./ReactSelectChip";

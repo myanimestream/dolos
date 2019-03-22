@@ -20,7 +20,7 @@ import _ = chrome.i18n.getMessage;
 /** @ignore */
 const useStyles = makeStyles((theme: Theme) => ({
     buttonIconLeft: {
-        marginRight: theme.spacing.unit,
+        marginRight: theme.spacing(1),
     },
     container: {
         display: "inline-block",

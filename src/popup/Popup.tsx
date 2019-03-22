@@ -67,14 +67,14 @@ const styles = (theme: Theme) => {
             },
         },
         badge: {
-            paddingRight: 2 * theme.spacing.unit,
+            paddingRight: theme.spacing(2),
         },
         buttonIconLeft: {
-            marginRight: theme.spacing.unit,
+            marginRight: theme.spacing(1),
         },
         content: {
             flexGrow: 1,
-            padding: 2 * theme.spacing.unit,
+            padding: theme.spacing(2),
         },
         drawer: {
             [theme.breakpoints.up("sm")]: {
@@ -153,13 +153,14 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
             const {classes, theme} = this.props;
             const {changelogBadgeVisible, unseenEpisodesCount} = this.state;
 
-            const getLink = (target: string) => (props: {}) => (
+            const getLink = (target: string) => React.forwardRef((props: {}, ref: any) => (
                 <NavLink
+                    innerRef={ref}
                     to={target}
                     activeClassName={classes.activeDrawerLink}
                     {...props}
                 />
-            );
+            ));
 
             const homeLink = getLink("/home");
             const subscriptionsLink = getLink("/subscriptions");

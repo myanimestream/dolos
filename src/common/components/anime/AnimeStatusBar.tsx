@@ -14,7 +14,7 @@ import {ContinueWatchingButton, SubscriptionToggle} from ".";
 const useStyles = makeStyles((theme: Theme) => ({
     bar: {
         "& > * + *": {
-            marginTop: theme.spacing.unit,
+            marginTop: theme.spacing(1),
         },
         "display": "flex",
         "flexDirection": "column",

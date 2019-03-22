@@ -46,16 +46,16 @@ const styles = (theme: Theme) => {
 
     return createStyles({
         buttonIconRight: {
-            marginLeft: theme.spacing.unit,
+            marginLeft: theme.spacing(1),
         },
         flexCenterColumn,
         playerBar: {
             display: "flex",
             justifyContent: "space-between",
-            marginTop: theme.spacing.unit,
+            marginTop: theme.spacing(1),
         },
         root: {
-            marginTop: 3 * theme.spacing.unit,
+            marginTop: theme.spacing(3),
         },
     });
 };

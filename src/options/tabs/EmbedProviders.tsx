@@ -8,10 +8,10 @@ import List from "@material-ui/core/List";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import WebAssetIcon from "@material-ui/icons/WebAsset";
 import {embedProviders, getEmbedProviderFromID} from "dolos/common";
+import {MUICreatable} from "dolos/common/components/ReactSelectChip";
 import {Config} from "dolos/models";
 import {StoreElementProxy} from "dolos/store";
 import * as React from "react";
-import {Creatable} from "react-select";
 import {ValueType} from "react-select/lib/types";
 import {SettingsTabContentProps, SettingsToggle} from "../SettingsTab";
 import _ = chrome.i18n.getMessage;
@@ -60,7 +60,7 @@ function BlockedEmbedProviders({blocked, onChange}: { blocked: string[], onChang
     }
 
     return (
-        <Creatable
+        <MUICreatable
             value={currentBlocked}
             onChange={setCurrentBlocked}
             options={suggestions}

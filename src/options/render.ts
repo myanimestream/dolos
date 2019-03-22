@@ -8,10 +8,6 @@
 
 /** @ignore */
 
-// since @material-ui/styles@3.0.4 or whatever version the style tag
-// ordering is broken
-import("./style-fix");
-
 import * as React from "react";
 import {Settings} from ".";
 import dolosTheme from "../theme";

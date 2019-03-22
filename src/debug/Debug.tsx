@@ -108,7 +108,7 @@ const useDebugStyles = makeStyles((theme: Theme) => ({
     },
     tabValue: {
         ...theme.mixins.gutters,
-        margin: 4 * theme.spacing.unit,
+        margin: theme.spacing(4),
     },
 }));
 

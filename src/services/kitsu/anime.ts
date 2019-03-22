@@ -41,7 +41,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
     @lockMethod()
     @cacheInMemory("animeId")
     public async getAnimeId(): Promise<string | undefined> {
-        const resp = await kitsuAPIRequest("GET", "/anime", undefined, {
+        const resp = await kitsuAPIRequest("get", "/anime", undefined, {
             params: {
                 "fields[anime]": "id",
                 "filter[slug]": await this.getAnimeIdentifier(),
@@ -74,7 +74,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         const token = await this.getAccessToken();
         if (!token) return null;
 
-        const resp = await kitsuAPIRequest("GET", "/users", `Bearer ${token}`, {
+        const resp = await kitsuAPIRequest("get", "/users", `Bearer ${token}`, {
             params: {
                 "fields[users]": "id",
                 "filter[self]": "true",
@@ -90,7 +90,7 @@ export default class KitsuAnimePage extends AnimePage<Kitsu> {
         const [animeId, userId] = await Promise.all([this.getAnimeId(), this.getUserId()]);
         if (!(animeId && userId)) return null;
 
-        const resp = await kitsuAPIRequest("GET", "/library-entries", undefined, {
+        const resp = await kitsuAPIRequest("get", "/library-entries", undefined, {
             params: {
                 "fields[anime]": "id",
                 "filter[animeId]": animeId,

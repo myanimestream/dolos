@@ -43,7 +43,7 @@ function getCurrentVersion(): string {
 
 const styles = (theme: Theme) => createStyles({
     changelogHeader: {
-        marginTop: 2 * theme.spacing.unit,
+        marginTop: theme.spacing(2),
     },
     expansionPanelDetails: {
         flexDirection: "column",

@@ -29,7 +29,7 @@ const useInputStyles = makeStyles((theme: Theme) => ({
         justifyContent: "space-between",
     },
     textFieldRight: {
-        marginLeft: 2 * theme.spacing.unit,
+        marginLeft: theme.spacing(2),
     },
 }));
 

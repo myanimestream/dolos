@@ -49,14 +49,14 @@ const useStyles = makeStyles((theme: Theme) => {
             },
         },
         badge: {
-            paddingRight: 2 * theme.spacing.unit,
+            paddingRight: theme.spacing(2),
         },
         buttonIconLeft: {
-            marginRight: theme.spacing.unit,
+            marginRight: theme.spacing(1),
         },
         content: {
             flexGrow: 1,
-            padding: 2 * theme.spacing.unit,
+            padding: theme.spacing(2),
         },
         drawer: {
             [theme.breakpoints.up("sm")]: {
@@ -134,13 +134,14 @@ export function Settings() {
         const tabNav = tabs.map(target => {
             const icon = React.createElement(target.icon);
 
-            const link = (props: {}) => (
+            const link = React.forwardRef((props: {}, ref: any) => (
                 <NavLink
                     to={target.path}
+                    innerRef={ref}
                     activeClassName={classes.activeDrawerLink}
                     {...props}
                 />
-            );
+            ));
 
             return (
                 <ListItem key={target.path} button component={link}>

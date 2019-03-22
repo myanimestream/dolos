@@ -94,4 +94,4 @@ class SentryLogger extends React.Component<SentryLoggerProps, SentryLoggerState>
     }
 }
 
-export default withTheme()(SentryLogger);
+export default withTheme(SentryLogger);

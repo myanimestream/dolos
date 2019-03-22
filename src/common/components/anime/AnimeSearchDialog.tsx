@@ -36,10 +36,7 @@ const styles = (theme: Theme) => createStyles({
         flexGrow: 1,
     },
     inputInput: {
-        paddingBottom: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit * 5,
-        paddingRight: theme.spacing.unit,
-        paddingTop: theme.spacing.unit,
+        padding: theme.spacing(1, 1, 1, 5),
         transition: theme.transitions.create("width"),
         width: "100%",
         [theme.breakpoints.up("sm")]: {
@@ -63,7 +60,7 @@ const styles = (theme: Theme) => createStyles({
         "position": "relative",
         "width": "100%",
         [theme.breakpoints.up("sm")]: {
-            marginLeft: theme.spacing.unit,
+            marginLeft: theme.spacing(1),
             width: "auto",
         },
     },
@@ -74,7 +71,7 @@ const styles = (theme: Theme) => createStyles({
         justifyContent: "center",
         pointerEvents: "none",
         position: "absolute",
-        width: theme.spacing.unit * 4,
+        width: theme.spacing(4),
     },
 });
 

@@ -60,4 +60,5 @@ export default class MyAnimeList extends Service {
     }
 }
 
+// noinspection JSIgnoredPromiseFromCall
 new MyAnimeList().load();

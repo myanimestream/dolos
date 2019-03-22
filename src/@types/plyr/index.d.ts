@@ -7,6 +7,19 @@ declare module "plyr" {
 
     class Plyr {
 
+        public static setup(targets: NodeList | HTMLElement | HTMLElement[] | string, options?: Plyr.Options): Plyr[];
+
+        /**
+         * Check for support
+         * @param mediaType
+         * @param provider
+         * @param playsInline Whether the player has the playsinline attribute (only applicable to iOS 10+)
+         */
+        public static supported(
+            mediaType?: Plyr.MediaType,
+            provider?: Plyr.Provider,
+            playsInline?: boolean): Plyr.Support;
+
         /**
          * Indicates if the current player is HTML5.
          */
@@ -106,19 +119,6 @@ declare module "plyr" {
         public readonly fullscreen: Plyr.FullscreenControl;
 
         constructor(targets: NodeList | HTMLElement | HTMLElement[] | string, options?: Plyr.Options);
-
-        public static setup(targets: NodeList | HTMLElement | HTMLElement[] | string, options?: Plyr.Options): Plyr[];
-
-        /**
-         * Check for support
-         * @param mediaType
-         * @param provider
-         * @param playsInline Whether the player has the playsinline attribute (only applicable to iOS 10+)
-         */
-        public static supported(
-            mediaType?: Plyr.MediaType,
-            provider?: Plyr.Provider,
-            playsInline?: boolean): Plyr.Support;
 
         /**
          * Start playback.
@@ -421,7 +421,7 @@ declare module "plyr" {
              * If your handler prevents default on the event (event.preventDefault()),
              * the default handler will not fire.
              */
-            listeners?: Object;
+            listeners?: object;
 
             /**
              * active: Toggles if captions should be active by default.

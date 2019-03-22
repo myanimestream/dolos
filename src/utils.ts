@@ -8,8 +8,7 @@
 /** @ignore */
 
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import ThemeProvider, {ThemeProviderProps} from "@material-ui/styles/ThemeProvider";
 import axios from "axios";
 import {NewEpisodeEvent} from "dolos/background/update-check";
 import {GrobberClient} from "dolos/grobber";
@@ -166,12 +165,7 @@ export function wrapSentryLogger(component: React.ReactNode): React.ReactNode {
  * @see [[reactRenderWithTheme]] to render the result to an element.
  */
 export function wrapWithTheme(component: React.ReactNode, theme: Theme): React.ReactElement<any> {
-    // @ts-ignore
-    let wrapper = React.createElement(ThemeProvider, {theme}, component);
-    // @ts-ignore
-    wrapper = React.createElement(MuiThemeProvider, {theme}, wrapper);
-
-    return wrapper;
+    return React.createElement(ThemeProvider, {theme} as ThemeProviderProps<any>, component);
 }
 
 /**

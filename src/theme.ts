@@ -24,9 +24,6 @@ const mainTheme = createMuiTheme({
             main: "#cddc39",
         },
     },
-    typography: {
-        useNextVariants: true,
-    },
 });
 
 export default mainTheme;
@@ -43,9 +40,6 @@ export const kitsuTheme = createMuiTheme({
             main: "#4527a0",
         },
     },
-    typography: {
-        useNextVariants: true,
-    },
 });
 
 /**
@@ -59,9 +53,6 @@ export const malTheme = createMuiTheme({
         secondary: {
             main: "#4f74c8",
         },
-    },
-    typography: {
-        useNextVariants: true,
     },
 });
 

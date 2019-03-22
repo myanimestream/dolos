@@ -17,9 +17,9 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
+import {EmbedInfo} from "dolos/common";
 import * as React from "react";
 import {StableIFrame, WithRatio} from ".";
-import {EmbedInfo} from "../embed-providers";
 import _ = chrome.i18n.getMessage;
 
 /** @ignore */
@@ -31,8 +31,8 @@ const styles = (theme: Theme) => createStyles({
     },
     embedInfoAvatar: {
         borderRadius: 0,
-        height: 2 * theme.spacing.unit,
-        width: 2 * theme.spacing.unit,
+        height: theme.spacing(2),
+        width: theme.spacing(2),
     },
     embedInfoText: {},
     embedSelect: {
@@ -46,7 +46,7 @@ const styles = (theme: Theme) => createStyles({
     embedToolbar: {
         flexWrap: "wrap",
         justifyContent: "space-between",
-        marginBottom: theme.spacing.unit,
+        marginBottom: theme.spacing(1),
     },
 });
 

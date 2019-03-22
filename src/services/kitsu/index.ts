@@ -45,4 +45,5 @@ export default class Kitsu extends Service {
     }
 }
 
+// noinspection JSIgnoredPromiseFromCall
 new Kitsu().load();

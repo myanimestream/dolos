@@ -17,7 +17,7 @@ import _ = chrome.i18n.getMessage;
 /** @ignore */
 const styles = (theme: Theme) => createStyles({
     buttonIconLeft: {
-        marginRight: theme.spacing.unit,
+        marginRight: theme.spacing(1),
     },
 });
 

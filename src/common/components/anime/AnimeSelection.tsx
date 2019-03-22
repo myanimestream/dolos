@@ -37,7 +37,7 @@ export const AnimeSelection = withStyles(styles, {withTheme: true})(
             const renderAnimeTile = this.renderTile.bind(this);
 
             return (
-                <GridList cellHeight="auto" cols={4} spacing={2 * theme.spacing.unit}>
+                <GridList cellHeight="auto" cols={4} spacing={theme.spacing(2)}>
                     {anime.map(renderAnimeTile)}
                 </GridList>
             );
