@@ -6,7 +6,7 @@
 
 import Button, {ButtonProps} from "@material-ui/core/Button";
 import {useSubscription} from "dolos/hooks";
-import {InjectedNotistackProps, OptionsObject, SnackbarProvider, VariantType, withSnackbar} from "notistack";
+import {OptionsObject, SnackbarProvider, VariantType, withSnackbar, withSnackbarProps} from "notistack";
 import * as React from "react";
 import {Subject} from "rxjs";
 import _ = chrome.i18n.getMessage;
@@ -72,11 +72,11 @@ interface SnackbarListenerProps {
  */
 // tslint:disable-next-line:variable-name
 const SnackbarListener = withSnackbar(
-    (props: SnackbarListenerProps & InjectedNotistackProps) => {
+    (props: SnackbarListenerProps & withSnackbarProps) => {
         // this isn't another function, tslint, it's just a wrapped component.
         // you can just chill.
         // tslint:disable-next-line:react-hooks-nesting
-        useSubscription(props.snackbarMessage$, msg => {
+        useSubscription(props.snackbarMessage$, (msg: SnackbarMessage) => {
             const action = msg.action;
             if (isSnackbarAction(action)) {
                 const buttonProps: ButtonProps = {

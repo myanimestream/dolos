@@ -16,9 +16,17 @@ import {DynamicInput} from "./DynamicInput";
  * Component for displaying a memory [[Namespace]].
  */
 function NamespaceComponent({namespace}: { namespace: Namespace }) {
+    // yes, this is bad but I'm tired so leave me be!
+    // this is necessary because namespaces need to be mutated,
+    // not replaced.
+    const [, forceUpdate] = React.useState(undefined);
+
     let valueDisplay;
     if ("__value" in namespace) {
-        const handleChange = (newValue: any) => namespace.__value = newValue;
+        const handleChange = (newValue: any) => {
+            namespace.__value = newValue;
+            forceUpdate(undefined);
+        };
 
         valueDisplay = (
             <DynamicInput value={namespace.__value} onChange={handleChange}/>

@@ -1,3 +1,10 @@
+/**
+ * Extract Dolos' changelog and write it to the console.
+ * The changelog is formatted as Markdown.
+ */
+
+/** @ignore */
+
 /* tslint:disable */
 import CHANGELOG, {Change} from "../src/changelog";
 

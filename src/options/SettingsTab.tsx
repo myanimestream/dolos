@@ -117,29 +117,29 @@ export function useConfigChange<TConfig, K extends keyof TConfig, VConfig extend
 
 /**
  * Similar to React's `useState` but specifically for the [[Config]].
+ *
+ * Internally the value is set immediately, but writing to the actual
+ * config is debounced.
  */
 export function useConfigChange<TConfig, K extends keyof TConfig, VConfig extends TConfig[K], V>(
     config: StoreElementProxy<TConfig>,
     key: K,
     valueCallback?: (currentValue: VConfig, newValue?: V) => VConfig): [VConfig, (newValue?: V) => void] {
-    // @ts-ignore
-    const [configValue, setInternalConfigValue] = React.useState(config[key] as VConfig);
+    const [configValue, setInternalConfigValue] = React.useState(config[key] as unknown as VConfig);
     const debouncedSetConfigValue = React.useMemo(() => AwesomeDebouncePromise(
         val => config[key] = val,
         750,
-    ), []);
+    ), [config, key]);
 
-    // @ts-ignore
-    useSubscription(config.onUpdate$, newConfig => setInternalConfigValue(newConfig[key]));
+    useSubscription(config.onUpdate$, newConfig => setInternalConfigValue(newConfig[key] as unknown as VConfig));
 
-    const changer = (value?: V) => {
+    const changer = (value?: V | VConfig) => {
         if (valueCallback) {
-            // @ts-ignore
-            value = valueCallback(configValue, value);
+            value = valueCallback(configValue, value as V);
         }
 
         debouncedSetConfigValue(value);
-        setInternalConfigValue(value as unknown as VConfig);
+        setInternalConfigValue(value as VConfig);
     };
 
     return [configValue, changer];

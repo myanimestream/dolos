@@ -49,13 +49,7 @@ const useInputStyles = makeStyles((theme: Theme) => ({
 export function DynamicInput<T>({value, onChange}: { value: T, onChange: (value: T) => void }) {
     const classes = useInputStyles();
 
-    const [internalValue, setInternalValue] = React.useState(value);
     const [error, setError] = React.useState(false);
-
-    const handleInternalChange = (newValue: T) => {
-        setInternalValue(newValue);
-        onChange(newValue);
-    };
 
     const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const serValue = e.target.value;
@@ -67,49 +61,48 @@ export function DynamicInput<T>({value, onChange}: { value: T, onChange: (value:
             return;
         }
 
-        handleInternalChange(parsedValue);
+        onChange(parsedValue);
         setError(false);
     };
 
-    if (typeof internalValue === "boolean") {
+    if (typeof value === "boolean") {
         // @ts-ignore
         const handleChange = () => handleInternalChange(!internalValue);
 
         return (
-            <Switch checked={internalValue} onChange={handleChange}/>
+            <Switch checked={value} onChange={handleChange}/>
         );
-    } else if (typeof internalValue === "string") {
-        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => handleInternalChange(e.target.value as any);
+    } else if (typeof value === "string") {
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value as any);
 
         return (
             <TextField
-                value={internalValue}
+                value={value}
                 onChange={handleChange}
                 fullWidth
             />
         );
-    } else if (isNumeric(internalValue) && internalValue >= 0 && internalValue <= 1) {
-        const handleChange = (...args: any[]) => handleInternalChange(Number(args[1].toFixed(2)) as any);
+    } else if (isNumeric(value) && value >= 0 && value <= 1) {
+        const handleChange = (...args: any[]) => onChange(Number(args[1].toFixed(2)) as any);
 
         return (
             <div className={classes.slider}>
-                <Slider value={internalValue} min={0} max={1} step={0.01} onChange={handleChange}/>
+                <Slider value={value} min={0} max={1} step={0.01} onChange={handleChange}/>
                 <TextField
                     className={classes.textFieldRight}
-                    value={JSON.stringify(internalValue)}
+                    value={JSON.stringify(value)}
                     onChange={handleTextChange}
                     margin="normal"
                     error={error}
                 />
             </div>
         );
-    } else if (!isPrimitive(internalValue)) {
+    } else if (!isPrimitive(value)) {
         const fields = [];
 
-        for (const [fieldKey, fieldValue] of Object.entries(internalValue)) {
-            // @ts-ignore
-            const handleValueChange = (newValue: string) => setInternalValue({
-                ...internalValue,
+        for (const [fieldKey, fieldValue] of Object.entries(value)) {
+            const handleValueChange = (newValue: any) => onChange({
+                ...value,
                 [fieldKey]: newValue,
             });
 
@@ -134,7 +127,7 @@ export function DynamicInput<T>({value, onChange}: { value: T, onChange: (value:
     } else {
         return (
             <TextField
-                value={JSON.stringify(internalValue)}
+                value={JSON.stringify(value)}
                 onChange={handleTextChange}
                 error={error}
             />
