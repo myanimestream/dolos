@@ -222,7 +222,7 @@ export class GrobberClient extends Memory implements GrobberClientLike {
             return expiring.item;
 
         this.forget(key);
-        return null;
+        return undefined;
     }
 
     private async performCachedRequest(endpoint: string,

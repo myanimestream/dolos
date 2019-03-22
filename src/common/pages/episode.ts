@@ -180,19 +180,33 @@ export abstract class EpisodePage<T extends Service> extends ServicePage<T> {
     }
 
     public async _load() {
-        const [epIndex, epsWatched$] = await Promise.all([
-            this.getEpisodeIndex(),
-            this.animePage.getEpisodesWatched$(),
+        const loadAnimePage = async () => {
+            if (this.animePage instanceof ServicePage)
+                await this.animePage.load();
+        };
+
+        const setupEpisodePage = async () => {
+            const [epIndex, epsWatched$] = await Promise.all([
+                this.getEpisodeIndex(),
+                this.animePage.getEpisodesWatched$(),
+            ]);
+
+            this.epsWatchedSub = epsWatched$.subscribe(epsWatched => {
+                if (epsWatched !== undefined && epIndex !== undefined)
+                    this.episodeBookmarked$.next(epsWatched >= epIndex + 1);
+            });
+        };
+
+        const loadEpisodePage = async () => {
+            const embed = await this.buildEmbed();
+            await this.injectEmbed(embed);
+        };
+
+        await Promise.all([
+            loadAnimePage(),
+            setupEpisodePage(),
+            loadEpisodePage(),
         ]);
-        this.epsWatchedSub = epsWatched$.subscribe(epsWatched => {
-            if (epsWatched !== undefined && epIndex !== undefined)
-                this.episodeBookmarked$.next(epsWatched >= epIndex + 1);
-        });
-
-        await this.injectEmbed(await this.buildEmbed());
-
-        if (this.animePage instanceof ServicePage)
-            await this.animePage.load();
     }
 
     public async _unload() {
