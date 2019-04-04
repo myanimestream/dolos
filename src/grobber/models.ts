@@ -60,11 +60,32 @@ export enum Language {
 }
 
 /**
- * A search result from the anime search endpoint.
+ * A search result from a grobber search endpoint.
  */
-export interface AnimeSearchResult {
-    anime: AnimeInfo;
+export interface GrobberSearchResult<T> {
+    item: T;
     certainty: number;
+}
+
+/**
+ * Grobber medium model
+ */
+export interface GrobberMedium extends AnimeInfo {
+    uid: string;
+    title: string;
+    aliases: string[];
+    thumbnail?: string;
+    episodeCount?: number;
+    language: Language;
+    dubbed: boolean;
+}
+
+/**
+ * Create a [[GrobberMedium]] object from a Grobber JSON response.
+ */
+export function grobberMediumFromResp(resp: any): GrobberMedium {
+    resp.episodeCount = resp.episode_count;
+    return resp as GrobberMedium;
 }
 
 /**
@@ -73,7 +94,7 @@ export interface AnimeSearchResult {
 export interface AnimeInfo {
     uid: string;
     title: string;
-    thumbnail: string;
+    thumbnail?: string;
     episodes: number;
     language: Language;
     dubbed: boolean;

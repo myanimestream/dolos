@@ -7,8 +7,8 @@
 
 import runtime = chrome.runtime;
 import {marshalError, unmarshalError} from "dolos/utils";
-import {GrobberClient, GrobberClientLike} from "./client";
-import {AnimeInfo, AnimeSearchResult, Episode, GrobberInfo} from "./models";
+import {GrobberClient, GrobberClientLike, GrobberSearchOptions} from "./client";
+import {AnimeInfo, Episode, GrobberInfo, GrobberMedium, GrobberSearchResult} from "./models";
 
 interface Message {
     id: string;
@@ -70,15 +70,23 @@ export class RemoteGrobberClient implements GrobberClientLike {
     }
 
     /** @inheritDoc */
-    public async searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | undefined> {
-        return await this.sendMessage("searchAnime", [query, results]);
+    public async searchAnime(query: string, options?: GrobberSearchOptions):
+        Promise<Array<GrobberSearchResult<GrobberMedium>> | undefined> {
+        return await this.sendMessage("searchAnime", [query, options]);
+    }
+
+    /** @inheritDoc */
+    public async getAnimeForTitle(title: string, group?: boolean): Promise<GrobberSearchResult<AnimeInfo> | undefined> {
+        return await this.sendMessage("getAnimeForTitle", [title, group]);
     }
 
     private handleMessage(message: Message) {
         const waiting = this.waitingPromises[message.id];
-        waiting.forEach(waiter => waiter(message));
+        if (waiting) {
+            waiting.forEach(waiter => waiter(message));
 
-        this.waitingPromises[message.id] = [];
+            this.waitingPromises[message.id] = [];
+        }
     }
 
     private async waitForAnswer(id: string): Promise<MessageResponse> {

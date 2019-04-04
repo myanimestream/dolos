@@ -9,7 +9,7 @@
 
 export * from "./AnimeCard";
 export * from "./AnimeSearchDialog";
-export * from "./AnimeSelection";
+export * from "./AnimeSearchSelection";
 export * from "./AnimeStatusBar";
 export * from "./ContinueWatchingButton";
 export * from "./EpisodeEmbed";

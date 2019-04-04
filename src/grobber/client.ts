@@ -9,12 +9,14 @@ import Store from "dolos/store";
 import {
     animeFromResp,
     AnimeInfo,
-    AnimeSearchResult,
     Episode,
     episodeFromResp,
     GrobberInfo,
+    GrobberMedium,
+    grobberMediumFromResp,
     GrobberRequestError,
     GrobberResponseError,
+    GrobberSearchResult,
 } from "./models";
 
 /**
@@ -59,6 +61,34 @@ function buildKeys(params: Array<[any, any]>): [string[], string] {
 }
 
 /**
+ * Options for Grobber's search endpoint.
+ */
+export interface GrobberSearchOptions {
+    /**
+     * Page index to start search on. (Default is 0)
+     */
+    page?: number;
+    /**
+     * Amount of results to return per page.
+     * Default is 20. If you need more results
+     * you should use the pagination system instead
+     * of increasing this number.
+     */
+    results?: number;
+    /**
+     * Whether or not to group results from different sources into
+     * a group. (Default is true)
+     */
+    group?: boolean;
+}
+
+const defaultGrobberSearchOptions: GrobberSearchOptions = {
+    group: true,
+    page: 0,
+    results: 20,
+};
+
+/**
  * Client which can interact with the Grobber API.
  *
  * @see [[GrobberClient]] for the implementation.
@@ -71,14 +101,19 @@ export interface GrobberClientLike {
 
     /**
      * Search for Animes.
-     * Results are stored in the cache.
      *
-     * @param results - Defaults to 1 and may go up to 20 (Hard limit by Grobber)
-     *
-     * @return - List of [[AnimeSearchResult]]. Length will not exceed the provided `results`.
-     * `undefined` if there was an error.
+     * @return - List of search results, undefined` if there was an error.
      */
-    searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | undefined>;
+    searchAnime(query: string, options?: GrobberSearchOptions):
+        Promise<Array<GrobberSearchResult<GrobberMedium>> | undefined>;
+
+    /**
+     * Get the Anime for a specific title.
+     *
+     * @return - Anime result, `undefined` if there was an error.
+     */
+    getAnimeForTitle(title: string, group?: boolean):
+        Promise<GrobberSearchResult<AnimeInfo> | undefined>;
 
     /**
      * Get the Anime info for the given uid.
@@ -154,7 +189,54 @@ export class GrobberClient extends Memory implements GrobberClientLike {
     }
 
     /** @inheritDoc */
-    public async searchAnime(query: string, results?: number): Promise<AnimeSearchResult[] | undefined> {
+    public async searchAnime(query: string, options?: GrobberSearchOptions):
+        Promise<Array<GrobberSearchResult<GrobberMedium>> | undefined> {
+        const config = await Store.getConfig();
+
+        options = {...defaultGrobberSearchOptions, ...options};
+
+        let resp;
+        try {
+            resp = await this.performCachedRequest(
+                "/anime/indexsearch/",
+                [
+                    ["query", query],
+                    ["language", config.language],
+                    ["dubbed", config.dubbed],
+                    ["group", options.group],
+                    ["page", options.page],
+                    ["results", options.results],
+                ],
+                response => {
+                    const rawSearchResults = response.anime as any[];
+
+                    const searchResults: Array<GrobberSearchResult<GrobberMedium>> = [];
+
+                    rawSearchResults.forEach(rawResult => {
+                        const anime = grobberMediumFromResp(rawResult);
+
+                        const memoryKey = buildKeys([["uid", anime.uid]])[1];
+                        this.rememberExpiring(memoryKey, anime, responseCacheTTL);
+
+                        searchResults.push({
+                            certainty: rawResult.certainty,
+                            item: anime,
+                        });
+                    });
+
+                    return searchResults;
+                },
+            );
+        } catch (e) {
+            console.error("Couldn't search for anime", e);
+            return undefined;
+        }
+
+        return resp;
+    }
+
+    /** @inheritDoc */
+    public async getAnimeForTitle(title: string, group?: boolean): Promise<GrobberSearchResult<AnimeInfo> | undefined> {
         const config = await Store.getConfig();
 
         let resp;
@@ -162,21 +244,30 @@ export class GrobberClient extends Memory implements GrobberClientLike {
             resp = await this.performCachedRequest(
                 "/anime/search/",
                 [
-                    ["anime", query],
+                    ["anime", title],
                     ["language", config.language],
                     ["dubbed", config.dubbed],
-                    ["results", results || 1],
+                    ["group", group !== undefined ? group : true],
+                    ["results", 1],
                 ],
                 response => {
-                    const searchResults = response.anime as AnimeSearchResult[];
-                    searchResults.forEach(searchResult => {
-                        const anime = animeFromResp(searchResult);
+                    const rawSearchResults = response.anime as any[];
+                    const firstRawSearchResult = rawSearchResults[0];
+                    let searchResult: GrobberSearchResult<AnimeInfo> | undefined;
+
+                    if (firstRawSearchResult) {
+                        const anime = animeFromResp(firstRawSearchResult);
 
                         const memoryKey = buildKeys([["uid", anime.uid]])[1];
                         this.rememberExpiring(memoryKey, anime, responseCacheTTL);
-                    });
 
-                    return searchResults;
+                        searchResult = {
+                            certainty: firstRawSearchResult.certainty || 0,
+                            item: anime,
+                        };
+                    }
+
+                    return searchResult;
                 },
             );
         } catch (e) {
@@ -231,10 +322,9 @@ export class GrobberClient extends Memory implements GrobberClientLike {
         const [lockKeys, memoryKey] = buildKeys(paramsList);
 
         const params = paramsList.reduce((prev, [key, value]) => {
-            // @ts-ignore
             prev[key] = value;
             return prev;
-        }, {});
+        }, {} as { [key: string]: any });
 
         return await this.cachedRequestLock.withLock(async () => {
             const cached = this.getExpiringItemFromMemory(memoryKey);

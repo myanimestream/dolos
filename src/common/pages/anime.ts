@@ -76,10 +76,8 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
         if (!query)
             return undefined;
 
-        const results = await remoteGrobberClient.searchAnime(query);
-        if (!results || !results.length) return undefined;
-
-        const searchResult = results[0];
+        const searchResult = await remoteGrobberClient.getAnimeForTitle(query);
+        if (!searchResult) return undefined;
 
         // only even consider showing the warning if it hasn't already been shown
         if (!this.lowConfidenceWarningShown.has(query)) {
@@ -100,7 +98,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
             }
         }
 
-        const uid = searchResult.anime.uid;
+        const uid = searchResult.item.uid;
         animeInfo.uid = uid;
 
         return uid;

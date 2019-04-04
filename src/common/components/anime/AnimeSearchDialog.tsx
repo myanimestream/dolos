@@ -20,11 +20,11 @@ import SearchIcon from "@material-ui/icons/Search";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import {Service} from "dolos/common";
 import {AnimePage} from "dolos/common/pages";
-import {AnimeInfo, remoteGrobberClient} from "dolos/grobber";
+import {GrobberMedium, remoteGrobberClient} from "dolos/grobber";
 import {useSubscription} from "dolos/hooks";
 import * as React from "react";
 import {Observable} from "rxjs";
-import {AnimeSelection} from ".";
+import {AnimeSearchSelection} from ".";
 import _ = chrome.i18n.getMessage;
 
 /** @ignore */
@@ -85,16 +85,16 @@ export type AnimeSearchDialogAnimePage = Pick<AnimePage<Service>,
 
 export interface AnimeSearchDialogProps extends WithStyles<typeof styles>, WithMobileDialog {
     open: boolean;
-    onClose?: (anime?: AnimeInfo) => void;
+    onClose?: (medium?: GrobberMedium) => void;
     animePage: AnimeSearchDialogAnimePage;
 }
 
 export interface AnimeSearchDialogState {
     loading: boolean;
-    results?: AnimeInfo[];
+    results?: GrobberMedium[];
     searchQuery?: string;
     currentAnimeUID?: string;
-    currentAnime?: AnimeInfo;
+    currentAnime?: GrobberMedium;
 }
 
 // tslint:disable-next-line:variable-name
@@ -102,7 +102,7 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
     class extends React.Component<AnimeSearchDialogProps, AnimeSearchDialogState> {
         public searchDebounced = AwesomeDebouncePromise(async (query: string) => {
             await this.search(query);
-        }, 500);
+        }, 250);
 
         constructor(props: AnimeSearchDialogProps) {
             super(props);
@@ -142,9 +142,9 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
 
             this.setState({loading: true, searchQuery: query});
 
-            let results: AnimeInfo[] | undefined;
+            let results: GrobberMedium[] | undefined;
             const config = await state.config;
-            const searchResults = await remoteGrobberClient.searchAnime(query, 10);
+            const searchResults = await remoteGrobberClient.searchAnime(query);
             const resultUIDs = new Set();
 
             if (searchResults) {
@@ -153,7 +153,7 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
                         // make absolutely sure that there are no duplicate UIDs
                         // it shouldn't happen anyway, but Grobber seems to have
                         // some issues which causes duplicates
-                        const uid = res.anime.uid;
+                        const uid = res.item.uid;
                         if (resultUIDs.has(uid))
                             return false;
                         else
@@ -164,18 +164,17 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
 
                 if (consideration.length === 0) consideration = searchResults;
 
-                results = consideration
-                    .map(res => res.anime);
+                results = consideration.map(res => res.item);
             }
 
             this.setState({loading: false, results});
         }
 
-        public handleSelect(anime: AnimeInfo) {
+        public handleSelect(medium: GrobberMedium) {
             const {currentAnimeUID} = this.state;
-            if (anime.uid === currentAnimeUID) return;
+            if (medium.uid === currentAnimeUID) return;
 
-            this.setState({currentAnimeUID: anime.uid, currentAnime: anime});
+            this.setState({currentAnimeUID: medium.uid, currentAnime: medium});
         }
 
         public renderContent(): React.ReactNode {
@@ -190,8 +189,8 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
             } else if (results && results.length > 0) {
                 // noinspection RequiredAttributes
                 return (
-                    <AnimeSelection
-                        anime={results}
+                    <AnimeSearchSelection
+                        media={results}
                         currentUID={currentAnimeUID}
                         onSelect={handleSelect}
                     />
@@ -290,7 +289,7 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
 
 export interface SearchDialogOpenCommand {
     open: boolean;
-    onClose?: (anime?: AnimeInfo) => void;
+    onClose?: (anime?: GrobberMedium) => void;
 }
 
 export interface RemoteAnimeSearchDialogProps extends Pick<AnimeSearchDialogProps, "animePage"> {
@@ -307,8 +306,8 @@ export function RemoteAnimeSearchDialog(props: RemoteAnimeSearchDialogProps) {
     const [open, setOpen] = React.useState({open: false} as SearchDialogOpenCommand);
     useSubscription(props.open$, setOpen);
 
-    function handleClose(anime?: AnimeInfo) {
-        if (open.onClose) open.onClose(anime);
+    function handleClose(medium?: GrobberMedium) {
+        if (open.onClose) open.onClose(medium);
 
         setOpen({open: false});
     }

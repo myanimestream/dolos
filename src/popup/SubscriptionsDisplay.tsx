@@ -51,11 +51,20 @@ export function SubscriptionItem({subscription}: SubscriptionItemProps) {
         secondaryText = _("subscriptions__unseen_episodes", [unseenEpisodes]);
     }
 
+    let avatar;
+    const thumbnail = subscription.anime.thumbnail;
+    if (thumbnail) {
+        avatar = (
+            <ListItemAvatar>
+                <Avatar alt={subscription.anime.title} src={thumbnail}/>
+            </ListItemAvatar>
+        );
+    }
+
     return (
         <ListItem button onClick={showAnime}>
-            <ListItemAvatar>
-                <Avatar alt={subscription.anime.title} src={subscription.anime.thumbnail}/>
-            </ListItemAvatar>
+            {avatar}
+
             <ListItemText
                 primary={subscription.anime.title}
                 secondary={secondaryText}

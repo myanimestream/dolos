@@ -369,7 +369,7 @@ export const EpisodeEmbed = withStyles(styles)(
 
                 return (
                     <Tooltip title={_("episode__switch_player_type")}>
-                        <Button type="contained" color="primary" onClick={handleClick}>
+                        <Button color="primary" onClick={handleClick}>
                             {getPlayerTypeName(this.getNextPlayerType())}
                             <SwitchVideoIcon className={classes.buttonIconRight}/>
                         </Button>
