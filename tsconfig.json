@@ -27,6 +27,7 @@
     }
   },
   "exclude": [
-    "tools/"
+    "node_modules",
+    "tools"
   ]
 }
