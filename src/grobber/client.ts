@@ -13,7 +13,7 @@ import {
     episodeFromResp,
     GrobberInfo,
     GrobberMedium,
-    grobberMediumFromResp,
+    grobberMediumFromRespData,
     GrobberRequestError,
     GrobberResponseError,
     GrobberSearchResult,
@@ -213,7 +213,7 @@ export class GrobberClient extends Memory implements GrobberClientLike {
                     const searchResults: Array<GrobberSearchResult<GrobberMedium>> = [];
 
                     rawSearchResults.forEach(rawResult => {
-                        const anime = grobberMediumFromResp(rawResult);
+                        const anime = grobberMediumFromRespData(rawResult.anime);
 
                         const memoryKey = buildKeys([["uid", anime.uid]])[1];
                         this.rememberExpiring(memoryKey, anime, responseCacheTTL);

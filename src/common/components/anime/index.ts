@@ -7,7 +7,6 @@
 
 /** @ignore */
 
-export * from "./AnimeCard";
 export * from "./AnimeSearchDialog";
 export * from "./AnimeSearchSelection";
 export * from "./AnimeStatusBar";

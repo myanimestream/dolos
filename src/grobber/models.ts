@@ -83,8 +83,15 @@ export interface GrobberMedium extends AnimeInfo {
 /**
  * Create a [[GrobberMedium]] object from a Grobber JSON response.
  */
-export function grobberMediumFromResp(resp: any): GrobberMedium {
-    resp.episodeCount = resp.episode_count;
+export function grobberMediumFromRespData(resp: any): GrobberMedium {
+    const epCount = resp.episode_count;
+    if (epCount || epCount === 0) {
+        resp.episodeCount = resp.episode_count;
+        resp.episodes = epCount;
+    } else {
+        resp.episodes = 0;
+    }
+
     return resp as GrobberMedium;
 }
 

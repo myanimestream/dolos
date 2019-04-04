@@ -14,11 +14,17 @@ import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/styles/makeStyles";
 import {GrobberMedium} from "dolos/grobber";
 import * as React from "react";
+import classNames = require("classnames");
 import _ = chrome.i18n.getMessage;
 
+const placeholderImage = chrome.runtime.getURL("/img/broken_image.svg");
+
 const useItemStyles = makeStyles({
+    placeholder: {
+        backgroundSize: "contain",
+        filter: "opacity(.5)",
+    },
     thumbnail: {
-        objectFit: "cover",
         paddingTop: `${100 * 40 / 27}%`,
     },
 });
@@ -40,16 +46,22 @@ export function AnimeSelectionItem({medium, current, onClick}: AnimeSelectionIte
         );
     }
 
+    const usePlaceholder = !medium.thumbnail;
+
     return (
         <Card raised={current} onClick={onClick}>
             <CardActionArea>
                 <CardMedia
-                    className={classes.thumbnail}
-                    image={medium.thumbnail}
+                    className={classNames(classes.thumbnail, {[classes.placeholder]: usePlaceholder})}
+                    image={usePlaceholder ? placeholderImage : medium.thumbnail}
                     title={medium.title}
                 />
+
                 <CardContent>
-                    <Typography variant="h5" gutterBottom>{medium.title}</Typography>
+                    <Typography variant="h6" color={current ? "primary" : undefined} gutterBottom>
+                        {medium.title}
+                    </Typography>
+
                     {episodeCountDisplay}
                 </CardContent>
             </CardActionArea>
