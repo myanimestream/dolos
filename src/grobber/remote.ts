@@ -7,7 +7,7 @@
 
 import runtime = chrome.runtime;
 import {marshalError, unmarshalError} from "dolos/utils";
-import {GrobberClient, GrobberClientLike, GrobberSearchOptions} from "./client";
+import {GrobberCheckReport, GrobberClient, GrobberClientLike, GrobberSearchOptions} from "./client";
 import {AnimeInfo, Episode, GrobberInfo, GrobberMedium, GrobberSearchResult} from "./models";
 
 interface Message {
@@ -55,8 +55,13 @@ export class RemoteGrobberClient implements GrobberClientLike {
     }
 
     /** @inheritDoc */
-    public async getGrobberInfo(): Promise<GrobberInfo> {
-        return await this.sendMessage("getGrobberInfo", []);
+    public async getGrobberInfo(baseURL?: string): Promise<GrobberInfo> {
+        return await this.sendMessage("getGrobberInfo", [baseURL]);
+    }
+
+    /** @inheritDoc */
+    public async checkGrobberInfo(baseURL?: string): Promise<GrobberCheckReport> {
+        return await this.sendMessage("checkGrobberInfo", [baseURL]);
     }
 
     /** @inheritDoc */

@@ -241,6 +241,9 @@
   "options__grobber__url__no_grobber": {
     "message": "No Grobber response"
   },
+  "options__grobber__url__grobber_error": {
+    "message": "Grobber returned error"
+  },
   "options__debug__advanced__header": {
     "message": "Advanced",
     "description": "Title for advanced settings in the dolos debug menu"

@@ -82,11 +82,34 @@ export interface GrobberSearchOptions {
     group?: boolean;
 }
 
+/** @ignore */
 const defaultGrobberSearchOptions: GrobberSearchOptions = {
     group: true,
     page: 0,
     results: 20,
 };
+
+/**
+ * Report returned by grobber url checks.
+ */
+export interface GrobberCheckReport {
+    /**
+     * Whether or not the Grobber base url is valid.
+     */
+    valid: boolean;
+    /**
+     * Hint as to why the grobber url is invalid.
+     * This is set if [[GrobberCheckReport.valid]] is `false`
+     */
+    hint?: "trailing_slash" | "version_mismatch" | "no_grobber" | "grobber_error" | "test_failed";
+
+    /**
+     * Sanitised and final url used in the check.
+     * This is set when [[GrobberCheckReport.valid]] is `true`.
+     * Make sure to use this url instead of the input.
+     */
+    url?: string;
+}
 
 /**
  * Client which can interact with the Grobber API.
@@ -96,8 +119,17 @@ const defaultGrobberSearchOptions: GrobberSearchOptions = {
 export interface GrobberClientLike {
     /**
      * Get the grobber information.
+     *
+     * @param baseURL - Grobber url to get the [[GrobberInfo]] from.
      */
-    getGrobberInfo(): Promise<GrobberInfo>;
+    getGrobberInfo(baseURL?: string): Promise<GrobberInfo>;
+
+    /**
+     * Create a [[GrobberCheckReport]] for the Grobber server.
+     *
+     * @param baseURL - Grobber url to get the [[GrobberInfo]] from.
+     */
+    checkGrobberInfo(baseURL?: string): Promise<GrobberCheckReport>;
 
     /**
      * Search for Animes.
@@ -184,8 +216,45 @@ export class GrobberClient extends Memory implements GrobberClientLike {
     }
 
     /** @inheritDoc */
-    public async getGrobberInfo(): Promise<GrobberInfo> {
-        return await this.performCachedRequest("/dolos-info", []);
+    public async getGrobberInfo(baseURL?: string): Promise<GrobberInfo> {
+        if (!baseURL) {
+            const config = await Store.getConfig();
+            baseURL = config.grobberUrl;
+        }
+
+        const info: GrobberInfo = await this.request(new URL("dolos-info", baseURL).href);
+        info.url = baseURL;
+
+        return info;
+    }
+
+    /** @inheritDoc */
+    public async checkGrobberInfo(baseURL?: string): Promise<GrobberCheckReport> {
+        let info: GrobberInfo;
+
+        try {
+            info = await this.getGrobberInfo(baseURL);
+        } catch (e) {
+            if (e instanceof GrobberResponseError) {
+                return {
+                    hint: "grobber_error",
+                    valid: false,
+                };
+            } else {
+                return {
+                    hint: "test_failed",
+                    valid: false,
+                };
+            }
+        }
+
+        if (info.id !== "grobber") return {valid: false, hint: "no_grobber"};
+
+        if (!info.version || !info.version.startsWith("3")) {
+            return {valid: false, hint: "version_mismatch"};
+        }
+
+        return {valid: true, url: info.url};
     }
 
     /** @inheritDoc */

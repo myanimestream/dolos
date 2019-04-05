@@ -19,48 +19,10 @@ import CheckIcon from "@material-ui/icons/Check";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import WifiIcon from "@material-ui/icons/Wifi";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
-import axios from "axios";
+import {grobberClient} from "dolos/grobber";
 import * as React from "react";
 import {SettingsTabContentProps, useConfigChange, useConfigToggle} from "../SettingsTab";
 import _ = chrome.i18n.getMessage;
-
-/**
- * Result of a grobber url check.
- *
- * @see [[checkGrobberUrl]]
- */
-interface GrobberUrlCheckResult {
-    valid: boolean;
-    hint?: "trailing_slash" | "version_mismatch" | "no_grobber";
-}
-
-/**
- * Check whether a given Grobber URL is valid.
- */
-async function checkGrobberUrl(url: string): Promise<GrobberUrlCheckResult> {
-    let resp;
-
-    try {
-        resp = await axios.get(url + "/dolos-info", {timeout: 1000});
-    } catch (e) {
-        const result: GrobberUrlCheckResult = {valid: false};
-
-        if (url.endsWith("/")) {
-            result.hint = "trailing_slash";
-        }
-
-        return result;
-    }
-
-    const data = resp.data;
-    if (data.id !== "grobber") return {valid: false, hint: "no_grobber"};
-
-    if (!data.version.startsWith("3.0")) {
-        return {valid: false, hint: "version_mismatch"};
-    }
-
-    return {valid: true};
-}
 
 /**
  * Get the correct input adornment based on the current grobber url checking state.
@@ -97,12 +59,12 @@ export function Debug(props: SettingsTabContentProps) {
 
         setCheckingURL(true);
 
-        const result = await checkGrobberUrl(url);
+        const result = await grobberClient.checkGrobberInfo(url);
         if (result.valid) {
-            setGrobberURL(url);
+            setGrobberURL(result.url);
             setInvalidURL(undefined);
         } else {
-            const text = `options__grobber__url__${result.hint || "test_failed"}`;
+            const text = `options__grobber__url__${result.hint}`;
             setInvalidURL(_(text));
         }
 
