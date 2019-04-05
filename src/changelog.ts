@@ -38,7 +38,8 @@ const CHANGELOG: Changelog = new Map([
         ),
         "Added a Debug mode which is entirely irrelevant to you",
         "Reworked the Settings page",
-        "Finally added the content for the help page",
+        "Finally added some content for the help page",
+        "Instead of loading indefinitely when Grobber returns no embeds, Dolos now shows an error message",
     ]],
     ["0.2.4", [
         "Fixed anime search.",

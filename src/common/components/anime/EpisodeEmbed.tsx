@@ -140,12 +140,20 @@ export const EpisodeEmbed = withStyles(styles)(
                 return;
             }
 
+            const epEmbeds = episode.embeds;
+            const epStream = episode.stream;
+
+            if (epEmbeds.length === 0 && !(epStream && epStream.links.length > 0)) {
+                this.setState({currentPlayer: PlayerType.NONE, failReason: "no_streams"});
+                return;
+            }
+
             const updateState: Partial<EpisodeEmbedState> = {
                 playersAvailable: [],
             };
 
-            if (episode.embeds.length > 0) {
-                const embedInfos = prepareEmbedInfos(episode.embeds, config.embedProviders);
+            if (epEmbeds.length > 0) {
+                const embedInfos = prepareEmbedInfos(epEmbeds, config.embedProviders);
                 if (embedInfos.length > 0) {
                     updateState.currentPlayer = PlayerType.EMBED;
                     // @ts-ignore
@@ -154,8 +162,8 @@ export const EpisodeEmbed = withStyles(styles)(
                 }
             }
 
-            if (episode.stream && episode.stream.links.length > 0) {
-                const sources: PlayerSource[] = episode.stream.links.map(link => {
+            if (epStream && epStream.links.length > 0) {
+                const sources: PlayerSource[] = epStream.links.map(link => {
                     return {url: link};
                 });
 
