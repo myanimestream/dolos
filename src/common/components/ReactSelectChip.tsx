@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         marginTop: theme.spacing(1),
         position: "absolute",
         right: 0,
-        zIndex: 1,
+        zIndex: 2,
     },
     placeholder: {
         fontSize: 16,
