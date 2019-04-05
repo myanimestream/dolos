@@ -1,4 +1,3 @@
-/* tslint:disable:max-line-length */
 /**
  * The changelog of Dolos.
  * This file only contains the changelog itself.

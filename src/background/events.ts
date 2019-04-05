@@ -101,7 +101,9 @@ state.hasNewEpisode$.subscribe(async e => {
         else return undefined;
     };
 
-    const [thumbnail, episodePoster] = await Promise.all([getBlobURL(anime.thumbnail), getEpisodePoster()]);
+    const thumbnailPromise = anime.thumbnail ? getBlobURL(anime.thumbnail) : Promise.resolve(undefined);
+
+    const [thumbnailBlob, episodePoster] = await Promise.all([thumbnailPromise, getEpisodePoster()]);
 
     const notification = await BrowserNotification.create({
         buttons: [
@@ -109,7 +111,7 @@ state.hasNewEpisode$.subscribe(async e => {
             {title: _("notification__new_episodes__unsubscribe"), iconUrl: "img/notifications_off.svg"},
         ],
         contextMessage: _("ext_name"),
-        iconUrl: thumbnail,
+        iconUrl: thumbnailBlob,
         imageUrl: episodePoster,
         message: _("notification__new_episodes", [e.unseenEpisodes]),
         title: anime.title,

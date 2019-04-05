@@ -47,7 +47,7 @@ const updaters: Map<string | RegExp, Updater> = new Map([
 
         const idMatcher = /^(\w+)::(\w+)::([0-9a-f]+)$/;
 
-        const storage = await new Promise(res => chrome.storage.sync.get(res));
+        const storage: { [key: string]: any } = await new Promise(res => chrome.storage.sync.get(res));
         for (const [key, value] of Object.entries(storage)) {
             if (key === "config") {
                 newStorage.config = value;

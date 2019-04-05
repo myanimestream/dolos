@@ -4,7 +4,7 @@
  * @module services/kitsu
  */
 
-import axios, {AxiosRequestConfig, Method} from "axios";
+import axios, {AxiosRequestConfig} from "axios";
 import {evaluateCode, formatCode, injectCode} from "dolos/inject";
 
 /**
@@ -13,7 +13,7 @@ import {evaluateCode, formatCode, injectCode} from "dolos/inject";
  * @param auth - Authorization header value
  * @param silent - ignore errors and return null
  */
-export async function kitsuAPIRequest(method: Method,
+export async function kitsuAPIRequest(method: string,
                                       endpoint: string,
                                       auth?: string,
                                       config?: AxiosRequestConfig,
