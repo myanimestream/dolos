@@ -11,6 +11,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListSubheader from "@material-ui/core/ListSubheader";
+import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {AnimeSubscriptionInfo} from "dolos/models";
@@ -46,9 +47,25 @@ export function SubscriptionItem({subscription}: SubscriptionItemProps) {
     }
 
     let secondaryText = null;
-    const unseenEpisodes = subscription.anime.episodes - subscription.episodesWatched;
-    if (unseenEpisodes > 0) {
-        secondaryText = _("subscriptions__unseen_episodes", [unseenEpisodes]);
+    let tooltipText = null;
+
+    const error = subscription.error;
+
+    if (error) {
+        secondaryText = _(`subscriptions__error__${error}`);
+        if (!secondaryText)
+            secondaryText = _("subscriptions__error__unknown");
+
+        tooltipText = _(`subscriptions__error__${error}__tooltip`);
+        if (!tooltipText)
+            tooltipText = _("subscriptions__error__unknown__tooltip");
+
+    } else {
+        tooltipText = _("subscriptions__item__tooltip");
+
+        const unseenEpisodes = subscription.anime.episodes - subscription.episodesWatched;
+        if (unseenEpisodes > 0)
+            secondaryText = _("subscriptions__unseen_episodes", [unseenEpisodes]);
     }
 
     let avatar;
@@ -62,19 +79,22 @@ export function SubscriptionItem({subscription}: SubscriptionItemProps) {
     }
 
     return (
-        <ListItem button onClick={showAnime}>
-            {avatar}
+        <Tooltip title={tooltipText}>
+            <ListItem button onClick={showAnime}>
+                {avatar}
 
-            <ListItemText
-                primary={subscription.anime.title}
-                secondary={secondaryText}
-            />
-            <ListItemSecondaryAction>
-                <IconButton aria-label={_("subscriptions__remove_subscription")} onClick={unsubscribeAnime}>
-                    <DeleteIcon/>
-                </IconButton>
-            </ListItemSecondaryAction>
-        </ListItem>
+                <ListItemText
+                    primary={subscription.anime.title}
+                    secondary={secondaryText}
+                    secondaryTypographyProps={error ? {color: "error"} : undefined}
+                />
+                <ListItemSecondaryAction>
+                    <IconButton aria-label={_("subscriptions__remove_subscription")} onClick={unsubscribeAnime}>
+                        <DeleteIcon/>
+                    </IconButton>
+                </ListItemSecondaryAction>
+            </ListItem>
+        </Tooltip>
     );
 }
 

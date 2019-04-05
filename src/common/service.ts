@@ -90,6 +90,11 @@ export default abstract class Service {
         this.showSnackbar(resolveSnackbarMessage(message, "warning"));
     }
 
+    /** Shortcut for [[Service.snackbarMessage$.next]] with variant info */
+    public showInfoSnackbar(message: string | SnackbarMessage): void {
+        this.showSnackbar(resolveSnackbarMessage(message, "info"));
+    }
+
     public async showAnimePage(memory?: { [key: string]: any }) {
         await this.state.loadPage(this.buildServicePage(this.animePageType, memory));
     }

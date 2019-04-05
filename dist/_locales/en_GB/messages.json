@@ -123,6 +123,29 @@
   "subscriptions__remove_subscription": {
     "message": "Remove subscription"
   },
+  "subscriptions__item__tooltip": {
+    "message": "Open",
+    "description": "Tooltip shown when hovering over a subscription"
+  },
+  "subscriptions__error__unknown": {
+    "message": "Unknown Error",
+    "description": "Error shown if something unknown is wrong with a subscription"
+  },
+  "subscriptions__error__unknown__tooltip": {
+    "message": "Click to fix"
+  },
+  "subscriptions__error__uidunknown": {
+    "message": "UID Unknown",
+    "description": "Error shown if Grobber rejected the uid"
+  },
+  "subscriptions_fix_failed": {
+    "message": "No fix for subscription issue",
+    "description": "Snackbar text shown if no fix was found for the subscription error"
+  },
+  "subscriptions_fix_successful": {
+    "message": "Fixed subscription issue",
+    "description": "Snackbar text shown if subscription error was fixed"
+  },
   "options__header": {
     "message": "Settings",
     "description": "App bar title for the settings page"

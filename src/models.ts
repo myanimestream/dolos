@@ -85,6 +85,10 @@ export interface StoredAnimeInfo {
     uid?: string;
 }
 
+export enum SubscriptionError {
+    UIDUnknown = "uidunknown",
+}
+
 export interface AnimeSubscriptionInfo {
     serviceID: string;
     identifier: string;
@@ -97,6 +101,7 @@ export interface AnimeSubscriptionInfo {
      */
     nextEpisodeURL?: string;
     anime: AnimeInfo;
+    error?: SubscriptionError;
 }
 
 /**

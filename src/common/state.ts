@@ -140,16 +140,6 @@ export default class State<T extends Service> extends ElementMemory {
         };
     }
 
-    public async updateAnimeSubscription(animeID: string,
-                                         nextEpisodeURL: string | undefined,
-                                         episodesWatched: number): Promise<void> {
-        const subscription = await this.getSubscription(animeID);
-        if (subscription) {
-            subscription.episodesWatched = episodesWatched;
-            subscription.nextEpisodeURL = nextEpisodeURL;
-        }
-    }
-
     /** Unsubscribe from Anime */
     // noinspection JSMethodCanBeStatic
     public async unsubscribeAnime(animeID: string): Promise<void> {

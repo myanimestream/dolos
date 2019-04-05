@@ -2,9 +2,9 @@
  * @module background
  */
 
-import {AnimeInfo, grobberClient} from "dolos/grobber";
+import {AnimeInfo, grobberClient, GrobberErrorType, GrobberResponseError} from "dolos/grobber";
 import AsyncLock from "dolos/lock";
-import {AnimeSubscriptionInfo, SubscribedAnimes} from "dolos/models";
+import {AnimeSubscriptionInfo, SubscribedAnimes, SubscriptionError} from "dolos/models";
 import Store from "dolos/store";
 import {hasNewEpisode$} from "./observables";
 
@@ -24,6 +24,8 @@ async function checkAnimeUpdate() {
 
     // there's absolutely no rush, so let's do it sequentially!
     for (const animeSubscription of Object.values(subscribedAnimes)) {
+        if (animeSubscription.error) continue;
+
         const oldAnime = animeSubscription.anime;
         const uid = oldAnime.uid;
 
@@ -31,13 +33,20 @@ async function checkAnimeUpdate() {
         try {
             newAnime = await grobberClient.getAnimeInfo(uid);
         } catch (e) {
+            if (e instanceof GrobberResponseError) {
+                if (e.name === GrobberErrorType.UIDUnknown) {
+                    animeSubscription.error = SubscriptionError.UIDUnknown;
+                    continue;
+                }
+            }
+
             console.error("Couldn't get anime info", e);
             continue;
         }
 
-        if (newAnime.episodes > oldAnime.episodes) {
-            animeSubscription.anime = newAnime;
+        animeSubscription.anime = newAnime;
 
+        if (newAnime.episodes > oldAnime.episodes) {
             const event: NewEpisodeEvent = {
                 subscribedAnimes,
                 subscription: animeSubscription,

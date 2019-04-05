@@ -4,7 +4,7 @@
 
 import {AnimeInfo, GrobberErrorType, remoteGrobberClient} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
-import {AnimeSubscriptionInfo, StoredAnimeInfo} from "dolos/models";
+import {AnimeSubscriptionInfo, StoredAnimeInfo, SubscriptionError} from "dolos/models";
 import {wrapSentryLogger} from "dolos/utils";
 import * as React from "react";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
@@ -242,7 +242,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
     }
 
     /**
-     * Subscribe to the Anime.
+     * Update the subscription for this Anime.
      * @returns Whether the action was successful.
      */
     public async updateSubscription(episodesWatched?: number | PromiseLike<number>): Promise<void> {
@@ -255,14 +255,38 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
         if (!(animeID && epsWatched !== undefined))
             return;
 
+        const subscription = await this.state.getSubscription(animeID);
+        if (!subscription) return;
+
         if (epsWatched === totalEpisodes) {
             await this.unsubscribeAnime();
             return;
         }
 
-        const nextEpURL = await this.getEpisodeURL(epsWatched);
+        subscription.episodesWatched = epsWatched;
+        subscription.nextEpisodeURL = await this.getEpisodeURL(epsWatched);
 
-        await this.state.updateAnimeSubscription(animeID, nextEpURL, epsWatched);
+        if (subscription.error) {
+            let fixed = false;
+
+            switch (subscription.error) {
+                case SubscriptionError.UIDUnknown:
+                    const anime = await this.getAnime();
+                    if (anime !== undefined) {
+                        subscription.anime = anime;
+                        fixed = true;
+                    }
+
+                    break;
+            }
+
+            if (fixed) {
+                delete subscription.error;
+                this.service.showInfoSnackbar(_("subscriptions__fix__successful"));
+            } else {
+                this.service.showWarningSnackbar(_("subscriptions__fix__failed"));
+            }
+        }
     }
 
     /**
