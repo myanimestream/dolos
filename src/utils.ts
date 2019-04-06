@@ -242,3 +242,18 @@ export async function promisifyCallback<T extends any[]>(func: (callback: (...ar
         func((...args) => res(receiver(...args)));
     });
 }
+
+/**
+ * Check whether the elements of two arrays are equal.
+ *
+ * @param a - First array
+ * @param b - Second array
+ *
+ * @return `true` if both arrays have the same elements in the same order
+ * and `false` otherwise.
+ */
+export function arrayElementsEqual(a: any[], b: any[]): boolean {
+    if (a.length !== b.length) return false;
+
+    return a.every((value, index) => value === b[index]);
+}

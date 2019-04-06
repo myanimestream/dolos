@@ -1,4 +1,4 @@
-import {retryUntil, waitWithTimeout} from "./utils";
+import {arrayElementsEqual, retryUntil, waitWithTimeout} from "./utils";
 
 jest.mock("./info");
 
@@ -34,4 +34,19 @@ test("retryUntil - success", async () => {
 
     expect(fn).lastCalledWith(5);
     expect(res).toBe(true);
+});
+
+test("arrayElementsEqual", () => {
+    const a = [1, 2, 3];
+    const b = [1, 2, 3];
+    const c = [1, 2, 3, 4];
+    const d = [3, 2, 1];
+
+    expect(a).not.toBe(b);
+    expect(arrayElementsEqual(a, a)).toBeTruthy();
+    expect(arrayElementsEqual(a, b)).toBeTruthy();
+    expect(arrayElementsEqual(b, a)).toBeTruthy();
+
+    expect(arrayElementsEqual(a, c)).toBeFalsy();
+    expect(arrayElementsEqual(a, d)).toBeFalsy();
 });

@@ -14,7 +14,7 @@ test("isPrimitive", () => {
 
 test("StoreElementTraps", () => {
     // @ts-ignore
-    const element = new StoreElement.create(null, {test: 5});
+    const element = StoreElement.create(null, {test: 5});
 
     expect(element.test).toBe(5);
     expect("test" in element).toBeTruthy();

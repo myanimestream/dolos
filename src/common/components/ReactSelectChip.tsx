@@ -14,7 +14,6 @@ import makeStyles from "@material-ui/styles/makeStyles";
 import useTheme from "@material-ui/styles/useTheme";
 import classNames from "classnames";
 import * as React from "react";
-import {CSSProperties} from "react";
 import {Creatable} from "react-select";
 import {CreatableProps} from "react-select/lib/Creatable";
 import {Props as SelectableProps} from "react-select/lib/Select";
@@ -186,7 +185,7 @@ export function MUICreatable<OptionsType>(props: SelectableProps<OptionsType> & 
     const theme: Theme = useTheme();
 
     const selectStyles = {
-        input: (base: CSSProperties) => ({
+        input: (base: React.CSSProperties) => ({
             ...base,
             "& input": {
                 font: "inherit",
