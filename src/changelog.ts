@@ -38,6 +38,7 @@ const CHANGELOG: Changelog = new Map([
         ),
         "Added a Debug mode which is entirely irrelevant to you",
         "Reworked the Settings page",
+        "Added \"Embed Provider\" settings which allows you to block and order providers",
         "Finally added some content for the help page",
         "Instead of loading indefinitely when Grobber returns no embeds, Dolos now shows an error message",
     ]],

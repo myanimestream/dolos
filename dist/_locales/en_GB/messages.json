@@ -231,7 +231,15 @@
   },
   "options__embed_providers__blocked__placeholder": {
     "message": "Select blocked embed providers",
-    "description": "Place holder shown when no embed providers have been blocked"
+    "description": "Placeholder shown when no embed providers have been blocked"
+  },
+  "options__embed_providers__order__placeholder": {
+    "message": "Add embed providers to order them",
+    "description": "Placeholder when there are no providers in the sortable list"
+  },
+  "options__embed_providers__order__add_provider": {
+    "message": "Add an embed provider",
+    "description": "Text shown on the trigger to add a new embed provider to the order"
   },
   "options__embed_providers__order__title": {
     "message": "Embed provider order",
