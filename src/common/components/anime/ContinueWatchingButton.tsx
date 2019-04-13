@@ -42,7 +42,7 @@ export const ContinueWatchingButton = withStyles(styles)(
             super(props);
 
             this.state = {
-                buttonText: _("anime__continue_watching"),
+                buttonText: _("anime__continue_watching__loading"),
                 disabled: true,
                 tooltip: _("anime__continue_watching__loading"),
             };

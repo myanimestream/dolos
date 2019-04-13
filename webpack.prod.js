@@ -10,8 +10,8 @@ if (["SENTRY_AUTH_TOKEN", "SENTRY_ORG", "SENTRY_PROJECT"].every(key => key in pr
         console.info("uploading source maps to Sentry!");
 
         const sentryPlugin = new SentryCliPlugin({
-            release: `dolos@${manifest.version}`,
             include: "dist/",
+            release: `dolos@${manifest.version}`,
         });
 
         plugins.push(sentryPlugin);
@@ -23,7 +23,7 @@ if (["SENTRY_AUTH_TOKEN", "SENTRY_ORG", "SENTRY_PROJECT"].every(key => key in pr
 }
 
 module.exports = merge(common, {
-    mode: "production",
     devtool: "source-map",
-    plugins
+    mode: "production",
+    plugins,
 });

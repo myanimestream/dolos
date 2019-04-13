@@ -10,8 +10,10 @@ const secrets = require("./dolos-secrets");
 for (const key of Object.keys(secrets)) {
     const envKey = `DOLOS_${key.toString().toUpperCase()}`;
     const envValue = process.env[envKey];
-    if (envValue)
+
+    if (envValue) {
         secrets[key] = envValue;
+    }
 }
 
 const contentScripts = {};
@@ -27,46 +29,40 @@ module.exports = {
     entry: {
         background: path.join(__dirname, "src/background"),
 
-        popup: path.join(__dirname, "src/popup/render"),
         options: path.join(__dirname, "src/options/render"),
+        popup: path.join(__dirname, "src/popup/render"),
 
         debug: path.join(__dirname, "src/debug/render"),
 
         // Content Scripts:
         ...contentScripts,
     },
-    output: {
-        path: path.join(__dirname, "dist/js"),
-        filename: "[name].js"
-    },
     module: {
         rules: [
             {
                 exclude: /node_modules/,
                 test: /\.tsx?$/,
-                use: "ts-loader"
+                use: "ts-loader",
             },
             {
                 test: /\.scss$/,
                 use: [
                     {
-                        loader: "style-loader"
+                        loader: "style-loader",
                     },
                     {
-                        loader: "css-loader"
+                        loader: "css-loader",
                     },
                     {
-                        loader: "sass-loader"
-                    }
-                ]
-            }
-        ]
+                        loader: "sass-loader",
+                    },
+                ],
+            },
+        ],
     },
-    resolve: {
-        alias: {
-            "dolos": path.join(__dirname, "src"),
-        },
-        extensions: [".ts", ".tsx", ".js"]
+    output: {
+        filename: "[name].js",
+        path: path.join(__dirname, "dist/js"),
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -74,4 +70,10 @@ module.exports = {
         }),
         // new BundleAnalyzerPlugin(),
     ],
+    resolve: {
+        alias: {
+            "dolos": path.join(__dirname, "src"),
+        },
+        extensions: [".ts", ".tsx", ".js"],
+    },
 };

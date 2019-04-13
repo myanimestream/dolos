@@ -41,6 +41,7 @@ const CHANGELOG: Changelog = new Map([
         "Added \"Embed Provider\" settings which allows you to block and order providers",
         "Finally added some content for the help page",
         "Instead of loading indefinitely when Grobber returns no embeds, Dolos now shows an error message",
+        "\"Continue Watching\" button now better indicates that it's loading",
     ]],
     ["0.2.4", [
         "Fixed anime search.",
