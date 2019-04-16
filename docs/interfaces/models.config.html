@@ -53,7 +53,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../index.html">Globals</a>
 				</li>
 				<li>
 					<a href="../modules/models.html">models</a>
@@ -86,11 +86,14 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.config.html#autonext" class="tsd-kind-icon">auto<wbr>Next</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.config.html#autoplay" class="tsd-kind-icon">autoplay</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.config.html#debugmode" class="tsd-kind-icon">debug<wbr>Mode</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.config.html#dubbed" class="tsd-kind-icon">dubbed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.config.html#embedproviders" class="tsd-kind-icon">embed<wbr>Providers</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.config.html#grobberurl" class="tsd-kind-icon">grobber<wbr>Url</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.config.html#language" class="tsd-kind-icon">language</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.config.html#maxcertaintyforwarning" class="tsd-kind-icon">max<wbr>Certainty<wbr>For<wbr>Warning</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.config.html#mincertaintyforsearchresult" class="tsd-kind-icon">min<wbr>Certainty<wbr>For<wbr>Search<wbr>Result</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.config.html#preferdolosplayer" class="tsd-kind-icon">prefer<wbr>Dolos<wbr>Player</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="models.config.html#updateanimeprogress" class="tsd-kind-icon">update<wbr>Anime<wbr>Progress</a></li>
 							</ul>
 						</section>
@@ -105,7 +108,7 @@
 					<div class="tsd-signature tsd-kind-icon">auto<wbr>Next<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/models.ts#L14">models.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/models.ts#L19">models.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -115,7 +118,17 @@
 					<div class="tsd-signature tsd-kind-icon">autoplay<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/models.ts#L13">models.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/models.ts#L18">models.ts:18</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="debugmode" class="tsd-anchor"></a>
+					<h3>debug<wbr>Mode</h3>
+					<div class="tsd-signature tsd-kind-icon">debug<wbr>Mode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/models.ts#L16">models.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -125,9 +138,38 @@
 					<div class="tsd-signature tsd-kind-icon">dubbed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/models.ts#L17">models.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/models.ts#L23">models.ts:23</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="embedproviders" class="tsd-anchor"></a>
+					<h3>embed<wbr>Providers</h3>
+					<div class="tsd-signature tsd-kind-icon">embed<wbr>Providers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/models.ts#L41">models.ts:41</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>allow<wbr>Unknown<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Show embeds that Dolos doesn&#39;t know about.</p>
+									</div>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5>blocked<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>order<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="grobberurl" class="tsd-anchor"></a>
@@ -135,7 +177,7 @@
 					<div class="tsd-signature tsd-kind-icon">grobber<wbr>Url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/models.ts#L11">models.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/models.ts#L15">models.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -145,7 +187,7 @@
 					<div class="tsd-signature tsd-kind-icon">language<span class="tsd-signature-symbol">:</span> <a href="../enums/grobber.language.html" class="tsd-signature-type">Language</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/models.ts#L16">models.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/models.ts#L22">models.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -155,12 +197,12 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Certainty<wbr>For<wbr>Warning<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/models.ts#L33">models.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/models.ts#L39">models.ts:39</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>How low does the <a href="grobber.animesearchresult.html#certainty">AnimeSearchResult.certainty</a> value
+							<p>How low does the [[AnimeSearchResult.certainty]] value
 								have to be for Dolos to show a warning Snackbar
 							prompting the user to manually check?</p>
 						</div>
@@ -172,16 +214,26 @@
 					<div class="tsd-signature tsd-kind-icon">min<wbr>Certainty<wbr>For<wbr>Search<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/models.ts#L26">models.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/models.ts#L32">models.ts:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>How high does the <a href="grobber.animesearchresult.html#certainty">AnimeSearchResult.certainty</a>
-								value have to be for a <a href="grobber.animesearchresult.html">AnimeSearchResult</a> to be listed
+							<p>How high does the [[AnimeSearchResult.certainty]]
+								value have to be for a [[AnimeSearchResult]] to be listed
 							in the search results</p>
 						</div>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="preferdolosplayer" class="tsd-anchor"></a>
+					<h3>prefer<wbr>Dolos<wbr>Player</h3>
+					<div class="tsd-signature tsd-kind-icon">prefer<wbr>Dolos<wbr>Player<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/models.ts#L20">models.ts:20</a></li>
+						</ul>
+					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="updateanimeprogress" class="tsd-anchor"></a>
@@ -189,7 +241,7 @@
 					<div class="tsd-signature tsd-kind-icon">update<wbr>Anime<wbr>Progress<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/models.ts#L19">models.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/models.ts#L25">models.ts:25</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -199,87 +251,18 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/assets.html">assets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components.html">common/components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components_anime.html">common/components/anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_pages.html">common/pages</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/hooks.html">hooks</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/memory.html">memory</a>
+						<a href="../index.html"><em>Subsystems</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options_tabs.html">options/tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/secrets.html">secrets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/services_kitsu.html">services/kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/services_myanimelist.html">services/myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/subscriptions.html">subscriptions</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/models.subscriptionerror.html" class="tsd-kind-icon">Subscription<wbr>Error</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="models.animesubscriptioninfo.html" class="tsd-kind-icon">Anime<wbr>Subscription<wbr>Info</a>
 					</li>
@@ -295,7 +278,13 @@
 								<a href="models.config.html#autoplay" class="tsd-kind-icon">autoplay</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="models.config.html#debugmode" class="tsd-kind-icon">debug<wbr>Mode</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="models.config.html#dubbed" class="tsd-kind-icon">dubbed</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="models.config.html#embedproviders" class="tsd-kind-icon">embed<wbr>Providers</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="models.config.html#grobberurl" class="tsd-kind-icon">grobber<wbr>Url</a>
@@ -308,6 +297,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="models.config.html#mincertaintyforsearchresult" class="tsd-kind-icon">min<wbr>Certainty<wbr>For<wbr>Search<wbr>Result</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="models.config.html#preferdolosplayer" class="tsd-kind-icon">prefer<wbr>Dolos<wbr>Player</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="models.config.html#updateanimeprogress" class="tsd-kind-icon">update<wbr>Anime<wbr>Progress</a>

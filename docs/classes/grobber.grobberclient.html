@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Client | Dolos Documentation</title>
+	<title>GrobberClient | Dolos Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -53,16 +53,16 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../index.html">Globals</a>
 				</li>
 				<li>
 					<a href="../modules/grobber.html">grobber</a>
 				</li>
 				<li>
-					<a href="grobber.client.html">Client</a>
+					<a href="grobber.grobberclient.html">GrobberClient</a>
 				</li>
 			</ul>
-			<h1>Class Client</h1>
+			<h1>Class GrobberClient</h1>
 		</div>
 	</div>
 </header>
@@ -75,6 +75,7 @@
 						<p>A client for interacting with the Grobber API.
 						Uses an internal cache with <a href="../interfaces/grobber.expiringitem.html">ExpiringItem</a>.</p>
 					</div>
+					<p>The cache is realised using <a href="memory.memory-1.html">Memory</a>.</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -84,7 +85,7 @@
 						<a href="memory.memory-1.html" class="tsd-signature-type">Memory</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">Client</span>
+								<span class="target">GrobberClient</span>
 							</li>
 						</ul>
 					</li>
@@ -94,6 +95,7 @@
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
 					<li><a href="../interfaces/memory.hasmemory.html" class="tsd-signature-type">HasMemory</a></li>
+					<li><a href="../interfaces/grobber.grobberclientlike.html" class="tsd-signature-type">GrobberClientLike</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -103,30 +105,35 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="grobber.client.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="grobber.grobberclient.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="grobber.client.html#animeinfolock" class="tsd-kind-icon">anime<wbr>Info<wbr>Lock</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="grobber.client.html#axiosclient" class="tsd-kind-icon">axios<wbr>Client</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="grobber.client.html#memory" class="tsd-kind-icon">memory</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="grobber.grobberclient.html#axiosclient" class="tsd-kind-icon">axios<wbr>Client</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="grobber.grobberclient.html#cachedrequestlock" class="tsd-kind-icon">cached<wbr>Request<wbr>Lock</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="grobber.grobberclient.html#internalmemory" class="tsd-kind-icon">internal<wbr>Memory</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="grobber.grobberclient.html#memory" class="tsd-kind-icon">memory</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="grobber.client.html#forget" class="tsd-kind-icon">forget</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="grobber.client.html#getanimeinfo" class="tsd-kind-icon">get<wbr>Anime<wbr>Info</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="grobber.client.html#getepisode" class="tsd-kind-icon">get<wbr>Episode</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="grobber.client.html#getexpiringitemfrommemory" class="tsd-kind-icon">get<wbr>Expiring<wbr>Item<wbr>From<wbr>Memory</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="grobber.client.html#performanimerequest" class="tsd-kind-icon">perform<wbr>Anime<wbr>Request</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="grobber.client.html#remember" class="tsd-kind-icon">remember</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="grobber.client.html#rememberexpiring" class="tsd-kind-icon">remember<wbr>Expiring</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="grobber.client.html#request" class="tsd-kind-icon">request</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="grobber.client.html#resetmemory" class="tsd-kind-icon">reset<wbr>Memory</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="grobber.client.html#searchanime" class="tsd-kind-icon">search<wbr>Anime</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="grobber.grobberclient.html#assignmemory" class="tsd-kind-icon">assign<wbr>Memory</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="grobber.grobberclient.html#checkgrobberinfo" class="tsd-kind-icon">check<wbr>Grobber<wbr>Info</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="grobber.grobberclient.html#forget" class="tsd-kind-icon">forget</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="grobber.grobberclient.html#getanimefortitle" class="tsd-kind-icon">get<wbr>Anime<wbr>For<wbr>Title</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="grobber.grobberclient.html#getanimeinfo" class="tsd-kind-icon">get<wbr>Anime<wbr>Info</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="grobber.grobberclient.html#getepisode" class="tsd-kind-icon">get<wbr>Episode</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="grobber.grobberclient.html#getexpiringitemfrommemory" class="tsd-kind-icon">get<wbr>Expiring<wbr>Item<wbr>From<wbr>Memory</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="grobber.grobberclient.html#getgrobberinfo" class="tsd-kind-icon">get<wbr>Grobber<wbr>Info</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="grobber.grobberclient.html#performcachedrequest" class="tsd-kind-icon">perform<wbr>Cached<wbr>Request</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="grobber.grobberclient.html#remember" class="tsd-kind-icon">remember</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="grobber.grobberclient.html#rememberexpiring" class="tsd-kind-icon">remember<wbr>Expiring</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="grobber.grobberclient.html#request" class="tsd-kind-icon">request</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="grobber.grobberclient.html#resetmemory" class="tsd-kind-icon">reset<wbr>Memory</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="grobber.grobberclient.html#searchanime" class="tsd-kind-icon">search<wbr>Anime</a></li>
 							</ul>
 						</section>
 					</div>
@@ -138,40 +145,51 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Client<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="grobber.client.html" class="tsd-signature-type">Client</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Grobber<wbr>Client<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="grobber.grobberclient.html" class="tsd-signature-type">GrobberClient</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L61">grobber/client.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L176">grobber/client.ts:176</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="grobber.client.html" class="tsd-signature-type">Client</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="grobber.grobberclient.html" class="tsd-signature-type">GrobberClient</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="animeinfolock" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> anime<wbr>Info<wbr>Lock</h3>
-					<div class="tsd-signature tsd-kind-icon">anime<wbr>Info<wbr>Lock<span class="tsd-signature-symbol">:</span> <a href="lock.asynclock.html" class="tsd-signature-type">AsyncLock</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L61">grobber/client.ts:61</a></li>
-						</ul>
-					</aside>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="axiosclient" class="tsd-anchor"></a>
 					<h3>axios<wbr>Client</h3>
 					<div class="tsd-signature tsd-kind-icon">axios<wbr>Client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AxiosInstance</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L59">grobber/client.ts:59</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L174">grobber/client.ts:174</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="cachedrequestlock" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> cached<wbr>Request<wbr>Lock</h3>
+					<div class="tsd-signature tsd-kind-icon">cached<wbr>Request<wbr>Lock<span class="tsd-signature-symbol">:</span> <a href="lock.asynclock.html" class="tsd-signature-type">AsyncLock</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L176">grobber/client.ts:176</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="internalmemory" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> internal<wbr>Memory</h3>
+					<div class="tsd-signature tsd-kind-icon">internal<wbr>Memory<span class="tsd-signature-symbol">:</span> <a href="../interfaces/memory.namespace.html" class="tsd-signature-type">Namespace</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#internalmemory">internalMemory</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L169">memory.ts:169</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -183,13 +201,73 @@
 						<p>Implementation of <a href="../interfaces/memory.hasmemory.html">HasMemory</a>.<a href="../interfaces/memory.hasmemory.html#memory">memory</a></p>
 						<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#memory">memory</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L168">memory.ts:168</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L168">memory.ts:168</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="assignmemory" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> assign<wbr>Memory</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">assign<wbr>Memory<span class="tsd-signature-symbol">(</span>memory<span class="tsd-signature-symbol">: </span><a href="../interfaces/memory.namespace.html" class="tsd-signature-type">Namespace</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#assignmemory">assignMemory</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L223">memory.ts:223</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Assign a <a href="../interfaces/memory.namespace.html">Namespace</a> to the memory.
+									This does not remove the current memory.</p>
+								</div>
+								<p>Calls <code>Object.assign</code>.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>memory: <a href="../interfaces/memory.namespace.html" class="tsd-signature-type">Namespace</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="checkgrobberinfo" class="tsd-anchor"></a>
+					<h3>check<wbr>Grobber<wbr>Info</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">check<wbr>Grobber<wbr>Info<span class="tsd-signature-symbol">(</span>baseURL<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.grobbercheckreport.html" class="tsd-signature-type">GrobberCheckReport</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/grobber.grobberclientlike.html">GrobberClientLike</a>.<a href="../interfaces/grobber.grobberclientlike.html#checkgrobberinfo">checkGrobberInfo</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L232">grobber/client.ts:232</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create a <a href="../interfaces/grobber.grobbercheckreport.html">GrobberCheckReport</a> for the Grobber server.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> baseURL: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.grobbercheckreport.html" class="tsd-signature-type">GrobberCheckReport</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="forget" class="tsd-anchor"></a>
 					<h3>forget</h3>
@@ -201,7 +279,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#forget">forget</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L192">memory.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L192">memory.ts:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -228,6 +306,41 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getanimefortitle" class="tsd-anchor"></a>
+					<h3>get<wbr>Anime<wbr>For<wbr>Title</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Anime<wbr>For<wbr>Title<span class="tsd-signature-symbol">(</span>title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, group<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.grobbersearchresult.html" class="tsd-signature-type">GrobberSearchResult</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.animeinfo.html" class="tsd-signature-type">AnimeInfo</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/grobber.grobberclientlike.html">GrobberClientLike</a>.<a href="../interfaces/grobber.grobberclientlike.html#getanimefortitle">getAnimeForTitle</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L308">grobber/client.ts:308</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the Anime for a specific title.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>title: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> group: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.grobbersearchresult.html" class="tsd-signature-type">GrobberSearchResult</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.animeinfo.html" class="tsd-signature-type">AnimeInfo</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<ul>
+								<li>Anime result, <code>undefined</code> if there was an error.</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="getanimeinfo" class="tsd-anchor"></a>
 					<h3>get<wbr>Anime<wbr>Info</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -236,8 +349,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/grobber.grobberclientlike.html">GrobberClientLike</a>.<a href="../interfaces/grobber.grobberclientlike.html#getanimeinfo">getAnimeInfo</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L152">grobber/client.ts:152</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L351">grobber/client.ts:351</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -246,7 +360,7 @@
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
-									<dd><p>Same errors as <a href="grobber.client.html#request">Client.request</a></p>
+									<dd><p>Same errors as <a href="grobber.grobberclient.html#request">GrobberClient.request</a></p>
 									</dd>
 								</dl>
 							</div>
@@ -269,8 +383,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/grobber.grobberclientlike.html">GrobberClientLike</a>.<a href="../interfaces/grobber.grobberclientlike.html#getepisode">getEpisode</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L167">grobber/client.ts:167</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L360">grobber/client.ts:360</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -279,7 +394,7 @@
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
-									<dd><p>Same errors as <a href="grobber.client.html#request">Client.request</a></p>
+									<dd><p>Same errors as <a href="grobber.grobberclient.html#request">GrobberClient.request</a></p>
 									</dd>
 								</dl>
 							</div>
@@ -290,9 +405,6 @@
 								</li>
 								<li>
 									<h5>episodeIndex: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p><strong>Index</strong></p>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.episode.html" class="tsd-signature-type">Episode</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -309,7 +421,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L185">grobber/client.ts:185</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L378">grobber/client.ts:378</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -322,17 +434,46 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getgrobberinfo" class="tsd-anchor"></a>
+					<h3>get<wbr>Grobber<wbr>Info</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Grobber<wbr>Info<span class="tsd-signature-symbol">(</span>baseURL<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.grobberinfo.html" class="tsd-signature-type">GrobberInfo</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/grobber.grobberclientlike.html">GrobberClientLike</a>.<a href="../interfaces/grobber.grobberclientlike.html#getgrobberinfo">getGrobberInfo</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L219">grobber/client.ts:219</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the grobber information.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> baseURL: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.grobberinfo.html" class="tsd-signature-type">GrobberInfo</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="performanimerequest" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> perform<wbr>Anime<wbr>Request</h3>
+					<a name="performcachedrequest" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> perform<wbr>Cached<wbr>Request</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">perform<wbr>Anime<wbr>Request<span class="tsd-signature-symbol">(</span>endpoint<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, paramsList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span>, respHandler<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">perform<wbr>Cached<wbr>Request<span class="tsd-signature-symbol">(</span>endpoint<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, paramsList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span>, respHandler<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L194">grobber/client.ts:194</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L388">grobber/client.ts:388</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -362,7 +503,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#remember">remember</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L181">memory.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L181">memory.ts:181</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -396,7 +537,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L181">grobber/client.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L374">grobber/client.ts:374</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -425,7 +566,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L80">grobber/client.ts:80</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L194">grobber/client.ts:194</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -470,7 +611,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#resetmemory">resetMemory</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L209">memory.ts:209</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L209">memory.ts:209</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -499,25 +640,20 @@
 					<a name="searchanime" class="tsd-anchor"></a>
 					<h3>search<wbr>Anime</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">search<wbr>Anime<span class="tsd-signature-symbol">(</span>query<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, results<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.animesearchresult.html" class="tsd-signature-type">AnimeSearchResult</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">search<wbr>Anime<span class="tsd-signature-symbol">(</span>query<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/grobber.grobbersearchoptions.html" class="tsd-signature-type">GrobberSearchOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.grobbersearchresult.html" class="tsd-signature-type">GrobberSearchResult</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.grobbermedium.html" class="tsd-signature-type">GrobberMedium</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/grobber.grobberclientlike.html">GrobberClientLike</a>.<a href="../interfaces/grobber.grobberclientlike.html#searchanime">searchAnime</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L114">grobber/client.ts:114</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L261">grobber/client.ts:261</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Search for Anime.
-									Results are stored in the cache.</p>
+									<p>Search for Animes.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>throws</dt>
-									<dd><p>Same errors as <a href="grobber.client.html#request">Client.request</a></p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -525,15 +661,12 @@
 									<h5>query: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> results: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Defaults to 1 and may go up to 20 (Hard limit by Grobber)</p>
-									</div>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../interfaces/grobber.grobbersearchoptions.html" class="tsd-signature-type">GrobberSearchOptions</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.animesearchresult.html" class="tsd-signature-type">AnimeSearchResult</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.grobbersearchresult.html" class="tsd-signature-type">GrobberSearchResult</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grobber.grobbermedium.html" class="tsd-signature-type">GrobberMedium</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<ul>
-								<li>List of <a href="../interfaces/grobber.animesearchresult.html">AnimeSearchResult</a>. Length will not exceed the provided <code>results</code>.</li>
+								<li>List of search results, undefined` if there was an error.</li>
 							</ul>
 						</li>
 					</ul>
@@ -544,82 +677,10 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/assets.html">assets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components.html">common/components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components_anime.html">common/components/anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_pages.html">common/pages</a>
+						<a href="../index.html"><em>Subsystems</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/hooks.html">hooks</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options_tabs.html">options/tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/secrets.html">secrets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/services_kitsu.html">services/kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/services_myanimelist.html">services/myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/subscriptions.html">subscriptions</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -634,49 +695,64 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
-						<a href="grobber.client.html" class="tsd-kind-icon">Client</a>
+						<a href="grobber.grobberclient.html" class="tsd-kind-icon">Grobber<wbr>Client</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="grobber.client.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="grobber.client.html#animeinfolock" class="tsd-kind-icon">anime<wbr>Info<wbr>Lock</a>
+								<a href="grobber.grobberclient.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="grobber.client.html#axiosclient" class="tsd-kind-icon">axios<wbr>Client</a>
+								<a href="grobber.grobberclient.html#axiosclient" class="tsd-kind-icon">axios<wbr>Client</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="grobber.grobberclient.html#cachedrequestlock" class="tsd-kind-icon">cached<wbr>Request<wbr>Lock</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="grobber.grobberclient.html#internalmemory" class="tsd-kind-icon">internal<wbr>Memory</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="grobber.client.html#memory" class="tsd-kind-icon">memory</a>
+								<a href="grobber.grobberclient.html#memory" class="tsd-kind-icon">memory</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="grobber.grobberclient.html#assignmemory" class="tsd-kind-icon">assign<wbr>Memory</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="grobber.grobberclient.html#checkgrobberinfo" class="tsd-kind-icon">check<wbr>Grobber<wbr>Info</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="grobber.client.html#forget" class="tsd-kind-icon">forget</a>
+								<a href="grobber.grobberclient.html#forget" class="tsd-kind-icon">forget</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="grobber.client.html#getanimeinfo" class="tsd-kind-icon">get<wbr>Anime<wbr>Info</a>
+								<a href="grobber.grobberclient.html#getanimefortitle" class="tsd-kind-icon">get<wbr>Anime<wbr>For<wbr>Title</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="grobber.client.html#getepisode" class="tsd-kind-icon">get<wbr>Episode</a>
+								<a href="grobber.grobberclient.html#getanimeinfo" class="tsd-kind-icon">get<wbr>Anime<wbr>Info</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="grobber.grobberclient.html#getepisode" class="tsd-kind-icon">get<wbr>Episode</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="grobber.client.html#getexpiringitemfrommemory" class="tsd-kind-icon">get<wbr>Expiring<wbr>Item<wbr>From<wbr>Memory</a>
+								<a href="grobber.grobberclient.html#getexpiringitemfrommemory" class="tsd-kind-icon">get<wbr>Expiring<wbr>Item<wbr>From<wbr>Memory</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="grobber.grobberclient.html#getgrobberinfo" class="tsd-kind-icon">get<wbr>Grobber<wbr>Info</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="grobber.client.html#performanimerequest" class="tsd-kind-icon">perform<wbr>Anime<wbr>Request</a>
+								<a href="grobber.grobberclient.html#performcachedrequest" class="tsd-kind-icon">perform<wbr>Cached<wbr>Request</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="grobber.client.html#remember" class="tsd-kind-icon">remember</a>
+								<a href="grobber.grobberclient.html#remember" class="tsd-kind-icon">remember</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="grobber.client.html#rememberexpiring" class="tsd-kind-icon">remember<wbr>Expiring</a>
+								<a href="grobber.grobberclient.html#rememberexpiring" class="tsd-kind-icon">remember<wbr>Expiring</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="grobber.client.html#request" class="tsd-kind-icon">request</a>
+								<a href="grobber.grobberclient.html#request" class="tsd-kind-icon">request</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="grobber.client.html#resetmemory" class="tsd-kind-icon">reset<wbr>Memory</a>
+								<a href="grobber.grobberclient.html#resetmemory" class="tsd-kind-icon">reset<wbr>Memory</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="grobber.client.html#searchanime" class="tsd-kind-icon">search<wbr>Anime</a>
+								<a href="grobber.grobberclient.html#searchanime" class="tsd-kind-icon">search<wbr>Anime</a>
 							</li>
 						</ul>
 					</li>
@@ -688,11 +764,14 @@
 					<li class=" tsd-kind-class tsd-parent-kind-external-module">
 						<a href="grobber.grobberresponseerror.html" class="tsd-kind-icon">Grobber<wbr>Response<wbr>Error</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/grobber.animeinfo.html" class="tsd-kind-icon">Anime<wbr>Info</a>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="grobber.remotegrobberclient.html" class="tsd-kind-icon">Remote<wbr>Grobber<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="grobber.remotegrobberclientserver.html" class="tsd-kind-icon">Remote<wbr>Grobber<wbr>Client<wbr>Server</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/grobber.animesearchresult.html" class="tsd-kind-icon">Anime<wbr>Search<wbr>Result</a>
+						<a href="../interfaces/grobber.animeinfo.html" class="tsd-kind-icon">Anime<wbr>Info</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/grobber.episode.html" class="tsd-kind-icon">Episode</a>
@@ -703,8 +782,35 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
 						<a href="../interfaces/grobber.expiringitem.html" class="tsd-kind-icon">Expiring<wbr>Item</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/grobber.grobbercheckreport.html" class="tsd-kind-icon">Grobber<wbr>Check<wbr>Report</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/grobber.grobberclientlike.html" class="tsd-kind-icon">Grobber<wbr>Client<wbr>Like</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/grobber.grobberinfo.html" class="tsd-kind-icon">Grobber<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/grobber.grobbermedium.html" class="tsd-kind-icon">Grobber<wbr>Medium</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/grobber.grobbersearchoptions.html" class="tsd-kind-icon">Grobber<wbr>Search<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../interfaces/grobber.grobbersearchresult.html" class="tsd-kind-icon">Grobber<wbr>Search<wbr>Result</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../interfaces/grobber.message.html" class="tsd-kind-icon">Message</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../interfaces/grobber.messageresponse.html" class="tsd-kind-icon">Message<wbr>Response</a>
+					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/grobber.html#static_client" class="tsd-kind-icon">STATIC_<wbr>CLIENT</a>
+						<a href="../modules/grobber.html#grobberclient-1" class="tsd-kind-icon">grobber<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#remotegrobberclient-1" class="tsd-kind-icon">remote<wbr>Grobber<wbr>Client</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="../modules/grobber.html#responsecachettl" class="tsd-kind-icon">response<wbr>CacheTTL</a>
@@ -718,8 +824,14 @@
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
 						<a href="../modules/grobber.html#createexpiringitem" class="tsd-kind-icon">create<wbr>Expiring<wbr>Item</a>
 					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../modules/grobber.html#createmessage" class="tsd-kind-icon">create<wbr>Message</a>
+					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="../modules/grobber.html#episodefromresp" class="tsd-kind-icon">episode<wbr>From<wbr>Resp</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#grobbermediumfromrespdata" class="tsd-kind-icon">grobber<wbr>Medium<wbr>From<wbr>Resp<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="../modules/grobber.html#streamfromresponse" class="tsd-kind-icon">stream<wbr>From<wbr>Response</a>

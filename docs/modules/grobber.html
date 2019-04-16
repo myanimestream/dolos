@@ -53,13 +53,13 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../index.html">Globals</a>
 				</li>
 				<li>
 					<a href="grobber.html">grobber</a>
 				</li>
 			</ul>
-			<h1>External module grobber</h1>
+			<h1>Module grobber</h1>
 		</div>
 	</div>
 </header>
@@ -69,8 +69,14 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Client library for interacting with the <a href="https://grobber.docs.apiary.io/">Grobber API</a>.</p>
+						<p>Client library for interacting with the <a href="https://grobber.docs.apiary.io/">Grobber API</a>.
+						Next to the <a href="../classes/grobber.grobberclient.html">GrobberClient</a> this module also exposes some specialised classes.</p>
 					</div>
+					<p><a href="../classes/grobber.remotegrobberclient.html">RemoteGrobberClient</a> uses extension messages to perform the workload in
+						<a href="../classes/grobber.remotegrobberclientserver.html">RemoteGrobberClientServer</a> which should be running in the background.
+					This allows for some powerful caching which otherwise wouldn&#39;t be possible.</p>
+					<p>For <a href="../classes/grobber.grobberclient.html">GrobberClient</a> and <a href="../classes/grobber.remotegrobberclient.html">RemoteGrobberClient</a> there are exported
+					&quot;static&quot; instances <a href="grobber.html#grobberclient-1">grobberClient</a> and <a href="grobber.html#remotegrobberclient-1">remoteGrobberClient</a> respectively.</p>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -87,25 +93,35 @@
 						<section class="tsd-index-section ">
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/grobber.client.html" class="tsd-kind-icon">Client</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/grobber.grobberclient.html" class="tsd-kind-icon">Grobber<wbr>Client</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/grobber.grobberrequesterror.html" class="tsd-kind-icon">Grobber<wbr>Request<wbr>Error</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/grobber.grobberresponseerror.html" class="tsd-kind-icon">Grobber<wbr>Response<wbr>Error</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/grobber.remotegrobberclient.html" class="tsd-kind-icon">Remote<wbr>Grobber<wbr>Client</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/grobber.remotegrobberclientserver.html" class="tsd-kind-icon">Remote<wbr>Grobber<wbr>Client<wbr>Server</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/grobber.animeinfo.html" class="tsd-kind-icon">Anime<wbr>Info</a></li>
-								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/grobber.animesearchresult.html" class="tsd-kind-icon">Anime<wbr>Search<wbr>Result</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/grobber.episode.html" class="tsd-kind-icon">Episode</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/grobber.episodestream.html" class="tsd-kind-icon">Episode<wbr>Stream</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported"><a href="../interfaces/grobber.expiringitem.html" class="tsd-kind-icon">Expiring<wbr>Item</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/grobber.grobbercheckreport.html" class="tsd-kind-icon">Grobber<wbr>Check<wbr>Report</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/grobber.grobberclientlike.html" class="tsd-kind-icon">Grobber<wbr>Client<wbr>Like</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/grobber.grobberinfo.html" class="tsd-kind-icon">Grobber<wbr>Info</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/grobber.grobbermedium.html" class="tsd-kind-icon">Grobber<wbr>Medium</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/grobber.grobbersearchoptions.html" class="tsd-kind-icon">Grobber<wbr>Search<wbr>Options</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../interfaces/grobber.grobbersearchresult.html" class="tsd-kind-icon">Grobber<wbr>Search<wbr>Result</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported"><a href="../interfaces/grobber.message.html" class="tsd-kind-icon">Message</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported"><a href="../interfaces/grobber.messageresponse.html" class="tsd-kind-icon">Message<wbr>Response</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="grobber.html#static_client" class="tsd-kind-icon">STATIC_<wbr>CLIENT</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="grobber.html#grobberclient-1" class="tsd-kind-icon">grobber<wbr>Client</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="grobber.html#remotegrobberclient-1" class="tsd-kind-icon">remote<wbr>Grobber<wbr>Client</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="grobber.html#responsecachettl" class="tsd-kind-icon">response<wbr>CacheTTL</a></li>
 							</ul>
 						</section>
@@ -115,7 +131,9 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="grobber.html#animefromresp" class="tsd-kind-icon">anime<wbr>From<wbr>Resp</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="grobber.html#buildkeys" class="tsd-kind-icon">build<wbr>Keys</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported"><a href="grobber.html#createexpiringitem" class="tsd-kind-icon">create<wbr>Expiring<wbr>Item</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="grobber.html#createmessage" class="tsd-kind-icon">create<wbr>Message</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="grobber.html#episodefromresp" class="tsd-kind-icon">episode<wbr>From<wbr>Resp</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="grobber.html#grobbermediumfromrespdata" class="tsd-kind-icon">grobber<wbr>Medium<wbr>From<wbr>Resp<wbr>Data</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="grobber.html#streamfromresponse" class="tsd-kind-icon">stream<wbr>From<wbr>Response</a></li>
 							</ul>
 						</section>
@@ -125,14 +143,34 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
-					<a name="static_client" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> STATIC_<wbr>CLIENT</h3>
-					<div class="tsd-signature tsd-kind-icon">STATIC_<wbr>CLIENT<span class="tsd-signature-symbol">:</span> <a href="../classes/grobber.client.html" class="tsd-signature-type">Client</a><span class="tsd-signature-symbol"> =&nbsp;new Client()</span></div>
+					<a name="grobberclient-1" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> grobber<wbr>Client</h3>
+					<div class="tsd-signature tsd-kind-icon">grobber<wbr>Client<span class="tsd-signature-symbol">:</span> <a href="../classes/grobber.grobberclient.html" class="tsd-signature-type">GrobberClient</a><span class="tsd-signature-symbol"> =&nbsp;new GrobberClient()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L218">grobber/client.ts:218</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/index.ts#L28">grobber/index.ts:28</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Default <a href="../classes/grobber.grobberclient.html">GrobberClient</a>.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
+					<a name="remotegrobberclient-1" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> remote<wbr>Grobber<wbr>Client</h3>
+					<div class="tsd-signature tsd-kind-icon">remote<wbr>Grobber<wbr>Client<span class="tsd-signature-symbol">:</span> <a href="../classes/grobber.remotegrobberclient.html" class="tsd-signature-type">RemoteGrobberClient</a><span class="tsd-signature-symbol"> =&nbsp;new RemoteGrobberClient()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/index.ts#L33">grobber/index.ts:33</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Default <a href="../classes/grobber.remotegrobberclient.html">RemoteGrobberClient</a>.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
 					<a name="responsecachettl" class="tsd-anchor"></a>
@@ -140,12 +178,12 @@
 					<div class="tsd-signature tsd-kind-icon">response<wbr>CacheTTL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1000 * 60 * 60</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L23">grobber/client.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L26">grobber/client.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Time-to-live for cached <a href="../classes/grobber.client.html">Client</a> objects.
+							<p>Time-to-live for cached <a href="../classes/grobber.grobberclient.html">GrobberClient</a> objects.
 							Defaults to an hour.</p>
 						</div>
 					</div>
@@ -163,7 +201,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/models.ts#L77">grobber/models.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/models.ts#L114">grobber/models.ts:114</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -191,7 +229,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L47">grobber/client.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L56">grobber/client.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -219,7 +257,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/client.ts#L36">grobber/client.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/client.ts#L46">grobber/client.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -246,6 +284,32 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="createmessage" class="tsd-anchor"></a>
+					<h3>create<wbr>Message</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Message<span class="tsd-signature-symbol">(</span>procedure<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, body<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/grobber.message.html" class="tsd-signature-type">Message</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/remote.ts#L26">grobber/remote.ts:26</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>procedure: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>body: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/grobber.message.html" class="tsd-signature-type">Message</a></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="episodefromresp" class="tsd-anchor"></a>
 					<h3>episode<wbr>From<wbr>Resp</h3>
@@ -256,7 +320,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/models.ts#L95">grobber/models.ts:95</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/models.ts#L132">grobber/models.ts:132</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -275,6 +339,34 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="grobbermediumfromrespdata" class="tsd-anchor"></a>
+					<h3>grobber<wbr>Medium<wbr>From<wbr>Resp<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">grobber<wbr>Medium<wbr>From<wbr>Resp<wbr>Data<span class="tsd-signature-symbol">(</span>resp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/grobber.grobbermedium.html" class="tsd-signature-type">GrobberMedium</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/models.ts#L87">grobber/models.ts:87</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create a <a href="../interfaces/grobber.grobbermedium.html">GrobberMedium</a> object from a Grobber JSON response.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>resp: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/grobber.grobbermedium.html" class="tsd-signature-type">GrobberMedium</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="streamfromresponse" class="tsd-anchor"></a>
 					<h3>stream<wbr>From<wbr>Response</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
@@ -284,7 +376,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/grobber/models.ts#L112">grobber/models.ts:112</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/models.ts#L149">grobber/models.ts:149</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -308,82 +400,10 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="assets.html">assets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_components.html">common/components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_components_anime.html">common/components/anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_pages.html">common/pages</a>
+						<a href="../index.html"><em>Subsystems</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="hooks.html">hooks</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="options_tabs.html">options/tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="secrets.html">secrets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="services_kitsu.html">services/kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="services_myanimelist.html">services/myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="subscriptions.html">subscriptions</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -396,7 +416,7 @@
 						<a href="../enums/grobber.language.html" class="tsd-kind-icon">Language</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/grobber.client.html" class="tsd-kind-icon">Client</a>
+						<a href="../classes/grobber.grobberclient.html" class="tsd-kind-icon">Grobber<wbr>Client</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-external-module">
 						<a href="../classes/grobber.grobberrequesterror.html" class="tsd-kind-icon">Grobber<wbr>Request<wbr>Error</a>
@@ -404,11 +424,14 @@
 					<li class=" tsd-kind-class tsd-parent-kind-external-module">
 						<a href="../classes/grobber.grobberresponseerror.html" class="tsd-kind-icon">Grobber<wbr>Response<wbr>Error</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/grobber.animeinfo.html" class="tsd-kind-icon">Anime<wbr>Info</a>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.remotegrobberclient.html" class="tsd-kind-icon">Remote<wbr>Grobber<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.remotegrobberclientserver.html" class="tsd-kind-icon">Remote<wbr>Grobber<wbr>Client<wbr>Server</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/grobber.animesearchresult.html" class="tsd-kind-icon">Anime<wbr>Search<wbr>Result</a>
+						<a href="../interfaces/grobber.animeinfo.html" class="tsd-kind-icon">Anime<wbr>Info</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/grobber.episode.html" class="tsd-kind-icon">Episode</a>
@@ -419,8 +442,35 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
 						<a href="../interfaces/grobber.expiringitem.html" class="tsd-kind-icon">Expiring<wbr>Item</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/grobber.grobbercheckreport.html" class="tsd-kind-icon">Grobber<wbr>Check<wbr>Report</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/grobber.grobberclientlike.html" class="tsd-kind-icon">Grobber<wbr>Client<wbr>Like</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/grobber.grobberinfo.html" class="tsd-kind-icon">Grobber<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/grobber.grobbermedium.html" class="tsd-kind-icon">Grobber<wbr>Medium</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="../interfaces/grobber.grobbersearchoptions.html" class="tsd-kind-icon">Grobber<wbr>Search<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../interfaces/grobber.grobbersearchresult.html" class="tsd-kind-icon">Grobber<wbr>Search<wbr>Result</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../interfaces/grobber.message.html" class="tsd-kind-icon">Message</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../interfaces/grobber.messageresponse.html" class="tsd-kind-icon">Message<wbr>Response</a>
+					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="grobber.html#static_client" class="tsd-kind-icon">STATIC_<wbr>CLIENT</a>
+						<a href="grobber.html#grobberclient-1" class="tsd-kind-icon">grobber<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="grobber.html#remotegrobberclient-1" class="tsd-kind-icon">remote<wbr>Grobber<wbr>Client</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 						<a href="grobber.html#responsecachettl" class="tsd-kind-icon">response<wbr>CacheTTL</a>
@@ -434,8 +484,14 @@
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
 						<a href="grobber.html#createexpiringitem" class="tsd-kind-icon">create<wbr>Expiring<wbr>Item</a>
 					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="grobber.html#createmessage" class="tsd-kind-icon">create<wbr>Message</a>
+					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="grobber.html#episodefromresp" class="tsd-kind-icon">episode<wbr>From<wbr>Resp</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="grobber.html#grobbermediumfromrespdata" class="tsd-kind-icon">grobber<wbr>Medium<wbr>From<wbr>Resp<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="grobber.html#streamfromresponse" class="tsd-kind-icon">stream<wbr>From<wbr>Response</a>

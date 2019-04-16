@@ -53,13 +53,13 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../index.html">Globals</a>
 				</li>
 				<li>
 					<a href="services_kitsu.html">services/kitsu</a>
 				</li>
 			</ul>
-			<h1>External module services/kitsu</h1>
+			<h1>Module services/kitsu</h1>
 		</div>
 	</div>
 </header>
@@ -128,7 +128,7 @@
 					<div class="tsd-signature tsd-kind-icon">Url<wbr>Change<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/services/kitsu/url-observer.ts#L5">services/kitsu/url-observer.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/services/kitsu/url-observer.ts#L5">services/kitsu/url-observer.ts:5</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -167,7 +167,7 @@
 					<div class="tsd-signature tsd-kind-icon">EMBER_<wbr>BASE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;const getApp &#x3D; ${(() &#x3D;&gt; {// @ts-ignoreconst {Namespace, Application} &#x3D; window.Ember;return Namespace.NAMESPACES.find((namespace: any) &#x3D;&gt; (namespace instanceof Application));}).toString()};const getContainer &#x3D; () &#x3D;&gt; getApp().__container__;const getQueryCache &#x3D; () &#x3D;&gt; getContainer().lookup(&quot;service:query-cache&quot;);&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/services/kitsu/utils.ts#L50">services/kitsu/utils.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/services/kitsu/utils.ts#L50">services/kitsu/utils.ts:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -188,7 +188,7 @@
 					<div class="tsd-signature tsd-kind-icon">GET_<wbr>PROGRESS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;return await new Promise(${(// @ts-ignoreres &#x3D;&gt; getQueryCache().query(&quot;library-entry&quot;, {filter: {animeId: &quot;{{animeId}}&quot;, userId: &quot;{{userId}}&quot;}}).then((records: any) &#x3D;&gt; {const entry &#x3D; records.firstObject;res(entry.progress);}).catch((reason: any) &#x3D;&gt; res(reason))).toString()});&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/services/kitsu/utils.ts#L117">services/kitsu/utils.ts:117</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/services/kitsu/utils.ts#L117">services/kitsu/utils.ts:117</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -210,7 +210,7 @@
 					<div class="tsd-signature tsd-kind-icon">SET_<wbr>PROGRESS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;return await new Promise(${(// @ts-ignoreres &#x3D;&gt; getQueryCache().query(&quot;library-entry&quot;, {filter: {animeId: &quot;{{animeId}}&quot;, userId: &quot;{{userId}}&quot;}}).then((records: any) &#x3D;&gt; {const entry &#x3D; records.firstObject;entry.set(&quot;progress&quot;, &quot;{{progress}}&quot;);return entry.save();}).then(() &#x3D;&gt; res(true)).catch((reason: any) &#x3D;&gt; res(reason))).toString()});&#x60;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/services/kitsu/utils.ts#L85">services/kitsu/utils.ts:85</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/services/kitsu/utils.ts#L85">services/kitsu/utils.ts:85</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -239,7 +239,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/services/kitsu/utils.ts#L73">services/kitsu/utils.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/services/kitsu/utils.ts#L73">services/kitsu/utils.ts:73</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -256,7 +256,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/services/kitsu/utils.ts#L168">services/kitsu/utils.ts:168</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/services/kitsu/utils.ts#L168">services/kitsu/utils.ts:168</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/services_kitsu.kitsuanimeinfo.html" class="tsd-signature-type">KitsuAnimeInfo</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -273,7 +273,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/services/kitsu/utils.ts#L130">services/kitsu/utils.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/services/kitsu/utils.ts#L130">services/kitsu/utils.ts:130</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -299,7 +299,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/services/kitsu/utils.ts#L16">services/kitsu/utils.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/services/kitsu/utils.ts#L16">services/kitsu/utils.ts:16</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -345,7 +345,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/services/kitsu/utils.ts#L100">services/kitsu/utils.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/services/kitsu/utils.ts#L100">services/kitsu/utils.ts:100</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -374,7 +374,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/services/kitsu/utils.ts#L66">services/kitsu/utils.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/services/kitsu/utils.ts#L66">services/kitsu/utils.ts:66</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -401,82 +401,10 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="assets.html">assets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_components.html">common/components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_components_anime.html">common/components/anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="common_pages.html">common/pages</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="hooks.html">hooks</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="options_tabs.html">options/tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="secrets.html">secrets</a>
+						<a href="../index.html"><em>Subsystems</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="services_kitsu.html">services/kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="services_myanimelist.html">services/myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="subscriptions.html">subscriptions</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>

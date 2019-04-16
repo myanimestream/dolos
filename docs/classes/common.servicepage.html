@@ -53,7 +53,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../index.html">Globals</a>
 				</li>
 				<li>
 					<a href="../modules/common.html">common</a>
@@ -118,6 +118,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="common.servicepage.html#backgroundpages" class="tsd-kind-icon">background<wbr>Pages</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="common.servicepage.html#internalmemory" class="tsd-kind-icon">internal<wbr>Memory</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="common.servicepage.html#loaded" class="tsd-kind-icon">loaded</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="common.servicepage.html#memory" class="tsd-kind-icon">memory</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="common.servicepage.html#service" class="tsd-kind-icon">service</a></li>
@@ -127,11 +129,14 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="common.servicepage.html#_load" class="tsd-kind-icon">_load</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="common.servicepage.html#_unload" class="tsd-kind-icon">_unload</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="common.servicepage.html#_load" class="tsd-kind-icon">_load</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="common.servicepage.html#_unload" class="tsd-kind-icon">_unload</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="common.servicepage.html#assignmemory" class="tsd-kind-icon">assign<wbr>Memory</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="common.servicepage.html#forget" class="tsd-kind-icon">forget</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="common.servicepage.html#getbackgroundpage" class="tsd-kind-icon">get<wbr>Background<wbr>Page</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="common.servicepage.html#injected" class="tsd-kind-icon">injected</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="common.servicepage.html#load" class="tsd-kind-icon">load</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="common.servicepage.html#registerbackgroundpage" class="tsd-kind-icon">register<wbr>Background<wbr>Page</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="common.servicepage.html#reload" class="tsd-kind-icon">reload</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="common.servicepage.html#remember" class="tsd-kind-icon">remember</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="common.servicepage.html#removeinjected" class="tsd-kind-icon">remove<wbr>Injected</a></li>
@@ -157,7 +162,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="memory.elementmemory.html">ElementMemory</a>.<a href="memory.elementmemory.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/common/service-page.ts#L13">common/service-page.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L18">common/service-page.ts:18</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -173,13 +178,40 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="backgroundpages" class="tsd-anchor"></a>
+					<h3>background<wbr>Pages</h3>
+					<div class="tsd-signature tsd-kind-icon">background<wbr>Pages<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><a href="common.servicepage.html" class="tsd-signature-type">ServicePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L16">common/service-page.ts:16</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>ServicePages which are running as a child
+							of the current page.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="internalmemory" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> internal<wbr>Memory</h3>
+					<div class="tsd-signature tsd-kind-icon">internal<wbr>Memory<span class="tsd-signature-symbol">:</span> <a href="../interfaces/memory.namespace.html" class="tsd-signature-type">Namespace</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#internalmemory">internalMemory</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L169">memory.ts:169</a></li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="loaded" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> loaded</h3>
 					<div class="tsd-signature tsd-kind-icon">loaded<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/common/service-page.ts#L13">common/service-page.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L18">common/service-page.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -191,7 +223,7 @@
 						<p>Implementation of <a href="../interfaces/memory.hasmemory.html">HasMemory</a>.<a href="../interfaces/memory.hasmemory.html#memory">memory</a></p>
 						<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#memory">memory</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L168">memory.ts:168</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L168">memory.ts:168</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -201,7 +233,7 @@
 					<div class="tsd-signature tsd-kind-icon">service<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/common/service-page.ts#L10">common/service-page.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L10">common/service-page.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -211,44 +243,75 @@
 					<div class="tsd-signature tsd-kind-icon">state<span class="tsd-signature-symbol">:</span> <a href="common.state.html" class="tsd-signature-type">State</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/common/service-page.ts#L11">common/service-page.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L11">common/service-page.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 					<a name="_load" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> _load</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> <span class="tsd-flag ts-flagAbstract">Abstract</span> _load</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">_load<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/common/service-page.ts#L23">common/service-page.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L80">common/service-page.ts:80</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 					<a name="_unload" class="tsd-anchor"></a>
-					<h3>_unload</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _unload</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 						<li class="tsd-signature tsd-kind-icon">_unload<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/common/service-page.ts#L32">common/service-page.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L82">common/service-page.ts:82</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="assignmemory" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> assign<wbr>Memory</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">assign<wbr>Memory<span class="tsd-signature-symbol">(</span>memory<span class="tsd-signature-symbol">: </span><a href="../interfaces/memory.namespace.html" class="tsd-signature-type">Namespace</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#assignmemory">assignMemory</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L223">memory.ts:223</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Assign a <a href="../interfaces/memory.namespace.html">Namespace</a> to the memory.
+									This does not remove the current memory.</p>
+								</div>
+								<p>Calls <code>Object.assign</code>.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>memory: <a href="../interfaces/memory.namespace.html" class="tsd-signature-type">Namespace</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -263,7 +326,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#forget">forget</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L192">memory.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L192">memory.ts:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -289,6 +352,32 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getbackgroundpage" class="tsd-anchor"></a>
+					<h3>get<wbr>Background<wbr>Page</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Background<wbr>Page<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="common.servicepage.html" class="tsd-signature-type">ServicePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L72">common/service-page.ts:72</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>id: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="common.servicepage.html" class="tsd-signature-type">ServicePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">undefined</span>
+							</h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="injected" class="tsd-anchor"></a>
 					<h3>injected</h3>
@@ -300,7 +389,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.elementmemory.html">ElementMemory</a>.<a href="memory.elementmemory.html#injected">injected</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L257">memory.ts:257</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L267">memory.ts:267</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -336,10 +425,43 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/common/service-page.ts#L25">common/service-page.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L34">common/service-page.ts:34</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Load the service page.
+										This is a no-op if the page
+									is already loaded.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="registerbackgroundpage" class="tsd-anchor"></a>
+					<h3>register<wbr>Background<wbr>Page</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">register<wbr>Background<wbr>Page<span class="tsd-signature-symbol">(</span>page<span class="tsd-signature-symbol">: </span><a href="common.servicepage.html" class="tsd-signature-type">ServicePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L76">common/service-page.ts:76</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>page: <a href="common.servicepage.html" class="tsd-signature-type">ServicePage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>id: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -353,7 +475,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/common/service-page.ts#L48">common/service-page.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L58">common/service-page.ts:58</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -371,7 +493,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#remember">remember</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L181">memory.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L181">memory.ts:181</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -406,7 +528,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.elementmemory.html">ElementMemory</a>.<a href="memory.elementmemory.html#removeinjected">removeInjected</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L272">memory.ts:272</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L282">memory.ts:282</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -438,7 +560,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="memory.memory-1.html">Memory</a>.<a href="memory.memory-1.html#resetmemory">resetMemory</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L209">memory.ts:209</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L209">memory.ts:209</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -473,7 +595,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/common/service-page.ts#L43">common/service-page.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L53">common/service-page.ts:53</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -490,7 +612,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/common/service-page.ts#L53">common/service-page.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L63">common/service-page.ts:63</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -513,9 +635,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/common/service-page.ts#L36">common/service-page.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/common/service-page.ts#L46">common/service-page.ts:46</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Unload a service page.
+										This is a no-op if the service page isn&#39;t loaded,
+									i.e. <a href="common.servicepage.html#loaded">ServicePage.loaded</a> is false.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -526,82 +655,10 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/assets.html">assets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/changelog.html">changelog</a>
+						<a href="../index.html"><em>Subsystems</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components.html">common/components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components_anime.html">common/components/anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_pages.html">common/pages</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/hooks.html">hooks</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options_tabs.html">options/tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/secrets.html">secrets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/services_kitsu.html">services/kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/services_myanimelist.html">services/myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/subscriptions.html">subscriptions</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -618,6 +675,12 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
 								<a href="common.servicepage.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="common.servicepage.html#backgroundpages" class="tsd-kind-icon">background<wbr>Pages</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="common.servicepage.html#internalmemory" class="tsd-kind-icon">internal<wbr>Memory</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="common.servicepage.html#loaded" class="tsd-kind-icon">loaded</a>
 							</li>
@@ -630,20 +693,29 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="common.servicepage.html#state" class="tsd-kind-icon">state</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="common.servicepage.html#_load" class="tsd-kind-icon">_load</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="common.servicepage.html#_unload" class="tsd-kind-icon">_unload</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="common.servicepage.html#assignmemory" class="tsd-kind-icon">assign<wbr>Memory</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="common.servicepage.html#forget" class="tsd-kind-icon">forget</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="common.servicepage.html#getbackgroundpage" class="tsd-kind-icon">get<wbr>Background<wbr>Page</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="common.servicepage.html#injected" class="tsd-kind-icon">injected</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="common.servicepage.html#load" class="tsd-kind-icon">load</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="common.servicepage.html#registerbackgroundpage" class="tsd-kind-icon">register<wbr>Background<wbr>Page</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="common.servicepage.html#reload" class="tsd-kind-icon">reload</a>

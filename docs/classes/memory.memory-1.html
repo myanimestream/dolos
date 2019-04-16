@@ -53,7 +53,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../index.html">Globals</a>
 				</li>
 				<li>
 					<a href="../modules/memory.html">memory</a>
@@ -101,7 +101,7 @@
 								<a href="memory.elementmemory.html" class="tsd-signature-type">ElementMemory</a>
 							</li>
 							<li>
-								<a href="grobber.client.html" class="tsd-signature-type">Client</a>
+								<a href="grobber.grobberclient.html" class="tsd-signature-type">GrobberClient</a>
 							</li>
 						</ul>
 					</li>
@@ -126,13 +126,14 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="memory.memory-1.html#internalmemory" class="tsd-kind-icon">internal<wbr>Memory</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="memory.memory-1.html#internalmemory" class="tsd-kind-icon">internal<wbr>Memory</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="memory.memory-1.html#memory" class="tsd-kind-icon">memory</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="memory.memory-1.html#assignmemory" class="tsd-kind-icon">assign<wbr>Memory</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="memory.memory-1.html#forget" class="tsd-kind-icon">forget</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="memory.memory-1.html#remember" class="tsd-kind-icon">remember</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="memory.memory-1.html#resetmemory" class="tsd-kind-icon">reset<wbr>Memory</a></li>
@@ -153,7 +154,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L169">memory.ts:169</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L169">memory.ts:169</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="memory.memory-1.html" class="tsd-signature-type">Memory</a></h4>
@@ -163,13 +164,13 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="internalmemory" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> internal<wbr>Memory</h3>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> internal<wbr>Memory</h3>
 					<div class="tsd-signature tsd-kind-icon">internal<wbr>Memory<span class="tsd-signature-symbol">:</span> <a href="../interfaces/memory.namespace.html" class="tsd-signature-type">Namespace</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L169">memory.ts:169</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L169">memory.ts:169</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -180,13 +181,43 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/memory.hasmemory.html">HasMemory</a>.<a href="../interfaces/memory.hasmemory.html#memory">memory</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L168">memory.ts:168</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L168">memory.ts:168</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="assignmemory" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> assign<wbr>Memory</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">assign<wbr>Memory<span class="tsd-signature-symbol">(</span>memory<span class="tsd-signature-symbol">: </span><a href="../interfaces/memory.namespace.html" class="tsd-signature-type">Namespace</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L223">memory.ts:223</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Assign a <a href="../interfaces/memory.namespace.html">Namespace</a> to the memory.
+									This does not remove the current memory.</p>
+								</div>
+								<p>Calls <code>Object.assign</code>.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>memory: <a href="../interfaces/memory.namespace.html" class="tsd-signature-type">Namespace</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="forget" class="tsd-anchor"></a>
 					<h3>forget</h3>
@@ -197,7 +228,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L192">memory.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L192">memory.ts:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -233,7 +264,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L181">memory.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L181">memory.ts:181</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -267,7 +298,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/memory.ts#L209">memory.ts:209</a></li>
+									<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/memory.ts#L209">memory.ts:209</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -298,82 +329,10 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/assets.html">assets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components.html">common/components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components_anime.html">common/components/anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_pages.html">common/pages</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/hooks.html">hooks</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/logging.html">logging</a>
+						<a href="../index.html"><em>Subsystems</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="../modules/memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/models.html">models</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options_tabs.html">options/tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/secrets.html">secrets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/services_kitsu.html">services/kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/services_myanimelist.html">services/myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/subscriptions.html">subscriptions</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/utils.html">utils</a>
 					</li>
 				</ul>
 			</nav>
@@ -390,11 +349,14 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="memory.memory-1.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="memory.memory-1.html#internalmemory" class="tsd-kind-icon">internal<wbr>Memory</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="memory.memory-1.html#memory" class="tsd-kind-icon">memory</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="memory.memory-1.html#assignmemory" class="tsd-kind-icon">assign<wbr>Memory</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="memory.memory-1.html#forget" class="tsd-kind-icon">forget</a>

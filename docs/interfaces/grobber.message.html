@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SettingsTabState | Dolos Documentation</title>
+	<title>Message | Dolos Documentation</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -53,16 +53,16 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/options.html">options</a>
+					<a href="../modules/grobber.html">grobber</a>
 				</li>
 				<li>
-					<a href="options.settingstabstate.html">SettingsTabState</a>
+					<a href="grobber.message.html">Message</a>
 				</li>
 			</ul>
-			<h1>Interface SettingsTabState</h1>
+			<h1>Interface Message</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">SettingsTabState</span>
+						<span class="target">Message</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="grobber.messageresponse.html" class="tsd-signature-type">MessageResponse</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -84,11 +89,9 @@
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="options.settingstabstate.html#config" class="tsd-kind-icon">config</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="options.settingstabstate.html#originalconfig" class="tsd-kind-icon">original<wbr>Config</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="options.settingstabstate.html#saved" class="tsd-kind-icon">saved</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="options.settingstabstate.html#saving" class="tsd-kind-icon">saving</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="options.settingstabstate.html#showsave" class="tsd-kind-icon">show<wbr>Save</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="grobber.message.html#body" class="tsd-kind-icon">body</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="grobber.message.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="grobber.message.html#procedure" class="tsd-kind-icon">procedure</a></li>
 							</ul>
 						</section>
 					</div>
@@ -97,52 +100,32 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="config" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> config</h3>
-					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="models.config.html" class="tsd-signature-type">Config</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="body" class="tsd-anchor"></a>
+					<h3>body</h3>
+					<div class="tsd-signature tsd-kind-icon">body<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/options/SettingsTab.tsx#L33">options/SettingsTab.tsx:33</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/remote.ts#L16">grobber/remote.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="originalconfig" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> original<wbr>Config</h3>
-					<div class="tsd-signature tsd-kind-icon">original<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="models.config.html" class="tsd-signature-type">Config</a></div>
+					<a name="id" class="tsd-anchor"></a>
+					<h3>id</h3>
+					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/options/SettingsTab.tsx#L32">options/SettingsTab.tsx:32</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/remote.ts#L14">grobber/remote.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="saved" class="tsd-anchor"></a>
-					<h3>saved</h3>
-					<div class="tsd-signature tsd-kind-icon">saved<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="procedure" class="tsd-anchor"></a>
+					<h3>procedure</h3>
+					<div class="tsd-signature tsd-kind-icon">procedure<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/options/SettingsTab.tsx#L37">options/SettingsTab.tsx:37</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="saving" class="tsd-anchor"></a>
-					<h3>saving</h3>
-					<div class="tsd-signature tsd-kind-icon">saving<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/options/SettingsTab.tsx#L36">options/SettingsTab.tsx:36</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="showsave" class="tsd-anchor"></a>
-					<h3>show<wbr>Save</h3>
-					<div class="tsd-signature tsd-kind-icon">show<wbr>Save<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/MyAnimeStream/dolos/blob/13dfa9f/src/options/SettingsTab.tsx#L35">options/SettingsTab.tsx:35</a></li>
+							<li>Defined in <a href="https://github.com/myanimestream/dolos/blob/cef2162/src/grobber/remote.ts#L15">grobber/remote.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -152,134 +135,116 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/assets.html">assets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/background.html">background</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/changelog.html">changelog</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common.html">common</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components.html">common/components</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_components_anime.html">common/components/anime</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/common_pages.html">common/pages</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/grobber.html">grobber</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/hooks.html">hooks</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/info.html">info</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/inject.html">inject</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/lock.html">lock</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/logging.html">logging</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/memory.html">memory</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/models.html">models</a>
+						<a href="../index.html"><em>Subsystems</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/options.html">options</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/options_tabs.html">options/tabs</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/popup.html">popup</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/secrets.html">secrets</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/services_kitsu.html">services/kitsu</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/services_myanimelist.html">services/myanimelist</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/store.html">store</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/subscriptions.html">subscriptions</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/theme.html">theme</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/utils.html">utils</a>
+						<a href="../modules/grobber.html">grobber</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../classes/options.settingstabcontent.html" class="tsd-kind-icon">Settings<wbr>Tab<wbr>Content</a>
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/grobber.grobbererrortype.html" class="tsd-kind-icon">Grobber<wbr>Error<wbr>Type</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="options.settingsprops.html" class="tsd-kind-icon">Settings<wbr>Props</a>
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
+						<a href="../enums/grobber.language.html" class="tsd-kind-icon">Language</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="options.settingsstate.html" class="tsd-kind-icon">Settings<wbr>State</a>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.grobberclient.html" class="tsd-kind-icon">Grobber<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.grobberrequesterror.html" class="tsd-kind-icon">Grobber<wbr>Request<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.grobberresponseerror.html" class="tsd-kind-icon">Grobber<wbr>Response<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.remotegrobberclient.html" class="tsd-kind-icon">Remote<wbr>Grobber<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module">
+						<a href="../classes/grobber.remotegrobberclientserver.html" class="tsd-kind-icon">Remote<wbr>Grobber<wbr>Client<wbr>Server</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="options.settingstabcontentprops.html" class="tsd-kind-icon">Settings<wbr>Tab<wbr>Content<wbr>Props</a>
+						<a href="grobber.animeinfo.html" class="tsd-kind-icon">Anime<wbr>Info</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="options.settingstabprops.html" class="tsd-kind-icon">Settings<wbr>Tab<wbr>Props</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="grobber.episode.html" class="tsd-kind-icon">Episode</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="grobber.episodestream.html" class="tsd-kind-icon">Episode<wbr>Stream</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="grobber.expiringitem.html" class="tsd-kind-icon">Expiring<wbr>Item</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="grobber.grobbercheckreport.html" class="tsd-kind-icon">Grobber<wbr>Check<wbr>Report</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="grobber.grobberclientlike.html" class="tsd-kind-icon">Grobber<wbr>Client<wbr>Like</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="grobber.grobberinfo.html" class="tsd-kind-icon">Grobber<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="grobber.grobbermedium.html" class="tsd-kind-icon">Grobber<wbr>Medium</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="grobber.grobbersearchoptions.html" class="tsd-kind-icon">Grobber<wbr>Search<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="grobber.grobbersearchresult.html" class="tsd-kind-icon">Grobber<wbr>Search<wbr>Result</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="options.settingstabstate.html" class="tsd-kind-icon">Settings<wbr>Tab<wbr>State</a>
+						<a href="grobber.message.html" class="tsd-kind-icon">Message</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="options.settingstabstate.html#config" class="tsd-kind-icon">config</a>
+								<a href="grobber.message.html#body" class="tsd-kind-icon">body</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="options.settingstabstate.html#originalconfig" class="tsd-kind-icon">original<wbr>Config</a>
+								<a href="grobber.message.html#id" class="tsd-kind-icon">id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="options.settingstabstate.html#saved" class="tsd-kind-icon">saved</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="options.settingstabstate.html#saving" class="tsd-kind-icon">saving</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="options.settingstabstate.html#showsave" class="tsd-kind-icon">show<wbr>Save</a>
+								<a href="grobber.message.html#procedure" class="tsd-kind-icon">procedure</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/options.html#drawerwidth" class="tsd-kind-icon">drawer<wbr>Width</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="grobber.messageresponse.html" class="tsd-kind-icon">Message<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#grobberclient-1" class="tsd-kind-icon">grobber<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#remotegrobberclient-1" class="tsd-kind-icon">remote<wbr>Grobber<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#responsecachettl" class="tsd-kind-icon">response<wbr>CacheTTL</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#animefromresp" class="tsd-kind-icon">anime<wbr>From<wbr>Resp</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/options.html#styles" class="tsd-kind-icon">styles</a>
+						<a href="../modules/grobber.html#buildkeys" class="tsd-kind-icon">build<wbr>Keys</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="../modules/grobber.html#createexpiringitem" class="tsd-kind-icon">create<wbr>Expiring<wbr>Item</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/options.html#styles-1" class="tsd-kind-icon">styles</a>
+						<a href="../modules/grobber.html#createmessage" class="tsd-kind-icon">create<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#episodefromresp" class="tsd-kind-icon">episode<wbr>From<wbr>Resp</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#grobbermediumfromrespdata" class="tsd-kind-icon">grobber<wbr>Medium<wbr>From<wbr>Resp<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="../modules/grobber.html#streamfromresponse" class="tsd-kind-icon">stream<wbr>From<wbr>Response</a>
 					</li>
 				</ul>
 			</nav>
