@@ -174,12 +174,14 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
             const drawer = (
                 <>
                     <List>
-                        <ListItem button component={homeLink}>
+                        {/* TODO Material-UI doesn't accept the "component" prop */}
+                        <ListItem {...{component: homeLink}}>
                             <ListItemIcon><HomeIcon/></ListItemIcon>
                             <ListItemText primary={_("popup__nav__home")}/>
                         </ListItem>
 
-                        <ListItem button component={subscriptionsLink}>
+                        {/* TODO Material-UI doesn't accept the "component" prop */}
+                        <ListItem {...{component: subscriptionsLink}}>
                             <ListItemIcon><SubscriptionsIcon/></ListItemIcon>
                             <ListItemText>
                                 <Badge
@@ -193,7 +195,8 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
                             </ListItemText>
                         </ListItem>
 
-                        <ListItem button component={changelogLink}>
+                        {/* TODO Material-UI doesn't accept the "component" prop */}
+                        <ListItem {...{component: changelogLink}}>
                             <ListItemIcon><HistoryIcon/></ListItemIcon>
                             <ListItemText>
                                 <Badge
@@ -217,12 +220,14 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
                             <OpenInNewIcon fontSize="small"/>
                         </ListItem>
 
-                        <ListItem button component={feedbackLink}>
+                        {/* TODO Material-UI doesn't accept the "component" prop */}
+                        <ListItem {...{component: feedbackLink}}>
                             <ListItemIcon><FeedbackIcon/></ListItemIcon>
                             <ListItemText primary={_("popup__nav__feedback")}/>
                         </ListItem>
 
-                        <ListItem button component={helpLink}>
+                        {/* TODO Material-UI doesn't accept the "component" prop */}
+                        <ListItem {...{component: helpLink}}>
                             <ListItemIcon><HelpIcon/></ListItemIcon>
                             <ListItemText primary={_("popup__nav__help")}/>
                         </ListItem>
@@ -304,7 +309,8 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
             return (
                 <Typography paragraph>
                     Hello World!
-                </Typography>);
+                </Typography>
+            );
         };
 
         private renderSubscriptions = () => {

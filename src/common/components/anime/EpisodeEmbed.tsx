@@ -313,28 +313,30 @@ export const EpisodeEmbed = withStyles(styles)(
                 <span>
                 <Tooltip title={_("episode__skip_previous")}>
                         <span>
-                        <IconButton
-                            color="primary"
-                            aria-label={_("episode__skip_previous")}
-                            disabled={!skipPrev}
-                            href={skipPrev && skipPrev.href}
-                            onClick={handleSkipPrevClick}
-                        >
-                            <SkipPreviousIcon/>
-                        </IconButton>
+                        {/* TODO Material-UI doesn't accept the "href" prop */}
+                            <IconButton
+                                color="primary"
+                                aria-label={_("episode__skip_previous")}
+                                disabled={!skipPrev}
+                                onClick={handleSkipPrevClick}
+                                {...{href: skipPrev && skipPrev.href}}
+                            >
+                                <SkipPreviousIcon/>
+                            </IconButton>
                         </span>
                 </Tooltip>
                 <Tooltip title={_("episode__skip_next")}>
                         <span>
-                        <IconButton
-                            color="primary"
-                            aria-label={_("episode__skip_next")}
-                            disabled={!skipNext}
-                            href={skipNext && skipNext.href}
-                            onClick={handleSkipNextClick}
-                        >
-                            <SkipNextIcon/>
-                        </IconButton>
+                        {/* TODO Material-UI doesn't accept the "href" prop */}
+                            <IconButton
+                                color="primary"
+                                aria-label={_("episode__skip_next")}
+                                disabled={!skipNext}
+                                onClick={handleSkipNextClick}
+                                {...{href: skipNext && skipNext.href}}
+                            >
+                                <SkipNextIcon/>
+                            </IconButton>
                         </span>
                 </Tooltip>
             </span>

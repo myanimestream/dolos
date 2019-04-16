@@ -13,7 +13,7 @@ export type Change = string;
 
 /**
  * Changelog interface.
- * This is a subset of a Map.
+ * This is a subset of a [[Map]].
  *
  * @see [[CHANGELOG]] for the actual changelog.
  */

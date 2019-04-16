@@ -144,7 +144,8 @@ export function Settings() {
             ));
 
             return (
-                <ListItem key={target.path} button component={link}>
+                // TODO Material-UI doesn't accept the "component" prop
+                <ListItem {...{key: target.path, component: link}}>
                     <ListItemIcon>
                         {icon}
                     </ListItemIcon>
