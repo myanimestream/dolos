@@ -175,13 +175,13 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
                 <>
                     <List>
                         {/* TODO Material-UI doesn't accept the "component" prop */}
-                        <ListItem {...{component: homeLink}}>
+                        <ListItem button {...{component: homeLink}}>
                             <ListItemIcon><HomeIcon/></ListItemIcon>
                             <ListItemText primary={_("popup__nav__home")}/>
                         </ListItem>
 
                         {/* TODO Material-UI doesn't accept the "component" prop */}
-                        <ListItem {...{component: subscriptionsLink}}>
+                        <ListItem button {...{component: subscriptionsLink}}>
                             <ListItemIcon><SubscriptionsIcon/></ListItemIcon>
                             <ListItemText>
                                 <Badge
@@ -196,7 +196,7 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
                         </ListItem>
 
                         {/* TODO Material-UI doesn't accept the "component" prop */}
-                        <ListItem {...{component: changelogLink}}>
+                        <ListItem button {...{component: changelogLink}}>
                             <ListItemIcon><HistoryIcon/></ListItemIcon>
                             <ListItemText>
                                 <Badge
@@ -221,13 +221,13 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
                         </ListItem>
 
                         {/* TODO Material-UI doesn't accept the "component" prop */}
-                        <ListItem {...{component: feedbackLink}}>
+                        <ListItem button {...{component: feedbackLink}}>
                             <ListItemIcon><FeedbackIcon/></ListItemIcon>
                             <ListItemText primary={_("popup__nav__feedback")}/>
                         </ListItem>
 
                         {/* TODO Material-UI doesn't accept the "component" prop */}
-                        <ListItem {...{component: helpLink}}>
+                        <ListItem button {...{component: helpLink}}>
                             <ListItemIcon><HelpIcon/></ListItemIcon>
                             <ListItemText primary={_("popup__nav__help")}/>
                         </ListItem>
