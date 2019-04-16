@@ -7,6 +7,7 @@
   "exclude": [
     "**/*.test.ts",
     "**/__tests__/**",
-    "**/__mocks__/**"
+    "**/__mocks__/**",
+    "./node_modules/**"
   ]
 }
