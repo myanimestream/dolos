@@ -1,7 +1,6 @@
 # Dolos
 [![Circle CI][circleci-shield]][circleci-url]
 [![Crowdin][crowdin-shield]][crowdin-url]
-[![FOSSA Status][fossa-shield]][fossa-url]
 
 The spirit of trickery and guile. *(Don't even ask me, I have no idea)*
 
@@ -57,8 +56,6 @@ If you want to dive straight in, [here's a link to the API documentation][dolos-
 [crowdin-url]: https://crowdin.com/project/dolos
 [crowdin-shield]: https://d322cqt584bo4o.cloudfront.net/dolos/localized.svg
 [release-shield]: https://img.shields.io/github/release/myanimestream/dolos.svg?style=flat
-[fossa-shield]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmyanimestream%2Fdolos.svg?type=shield
-[fossa-url]: https://app.fossa.io/projects/git%2Bgithub.com%2Fmyanimestream%2Fdolos
 
 [firefox-shield]: https://img.shields.io/amo/v/dolos-myanimestream.svg
 [chrome-shield]: https://img.shields.io/chrome-web-store/v/keocjanldkcmlfimikagifcggihmblmf.svg

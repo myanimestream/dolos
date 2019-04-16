@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     input: {
         display: "flex",
+        height: "auto",
         padding: 0,
     },
     noOptionsMessage: {
