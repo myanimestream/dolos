@@ -324,7 +324,7 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
         private renderFeedback = () => {
             const {classes} = this.props;
 
-            const handleOpenIssues = () => window.open("https://github.com/MyAnimeStream/dolos/issues");
+            const handleOpenIssues = () => window.open("https://github.com/myanimestream/dolos/issues");
 
             return (
                 <Card>

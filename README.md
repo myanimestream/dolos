@@ -45,20 +45,20 @@ If you want to dive straight in, [here's a link to the API documentation][dolos-
 
 [react]: https://reactjs.org/
 [material-ui]: https://material-ui.com/
-[grobber-repository]: https://github.com/MyAnimeStream/grobber
+[grobber-repository]: https://github.com/myanimestream/grobber
 
-[latest-release]: https://github.com/MyAnimeStream/dolos/releases/latest
+[latest-release]: https://github.com/myanimestream/dolos/releases/latest
 
 [chrome-download]: https://chrome.google.com/webstore/detail/myanimestream/keocjanldkcmlfimikagifcggihmblmf
 [firefox-download]: https://addons.mozilla.org/en-GB/firefox/addon/dolos-myanimestream/
 
-[circleci-shield]: https://circleci.com/gh/MyAnimeStream/dolos.svg?style=svg
-[circleci-url]: https://circleci.com/gh/MyAnimeStream/dolos
+[circleci-shield]: https://circleci.com/gh/myanimestream/dolos.svg?style=svg
+[circleci-url]: https://circleci.com/gh/myanimestream/dolos
 [crowdin-url]: https://crowdin.com/project/dolos
 [crowdin-shield]: https://d322cqt584bo4o.cloudfront.net/dolos/localized.svg
 [release-shield]: https://img.shields.io/github/release/myanimestream/dolos.svg?style=flat
-[fossa-shield]: https://app.fossa.io/api/projects/git%2Bgithub.com%2FMyAnimeStream%2Fdolos.svg?type=shield
-[fossa-url]: https://app.fossa.io/projects/git%2Bgithub.com%2FMyAnimeStream%2Fdolos
+[fossa-shield]: https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmyanimestream%2Fdolos.svg?type=shield
+[fossa-url]: https://app.fossa.io/projects/git%2Bgithub.com%2Fmyanimestream%2Fdolos
 
 [firefox-shield]: https://img.shields.io/amo/v/dolos-myanimestream.svg
 [chrome-shield]: https://img.shields.io/chrome-web-store/v/keocjanldkcmlfimikagifcggihmblmf.svg
