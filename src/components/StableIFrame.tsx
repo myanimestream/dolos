@@ -1,5 +1,5 @@
 /**
- * @module common/components
+ * @module components
  */
 
 import * as React from "react";

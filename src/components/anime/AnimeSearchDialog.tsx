@@ -1,5 +1,5 @@
 /**
- * @module common/components/anime
+ * @module components/anime
  */
 
 import Button from "@material-ui/core/Button";
@@ -24,7 +24,7 @@ import {GrobberMedium, remoteGrobberClient} from "dolos/grobber";
 import {useSubscription} from "dolos/hooks";
 import * as React from "react";
 import {Observable} from "rxjs";
-import {AnimeSearchSelection} from ".";
+import {AnimeSearchSelection} from "./index";
 import _ = chrome.i18n.getMessage;
 
 /** @ignore */

@@ -1,4 +1,4 @@
-/** @module common/components/anime */
+/** @module components/anime */
 
 /** @ignore */
 

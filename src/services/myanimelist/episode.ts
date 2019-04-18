@@ -2,8 +2,8 @@
  * @module services/myanimelist
  */
 
-import {SkipButton} from "dolos/common/components/anime";
 import {EpisodePage} from "dolos/common/pages";
+import {SkipButton} from "dolos/components/anime";
 import MyAnimeList from ".";
 import MalAnimePage from "./anime";
 

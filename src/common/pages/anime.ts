@@ -2,6 +2,7 @@
  * @module common/pages
  */
 
+import {AnimeStatusBar, RemoteAnimeSearchDialog, SearchDialogOpenCommand} from "dolos/components/anime";
 import {AnimeInfo, GrobberErrorType, remoteGrobberClient} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
 import {AnimeSubscriptionInfo, StoredAnimeInfo, SubscriptionError} from "dolos/models";
@@ -10,7 +11,6 @@ import * as React from "react";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {distinctUntilChanged, first, map} from "rxjs/operators";
 import {EpisodePage} from ".";
-import {AnimeStatusBar, RemoteAnimeSearchDialog, SearchDialogOpenCommand} from "../components/anime";
 import Service from "../service";
 import ServicePage from "../service-page";
 import _ = chrome.i18n.getMessage;

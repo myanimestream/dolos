@@ -2,13 +2,13 @@
  * @module common/pages
  */
 
+import {EpisodeEmbed, SkipButton} from "dolos/components/anime";
 import {Episode, GrobberErrorType, remoteGrobberClient} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
 import {wrapSentryLogger} from "dolos/utils";
 import * as React from "react";
 import * as rxjs from "rxjs";
 import {AnimePage} from ".";
-import {EpisodeEmbed, SkipButton} from "../components/anime";
 import Service from "../service";
 import ServicePage from "../service-page";
 import _ = chrome.i18n.getMessage;

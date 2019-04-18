@@ -20,7 +20,7 @@ import WebAssetIcon from "@material-ui/icons/WebAsset";
 import makeStyles from "@material-ui/styles/makeStyles";
 
 import {embedProviders, getEmbedProviderFromID} from "dolos/common";
-import {MUICreatable} from "dolos/common/components";
+import {MUICreatable} from "dolos/components";
 import {Config} from "dolos/models";
 import {StoreElementProxy} from "dolos/store";
 import {arrayElementsEqual} from "dolos/utils";

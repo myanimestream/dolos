@@ -1,8 +1,8 @@
 /**
- * @module common/components
+ * @module components
  */
 
-import {Config} from "src/models";
+import {Config} from "dolos/models";
 
 /**
  * Metadata for a website providing embedded streams

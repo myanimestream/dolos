@@ -1,5 +1,5 @@
 /**
- * @module common/components/anime
+ * @module components/anime
  */
 
 import Button from "@material-ui/core/Button";

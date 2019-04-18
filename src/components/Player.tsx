@@ -1,5 +1,5 @@
 /**
- * @module common/components
+ * @module components
  */
 
 import createStyles from "@material-ui/core/styles/createStyles";

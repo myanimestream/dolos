@@ -29,7 +29,7 @@ export function Video({config}: SettingsTabContentProps) {
     const [dubbed, handleTranslationTypeChange] = useConfigToggle(config, "dubbed");
 
     const [language, handleLanguageChange] = useConfigChange(config, "language",
-        (current, e: React.ChangeEvent<HTMLSelectElement>) => e.target.value as Language);
+        (current, e: React.ChangeEvent<any>) => e.target.value as Language);
 
     const translationTypeSwitch = (
         <Switch

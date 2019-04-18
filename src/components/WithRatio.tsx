@@ -1,5 +1,5 @@
 /**
- * @module common/components
+ * @module components
  */
 
 import Paper from "@material-ui/core/Paper";

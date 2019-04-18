@@ -1,7 +1,7 @@
 /**
  * React components.
  *
- * @module common/components
+ * @module components
  * @preferred
  */
 

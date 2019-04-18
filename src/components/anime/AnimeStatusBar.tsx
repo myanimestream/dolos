@@ -1,5 +1,5 @@
 /**
- * @module common/components/anime
+ * @module components/anime
  */
 
 /** @ignore */
@@ -8,7 +8,7 @@ import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import makeStyles from "@material-ui/styles/makeStyles";
 import {AnimePage} from "dolos/common/pages";
 import * as React from "react";
-import {ContinueWatchingButton, SubscriptionToggle} from ".";
+import {ContinueWatchingButton, SubscriptionToggle} from "./index";
 
 /** @ignore */
 const useStyles = makeStyles((theme: Theme) => ({
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
             marginTop: theme.spacing(1),
         },
         "display": "flex",
-        "flexDirection": "column",
+        "flexDirection": "column" as "column",
         "justifyContent": "space-between",
         "width": "100%",
     },

@@ -1,5 +1,5 @@
 /**
- * @module common/components
+ * @module components
  */
 
 /** @ignore */

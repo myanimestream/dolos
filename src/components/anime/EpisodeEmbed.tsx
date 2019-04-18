@@ -1,5 +1,5 @@
 /**
- * @module common/components/anime
+ * @module components/anime
  */
 
 import Button from "@material-ui/core/Button";
@@ -21,8 +21,8 @@ import SkipNextIcon from "@material-ui/icons/SkipNext";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
 import {EmbedInfo, prepareEmbedInfos} from "dolos/common";
-import {OpenDebugDialogButton} from "dolos/common/components";
 import {EpisodePage} from "dolos/common/pages";
+import {OpenDebugDialogButton} from "dolos/components";
 import {AnimeInfo} from "dolos/grobber";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";

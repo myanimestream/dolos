@@ -2,8 +2,7 @@
  * @module common
  */
 
-import {SnackbarMessage, SnackbarQueue} from "dolos/common/components";
-import {resolveSnackbarMessage} from "dolos/common/components/SnackbarQueue";
+import {resolveSnackbarMessage, SnackbarMessage, SnackbarQueue} from "dolos/components";
 import * as React from "react";
 import {Subject} from "rxjs";
 import {Type} from "../utils";

@@ -1,7 +1,7 @@
 /**
  * React components related to anime.
  *
- * @module common/components/anime
+ * @module components/anime
  * @preferred
  */
 

@@ -9,5 +9,6 @@
     "**/__tests__/**",
     "**/__mocks__/**",
     "./node_modules/**"
-  ]
+  ],
+  "ignoreCompilerErrors": true
 }

@@ -1,5 +1,5 @@
 /**
- * @module common/components
+ * @module components
  */
 
 import Avatar from "@material-ui/core/Avatar";
@@ -19,7 +19,7 @@ import Typography from "@material-ui/core/Typography";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import {EmbedInfo} from "dolos/common";
 import * as React from "react";
-import {StableIFrame, WithRatio} from ".";
+import {StableIFrame, WithRatio} from "./index";
 import _ = chrome.i18n.getMessage;
 
 /** @ignore */
@@ -82,7 +82,7 @@ export const EmbedPlayer = withStyles(styles)(
 
             const handleEmbedSelectOpen = () => this.setState({embedSelectionOpen: true});
             const handleEmbedSelectClose = () => this.setState({embedSelectionOpen: false});
-            const handleEmbedSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
+            const handleEmbedSelectChange = (event: React.ChangeEvent<any>) =>
                 this.setCurrentEmbed(parseInt(event.target.value, 10));
 
             const embedSelectInputProps = {
