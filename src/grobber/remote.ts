@@ -85,6 +85,10 @@ export class RemoteGrobberClient implements GrobberClientLike {
         return await this.sendMessage("getAnimeForTitle", [title, group]);
     }
 
+    private handleDisconnect() {
+        delete this._port;
+    }
+
     private handleMessage(message: Message) {
         const waiting = this.waitingPromises[message.id];
         if (waiting) {
@@ -107,6 +111,7 @@ export class RemoteGrobberClient implements GrobberClientLike {
             throw new Error("Already connected");
 
         this._port = runtime.connect("", {name: this.portName});
+        this._port.onDisconnect.addListener(this.handleDisconnect.bind(this));
         this._port.onMessage.addListener(this.handleMessage.bind(this));
     }
 
