@@ -18,6 +18,15 @@ author:
       icon: "fab fa-fw fa-twitter-square"
       url: "https://twitter.com/siku_2"
 
+footer:
+  links:
+    - labal: MyAnimeStream
+      icon: "fab fa-fw fa-github"
+      url: "https://myanimestream.github.io/"
+    - label: GitHub
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/MyAnimeStream/dolos"
+
 baseurl: /dolos
 
 include:
@@ -41,8 +50,11 @@ analytics:
 plugins:
   - jekyll-feed
   - jekyll-gist
+  - jekyll-github-metadata
   - jekyll-include-cache
+  - jekyll-mentions
   - jekyll-paginate
+  - jekyll-redirect-from
   - jekyll-sitemap
   - jemoji
 
