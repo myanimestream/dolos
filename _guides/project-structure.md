@@ -34,7 +34,7 @@ master branch.
 
 ## Toolchain
 
-Dolos uses [CircleCI](https://circleci.com/gh/MyAnimeStream) for
+Dolos uses [CircleCI](https://circleci.com/gh/myanimestream) for
 continuous integration.
 
 [Crowdin](https://crowdin.com/project/dolos) is used for localisation.

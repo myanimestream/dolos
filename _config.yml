@@ -20,12 +20,12 @@ author:
 
 footer:
   links:
-    - labal: MyAnimeStream
+    - label: MyAnimeStream
       icon: "fab fa-fw fa-github"
       url: "https://myanimestream.github.io/"
     - label: GitHub
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/MyAnimeStream/dolos"
+      url: "https://github.com/myanimestream/dolos"
 
 baseurl: /dolos
 
