@@ -12,6 +12,7 @@ import AsyncLock from "dolos/lock";
 import {fromExtensionEventPattern, mapArrayToObject} from "dolos/observable-utils";
 import {merge, Observable} from "rxjs";
 import {filter, first} from "rxjs/operators";
+import notifications = chrome.notifications;
 
 /** Event emitted for all interactions with a notification. */
 export interface NotificationEvent {
@@ -23,7 +24,7 @@ export interface NotificationEvent {
 /** Build an Observable for the notification event `name`. */
 function getObservable(name: string): Observable<NotificationEvent> {
     // @ts-ignore
-    return fromExtensionEventPattern(chrome.notifications[name]).pipe(
+    return fromExtensionEventPattern(notifications[name]).pipe(
         mapArrayToObject<NotificationEvent>(["notificationID", "buttonIndex"]),
     );
 }
@@ -42,10 +43,10 @@ export const notificationLock = new AsyncLock();
  *
  * @see [[BrowserNotification]] for a higher level approach to notifications.
  */
-export async function createNotification(options: chrome.notifications.NotificationOptions): Promise<string> {
+export async function createNotification(options: notifications.NotificationOptions): Promise<string> {
     return new Promise(async (resolve: (id: string) => void) => {
         await notificationLock.withLock(async () => {
-            const id = await new Promise((res: (id: string) => void) => chrome.notifications.create(options, res));
+            const id = await new Promise((res: (id: string) => void) => notifications.create(options, res));
             resolve(id);
 
             // wait for the notification to close and then release the lock.
@@ -85,7 +86,7 @@ export class BrowserNotification {
     /**
      * Create a new notification and return it wrapped in a BrowserNotification instance.
      */
-    public static async create(options: chrome.notifications.NotificationOptions): Promise<BrowserNotification> {
+    public static async create(options: notifications.NotificationOptions): Promise<BrowserNotification> {
         const id = await createNotification(options);
         return new BrowserNotification(id);
     }
@@ -103,9 +104,9 @@ export class BrowserNotification {
     }
 
     /** Update the notification. */
-    public async update(options: chrome.notifications.NotificationOptions): Promise<boolean> {
+    public async update(options: notifications.NotificationOptions): Promise<boolean> {
         return new Promise((res: (wasUpdated: boolean) => void) =>
-            chrome.notifications.update(this.id, options, res));
+            notifications.update(this.id, options, res));
     }
 
     /** Wait until the notification is closed */
@@ -125,10 +126,7 @@ export class BrowserNotification {
      * of a notification so we only take the buttons into account.
      */
     public async waitRemoved(): Promise<void> {
-        await merge(
-            this.onClicked$,
-            this.onButtonClicked$,
-        )
+        await merge(this.onClicked$, this.onButtonClicked$)
             .pipe(first())
             .toPromise();
     }

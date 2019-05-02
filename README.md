@@ -35,8 +35,6 @@ If you wish to build and install the extension manually please refer to the
 There are some in-depth guides available on the [Dolos website][dolos-guides].
 If you want to dive straight in, [here's a link to the API documentation][dolos-docs].
 
-## License
-[MIT](LICENSE)
 
 [dolos-guides]: https://myanimestream.github.io/dolos/guides/
 [dolos-docs]: https://myanimestream.github.io/dolos/docs/
