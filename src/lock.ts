@@ -19,10 +19,10 @@ export type WithLockCallback<T> = (lock: AsyncLock) => PromiseLike<T> | T;
 export const DEFAULT_LOCK_KEY = Symbol("global lock");
 
 /**
- * A namespaced Semaphore for asynchronous operations.
+ * A namespaced lock for asynchronous operations.
  *
  * Not providing a key to the methods makes this function as if
- * it were a normal Semaphore.
+ * it were a normal lock.
  *
  * @example
  * ```typescript
@@ -88,7 +88,7 @@ export default class AsyncLock {
      *
      * @see [[AsyncLock.withLock]] for a safer and more convenient approach.
      */
-    public async acquire(...keys: any[]) {
+    public async acquire(...keys: any[]): Promise<void> {
         if (!keys.length) keys.push(DEFAULT_LOCK_KEY);
 
         await Promise.all(keys.map(key => this.waitForLocked(key)));
@@ -101,7 +101,7 @@ export default class AsyncLock {
      *
      * @see [[AsyncLock.withLock]] for a safer and more convenient approach.
      */
-    public release(...keys: any[]) {
+    public release(...keys: any[]): void {
         if (!keys.length) keys.push(DEFAULT_LOCK_KEY);
 
         for (const key of keys) {
@@ -121,7 +121,6 @@ export default class AsyncLock {
         await this.acquire(...keys);
 
         let result;
-
         try {
             result = await Promise.resolve(callback(this));
         } finally {
