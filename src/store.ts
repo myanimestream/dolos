@@ -13,7 +13,7 @@
 
 import AsyncLock from "dolos/lock";
 import {BehaviorSubject, Subject} from "rxjs";
-import {Config, DEFAULT_CONFIG, StoredAnimeInfo, StoredServiceAnimes, SubscribedAnimes} from "./models";
+import {AnimeSubscriptions, Config, DEFAULT_CONFIG, StoredAnimeInfo, StoredServiceAnimes} from "./models";
 import StorageChange = chrome.storage.StorageChange;
 
 /**
@@ -568,10 +568,10 @@ export class Store {
     }
 
     /**
-     * Get the stored [[SubscribedAnimes]] object.
+     * Get the stored [[AnimeSubscriptions]] object.
      */
-    public async getAnimeSubscriptions(): Promise<StoreElementProxy<SubscribedAnimes>> {
-        return await this.get("subscriptions::anime", {} as SubscribedAnimes);
+    public async getAnimeSubscriptions(): Promise<StoreElementProxy<AnimeSubscriptions>> {
+        return await this.get("subscriptions::anime", {} as AnimeSubscriptions);
     }
 
     private async getRaw(keys: string | string[] | null): Promise<{ [key: string]: any }> {
