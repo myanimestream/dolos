@@ -48,12 +48,15 @@ export function fromExtensionEventPattern<V extends any[], T extends (...args: V
  *
  * @param keys - Object keys in order of the array
  */
-export function mapArrayToObject<T extends { [key: string]: any }>(keys: Array<keyof T>): (
-    source: Observable<Array<T[keyof T]>>) => Observable<T> {
+export function mapArrayToObject<T extends { [key: string]: any }>(keys: Array<keyof T>):
+    (source: Observable<Array<T[keyof T]>>) => Observable<T> {
     return map(value => {
         // create array of [key, value] pairs.
         const zipped = keys.map((key, i) => [key, value[i]]) as Array<[keyof T, T[keyof T]]>;
         // create object
-        return zipped.reduce((prev, [key, val]) => prev[key] = val, {} as T);
+        return zipped.reduce((prev, [key, val]) => {
+            prev[key] = val;
+            return prev;
+        }, {} as T);
     });
 }

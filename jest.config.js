@@ -15,7 +15,7 @@ module.exports = {
         "json",
         "node"
     ],
-    "moduleNameMapper": {
+    moduleNameMapper: {
         "^dolos(.*)$": "<rootDir>/src$1",
     },
     setupFiles: [

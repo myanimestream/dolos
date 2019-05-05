@@ -28,8 +28,7 @@ export function usePromise<T, V>(promise: PromiseLike<T>, defaultValue?: V): T |
         let cancelled = false;
 
         promise.then((result: T) => {
-            if (!cancelled)
-                setValue(result);
+            if (!cancelled) setValue(result);
         });
 
         return () => {
@@ -44,6 +43,7 @@ export function usePromiseMemo<T>(func: () => PromiseLike<T>): T | undefined;
 export function usePromiseMemo<T, V>(func: () => PromiseLike<T>, defaultValue: V): T | V;
 /** Get the promise from a function and wait for it to resolve */
 export function usePromiseMemo<T, V>(func: () => PromiseLike<T>, defaultValue?: V): T | V {
+    // func is presumed not to be stable!
     const promise = React.useMemo(func, []);
     return usePromise(promise, defaultValue) as T | V;
 }
@@ -75,8 +75,6 @@ export function useObservable<T, V>(observable: Observable<T>, defaultValue: V):
  * If you provide a [[BehaviorSubject]] the first returned value will be
  * initialised with the observables current value (i.e. [[BehaviourSubject.getValue]]).
  * This makes providing a default value in that case useless since it'll be overwritten.
- * If you don't want this behaviour, please pipe your observable
- * (this essentially converts it to a normal observable).
  *
  * @see [[useSubscription]] to subscribe to an observable.
  *
