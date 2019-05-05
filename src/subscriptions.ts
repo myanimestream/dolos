@@ -7,13 +7,14 @@
 /** @ignore */
 
 import {useObservable, usePromiseMemo} from "dolos/hooks";
-import {AnimeSubscriptionInfo, SubscribedAnimes} from "dolos/models";
-import Store, {StoreElementProxy} from "dolos/store";
+import {AnimeSubscriptionInfo, AnimeSubscriptions} from "dolos/models";
+import Store, {MutItem} from "dolos/store";
 import {EMPTY, Observable} from "rxjs";
 import {distinctUntilChanged, map} from "rxjs/operators";
 
-/** React hook for getting the [[SubscribedAnimes]] */
-export function useAnimeSubscriptions(): StoreElementProxy<SubscribedAnimes> | undefined {
+/** React hook for getting the [[AnimeSubscriptions]] */
+export function useAnimeSubscriptions(): MutItem<AnimeSubscriptions> {
+    Store.getItem$();
     const subs = usePromiseMemo(() => Store.getAnimeSubscriptions());
     const subsObservable = subs ? subs.value$ : EMPTY;
 
