@@ -107,6 +107,6 @@ export interface AnimeSubscriptionInfo {
 /**
  * Keeps track of Animes the user has subscribed to.
  */
-export interface SubscribedAnimes {
+export interface AnimeSubscriptions {
     [identifer: string]: AnimeSubscriptionInfo;
 }

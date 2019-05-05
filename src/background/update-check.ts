@@ -4,13 +4,13 @@
 
 import {AnimeInfo, grobberClient, GrobberErrorType, GrobberResponseError} from "dolos/grobber";
 import AsyncLock from "dolos/lock";
-import {AnimeSubscriptionInfo, SubscribedAnimes, SubscriptionError} from "dolos/models";
+import {AnimeSubscriptionInfo, AnimeSubscriptions, SubscriptionError} from "dolos/models";
 import Store from "dolos/store";
 import {hasNewEpisode$} from "./observables";
 
 /** Event emitted if there is a new episode */
 export interface NewEpisodeEvent {
-    subscribedAnimes: SubscribedAnimes;
+    subscribedAnimes: AnimeSubscriptions;
     subscription: AnimeSubscriptionInfo;
     unseenEpisodes: number;
 }
