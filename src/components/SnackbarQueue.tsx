@@ -6,7 +6,7 @@
 
 import Button, {ButtonProps} from "@material-ui/core/Button";
 import {useSubscription} from "dolos/hooks";
-import {OptionsObject, SnackbarProvider, VariantType, withSnackbar, withSnackbarProps} from "notistack";
+import {OptionsObject, SnackbarProvider, VariantType, withSnackbar, WithSnackbarProps} from "notistack/build";
 import * as React from "react";
 import {Subject} from "rxjs";
 import _ = chrome.i18n.getMessage;
@@ -46,7 +46,7 @@ function isSnackbarAction(action: any): action is SnackbarAction {
  */
 export interface SnackbarMessage extends OptionsObject {
     message: string;
-    action?: React.ReactNode | SnackbarAction;
+    action?: OptionsObject["action"] | SnackbarAction;
 }
 
 /**
@@ -72,29 +72,38 @@ interface SnackbarListenerProps {
  */
 // tslint:disable-next-line:variable-name
 const SnackbarListener = withSnackbar(
-    (props: SnackbarListenerProps & withSnackbarProps) => {
+    (props: SnackbarListenerProps & WithSnackbarProps) => {
         // this isn't another function, tslint, it's just a wrapped component.
         // you can just chill.
         // tslint:disable-next-line:react-hooks-nesting
         useSubscription(props.snackbarMessage$, (msg: SnackbarMessage) => {
             const action = msg.action;
+
             if (isSnackbarAction(action)) {
                 const buttonProps: ButtonProps = {
                     color: "secondary",
+                    onClick: action.onClick,
                     size: "small",
                 };
 
                 if (action.buttonProps)
                     Object.assign(buttonProps, action.buttonProps);
 
-                msg.action = (
-                    <Button {...buttonProps}>
-                        {action.text}
-                    </Button>
-                );
+                msg.action = (key: any) => {
+                    const handleDismiss = () => props.closeSnackbar(key);
 
-                if (action.onClick)
-                    msg.onClickAction = action.onClick;
+                    return (
+                        <>
+                            <Button {...buttonProps}>
+                                {action.text}
+                            </Button>
+
+                            <Button color="secondary" size="small" onClick={handleDismiss}>
+                                {_("snackbar__dismiss")}
+                            </Button>
+                        </>
+                    );
+                };
             }
 
             props.enqueueSnackbar(msg.message, msg);
@@ -116,16 +125,9 @@ export interface SnackbarQueueProps extends SnackbarListenerProps {
 export function SnackbarQueue(props: SnackbarQueueProps) {
     const {maxMessages} = props;
 
-    const snackbarAction = (
-        <Button color="secondary" size="small">
-            {_("snackbar__dismiss")}
-        </Button>
-    );
-
     return (
         <SnackbarProvider
             maxSnack={maxMessages || 3}
-            action={snackbarAction}
         >
             <SnackbarListener {...props}/>
         </SnackbarProvider>
