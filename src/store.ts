@@ -1,8 +1,6 @@
 /**
  * Tools for interacting with the browser storage.
  *
- * The module has an [[AreaAdapter]] for the `sync` storage area as its default export.
- *
  * @module store
  */
 
@@ -30,7 +28,7 @@ const globalItemChange$ = fromExtensionEventPattern(storage.onChanged).pipe(
 );
 
 /**
- * Supported storage areas.
+ * Available storage areas.
  */
 export const enum StorageAreaName {
     Local = "local",
@@ -181,6 +179,12 @@ function createRootItemChange$<T>(storageArea: string, key: string): Observable<
 
 /**
  * Observable which emits the current value of the item.
+ *
+ * The value is either the currently stored value or `undefined` if the
+ * item doesn't exist.
+ *
+ * The value is also read only! If you wish to change the value, use the
+ * [[setItem]] function, or an [[ItemSetter]] from [[getItemSetter]].
  */
 export type ItemObservable<T> = Observable<Readonly<T> | undefined>;
 
@@ -321,7 +325,7 @@ async function setItemInternal<T>(areaName: string, area: storage.StorageArea,
                                   rootKey: string, nsKeys: string[],
                                   value: T): Promise<void> {
     let newRoot;
-    // no need to wait needlessly for the current root if we're replacing it anyway.
+    // don't wait needlessly for the current root if we're replacing it anyway.
     if (nsKeys.length === 0) {
         newRoot = value;
     } else {
@@ -396,9 +400,9 @@ export function getMutItem$<T>(storageArea: string, path: Path): MutItem<T> {
 /**
  * Utility class which provides functions bound to a given storage area.
  *
- * @see [[getStorageAdapter]] to get an area adapter.
+ * @see [[AreaAdapter]] for an implementation
  */
-export interface AreaAdapter {
+export interface AreaAdapterLike {
     readonly areaName: string;
 
     getItem$<T>(path: Path): ItemObservable<T>;
@@ -411,26 +415,25 @@ export interface AreaAdapter {
 }
 
 /**
- * Get an [[AreaAdapter]] for the given storage area.
+ * An implementation of [[AreaAdapterLike]] for the given storage area.
  *
- * @param areaName - Storage area to get adapter for.
+ * The implementation works by binding the functions to the given area in the
+ * constructor.
  */
-export function getStorageAdapter(areaName: string): AreaAdapter {
-    // make sure the given storage area is valid.
-    try {
-        getStorageArea(areaName);
-    } catch (e) {
-        throw e;
+export class AreaAdapter implements AreaAdapterLike {
+    public areaName: string;
+
+    public getItem$: AreaAdapterLike["getItem$"];
+    public setItem: AreaAdapterLike["setItem"];
+    public getItemSetter: AreaAdapterLike["getItemSetter"];
+    public getMutItem$: AreaAdapterLike["getMutItem$"];
+
+    constructor(areaName: string) {
+        this.areaName = areaName;
+
+        this.getItem$ = getItem$.bind(undefined, areaName) as AreaAdapterLike["getItem$"];
+        this.getItemSetter = getItemSetter.bind(undefined, areaName);
+        this.getMutItem$ = getMutItem$.bind(undefined, areaName) as AreaAdapterLike["getMutItem$"];
+        this.setItem = setItem.bind(undefined, areaName);
     }
-
-    return {
-        areaName,
-        getItem$: getItem$.bind(undefined, areaName) as AreaAdapter["getItem$"],
-        getItemSetter: getItemSetter.bind(undefined, areaName),
-        getMutItem$: getMutItem$.bind(undefined, areaName) as AreaAdapter["getMutItem$"],
-        setItem: setItem.bind(undefined, areaName),
-    };
 }
-
-const syncAdapter = getStorageAdapter(StorageAreaName.Sync);
-export default syncAdapter;
