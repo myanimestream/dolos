@@ -7,7 +7,7 @@
 /** @ignore */
 
 import events = chrome.events;
-import {fromEventPattern, Observable} from "rxjs";
+import {from, fromEventPattern, isObservable, Observable} from "rxjs";
 import {map} from "rxjs/operators";
 
 /**
@@ -59,4 +59,20 @@ export function mapArrayToObject<T extends { [key: string]: any }>(keys: Array<k
             return prev;
         }, {} as T);
     });
+}
+
+/**
+ * Value that can be resolved to an observable using [[resolveObservable]].
+ */
+export type ResolvableObservable<T> = T | Observable<T>;
+
+/**
+ * Resolve the given value to an observable.
+ *
+ * @param value - Value to resolve to an observable.
+ */
+export function resolveObservable<T>(value: ResolvableObservable<T>): Observable<T> {
+    if (isObservable(value)) return value;
+
+    return from([value]);
 }

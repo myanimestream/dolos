@@ -6,19 +6,19 @@
 
 /** @ignore */
 
-import {useObservable, usePromiseMemo} from "dolos/hooks";
+import {useObservableMemo} from "dolos/hooks";
 import {AnimeSubscriptionInfo, AnimeSubscriptions} from "dolos/models";
-import Store, {MutItem} from "dolos/store";
-import {EMPTY, Observable} from "rxjs";
+import Store, {DolosStore} from "dolos/store";
+import {Observable} from "rxjs";
 import {distinctUntilChanged, map} from "rxjs/operators";
 
-/** React hook for getting the [[AnimeSubscriptions]] */
-export function useAnimeSubscriptions(): MutItem<AnimeSubscriptions> {
-    Store.getItem$();
-    const subs = usePromiseMemo(() => Store.getAnimeSubscriptions());
-    const subsObservable = subs ? subs.value$ : EMPTY;
+/**
+ * React hook for getting the [[AnimeSubscriptions]]
+ */
+export function useAnimeSubscriptions(dolosStore?: DolosStore): AnimeSubscriptions | undefined {
+    const store = dolosStore || Store;
 
-    return useObservable(subsObservable);
+    return useObservableMemo(() => store.getAnimeSubscriptions$());
 }
 
 /** Get an observable for a list of subscriptions with unseen episodes */

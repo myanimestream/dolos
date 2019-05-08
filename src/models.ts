@@ -53,7 +53,7 @@ export interface Config {
  * Default config values that are used if there is no
  * corresponding value.
  */
-export const DEFAULT_CONFIG: Config = {
+export const DEFAULT_CONFIG: Readonly<Config> = {
     debugMode: false,
     grobberUrl: "https://mas.dokkeral.com",
 
@@ -76,10 +76,6 @@ export const DEFAULT_CONFIG: Config = {
         order: [],
     },
 };
-
-export interface StoredServiceAnimes {
-    [language: string]: { [id: string]: StoredAnimeInfo };
-}
 
 export interface StoredAnimeInfo {
     uid?: string;

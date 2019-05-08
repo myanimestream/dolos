@@ -91,6 +91,19 @@ export function useObservable<T, V>(observable: Observable<T>, defaultValue?: V)
     return value;
 }
 
+export function useObservableMemo<T>(func: () => Observable<T>): T | undefined;
+export function useObservableMemo<T, V>(func: () => Observable<T>, defaultValue?: V): T | V;
+/**
+ * Get an observable from the given function and return its value.
+ *
+ * @param func - Function to call to get the observable
+ * @param defaultValue - Value to use while no other value is available.
+ */
+export function useObservableMemo<T, V>(func: () => Observable<T>, defaultValue?: V): T | V {
+    const obs$ = React.useMemo(func, []);
+    return useObservable(obs$, defaultValue) as T | V;
+}
+
 export function useObservablePromise<T>(promise: PromiseLike<Observable<T> | undefined>): T | undefined;
 export function useObservablePromise<T, V>(promise: PromiseLike<Observable<T> | undefined>, defaultValue: V): T | V;
 /** Get the observable from a promise and return its current value */
