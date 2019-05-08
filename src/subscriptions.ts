@@ -22,9 +22,10 @@ export function useAnimeSubscriptions(dolosStore?: DolosStore): AnimeSubscriptio
 }
 
 /** Get an observable for a list of subscriptions with unseen episodes */
-export async function getAnimeSubsWithUnseenEps$(): Promise<Observable<AnimeSubscriptionInfo[]>> {
-    const subscriptions = await Store.getAnimeSubscriptions();
-    return subscriptions.value$.pipe(
+export function getAnimeSubsWithUnseenEps$(dolosStore?: DolosStore): Observable<AnimeSubscriptionInfo[]> {
+    const store = dolosStore || Store;
+
+    return store.getAnimeSubscriptions$().pipe(
         map(subs =>
             Object.values(subs).filter(sub => sub.anime.episodes - sub.episodesWatched > 0),
         ),
@@ -36,8 +37,8 @@ export async function getAnimeSubsWithUnseenEps$(): Promise<Observable<AnimeSubs
  *
  * @see [[getAnimeSubsWithUnseenEps$]]
  */
-export async function getAnimeSubsWithUnseenEpsCount$(): Promise<Observable<number>> {
-    const unseen$ = await getAnimeSubsWithUnseenEps$();
+export function getAnimeSubsWithUnseenEpsCount$(dolosStore?: DolosStore): Observable<number> {
+    const unseen$ = getAnimeSubsWithUnseenEps$(dolosStore);
     return unseen$.pipe(
         map(unseen => unseen.length),
         distinctUntilChanged(),

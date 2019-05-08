@@ -1,5 +1,5 @@
 import {getItem$, StorageAreaName} from "dolos/store";
-import {clearRootCache} from "dolos/store/root";
+import {clearRootCache, getRootItem$} from "dolos/store/root";
 import {first} from "rxjs/operators";
 import {testWithLock, uniqueRootKey} from ".";
 
@@ -27,3 +27,16 @@ test("clearRootCache", testWithLock(async () => {
     // after the root cache is cleared it should update
     expect(await getCurrent()).toBe(5);
 }));
+
+test("items are immutable", async () => {
+    const key = uniqueRootKey();
+
+    chrome.storage.sync.set({[key]: {a: 1}});
+
+    const value: any = await getRootItem$(StorageAreaName.Sync, key).pipe(first()).toPromise();
+
+    expect(value).toEqual({a: 1});
+
+    expect(() => value["a"] = 5).toThrow("Cannot assign to read only property 'a' of object '#<Object>'");
+    expect(() => value["test"] = 5).toThrow("Cannot add property test, object is not extensible");
+});

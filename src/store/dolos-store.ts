@@ -1,4 +1,14 @@
+/**
+ * Store tools specialised for Dolos.
+ *
+ * @module store/dolos-store
+ */
+
+/** @ignore */
+
+import {AnimeInfo} from "dolos/grobber";
 import {AnimeSubscriptionInfo, AnimeSubscriptions, Config, DEFAULT_CONFIG, StoredAnimeInfo} from "dolos/models";
+import {ItemObservable} from "dolos/store/root";
 import {combineLatest, Observable} from "rxjs";
 import {map, switchMap} from "rxjs/operators";
 import {AreaAdapter} from "./area-adapter";
@@ -15,16 +25,19 @@ export function buildLanguageIdentifier(language: string, dubbed: boolean): stri
 }
 
 /**
- * Convert the name of the medium to an identifier.
+ * Convert a string to a safe identifier.
  *
- * @param name - Name of the medium
+ * A safe identifier, in this context, is just a string without any special
+ * characters such as stop-characters or punctuation. Just alphanumeric text.
+ *
+ * @param text - Text to convert
  */
-export function buildMediumIdentifier(name: string): string {
+export function safeIdentifier(text: string): string {
     let identifier = "";
-    for (let i = 0; i < name.length; i++) {
+    for (let i = 0; i < text.length; i++) {
         // apparently this godawful concatenation is faster than
         // joining an array of strings in JS.
-        identifier += name.charCodeAt(i).toString(16);
+        identifier += text.charCodeAt(i).toString(16);
     }
 
     return identifier;
@@ -38,21 +51,26 @@ export function buildMediumIdentifier(name: string): string {
 export type Identifier = [string, string, string];
 
 /**
+ * Observable that emits read-only values.
+ */
+export type ReadObservable<T> = Observable<Readonly<T>>;
+
+/**
  * A superset of the area adapter specialised for Dolos.
  */
 export class DolosStore extends AreaAdapter {
     /**
      * Load the [[Config]] from the storage.
      */
-    public getConfig$(): Observable<Config> {
+    public getConfig$(): ReadObservable<Config> {
         return this.getItem$<Config>("config").pipe(
             applyDefaults(DEFAULT_CONFIG),
         );
     }
 
     /**
-     * Get an observable emitting language identifiers from [[buildLanguageIdentifier]]
-     * based on the current config values.
+     * Get an observable emitting language identifiers from
+     * [[buildLanguageIdentifier]] based on the current config values.
      */
     public getLanguageID$(): Observable<string> {
         return this.getConfig$().pipe(
@@ -60,10 +78,19 @@ export class DolosStore extends AreaAdapter {
         );
     }
 
-    public getID$(serviceID: string, mediumID$: Observable<string>, languageID$?: Observable<string>): Observable<Identifier> {
+    /**
+     * Get an observable for an identifier.
+     *
+     * The medium id is converted to a safe identifier using [[safeIdentifier]].
+     */
+    public getID$(serviceID: string,
+                  mediumID$: Observable<string>,
+                  languageID$?: Observable<string>): Observable<Identifier> {
         languageID$ = languageID$ || this.getLanguageID$();
 
-        return combineLatest([languageID$, mediumID$]).pipe(
+        const safeMediumID$ = mediumID$.pipe(map(mediumID => safeIdentifier(mediumID)));
+
+        return combineLatest([languageID$, safeMediumID$]).pipe(
             map(([languageID, mediumID]) => [serviceID, languageID, mediumID]),
         );
     }
@@ -71,7 +98,7 @@ export class DolosStore extends AreaAdapter {
     /**
      * Get a [[StoredAnimeInfo]] from the storage.
      */
-    public getStoredAnimeInfo$(id$: Observable<Identifier>): Observable<StoredAnimeInfo> {
+    public getStoredAnimeInfo$(id$: Observable<Identifier>): ReadObservable<StoredAnimeInfo> {
         return id$.pipe(
             switchMap(([serviceID, languageID, mediumID]) =>
                 this.getItem$([`${serviceID}::anime`, languageID, mediumID])),
@@ -82,7 +109,7 @@ export class DolosStore extends AreaAdapter {
     /**
      * Get the stored [[SubscribedAnimes]] object.
      */
-    public getAnimeSubscriptions$(): Observable<AnimeSubscriptions> {
+    public getAnimeSubscriptions$(): ReadObservable<AnimeSubscriptions> {
         return this.getItem$("subscriptions::anime").pipe(
             applyDefaults({}),
         );
@@ -91,11 +118,48 @@ export class DolosStore extends AreaAdapter {
     /**
      * Get the stored [[SubscribedAnimes]] object.
      */
-    public getAnimeSubscriptionInfo$(id$: Observable<Identifier>): Observable<AnimeSubscriptionInfo | undefined> {
+    public getAnimeSubscriptionInfo$(id$: Observable<Identifier>): ItemObservable<AnimeSubscriptionInfo> {
         return id$.pipe(
             switchMap(id => this.getAnimeSubscriptions$().pipe(
                 map(subscriptions => subscriptions[id.join("::")]),
             )),
         );
+    }
+
+    /**
+     * Get an observable which emits whether or not the user is subscribed to
+     * the given Anime.
+     */
+    public getIsSubscribedToAnime$(id$: Observable<Identifier>): Observable<boolean> {
+        return this.getAnimeSubscriptionInfo$(id$).pipe(map(item => item !== undefined));
+    }
+
+    /**
+     * Subscribe to an Anime
+     */
+    public async subscribeAnime(id: Identifier,
+                                anime: AnimeInfo,
+                                animeURL: string,
+                                episodesWatched: number,
+                                nextEpisodeURL?: string): Promise<void> {
+        const absID = id.join("::");
+
+        const sub: AnimeSubscriptionInfo = {
+            anime,
+            animeURL,
+            episodesWatched,
+            identifier: absID,
+            nextEpisodeURL,
+            serviceID: id[0],
+        };
+
+        await this.setItem(["subscriptions::anime", absID], sub);
+    }
+
+    /**
+     * Unsubscribe from an Anime
+     */
+    public async unsubscribeAnime(id: Identifier): Promise<void> {
+        await this.setItem(["subscriptions::anime", id.join("::")], undefined);
     }
 }

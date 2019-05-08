@@ -34,14 +34,16 @@ function createRootItem$<T>(storageArea: string, key: string): ItemObservable<T>
 
     // update stream
     const change$ = createRootItemChange$(storageArea, key)
-        .pipe(map(value => value.newValue));
+        .pipe(map(change => change.newValue));
 
     // get current value from the storage,
     // but abort if an update comes in first!
     const item$ = from(storageGet(area, key))
         .pipe(takeUntil(change$));
 
-    return merge(item$, change$);
+    return merge(item$, change$).pipe(
+        map(item => Object.freeze(item)),
+    );
 }
 
 /**
