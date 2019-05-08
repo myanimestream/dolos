@@ -8,9 +8,10 @@
 /** @ignore */
 
 import storage = chrome.storage;
+import {Namespace} from "dolos/memory";
 import {Observable} from "rxjs";
 import {distinctUntilChanged, map} from "rxjs/operators";
-import {nsGet, nsSet, nsSetDefaults, Path, splitPath} from "./namespace";
+import {nsGet, nsWithDefaults, nsWithoutValue, nsWithValue, Path, splitPath} from "./namespace";
 import {getCurrentRoot, getRootItem$, ItemObservable} from "./root";
 import {getStorageArea, storageSet} from "./storage";
 
@@ -35,22 +36,28 @@ export function getItem$<T>(storageArea: string, path: Path): ItemObservable<T> 
  * Internal implementation of non-root item setter.
  *
  * @param areaName - Storage area name to set item in
- * @param area - Storage area to set item in. This has to match the name, otherwise
- * weird bugs will happen. However it is never checked as this isn't a public function!
+ * @param area - Storage area to set item in. This has to match the name,
+ * otherwise weird bugs will happen. However it is never checked as this isn't
+ * a public function!
  * @param rootKey - Key of the root item.
  * @param nsKeys - Namespace path of the item.
- * @param value - Value to set for the given path.
+ * @param value - Value to set for the given path. If the value is undefined
+ * it's removed.
  */
 async function setItemInternal<T>(areaName: string, area: storage.StorageArea,
                                   rootKey: string, nsKeys: string[],
-                                  value: T): Promise<void> {
+                                  value: T | undefined): Promise<void> {
     let newRoot;
     // don't wait needlessly for the current root if we're replacing it anyway.
     if (nsKeys.length === 0) {
         newRoot = value;
     } else {
         const root = await getCurrentRoot(areaName, rootKey);
-        newRoot = nsSet(root, nsKeys, value);
+
+        if (value === undefined)
+            newRoot = nsWithoutValue(root, nsKeys);
+        else
+            newRoot = nsWithValue(root, nsKeys, value);
     }
 
     await storageSet(area, rootKey, newRoot);
@@ -61,7 +68,8 @@ async function setItemInternal<T>(areaName: string, area: storage.StorageArea,
  *
  * @param storageArea - Storage area to set item in.
  * @param path - Path of the item to set
- * @param value - Value to insert
+ * @param value - Value to insert.
+ * Passing `undefined` will remove the value entirely.
  */
 export async function setItem<T>(storageArea: string, path: Path, value: T): Promise<void> {
     const area = getStorageArea(storageArea);
@@ -120,8 +128,9 @@ export function getMutItem$<T>(storageArea: string, path: Path): MutItem<T> {
 /**
  * Observable operator which applies the given defaults to all values.
  *
- * @param defaults - Defaults to provide to the [[nsSetDefaults]] function.
+ * @param defaults - Defaults to provide to the [[nsWithDefaults]] function.
  */
-export function applyDefaults<T, V>(defaults: V): (item$: ItemObservable<T>) => Observable<Readonly<T & V>> {
-    return map(item => nsSetDefaults(item, defaults));
+export function applyDefaults<T, V extends Namespace>(defaults: V):
+    (item$: ItemObservable<T>) => Observable<Readonly<V>> {
+    return map(item => nsWithDefaults(item, defaults));
 }

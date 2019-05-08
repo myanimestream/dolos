@@ -1,4 +1,4 @@
-import {isNS, nsGet, nsSet, nsSetDefaults, splitPath} from "dolos/store/namespace";
+import {isNS, nsGet, nsWithDefaults, nsWithoutValue, nsWithValue, splitPath} from "dolos/store/namespace";
 
 test("splitPath", () => {
     expect(splitPath("a..a.b.test")).toEqual(["a", "", "a", "b", "test"]);
@@ -23,23 +23,23 @@ test("nsGet", () => {
     expect(nsGet(ns, [])).toBe(ns);
 });
 
-test("nsSet", () => {
+test("nsWithValue", () => {
     const ns = {a: {b: "hello"}};
 
     const originalNSClone = JSON.parse(JSON.stringify(ns));
 
-    expect(nsSet(ns, [], "test")).toBe("test");
-    expect(nsSet(undefined, ["a"], "test")).toEqual({
+    expect(nsWithValue(ns, [], "test")).toBe("test");
+    expect(nsWithValue(undefined, ["a"], "test")).toEqual({
         a: "test"
     });
 
-    const updated = nsSet(ns, ["a", "b"], "test");
+    const updated = nsWithValue(ns, ["a", "b"], "test");
     expect(updated).not.toBe(ns);
     expect(updated).toEqual(
         {a: {b: "test"}}
     );
 
-    expect(nsSet(ns, ["a", "c", "d"], {a: "some value"})).toEqual({
+    expect(nsWithValue(ns, ["a", "c", "d"], {a: "some value"})).toEqual({
         a: {
             b: "hello",
             c: {d: {a: "some value"}}
@@ -50,17 +50,17 @@ test("nsSet", () => {
     expect(ns).toEqual(originalNSClone);
 });
 
-describe("nsSetDefaults", () => {
+describe("nsWithDefaults", () => {
     test("mixed arguments should resolve to default", () => {
-        expect(nsSetDefaults("something", {a: 5})).toEqual({a: 5});
-        expect(nsSetDefaults({a: 5}, "test")).toEqual("test");
-        expect(nsSetDefaults({a: 5}, [1, 2, 3])).toEqual([1, 2, 3]);
+        expect(nsWithDefaults("something", {a: 5})).toEqual({a: 5});
+        expect(nsWithDefaults({a: 5}, "test")).toEqual("test");
+        expect(nsWithDefaults({a: 5}, [1, 2, 3])).toEqual([1, 2, 3]);
     });
 
     test("shallow updates", () => {
-        expect(nsSetDefaults({a: 5}, {a: 6, b: 5})).toEqual({a: 5, b: 5});
-        expect(nsSetDefaults({a: undefined}, {a: 5})).toEqual({a: undefined});
-        expect(nsSetDefaults({a: [1, 2, 3], b: 3}, {a: 5, c: 3})).toEqual({a: [1, 2, 3], b: 3, c: 3});
+        expect(nsWithDefaults({a: 5}, {a: 6, b: 5})).toEqual({a: 5, b: 5});
+        expect(nsWithDefaults({a: undefined}, {a: 5})).toEqual({a: undefined});
+        expect(nsWithDefaults({a: [1, 2, 3], b: 3}, {a: 5, c: 3})).toEqual({a: [1, 2, 3], b: 3, c: 3});
     });
 
     test("doesn't mutate", () => {
@@ -77,7 +77,7 @@ describe("nsSetDefaults", () => {
         };
         const bCopy = JSON.parse(JSON.stringify(b));
 
-        expect(nsSetDefaults(a, b)).toEqual({
+        expect(nsWithDefaults(a, b)).toEqual({
             a: 1,
             b: {c: 3},
             d: "e",
@@ -90,7 +90,7 @@ describe("nsSetDefaults", () => {
     });
 
     test("deep mixed", () => {
-        expect(nsSetDefaults({
+        expect(nsWithDefaults({
             a: {b: 5},
             b: {c: {d: "e"}},
             e: null,
@@ -106,4 +106,16 @@ describe("nsSetDefaults", () => {
             f: {i: 1},
         });
     });
+});
+
+test("nsWithoutValue", () => {
+    expect(nsWithoutValue(5, ["test"])).toBe(5);
+    expect(nsWithoutValue({a: 5}, [])).toEqual({a: 5});
+
+    expect(nsWithoutValue({a: 5, b: 6}, ["b"])).toEqual({a: 5});
+    expect(nsWithoutValue({a: 5, b: {c: 6, d: 7}}, ["b", "c"])).toEqual({a: 5, b: {d: 7}});
+
+    expect(nsWithoutValue({a: 5, b: {c: 6, d: 7}}, ["q", "f", "no"])).toEqual({a: 5, b: {c: 6, d: 7}});
+
+    expect(nsWithoutValue({b: {b: {b: 6}}}, ["b", "b", "c", "b"])).toEqual({b: {b: {b: 6}}});
 });
