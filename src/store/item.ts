@@ -2,7 +2,7 @@
  * High-level abstraction layer which allows access to the browser storage
  * as if it were a namespace.
  *
- * @module store/item
+ * @module store
  */
 
 /** @ignore */

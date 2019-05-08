@@ -1,7 +1,7 @@
 /**
  * Utility functions for interacting with a namespace.
  *
- * @module store/namespace
+ * @module store
  */
 
 /** @ignore */

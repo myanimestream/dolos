@@ -1,7 +1,7 @@
 /**
  * Store tools specialised for Dolos.
  *
- * @module store/dolos-store
+ * @module store
  */
 
 /** @ignore */

@@ -2,6 +2,7 @@
  * Tools for interacting with the browser storage.
  *
  * @module store
+ * @preferred
  */
 
 /** @ignore */

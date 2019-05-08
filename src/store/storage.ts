@@ -1,7 +1,7 @@
 /**
  * Low-level interface for interacting with the storage directly.
  *
- * @module store/storage
+ * @module store
  */
 
 /** @ignore */

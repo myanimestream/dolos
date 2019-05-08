@@ -1,7 +1,7 @@
 /**
  * Provides an adapter for a specific storage area which has the item methods.
  *
- * @module store/area-adapter
+ * @module store
  */
 
 /** @ignore */

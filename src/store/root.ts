@@ -1,7 +1,7 @@
 /**
  * First abstraction layer which only deals with root items.
  *
- * @module store/root
+ * @module store
  */
 
 /** @ignore */
