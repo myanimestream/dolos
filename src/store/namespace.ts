@@ -40,7 +40,16 @@ export function splitPath(path: Path): string[] {
 }
 
 /**
+ * Check if the given value is an object.
+ */
+function isObject(obj: any): obj is object {
+    return typeof obj === "object" && obj !== null;
+}
+
+/**
  * A Namespace is just a normal object which may have nested objects.
+ *
+ * Note that even though it's an object, an array isn't a namespace!
  */
 type Namespace = object;
 
@@ -48,7 +57,7 @@ type Namespace = object;
  * Check whether the given value is a [[Namespace]].
  */
 export function isNS(ns: any): ns is Namespace {
-    return !!(ns && typeof ns === "object" && !Array.isArray(ns));
+    return isObject(ns) && !Array.isArray(ns);
 }
 
 /**
@@ -195,4 +204,23 @@ export function nsWithDefaults(ns: any, defaults: any): any {
     }
 
     return output;
+}
+
+/**
+ * Recursively freeze the given namespace.
+ *
+ * @return The object that was passed.
+ * Note that the object is frozen in-place!
+ */
+export function nsFreeze<T>(ns: T): Readonly<T> {
+    const queue = [ns];
+
+    while (queue.length > 0) {
+        const item = queue.pop();
+        Object.freeze(item);
+
+        if (isObject(item)) queue.push(...Object.values(item));
+    }
+
+    return ns;
 }

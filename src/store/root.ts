@@ -8,6 +8,7 @@
 
 import {from, merge, Observable, ReplaySubject, Subject} from "rxjs";
 import {first, map, takeUntil} from "rxjs/operators";
+import {nsFreeze} from "./namespace";
 import {createRootItemChange$, getStorageArea, storageGet} from "./storage";
 
 /**
@@ -42,7 +43,7 @@ function createRootItem$<T>(storageArea: string, key: string): ItemObservable<T>
         .pipe(takeUntil(change$));
 
     return merge(item$, change$).pipe(
-        map(item => Object.freeze(item)),
+        map(item => nsFreeze(item)),
     );
 }
 

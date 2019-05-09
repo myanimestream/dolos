@@ -1,4 +1,4 @@
-import {isNS, nsGet, nsWithDefaults, nsWithoutValue, nsWithValue, splitPath} from "dolos/store/namespace";
+import {isNS, nsFreeze, nsGet, nsWithDefaults, nsWithoutValue, nsWithValue, splitPath} from "dolos/store/namespace";
 
 test("splitPath", () => {
     expect(splitPath("a..a.b.test")).toEqual(["a", "", "a", "b", "test"]);
@@ -118,4 +118,15 @@ test("nsWithoutValue", () => {
     expect(nsWithoutValue({a: 5, b: {c: 6, d: 7}}, ["q", "f", "no"])).toEqual({a: 5, b: {c: 6, d: 7}});
 
     expect(nsWithoutValue({b: {b: {b: 6}}}, ["b", "b", "c", "b"])).toEqual({b: {b: {b: 6}}});
+});
+
+test("nsFreeze", () => {
+    const ns = {a: 5, b: {c: [1, 2], d: "test"}};
+    expect(nsFreeze(ns)).toBe(ns);
+
+    expect(() => delete ns.a).toThrow();
+    expect(() => delete ns.b.d).toThrow();
+    expect(() => delete ns.b.c[1]).toThrow();
+
+    expect(ns).toEqual({a: 5, b: {c: [1, 2], d: "test"}});
 });
