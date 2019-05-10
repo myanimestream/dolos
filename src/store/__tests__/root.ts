@@ -1,4 +1,4 @@
-import {getItem$, StorageAreaName} from "dolos/store";
+import {StorageAreaName} from "dolos/store";
 import {clearRootCache, getRootItem$} from "dolos/store/root";
 import {first} from "rxjs/operators";
 import {testWithLock, uniqueRootKey} from ".";
@@ -6,26 +6,15 @@ import {testWithLock, uniqueRootKey} from ".";
 test("clearRootCache", testWithLock(async () => {
     const key = uniqueRootKey();
 
-    async function setCurrent(value: any) {
-        await new Promise(res => chrome.storage.local.set({[key]: value}, res));
-    }
-
-    async function getCurrent(): Promise<any> {
-        return await getItem$(StorageAreaName.Local, key).pipe(first()).toPromise();
-    }
-
-    await setCurrent(3);
-    expect(await getCurrent()).toBe(3);
-
-    // shouldn't update the current value because the root is cached
-    // and the onChanged event doesn't fire.
-    await setCurrent(5);
-    expect(await getCurrent()).toBe(3);
+    const item1$ = getRootItem$(StorageAreaName.Local, key);
+    const item2$ = getRootItem$(StorageAreaName.Local, key);
 
     clearRootCache();
 
-    // after the root cache is cleared it should update
-    expect(await getCurrent()).toBe(5);
+    const item3$ = getRootItem$(StorageAreaName.Local, key);
+
+    expect(item1$).toBe(item2$);
+    expect(item2$).not.toBe(item3$);
 }));
 
 test("items are immutable", async () => {

@@ -17,5 +17,4 @@ export {Path} from "./namespace";
 export {ItemObservable} from "./root";
 export {StorageAreaName} from "./storage";
 
-export const STORE = new DolosStore(StorageAreaName.Sync);
-export default STORE;
+export const store = new DolosStore(StorageAreaName.Sync);

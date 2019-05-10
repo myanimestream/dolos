@@ -6,8 +6,8 @@
 
 /** @ignore */
 
-import {from, merge, Observable, ReplaySubject, Subject} from "rxjs";
-import {first, map, takeUntil} from "rxjs/operators";
+import {defer, merge, Observable} from "rxjs";
+import {first, map, shareReplay, takeUntil} from "rxjs/operators";
 import {nsFreeze} from "./namespace";
 import {createRootItemChange$, getStorageArea, storageGet} from "./storage";
 
@@ -39,7 +39,7 @@ function createRootItem$<T>(storageArea: string, key: string): ItemObservable<T>
 
     // get current value from the storage,
     // but abort if an update comes in first!
-    const item$ = from(storageGet(area, key))
+    const item$ = defer(() => storageGet(area, key))
         .pipe(takeUntil(change$));
 
     return merge(item$, change$).pipe(
@@ -50,10 +50,14 @@ function createRootItem$<T>(storageArea: string, key: string): ItemObservable<T>
 /**
  * Cache for root level item observables.
  */
-const rootCache: { [key: string]: Subject<any> | undefined } = {};
+const rootCache: { [key: string]: ItemObservable<any> | undefined } = {};
 
 /**
  * Remove all root items from the cache.
+ *
+ * Please note that this does not affect the previously cached observables.
+ * However, the next [[getRootItem$]] call for the same key will yield a
+ * different, new observable.
  *
  * @param storageArea - Limit removal to only one storage area.
  */
@@ -62,16 +66,12 @@ export function clearRootCache(storageArea?: string) {
     if (storageArea === undefined) {
         keys = Object.keys(rootCache);
     } else {
+        const keyStart = `${storageArea}::`;
         keys = Object.keys(rootCache)
-            .filter(key => key.startsWith(storageArea));
+            .filter(key => key.startsWith(keyStart));
     }
 
-    keys.forEach(key => {
-        const root$ = rootCache[key];
-        if (root$) root$.complete();
-
-        delete rootCache[key];
-    });
+    keys.forEach(key => delete rootCache[key]);
 }
 
 /**
@@ -81,15 +81,16 @@ export function clearRootCache(storageArea?: string) {
  *
  * @param storageArea - Storage area to get item from.
  * @param key - Key of the stored item.
+ *
+ * @see [[clearRootCache]]
  */
 export function getRootItem$<T>(storageArea: string, key: string): ItemObservable<T> {
     const cacheKey = `${storageArea}::${key}`;
 
     let root$ = rootCache[cacheKey];
-    if (!root$ || root$.isStopped) {
-        root$ = rootCache[cacheKey] = new ReplaySubject(1);
-        createRootItem$(storageArea, key).subscribe(root$);
-    }
+    if (!root$)
+        root$ = rootCache[cacheKey] = createRootItem$(storageArea, key)
+            .pipe(shareReplay(1));
 
     return root$;
 }

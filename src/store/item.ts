@@ -84,7 +84,11 @@ export async function setItem<T>(storageArea: string, path: Path, value: T): Pro
  *
  * The second argument can be used to specify a relative path.
  */
-export type ItemSetter<T> = (value: T | undefined, relativePath?: Path) => Promise<void>;
+export interface ItemSetter<T> {
+    (value: T | undefined): Promise<void>;
+
+    (value: any, relativePath: Path): Promise<void>;
+}
 
 /**
  * Create an item setter function for the given path.

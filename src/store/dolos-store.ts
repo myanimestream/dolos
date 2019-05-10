@@ -10,9 +10,9 @@ import {AnimeInfo} from "dolos/grobber";
 import {AnimeSubscriptionInfo, AnimeSubscriptions, Config, DEFAULT_CONFIG, StoredAnimeInfo} from "dolos/models";
 import {ItemObservable} from "dolos/store/root";
 import {combineLatest, Observable} from "rxjs";
-import {map, switchMap} from "rxjs/operators";
+import {distinctUntilChanged, map, switchMap} from "rxjs/operators";
 import {AreaAdapter} from "./area-adapter";
-import {applyDefaults} from "./item";
+import {applyDefaults, ItemSetter} from "./item";
 
 /**
  * Create a string identifying the given translation configuration.
@@ -48,12 +48,47 @@ export function safeIdentifier(text: string): string {
  * It's made up of the service id, the language id and the medium id
  * (in that order).
  */
-export type Identifier = [string, string, string];
+export class Identifier {
+    public readonly serviceID: string;
+    public readonly languageID: string;
+    public readonly mediumID: string;
+
+    constructor(identifier: string | Identifier);
+    constructor(serviceID: string, languageID: string, mediumID: string);
+    constructor(...args: any[]) {
+        if (args.length === 1) {
+            const identifier = args[0];
+
+            if (identifier instanceof Identifier)
+                args = identifier.asTuple();
+            else
+                args = identifier.split("::");
+        }
+
+        if (args.length !== 3)
+            throw new Error("Invalid identifier");
+
+        this.serviceID = args[0];
+        this.languageID = args[1];
+        this.mediumID = args[2];
+    }
+
+    public asTuple(): [string, string, string] {
+        return [this.serviceID, this.languageID, this.mediumID];
+    }
+
+    public asString(): string {
+        return `${this.serviceID}::${this.languageID}::${this.mediumID}`;
+    }
+}
 
 /**
  * Observable that emits read-only values.
  */
 export type ReadObservable<T> = Observable<Readonly<T>>;
+
+const K_CONF = "config";
+const K_SUBS_A = "subscriptions::anime";
 
 /**
  * A superset of the area adapter specialised for Dolos.
@@ -63,7 +98,7 @@ export class DolosStore extends AreaAdapter {
      * Load the [[Config]] from the storage.
      */
     public getConfig$(): ReadObservable<Config> {
-        return this.getItem$<Config>("config").pipe(
+        return this.getItem$<Config>(K_CONF).pipe(
             applyDefaults(DEFAULT_CONFIG),
         );
     }
@@ -75,6 +110,7 @@ export class DolosStore extends AreaAdapter {
     public getLanguageID$(): Observable<string> {
         return this.getConfig$().pipe(
             map(config => buildLanguageIdentifier(config.language, config.dubbed)),
+            distinctUntilChanged(),
         );
     }
 
@@ -91,7 +127,7 @@ export class DolosStore extends AreaAdapter {
         const safeMediumID$ = mediumID$.pipe(map(mediumID => safeIdentifier(mediumID)));
 
         return combineLatest([languageID$, safeMediumID$]).pipe(
-            map(([languageID, mediumID]) => [serviceID, languageID, mediumID]),
+            map(([languageID, mediumID]) => new Identifier(serviceID, languageID, mediumID)),
         );
     }
 
@@ -100,8 +136,8 @@ export class DolosStore extends AreaAdapter {
      */
     public getStoredAnimeInfo$(id$: Observable<Identifier>): ReadObservable<StoredAnimeInfo> {
         return id$.pipe(
-            switchMap(([serviceID, languageID, mediumID]) =>
-                this.getItem$([`${serviceID}::anime`, languageID, mediumID])),
+            switchMap((id) =>
+                this.getItem$([`${id.serviceID}::anime`, id.languageID, id.mediumID])),
             applyDefaults({}),
         );
     }
@@ -110,7 +146,7 @@ export class DolosStore extends AreaAdapter {
      * Get the stored [[SubscribedAnimes]] object.
      */
     public getAnimeSubscriptions$(): ReadObservable<AnimeSubscriptions> {
-        return this.getItem$("subscriptions::anime").pipe(
+        return this.getItem$(K_SUBS_A).pipe(
             applyDefaults({}),
         );
     }
@@ -121,7 +157,8 @@ export class DolosStore extends AreaAdapter {
     public getAnimeSubscriptionInfo$(id$: Observable<Identifier>): ItemObservable<AnimeSubscriptionInfo> {
         return id$.pipe(
             switchMap(id => this.getAnimeSubscriptions$().pipe(
-                map(subscriptions => subscriptions[id.join("::")]),
+                map(subscriptions => subscriptions[id.asString()]),
+                distinctUntilChanged(),
             )),
         );
     }
@@ -130,8 +167,17 @@ export class DolosStore extends AreaAdapter {
      * Get an observable which emits whether or not the user is subscribed to
      * the given Anime.
      */
-    public getIsSubscribedToAnime$(id$: Observable<Identifier>): Observable<boolean> {
-        return this.getAnimeSubscriptionInfo$(id$).pipe(map(item => item !== undefined));
+    public isSubscribedToAnime$(id$: Observable<Identifier>): Observable<boolean> {
+        return this.getAnimeSubscriptionInfo$(id$).pipe(
+            map(item => item !== undefined),
+            distinctUntilChanged(),
+        );
+    }
+
+    public getAnimeSubscriptionSetter(id: Identifier | AnimeSubscriptionInfo): ItemSetter<AnimeSubscriptionInfo> {
+        if (!(id instanceof Identifier)) id = new Identifier(id.identifier);
+
+        return this.getItemSetter([K_SUBS_A, id.asString()]);
     }
 
     /**
@@ -142,7 +188,7 @@ export class DolosStore extends AreaAdapter {
                                 animeURL: string,
                                 episodesWatched: number,
                                 nextEpisodeURL?: string): Promise<void> {
-        const absID = id.join("::");
+        const absID = id.asString();
 
         const sub: AnimeSubscriptionInfo = {
             anime,
@@ -150,16 +196,18 @@ export class DolosStore extends AreaAdapter {
             episodesWatched,
             identifier: absID,
             nextEpisodeURL,
-            serviceID: id[0],
+            serviceID: id.serviceID,
         };
 
-        await this.setItem(["subscriptions::anime", absID], sub);
+        await this.setItem([K_SUBS_A, absID], sub);
     }
 
     /**
      * Unsubscribe from an Anime
      */
-    public async unsubscribeAnime(id: Identifier): Promise<void> {
-        await this.setItem(["subscriptions::anime", id.join("::")], undefined);
+    public async unsubscribeAnime(id: Identifier | AnimeSubscriptionInfo): Promise<void> {
+        if (!(id instanceof Identifier)) id = new Identifier(id.identifier);
+
+        await this.setItem([K_SUBS_A, id.asString()], undefined);
     }
 }

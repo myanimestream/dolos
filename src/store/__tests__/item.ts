@@ -12,7 +12,7 @@ describe("setItem", () => {
         expect(chrome.storage.local.set).toHaveBeenCalledWith({[key]: {b: "test"}}, expect.any(Function));
     }));
 
-    test("remove when passing undefined", testWithLock(async () => {
+    test("remove when passing undefined as root", testWithLock(async () => {
         const key = uniqueRootKey();
 
         await setItem("local", key, undefined);
@@ -30,7 +30,9 @@ test("getItemSetter", testWithLock(async () => {
     expect(chrome.storage.local.set).toHaveBeenCalledWith({[key]: {b: {a: 3}}}, expect.any(Function));
 
     await setter("test", "c");
-    // because the mock doesn't emit change events we can't expect the previous change to persist!
+    // the previous change should theoretically persist because the subscriber count drops to 0
+    // and getCurrentRoot will be forced to retrieve the root value again.
+    // It doesn't though, so whatevs...
     expect(chrome.storage.local.set).toHaveBeenCalledWith({[key]: {b: {c: "test"}}}, expect.any(Function));
 }));
 
@@ -150,12 +152,14 @@ describe("getItem$", () => {
         ), true);
 
         const item$ = getItem$(StorageAreaName.Local, key);
-        change$.next("update value");
-
-        const value = await item$.pipe(
+        const valuePromise = item$.pipe(
             take(2),
             toArray(),
         ).toPromise();
+
+        change$.next("update value");
+
+        const value = await valuePromise;
 
         // "update value" comes in before "get value" so it should never be emitted.
         expect(value).toEqual(["update value", "update value 2"]);
