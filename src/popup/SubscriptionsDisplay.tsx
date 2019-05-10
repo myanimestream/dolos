@@ -14,9 +14,9 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
+import {useObservableMemo} from "dolos/hooks";
 import {AnimeSubscriptionInfo} from "dolos/models";
-import Store from "dolos/store";
-import {useAnimeSubscriptions} from "dolos/subscriptions";
+import {store} from "dolos/store";
 import * as React from "react";
 import _ = chrome.i18n.getMessage;
 
@@ -42,8 +42,8 @@ export function SubscriptionItem({subscription}: SubscriptionItemProps) {
         chrome.tabs.create({url: subscription.animeURL});
     }
 
-    function unsubscribeAnime(): void {
-        Store.getAnimeSubscriptions().then(subs => delete subs[subscription.identifier]);
+    async function unsubscribeAnime(): Promise<void> {
+        await store.unsubscribeAnime(subscription);
     }
 
     let secondaryText = null;
@@ -108,7 +108,7 @@ export function SubscriptionItem({subscription}: SubscriptionItemProps) {
  * The list also comes with a header.
  */
 export function SubscriptionsDisplay() {
-    const subscriptions = useAnimeSubscriptions();
+    const subscriptions = useObservableMemo(() => store.getAnimeSubscriptions$());
 
     // TODO: center circular progress
     if (subscriptions === undefined)

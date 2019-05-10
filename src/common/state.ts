@@ -2,15 +2,16 @@
  * @module common
  */
 
-import {AnimeInfo} from "dolos/grobber";
+/** @ignore */
+
 import {getThemeFor} from "dolos/theme";
 import {reactRenderWithTheme} from "dolos/utils";
 import * as React from "react";
 import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
+import {first} from "rxjs/operators";
 import {ElementMemory} from "../memory";
-import {AnimeSubscriptionInfo, Config, StoredAnimeInfo} from "../models";
-import Store from "../store";
+import {Config} from "../models";
+import {Identifier, ReadObservable, store} from "../store";
 import Service from "./service";
 import ServicePage from "./service-page";
 
@@ -18,17 +19,26 @@ import ServicePage from "./service-page";
  * State handler for services.
  */
 export default class State<T extends Service> extends ElementMemory {
-    public serviceId: string;
+    public readonly serviceId: string;
+    public readonly config$: ReadObservable<Config>;
+
     public page?: ServicePage<T>;
+
+    private _config?: Readonly<Config>;
 
     constructor(serviceID: string) {
         super();
         this.serviceId = serviceID;
+
+        this.config$ = store.getConfig$();
     }
 
-    // noinspection JSMethodCanBeStatic
     get config(): Promise<Config> {
-        return Store.getConfig();
+        if (this._config !== undefined)
+            return Promise.resolve(this._config);
+
+        this.config$.subscribe(config => this._config = config);
+        return this.config$.pipe(first()).toPromise();
     }
 
     /**
@@ -77,76 +87,10 @@ export default class State<T extends Service> extends ElementMemory {
     }
 
     /**
-     * Get the stored [[StoredAnimeInfo]] for the provided identifier.
-     * The returned value is a StorageObject and thus can be used to alter
-     * the stored version directly.
-     *
-     * Even if nothing is stored, this method still returns an instance of [[StoredAnimeInfo]]
-     * which you may use to write to.
+     * Get an observable for an identifier.
      */
-    public async getStoredAnimeInfo(animeID: string): Promise<StoredAnimeInfo> {
-        return await Store.getStoredAnimeInfo(this.serviceId, animeID, await this.config);
-    }
-
-    /**
-     * Build an identifier for the given MediaID.
-     *
-     * @see [[STATIC_STORE.buildIdentifier]]
-     */
-    public async buildIdentifier(mediaID: string): Promise<string> {
-        return await Store.buildIdentifier(this.serviceId, mediaID, await this.config);
-    }
-
-    /**
-     * Get the [[AnimeSubscriptionInfo]] for an Anime.
-     * The returned value is a [[StoreElementProxy]].
-     */
-    public async getSubscription(animeID: string): Promise<AnimeSubscriptionInfo | undefined> {
-        const [subscriptions, identifier] = await Promise.all([
-            Store.getAnimeSubscriptions(),
-            this.buildIdentifier(animeID),
-        ]);
-
-        return subscriptions[identifier];
-    }
-
-    /**
-     * Get an observable which keeps track of whether the user is subscribed to the Anime
-     * It immediately pushes the current state to the observer.
-     */
-    public async getSubscribed$(animeID: string): Promise<Observable<boolean>> {
-        const subscriptions = await Store.getAnimeSubscriptions();
-        const identifier = await this.buildIdentifier(animeID);
-
-        return subscriptions.value$.pipe(map(sub => identifier in sub));
-    }
-
-    /** Subscribe to an Anime */
-    public async subscribeAnime(animeID: string,
-                                animeURL: string,
-                                nextEpisodeURL: string | undefined,
-                                episodesWatched: number,
-                                anime: AnimeInfo): Promise<void> {
-        const subscriptions = await Store.getAnimeSubscriptions();
-        const identifier = await this.buildIdentifier(animeID);
-
-        subscriptions[identifier] = {
-            anime,
-            animeURL,
-            episodesWatched,
-            identifier,
-            nextEpisodeURL,
-            serviceID: this.serviceId,
-        };
-    }
-
-    /** Unsubscribe from Anime */
-    // noinspection JSMethodCanBeStatic
-    public async unsubscribeAnime(animeID: string): Promise<void> {
-        const subscriptions = await Store.getAnimeSubscriptions();
-        const identifier = await this.buildIdentifier(animeID);
-
-        delete subscriptions[identifier];
+    public getID$(mediumID$: Observable<string>): Observable<Identifier> {
+        return store.getID$(this.serviceId, mediumID$);
     }
 }
 

@@ -4,13 +4,13 @@
 
 import {AnimeInfo, grobberClient, GrobberErrorType, GrobberResponseError} from "dolos/grobber";
 import AsyncLock from "dolos/lock";
-import {AnimeSubscriptionInfo, AnimeSubscriptions, SubscriptionError} from "dolos/models";
-import Store from "dolos/store";
+import {AnimeSubscriptionInfo, SubscriptionError} from "dolos/models";
+import {store} from "dolos/store";
+import {first} from "rxjs/operators";
 import {hasNewEpisode$} from "./observables";
 
 /** Event emitted if there is a new episode */
 export interface NewEpisodeEvent {
-    subscribedAnimes: AnimeSubscriptions;
     subscription: AnimeSubscriptionInfo;
     unseenEpisodes: number;
 }
@@ -20,11 +20,16 @@ export interface NewEpisodeEvent {
  * Emits [[NewEpisodeEvent]] through [[hasNewEpisode$]] if a new episode was found.
  */
 async function checkAnimeUpdate() {
-    const subscribedAnimes = await Store.getAnimeSubscriptions();
+    const animeSubscriptions: Array<Readonly<AnimeSubscriptionInfo>> = Object.values(
+        await store.getAnimeSubscriptions$()
+            .pipe(first())
+            .toPromise());
 
     // there's absolutely no rush, so let's do it sequentially!
-    for (const animeSubscription of Object.values(subscribedAnimes)) {
+    for (const animeSubscription of animeSubscriptions) {
         if (animeSubscription.error) continue;
+
+        const subSetter = store.getAnimeSubscriptionSetter(animeSubscription);
 
         const oldAnime = animeSubscription.anime;
         const uid = oldAnime.uid;
@@ -35,7 +40,7 @@ async function checkAnimeUpdate() {
         } catch (e) {
             if (e instanceof GrobberResponseError) {
                 if (e.name === GrobberErrorType.UIDUnknown) {
-                    animeSubscription.error = SubscriptionError.UIDUnknown;
+                    await subSetter(SubscriptionError.UIDUnknown, "error");
                     continue;
                 }
             }
@@ -44,14 +49,14 @@ async function checkAnimeUpdate() {
             continue;
         }
 
-        animeSubscription.anime = newAnime;
+        await subSetter(newAnime, "anime");
 
         if (newAnime.episodes > oldAnime.episodes) {
             const event: NewEpisodeEvent = {
-                subscribedAnimes,
                 subscription: animeSubscription,
                 unseenEpisodes: newAnime.episodes - animeSubscription.episodesWatched,
             };
+
             hasNewEpisode$.next(event);
         }
     }

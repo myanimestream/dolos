@@ -23,7 +23,7 @@ import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponen
 import VideoLibraryIcon from "@material-ui/icons/VideoLibrary";
 import makeStyles from "@material-ui/styles/makeStyles";
 import useTheme from "@material-ui/styles/useTheme";
-import {usePromiseMemo} from "dolos/hooks";
+import {useObservableMemo} from "dolos/hooks";
 import * as React from "react";
 import {HashRouter, NavLink, Redirect, Route, Switch} from "react-router-dom";
 import Store from "../store";
@@ -93,7 +93,8 @@ export function Settings() {
     const classes = useStyles();
     const theme: Theme = useTheme();
 
-    const config = usePromiseMemo(() => Store.getConfig());
+    // TODO maybe don't get config on top level
+    const config = useObservableMemo(() => Store.getConfig$());
 
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const toggleDrawer = () => setDrawerOpen(!drawerOpen);

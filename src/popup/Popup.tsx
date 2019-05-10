@@ -35,7 +35,7 @@ import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import SettingsIcon from "@material-ui/icons/Settings";
 import SubscriptionsIcon from "@material-ui/icons/Subscriptions";
 import {GitHubIcon} from "dolos/assets";
-import {usePromiseMemo} from "dolos/hooks";
+import {useObservableMemo} from "dolos/hooks";
 import Store from "dolos/store";
 import {getAnimeSubsWithUnseenEpsCount$} from "dolos/subscriptions";
 import {getBackgroundWindow} from "dolos/utils";
@@ -359,7 +359,7 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
  * React component link which is only visible when [[Config.debugMode]] is true.
  */
 function DebugLink() {
-    const config = usePromiseMemo(() => Store.getConfig());
+    const config = useObservableMemo(() => Store.getConfig$());
 
     if (!(config && config.debugMode)) return null;
 

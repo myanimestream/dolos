@@ -4,7 +4,10 @@
 
 import {Episode, grobberClient} from "dolos/grobber";
 import {getVersion} from "dolos/info";
+import {getItem$, setItem, StorageAreaName, store} from "dolos/store";
 import {getBlobURL} from "dolos/utils";
+import {Observable} from "rxjs";
+import {filter} from "rxjs/operators";
 import {performExtensionUpdate} from "./extension-update";
 import {BrowserNotification} from "./notifications";
 import * as state from "./observables";
@@ -15,26 +18,23 @@ import alarms = chrome.alarms;
 import browserAction = chrome.browserAction;
 import _ = chrome.i18n.getMessage;
 import runtime = chrome.runtime;
-import storage = chrome.storage;
 import tabs = chrome.tabs;
 import InstalledDetails = runtime.InstalledDetails;
 
-const extUpdatedKey = "ext::updated";
+const K_EXT_UPDATE = "ext::updated";
 
 runtime.onInstalled.addListener(async (details: InstalledDetails) => {
     if (details.reason === "update" && details.previousVersion && details.previousVersion !== getVersion()) {
         // because we will immediately restart, store a value so we know whether we updated
-        await new Promise(res => storage.sync.set({[extUpdatedKey]: true}, res));
-
+        await setItem(StorageAreaName.Sync, K_EXT_UPDATE, true);
         await performExtensionUpdate(details.previousVersion);
     }
 });
 
 // check whether we updated
-storage.sync.get(extUpdatedKey, (items: any) => {
-    const {[extUpdatedKey]: updated} = items;
-    if (updated) hasNewVersion$.next(true);
-});
+(getItem$(StorageAreaName.Sync, K_EXT_UPDATE)
+    .pipe(filter(updated => !!updated)) as Observable<boolean>)
+    .subscribe(hasNewVersion$);
 
 alarms.onAlarm.addListener((alarm: Alarm) => {
     switch (alarm.name) {
@@ -69,10 +69,9 @@ function setBadgeText(text?: string): void {
     }
 }
 
-state.hasNewVersion$.subscribe(newVersion => {
-    if (!newVersion) {
-        storage.sync.remove(extUpdatedKey);
-    }
+state.hasNewVersion$.subscribe(async newVersion => {
+    if (!newVersion)
+        await setItem(StorageAreaName.Sync, K_EXT_UPDATE, undefined);
 
     const text = newVersion ? _("ext_badge__new_version") : undefined;
     setBadgeText(text);
@@ -118,14 +117,14 @@ state.hasNewEpisode$.subscribe(async e => {
         type: episodePoster ? "image" : "basic",
     });
 
-    const sub = notification.onButtonClicked$.subscribe(event => {
+    const sub = notification.onButtonClicked$.subscribe(async event => {
         switch (event.buttonIndex) {
             case 0:
                 const url = subscription.nextEpisodeURL || subscription.animeURL;
                 tabs.create({url});
                 break;
             case 1:
-                delete e.subscribedAnimes[subscription.identifier];
+                await store.unsubscribeAnime(subscription);
                 break;
         }
     });

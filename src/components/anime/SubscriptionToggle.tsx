@@ -13,7 +13,7 @@ import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import makeStyles from "@material-ui/styles/makeStyles";
 import {Service} from "dolos/common";
 import {AnimePage} from "dolos/common/pages";
-import {useObservablePromiseMemo} from "dolos/hooks";
+import {useObservableMemo} from "dolos/hooks";
 import * as React from "react";
 import _ = chrome.i18n.getMessage;
 
@@ -48,17 +48,17 @@ export function SubscriptionToggle(props: SubscriptionToggleProps) {
     const classes = useStyles();
     const [loading, setLoading] = React.useState(false);
 
-    const canSubscribe = useObservablePromiseMemo(() => animePage.canSubscribeAnime$(), false);
-    const subscribed = useObservablePromiseMemo(() => animePage.getSubscribed$());
+    const canSubscribe = useObservableMemo(() => animePage.canSubscribe$(), false);
+    const isSubscribed = useObservableMemo(() => animePage.isSubscribed$());
 
     async function toggleSubscription(): Promise<void> {
         // still loading
-        if (subscribed === undefined) return;
+        if (isSubscribed === undefined) return;
 
         setLoading(true);
         let success;
 
-        if (subscribed)
+        if (isSubscribed)
             success = await animePage.unsubscribeAnime();
         else
             success = await animePage.subscribeAnime();
@@ -66,24 +66,24 @@ export function SubscriptionToggle(props: SubscriptionToggleProps) {
         if (!success)
             animePage.service.showErrorSnackbar(_(
                 "anime__" +
-                (subscribed ? "unsubscribe" : "subscribe") +
+                (isSubscribed ? "unsubscribe" : "subscribe") +
                 "__failed",
             ));
 
         setLoading(false);
     }
 
-    const icon = subscribed
+    const icon = isSubscribed
         ? (<NotificationsActiveIcon className={classes.buttonIconLeft}/>)
         : (<NotificationsNoneIcon className={classes.buttonIconLeft}/>);
 
     // only disable button if the user isn't already subscribed.
-    const disableAction = !subscribed && !canSubscribe;
+    const disableAction = !isSubscribed && !canSubscribe;
 
     const buttonDisabled = loading || disableAction;
     const tooltipText = disableAction
         ? _("anime__subscription_not_possible")
-        : _("anime__" + (subscribed ? "unsubscribe" : "subscribe") + "__help");
+        : _("anime__" + (isSubscribed ? "unsubscribe" : "subscribe") + "__help");
 
     return (
         <Tooltip title={tooltipText}>
@@ -96,7 +96,7 @@ export function SubscriptionToggle(props: SubscriptionToggleProps) {
                     onClick={toggleSubscription}
                 >
                     {icon}
-                    {_("anime__" + (subscribed ? "unsubscribe" : "subscribe"))}
+                    {_("anime__" + (isSubscribed ? "unsubscribe" : "subscribe"))}
                 </Button>
                 {loading && <CircularProgress size={24} className={classes.progress}/>}
             </div>

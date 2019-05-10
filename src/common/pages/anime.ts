@@ -3,13 +3,14 @@
  */
 
 import {AnimeStatusBar, RemoteAnimeSearchDialog, SearchDialogOpenCommand} from "dolos/components/anime";
-import {AnimeInfo, GrobberErrorType, remoteGrobberClient} from "dolos/grobber";
+import {AnimeInfo, GrobberErrorType, GrobberSearchResult, remoteGrobberClient} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
-import {AnimeSubscriptionInfo, StoredAnimeInfo, SubscriptionError} from "dolos/models";
+import {AnimeSubscriptionInfo, Config, StoredAnimeInfo, SubscriptionError} from "dolos/models";
+import {Identifier, ReadObservable, store} from "dolos/store";
 import {wrapSentryLogger} from "dolos/utils";
 import * as React from "react";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
-import {distinctUntilChanged, first, map} from "rxjs/operators";
+import {BehaviorSubject, combineLatest, defer, from, Observable, of, Subject} from "rxjs";
+import {concatAll, distinctUntilChanged, first, map, pluck, switchMap} from "rxjs/operators";
 import {EpisodePage} from ".";
 import Service from "../service";
 import ServicePage from "../service-page";
@@ -34,10 +35,30 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
         this.lowConfidenceWarningShown = new Set();
     }
 
+    public getAnimeIdentifier$(): Observable<string> {
+        return defer(() => this.getAnimeIdentifier()).pipe(map(value => {
+            if (value === undefined) {
+                throw new Error("No anime identifier returned!");
+            }
+
+            return value;
+        }));
+    }
+
     /**
      * Get a unique identifier for this anime.
      */
     public abstract async getAnimeIdentifier(): Promise<string | undefined>;
+
+    public getSearchQuery$(): Observable<string> {
+        return defer(() => this.getAnimeSearchQuery()).pipe(map(value => {
+            if (value === undefined) {
+                throw new Error("No search query returned!");
+            }
+
+            return value;
+        }));
+    }
 
     /**
      * Get the search query to be used for Grobber's search endpoint.
@@ -45,17 +66,42 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
      */
     public abstract async getAnimeSearchQuery(): Promise<string | undefined>;
 
+    public getID$(): Observable<Identifier> {
+        return this.state.getID$(this.getAnimeIdentifier$());
+    }
+
+    public getStoredAnimeInfo$(): ReadObservable<StoredAnimeInfo> {
+        const id$ = this.getID$();
+        return store.getStoredAnimeInfo$(id$);
+    }
+
     /**
      * Get the information stored in the browser storage.
      *
      * @throws if [[AnimePage.getAnimeIdentifier]] didn't return an identifier
      */
     public async getStoredAnimeInfo(): Promise<StoredAnimeInfo> {
-        const identifier = await this.getAnimeIdentifier();
-        if (!identifier)
-            throw new Error("No anime identifier returned!");
+        return this.getStoredAnimeInfo$().pipe(first()).toPromise();
+    }
 
-        return await this.state.getStoredAnimeInfo(identifier);
+    public getAnimeUID$(forceSearch?: boolean): Observable<string> {
+        const searchResultUID$ = combineLatest([this.getSearchQuery$(), this.state.config$]).pipe(
+            switchMap(([query, config]) => this.searchAnimeForTitle(query, config)),
+            map((result: GrobberSearchResult<AnimeInfo> | undefined) => {
+                if (result === undefined)
+                    throw new Error("Couldn't get Anime from Grobber");
+                else
+                    return result.item.uid;
+            }),
+        );
+
+        if (forceSearch)
+            return searchResultUID$;
+        else
+            return this.getStoredAnimeInfo$().pipe(
+                pluck("uid"),
+                switchMap((uid: string | undefined) => uid === undefined ? searchResultUID$ : of(uid)),
+            );
     }
 
     /**
@@ -67,41 +113,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
      * @return `undefined` if there were no results or the [[AnimePage.getAnimeSearchQuery]] was empty
      */
     public async getAnimeUID(forceSearch?: boolean): Promise<string | undefined> {
-        const animeInfo = await this.getStoredAnimeInfo();
-
-        if (animeInfo.uid && !forceSearch)
-            return animeInfo.uid;
-
-        const query = await this.getAnimeSearchQuery();
-        if (!query)
-            return undefined;
-
-        const searchResult = await remoteGrobberClient.getAnimeForTitle(query);
-        if (!searchResult) return undefined;
-
-        // only even consider showing the warning if it hasn't already been shown
-        if (!this.lowConfidenceWarningShown.has(query)) {
-            this.lowConfidenceWarningShown.add(query);
-
-            const config = await this.state.config;
-            if (searchResult.certainty < config.maxCertaintyForWarning) {
-                const percentage = Math.floor(100 * searchResult.certainty);
-
-                this.service.showWarningSnackbar({
-                    action: {
-                        onClick: () => this.openAnimeSearchDialog(),
-                        text: _("anime__search__low_confidence_warning__search_button"),
-                    },
-                    autoHideDuration: 7000,
-                    message: _("anime__search__low_confidence_warning", [percentage]),
-                });
-            }
-        }
-
-        const uid = searchResult.item.uid;
-        animeInfo.uid = uid;
-
-        return uid;
+        return await this.getAnimeUID$().pipe(first()).toPromise();
     }
 
     /**
@@ -167,58 +179,49 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
     /**
      * Check whether the user is subscribed to the Anime
      *
-     * @see [[AnimePage.getSubscribed$]]
+     * @see [[AnimePage.isSubscribed$]]
      */
     public async isSubscribed(): Promise<boolean | undefined> {
-        const subscribed$ = await this.getSubscribed$();
+        const subscribed$ = await this.isSubscribed$();
         if (!subscribed$) return undefined;
         // should behave like a behaviour subject so the value should return right away.
         return await subscribed$.pipe(first()).toPromise();
     }
 
-    /** Observable denoting whether the user is subscribed to the Anime */
-    public async getSubscribed$(): Promise<Observable<boolean> | undefined> {
-        const identifier = await this.getAnimeIdentifier();
-        if (!identifier) return undefined;
+    /**
+     * Observable denoting whether the user is subscribed to the Anime
+     */
+    public isSubscribed$(): Observable<boolean> {
+        return store.isSubscribedToAnime$(this.getID$());
+    }
 
-        return await this.state.getSubscribed$(identifier);
+    public getSubscriptionInfo$(): ReadObservable<AnimeSubscriptionInfo | undefined> {
+        return store.getAnimeSubscriptionInfo$(this.getID$());
     }
 
     /**
+     * @deprecated use [[getSubscriptionInfo$]] instead.
+     *
      * Get the [[AnimeSubscriptionInfo]] for the Anime
      * @returns undefined if the user isn't subscribed to the Anime.
      */
     public async getSubscription(): Promise<AnimeSubscriptionInfo | undefined> {
-        const animeID = await this.getAnimeIdentifier();
-        if (!animeID) return undefined;
-
-        return await this.state.getSubscription(animeID);
+        return await this.getSubscriptionInfo$().pipe(first()).toPromise();
     }
 
     /**
      * Observable denoting whether it is possible (read: allowed) to subscribe to the Anime.
      */
-    public async canSubscribeAnime$(): Promise<Observable<boolean>> {
-        const [epsWatched$, totalEpisodes] = await Promise.all([
-            this.getEpisodesWatched$(),
-            this.getEpisodeCount(),
-        ]);
-
-        // only allow subscriptions when the user hasn't finished the anime or we're unsure whether they have
-        return epsWatched$.pipe(
-            map(epsWatched => totalEpisodes === undefined || epsWatched === undefined || epsWatched < totalEpisodes),
+    public canSubscribe$(): Observable<boolean> {
+        return combineLatest([
+            from(this.getEpisodesWatched$).pipe(concatAll()),
+            defer(() => this.getEpisodeCount()),
+        ]).pipe(
+            // only allow subscriptions when the user hasn't finished the anime or we're unsure whether they have
+            map(([epsWatched, totalEpisodes]) =>
+                totalEpisodes === undefined || epsWatched === undefined || epsWatched < totalEpisodes),
             distinctUntilChanged(),
         );
-    }
-
-    /**
-     * Check whether the user may subscribe to the Anime.
-     *
-     * @see [[AnimePage.canSubscribeAnime$]]
-     */
-    public async canSubscribeAnime(): Promise<boolean> {
-        const canSubscribeAnime$ = await this.canSubscribeAnime$();
-        return await canSubscribeAnime$.pipe(first()).toPromise();
     }
 
     /**
@@ -226,18 +229,25 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
      * @returns Whether the subscription was successful
      */
     public async subscribeAnime(): Promise<boolean> {
-        const [identifier, animeURL, epsWatched, anime] = await Promise.all([
-            this.getAnimeIdentifier(), this.getAnimeURL(), this.getEpisodesWatched(), this.getAnime(),
-        ]);
+        let id: Identifier;
 
-        if (!(identifier && animeURL && anime)) {
+        try {
+            id = await this.getID$().pipe(first()).toPromise();
+        } catch {
             return false;
         }
 
-        const episodesWatched = epsWatched || 0;
-        const nextEpisodeURL = await this.getEpisodeURL(episodesWatched);
+        const [animeURL, episodesWatched, anime] = await Promise.all([
+            this.getAnimeURL(), this.getEpisodesWatched(), this.getAnime(),
+        ]);
 
-        await this.state.subscribeAnime(identifier, animeURL, nextEpisodeURL, episodesWatched, anime);
+        if (!(animeURL && anime)) {
+            return false;
+        }
+
+        const nextEpisodeURL = await this.getEpisodeURL(episodesWatched || 0);
+
+        await store.subscribeAnime(id, anime, animeURL, episodesWatched || 0, nextEpisodeURL);
         return true;
     }
 
@@ -246,47 +256,45 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
      * @returns Whether the action was successful.
      */
     public async updateSubscription(episodesWatched?: number | PromiseLike<number>): Promise<void> {
-        const [animeID, epsWatched, totalEpisodes] = await Promise.all([
-            this.getAnimeIdentifier(),
+        const [epsWatched, totalEpisodes] = await Promise.all([
             (episodesWatched === undefined) ? this.getEpisodesWatched() : Promise.resolve(episodesWatched),
             this.getEpisodeCount(),
         ]);
 
-        if (!(animeID && epsWatched !== undefined))
+        if (epsWatched === undefined)
             return;
 
-        const subscription = await this.state.getSubscription(animeID);
+        const subscription = await this.getSubscription();
         if (!subscription) return;
 
+        const subSetter = store.getAnimeSubscriptionSetter(subscription);
+
+        // unsubscribe from completed animes
         if (epsWatched === totalEpisodes) {
             await this.unsubscribeAnime();
             return;
         }
 
-        subscription.episodesWatched = epsWatched;
-        subscription.nextEpisodeURL = await this.getEpisodeURL(epsWatched);
+        let nextSubscription: AnimeSubscriptionInfo | undefined;
 
         if (subscription.error) {
-            let fixed = false;
+            nextSubscription = await this.fixSubscription(subscription);
 
-            switch (subscription.error) {
-                case SubscriptionError.UIDUnknown:
-                    const anime = await this.getAnime();
-                    if (anime !== undefined) {
-                        subscription.anime = anime;
-                        fixed = true;
-                    }
-
-                    break;
-            }
-
-            if (fixed) {
-                delete subscription.error;
+            if (nextSubscription) {
                 this.service.showInfoSnackbar(_("subscriptions__fix__successful"));
             } else {
                 this.service.showWarningSnackbar(_("subscriptions__fix__failed"));
             }
         }
+
+        if (nextSubscription === undefined)
+            nextSubscription = {...subscription};
+
+        nextSubscription.episodesWatched = epsWatched;
+        nextSubscription.nextEpisodeURL = await this.getEpisodeURL(epsWatched);
+
+        // TODO use update function to avoid (tiny) risk of overwrite
+        await subSetter(nextSubscription);
     }
 
     /**
@@ -294,10 +302,17 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
      * @returns Whether the action was successful.
      */
     public async unsubscribeAnime(): Promise<boolean> {
-        const identifier = await this.getAnimeIdentifier();
-        if (!identifier) return false;
+        let id: Identifier;
 
-        await this.state.unsubscribeAnime(identifier);
+        try {
+            id = await this.getID$().pipe(first()).toPromise();
+        } catch {
+            // TODO create sentry warning?
+            // because we shouldn't unsubscribe from an anime if we don't have the id...
+            return false;
+        }
+
+        await store.unsubscribeAnime(id);
         return true;
     }
 
@@ -395,7 +410,8 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
         ]);
 
         // update the subscription to make sure it reflects the current state
-        if (await this.isSubscribed()) await this.updateSubscription();
+        if (await this.isSubscribed())
+            await this.updateSubscription();
     }
 
     /**
@@ -456,4 +472,54 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
      * @see [[AnimePage.setEpisodesWatched]] instead!
      */
     protected abstract async _setEpisodesWatched(progress: number): Promise<boolean>;
+
+    private async fixSubscription(subscription: AnimeSubscriptionInfo): Promise<AnimeSubscriptionInfo | undefined> {
+        let newSubscription: AnimeSubscriptionInfo | undefined;
+
+        switch (subscription.error) {
+            case undefined:
+                // if there's no error just return the subscription as is
+                newSubscription = {...subscription};
+                break;
+
+            case SubscriptionError.UIDUnknown:
+                const anime = await this.getAnime();
+                if (anime !== undefined) {
+                    newSubscription = {...subscription, anime};
+                }
+
+                break;
+        }
+
+        if (newSubscription)
+            delete newSubscription.error;
+
+        return newSubscription;
+    }
+
+    private async searchAnimeForTitle(query: string, config: Config):
+        Promise<GrobberSearchResult<AnimeInfo> | undefined> {
+        const searchResult = await remoteGrobberClient.getAnimeForTitle(query);
+        if (!searchResult) return undefined;
+
+        // only even consider showing the warning if it hasn't already been shown
+        if (!this.lowConfidenceWarningShown.has(query)) {
+            this.lowConfidenceWarningShown.add(query);
+
+            if (searchResult.certainty < config.maxCertaintyForWarning) {
+                const percentage = Math.floor(100 * searchResult.certainty);
+
+                this.service.showWarningSnackbar({
+                    action: {
+                        onClick: () => this.openAnimeSearchDialog(),
+                        text: _("anime__search__low_confidence_warning__search_button"),
+                    },
+                    autoHideDuration: 7000,
+                    message: _("anime__search__low_confidence_warning", [percentage]),
+                });
+            }
+        }
+
+        return searchResult;
+    }
 }

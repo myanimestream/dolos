@@ -6,28 +6,19 @@
 
 /** @ignore */
 
-import {useObservableMemo} from "dolos/hooks";
-import {AnimeSubscriptionInfo, AnimeSubscriptions} from "dolos/models";
-import Store, {DolosStore} from "dolos/store";
+import {AnimeSubscriptionInfo} from "dolos/models";
+import {store} from "dolos/store";
 import {Observable} from "rxjs";
 import {distinctUntilChanged, map} from "rxjs/operators";
 
-/**
- * React hook for getting the [[AnimeSubscriptions]]
- */
-export function useAnimeSubscriptions(dolosStore?: DolosStore): AnimeSubscriptions | undefined {
-    const store = dolosStore || Store;
-
-    return useObservableMemo(() => store.getAnimeSubscriptions$());
-}
+// TODO this should just be part of the Dolos store, shouldn't it?
+// I don't know, you tell me!
 
 /** Get an observable for a list of subscriptions with unseen episodes */
-export function getAnimeSubsWithUnseenEps$(dolosStore?: DolosStore): Observable<AnimeSubscriptionInfo[]> {
-    const store = dolosStore || Store;
-
+export function getAnimeSubsWithUnseenEps$(): Observable<AnimeSubscriptionInfo[]> {
     return store.getAnimeSubscriptions$().pipe(
-        map(subs =>
-            Object.values(subs).filter(sub => sub.anime.episodes - sub.episodesWatched > 0),
+        map(subs => Object.values(subs)
+            .filter(sub => sub.anime.episodes - sub.episodesWatched > 0),
         ),
     );
 }
@@ -37,8 +28,8 @@ export function getAnimeSubsWithUnseenEps$(dolosStore?: DolosStore): Observable<
  *
  * @see [[getAnimeSubsWithUnseenEps$]]
  */
-export function getAnimeSubsWithUnseenEpsCount$(dolosStore?: DolosStore): Observable<number> {
-    const unseen$ = getAnimeSubsWithUnseenEps$(dolosStore);
+export function getAnimeSubsWithUnseenEpsCount$(): Observable<number> {
+    const unseen$ = getAnimeSubsWithUnseenEps$();
     return unseen$.pipe(
         map(unseen => unseen.length),
         distinctUntilChanged(),

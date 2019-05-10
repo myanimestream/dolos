@@ -5,7 +5,8 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import AsyncLock from "dolos/lock";
 import {Memory} from "dolos/memory";
-import Store from "dolos/store";
+import {Observable} from "rxjs";
+import {first} from "rxjs/operators";
 import {
     animeFromResp,
     AnimeInfo,
@@ -164,6 +165,12 @@ export interface GrobberClientLike {
     getEpisode(uid: string, episodeIndex: number): Promise<Episode>;
 }
 
+export interface GrobberClientConfig {
+    grobberUrl: string;
+    language: string;
+    dubbed: boolean;
+}
+
 /**
  * A client for interacting with the Grobber API.
  * Uses an internal cache with [[ExpiringItem]].
@@ -172,12 +179,14 @@ export interface GrobberClientLike {
  */
 export class GrobberClient extends Memory implements GrobberClientLike {
     public axiosClient: AxiosInstance;
+    public config$: Observable<GrobberClientConfig>;
 
     private readonly cachedRequestLock: AsyncLock;
 
-    constructor() {
+    constructor(config$: Observable<GrobberClientConfig>) {
         super();
 
+        this.config$ = config$;
         this.axiosClient = axios.create();
         this.cachedRequestLock = new AsyncLock();
     }
@@ -192,7 +201,7 @@ export class GrobberClient extends Memory implements GrobberClientLike {
      * This (probably) should't occur during normal operation.
      */
     public async request(endpoint: string, params?: { [key: string]: any }): Promise<any> {
-        const config = await Store.getConfig();
+        const config = await this.getConfig();
 
         const requestConfig: AxiosRequestConfig = {
             baseURL: config.grobberUrl,
@@ -218,7 +227,7 @@ export class GrobberClient extends Memory implements GrobberClientLike {
     /** @inheritDoc */
     public async getGrobberInfo(baseURL?: string): Promise<GrobberInfo> {
         if (!baseURL) {
-            const config = await Store.getConfig();
+            const config = await this.getConfig();
             baseURL = config.grobberUrl;
         }
 
@@ -260,7 +269,7 @@ export class GrobberClient extends Memory implements GrobberClientLike {
     /** @inheritDoc */
     public async searchAnime(query: string, options?: GrobberSearchOptions):
         Promise<Array<GrobberSearchResult<GrobberMedium>> | undefined> {
-        const config = await Store.getConfig();
+        const config = await this.getConfig();
 
         options = {...defaultGrobberSearchOptions, ...options};
 
@@ -306,7 +315,7 @@ export class GrobberClient extends Memory implements GrobberClientLike {
 
     /** @inheritDoc */
     public async getAnimeForTitle(title: string, group?: boolean): Promise<GrobberSearchResult<AnimeInfo> | undefined> {
-        const config = await Store.getConfig();
+        const config = await this.getConfig();
 
         let resp;
         try {
@@ -369,6 +378,10 @@ export class GrobberClient extends Memory implements GrobberClientLike {
                 return episode;
             },
         );
+    }
+
+    private getConfig(): Promise<GrobberClientConfig> {
+        return this.config$.pipe(first()).toPromise();
     }
 
     private rememberExpiring(key: string, item: any, ttl: number): any {

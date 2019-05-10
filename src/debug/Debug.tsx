@@ -13,7 +13,7 @@ import makeStyles from "@material-ui/styles/makeStyles";
 import Service from "dolos/common/service";
 import {grobberClient as localGrobberClient} from "dolos/grobber";
 import {usePromiseMemo} from "dolos/hooks";
-import Store from "dolos/store";
+import {store} from "dolos/store";
 import {getBackgroundWindow} from "dolos/utils";
 import * as React from "react";
 import {MemoryComponent} from "./Memory";
@@ -30,7 +30,7 @@ function StoreTab() {
                 There is no input validation other than the basic type distinction.
             </Typography>
 
-            <StoreComponent store={Store}/>
+            <StoreComponent store={store}/>
         </>
     );
 }
@@ -131,7 +131,7 @@ export function Debug(props: DebugProps) {
     }
 
     const tabs = [
-        "Store",
+        "store",
         "Grobber Client",
     ];
 

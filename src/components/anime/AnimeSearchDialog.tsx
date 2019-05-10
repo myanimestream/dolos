@@ -15,7 +15,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import withMobileDialog, {InjectedProps as WithMobileDialog} from "@material-ui/core/withMobileDialog";
+import withMobileDialog, {WithMobileDialog} from "@material-ui/core/withMobileDialog";
 import SearchIcon from "@material-ui/icons/Search";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import {Service} from "dolos/common";

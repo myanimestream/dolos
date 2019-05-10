@@ -7,7 +7,7 @@
 
 import runtime = chrome.runtime;
 import {marshalError, unmarshalError} from "dolos/utils";
-import {GrobberCheckReport, GrobberClient, GrobberClientLike, GrobberSearchOptions} from "./client";
+import {GrobberCheckReport, GrobberClientLike, GrobberSearchOptions} from "./client";
 import {AnimeInfo, Episode, GrobberInfo, GrobberMedium, GrobberSearchResult} from "./models";
 
 interface Message {
@@ -141,9 +141,9 @@ export class RemoteGrobberClientServer {
     /**
      * @param portName - Must be the same as [[RemoteGrobberClient.portName]].
      */
-    constructor(client?: GrobberClientLike, portName: string = "grobber") {
+    constructor(client: GrobberClientLike, portName: string = "grobber") {
         this.portName = portName;
-        this.grobberClient = client || new GrobberClient();
+        this.grobberClient = client;
     }
 
     /**

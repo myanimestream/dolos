@@ -120,9 +120,8 @@ export const EpisodeEmbed = withStyles(styles)(
         public async componentDidMount() {
             const {episodePage} = this.props;
 
-            this.episodeBookmarkedSubscription = episodePage.episodeBookmarked$.subscribe({
-                next: (episodeBookmarked) => this.setState({bookmarked: episodeBookmarked}),
-            });
+            this.episodeBookmarkedSubscription = episodePage.episodeBookmarked$
+                .subscribe(episodeBookmarked => this.setState({bookmarked: episodeBookmarked}));
 
             const config = await episodePage.state.config;
             this.setState({debugMode: config.debugMode});
