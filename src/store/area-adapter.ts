@@ -6,7 +6,8 @@
 
 /** @ignore */
 
-import {getItem$, getItemSetter, getMutItem$, ItemSetter, setItem} from "./item";
+import {getItem$, setItem, updateItem} from "./item";
+import {getItemSetter, getMutItem$, ItemSetter} from "./item-setter";
 import {Path} from "./namespace";
 import {ItemObservable} from "./root";
 
@@ -21,6 +22,8 @@ export interface AreaAdapterLike {
     getItem$<T>(path: Path): ItemObservable<T>;
 
     setItem<T>(path: Path, value: T): Promise<void>;
+
+    updateItem<T>(path: Path, value: T): Promise<void>;
 
     getItemSetter<T>(path: Path): ItemSetter<T>;
 
@@ -38,6 +41,7 @@ export class AreaAdapter implements AreaAdapterLike {
 
     public getItem$: AreaAdapterLike["getItem$"];
     public setItem: AreaAdapterLike["setItem"];
+    public updateItem: AreaAdapterLike["setItem"];
     public getItemSetter: AreaAdapterLike["getItemSetter"];
     public getMutItem$: AreaAdapterLike["getMutItem$"];
 
@@ -48,5 +52,6 @@ export class AreaAdapter implements AreaAdapterLike {
         this.getItemSetter = getItemSetter.bind(undefined, areaName);
         this.getMutItem$ = getMutItem$.bind(undefined, areaName) as AreaAdapterLike["getMutItem$"];
         this.setItem = setItem.bind(undefined, areaName);
+        this.updateItem = updateItem.bind(undefined, areaName);
     }
 }

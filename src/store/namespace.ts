@@ -41,6 +41,8 @@ export function splitPath(path: Path): string[] {
 
 /**
  * Check if the given value is an object.
+ *
+ * @param obj - Value to check
  */
 function isObject(obj: any): obj is object {
     return typeof obj === "object" && obj !== null;
@@ -55,6 +57,8 @@ type Namespace = object;
 
 /**
  * Check whether the given value is a [[Namespace]].
+ *
+ * @param ns - Value to check
  */
 export function isNS(ns: any): ns is Namespace {
     return isObject(ns) && !Array.isArray(ns);
@@ -62,6 +66,12 @@ export function isNS(ns: any): ns is Namespace {
 
 /**
  * Get all namespaces along the given path including the last value.
+ *
+ * @param ns - Namespace to start from
+ * @param pathParts - Parts to follow
+ * @param create - Whether or not to create empty namespaces along the way
+ *
+ * @return Namespaces which are encountered along the way (excluding the root) and the final value.
  */
 function nsFollowingPath(ns: any, pathParts: string[], create?: boolean): [Namespace[], any] {
     const nsPath: any[] = [];
@@ -146,8 +156,58 @@ export function nsWithValue(ns: any, pathParts: string[], value: any): any {
     return nsCopy;
 }
 
+export function nsMerge<T1 extends Namespace, T2 extends Namespace>(a: T1, b: T2): T1 & T2;
+export function nsMerge<T>(a: any, b: T): T;
+/**
+ * Merge namespaces.
+ * Behaves similar to `Object.assign` but respects nested namespaces and
+ * returns the second argument if either of them isn't a namespace.
+ */
+export function nsMerge(a: any, b: any): any {
+    if (!(isNS(a) && isNS(b))) return b;
+
+    const nsCopy = {...a} as { [key: string]: any };
+
+    for (const [key, valueB] of Object.entries(b)) {
+        const valueA = (a as { [key: string]: any })[key];
+        nsCopy[key] = nsMerge(valueA, valueB);
+    }
+
+    return nsCopy;
+}
+
+/**
+ * Merge two namespaces within a root namespace.
+ *
+ * @param root - Root namespace to merge within
+ * @param pathParts - Path to namespace to be merged
+ * @param source - Namespace to merge with
+ */
+export function nsMergeNested(root: any, pathParts: string[], source: any): any {
+    if (pathParts.length === 0)
+        return nsMerge(root, source);
+
+    const [pathNamespaces, value] = nsFollowingPath(root, pathParts, true);
+    const newValue = nsMerge(value, source);
+
+    const nsCopy = {...root};
+    let target = nsCopy;
+
+    for (let i = 0; i < pathNamespaces.length; i++) {
+        const key = pathParts[i];
+        const nsPart = {...pathNamespaces[i]};
+
+        target = target[key] = nsPart;
+    }
+
+    const finalKey = pathParts[pathParts.length - 1];
+    target[finalKey] = newValue;
+
+    return nsCopy;
+}
+
 export function nsWithoutValue(ns: Namespace, pathParts: string[]): Namespace;
-export function nsWithoutValue<T extends any>(ns: T, pathParts: string[]): T;
+export function nsWithoutValue<T>(ns: T, pathParts: string[]): T;
 /**
  * Get a namespace without the value given by its path.
  */

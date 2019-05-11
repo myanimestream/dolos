@@ -13,6 +13,7 @@ import {StorageAreaName} from "./storage";
 export * from "./area-adapter";
 export * from "./dolos-store";
 export * from "./item";
+export * from "./item-setter";
 export {Path} from "./namespace";
 export {ItemObservable} from "./root";
 export {StorageAreaName} from "./storage";

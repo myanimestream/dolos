@@ -17,7 +17,7 @@ test("clearRootCache", testWithLock(async () => {
     expect(item2$).not.toBe(item3$);
 }));
 
-test("items are immutable", async () => {
+test("items are immutable", testWithLock(async () => {
     const key = uniqueRootKey();
 
     chrome.storage.sync.set({[key]: {a: 1}});
@@ -28,4 +28,4 @@ test("items are immutable", async () => {
 
     expect(() => value["a"] = 5).toThrow("Cannot assign to read only property 'a' of object '#<Object>'");
     expect(() => value["test"] = 5).toThrow("Cannot add property test, object is not extensible");
-});
+}));

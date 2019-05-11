@@ -90,7 +90,7 @@ export function getRootItem$<T>(storageArea: string, key: string): ItemObservabl
     let root$ = rootCache[cacheKey];
     if (!root$)
         root$ = rootCache[cacheKey] = createRootItem$(storageArea, key)
-            .pipe(shareReplay(1));
+            .pipe(shareReplay({bufferSize: 1, refCount: true}));
 
     return root$;
 }

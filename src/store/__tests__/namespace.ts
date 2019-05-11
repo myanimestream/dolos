@@ -1,4 +1,14 @@
-import {isNS, nsFreeze, nsGet, nsWithDefaults, nsWithoutValue, nsWithValue, splitPath} from "dolos/store/namespace";
+import {
+    isNS,
+    nsFreeze,
+    nsGet,
+    nsMerge,
+    nsMergeNested,
+    nsWithDefaults,
+    nsWithoutValue,
+    nsWithValue,
+    splitPath
+} from "dolos/store/namespace";
 
 test("splitPath", () => {
     expect(splitPath("a..a.b.test")).toEqual(["a", "", "a", "b", "test"]);
@@ -48,6 +58,34 @@ test("nsWithValue", () => {
 
     // make sure we didn't mutate the original!
     expect(ns).toEqual(originalNSClone);
+});
+
+test("nsMerge", () => {
+    expect(nsMerge(4, 5)).toBe(5);
+    expect(nsMerge(undefined, 5)).toBe(5);
+    expect(nsMerge({a: 3}, 5)).toBe(5);
+
+    expect(nsMerge({a: 3}, {a: 5})).toEqual({a: 5});
+    expect(nsMerge({a: {}}, {a: 5})).toEqual({a: 5});
+    expect(nsMerge({a: 3}, {a: {}})).toEqual({a: {}});
+
+    expect(nsMerge(
+        {a: {b: 2}, c: 3},
+        {a: {b: 3, d: 2}, c: {a: 3}}
+    )).toEqual(
+        {a: {b: 3, d: 2}, c: {a: 3}}
+    );
+});
+
+test("nsMergeNested", () => {
+    expect(nsMergeNested(undefined, [], 5)).toEqual(5);
+
+    expect(nsMergeNested(undefined, ["a", "b"], 5)).toEqual({a: {b: 5}});
+    expect(nsMergeNested(undefined, ["a", "b"], {c: 5})).toEqual({a: {b: {c: 5}}});
+
+    expect(nsMergeNested(
+        {a: {b: {c: 3, a: 2}, a: 2}}, ["a", "b"], {c: 5}
+    )).toEqual({a: {b: {c: 5, a: 2}, a: 2}});
 });
 
 describe("nsWithDefaults", () => {
@@ -112,8 +150,14 @@ test("nsWithoutValue", () => {
     expect(nsWithoutValue(5, ["test"])).toBe(5);
     expect(nsWithoutValue({a: 5}, [])).toEqual({a: 5});
 
-    expect(nsWithoutValue({a: 5, b: 6}, ["b"])).toEqual({a: 5});
-    expect(nsWithoutValue({a: 5, b: {c: 6, d: 7}}, ["b", "c"])).toEqual({a: 5, b: {d: 7}});
+    let ns;
+    ns = nsWithoutValue({a: 5, b: 6}, ["b"]);
+    expect(ns).toEqual({a: 5});
+    expect(ns).not.toHaveProperty("b");
+
+    ns = nsWithoutValue({a: 5, b: {c: 6, d: 7}}, ["b", "c"]);
+    expect(ns).toEqual({a: 5, b: {d: 7}});
+    expect(ns).not.toHaveProperty(["b", "c"]);
 
     expect(nsWithoutValue({a: 5, b: {c: 6, d: 7}}, ["q", "f", "no"])).toEqual({a: 5, b: {c: 6, d: 7}});
 

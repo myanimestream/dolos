@@ -1,4 +1,4 @@
-import {getItem$, getItemSetter, setItem, StorageAreaName} from "dolos/store";
+import {getItem$, setItem, StorageAreaName, updateItem} from "dolos/store";
 import {GlobalChangeEvent} from "dolos/store/storage";
 import {Observable, Subject} from "rxjs";
 import {bufferCount, delay, first, map, startWith, take, toArray} from "rxjs/operators";
@@ -21,19 +21,15 @@ describe("setItem", () => {
     }));
 });
 
-test("getItemSetter", testWithLock(async () => {
+test("updateItem", testWithLock(async () => {
     const key = uniqueRootKey();
 
-    const setter = getItemSetter("local", `${key}.b`);
-
-    await setter({a: 3});
-    expect(chrome.storage.local.set).toHaveBeenCalledWith({[key]: {b: {a: 3}}}, expect.any(Function));
-
-    await setter("test", "c");
-    // the previous change should theoretically persist because the subscriber count drops to 0
-    // and getCurrentRoot will be forced to retrieve the root value again.
-    // It doesn't though, so whatevs...
-    expect(chrome.storage.local.set).toHaveBeenCalledWith({[key]: {b: {c: "test"}}}, expect.any(Function));
+    await setItem("local", key, {a: 5, b: {c: 3}, d: "test"});
+    await updateItem("local", key, {b: {c: 5, d: "test"}});
+    expect(chrome.storage.local.set).toHaveBeenCalledWith(
+        {[key]: {a: 5, b: {c: 5, d: "test"}, d: "test"}},
+        expect.any(Function)
+    );
 }));
 
 describe("getItem$", () => {
