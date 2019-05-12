@@ -6,21 +6,14 @@
 
 import {AnimeInfo} from "dolos/grobber";
 import {AnimeSubscriptionInfo, AnimeSubscriptions, Config, DEFAULT_CONFIG, StoredAnimeInfo} from "dolos/models";
-import {
-    applyDefaults,
-    AreaAdapter,
-    buildLanguageIdentifier,
-    Identifier,
-    ItemObservable,
-    ItemSetter,
-    safeIdentifier,
-} from "dolos/store";
-/**
- * Observable that emits read-only values.
- */
+import {applyDefaults, AreaAdapter, ItemObservable, MutItem} from "dolos/store";
 import {combineLatest, Observable} from "rxjs";
 import {distinctUntilChanged, map, switchMap} from "rxjs/operators";
+import {buildLanguageIdentifier, Identifier, safeIdentifier} from "./identifier";
 
+/**
+ * Observable which emits read-only values.
+ */
 export type ReadObservable<T> = Observable<Readonly<T>>;
 
 const K_CONF = "config";
@@ -37,6 +30,13 @@ export class DolosStore extends AreaAdapter {
         return this.getItem$<Config>(K_CONF).pipe(
             applyDefaults(DEFAULT_CONFIG),
         );
+    }
+
+    /**
+     * Get a setter for the config.
+     */
+    public getMutConfig(): MutItem<Config> {
+        return this.getMutItem<Config>(K_CONF);
     }
 
     /**
@@ -132,10 +132,13 @@ export class DolosStore extends AreaAdapter {
         );
     }
 
-    public getAnimeSubscriptionSetter(id: Identifier | AnimeSubscriptionInfo): ItemSetter<AnimeSubscriptionInfo> {
+    /**
+     * Get a setter for the given subscription.
+     */
+    public getMutAnimeSubscription(id: Identifier | AnimeSubscriptionInfo): MutItem<AnimeSubscriptionInfo> {
         if (!(id instanceof Identifier)) id = new Identifier(id.identifier);
 
-        return this.getItemSetter([K_SUBS_A, id.asString()]);
+        return this.getMutItem([K_SUBS_A, id.asString()]);
     }
 
     /**

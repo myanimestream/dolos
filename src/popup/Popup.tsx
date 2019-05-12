@@ -36,8 +36,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import SubscriptionsIcon from "@material-ui/icons/Subscriptions";
 import {GitHubIcon} from "dolos/assets";
 import {useObservableMemo} from "dolos/hooks";
-import Store from "dolos/store";
-import {getAnimeSubsWithUnseenEpsCount$} from "dolos/subscriptions";
+import {store} from "dolos/store";
 import {getBackgroundWindow} from "dolos/utils";
 import * as React from "react";
 import {NavLink, Redirect, Route, RouteComponentProps, Switch, withRouter} from "react-router-dom";
@@ -144,8 +143,7 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
                 this.setState({changelogBadgeVisible});
             });
 
-            const animeSubsWithUnseenEpsCount$ = await getAnimeSubsWithUnseenEpsCount$();
-            this.unseenEpsCountSub = animeSubsWithUnseenEpsCount$
+            this.unseenEpsCountSub = store.countAnimeSubsWithUnseenEps$()
                 .subscribe(unseenEpisodesCount => this.setState({unseenEpisodesCount}));
         }
 
@@ -359,7 +357,7 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
  * React component link which is only visible when [[Config.debugMode]] is true.
  */
 function DebugLink() {
-    const config = useObservableMemo(() => Store.getConfig$());
+    const config = useObservableMemo(() => store.getConfig$());
 
     if (!(config && config.debugMode)) return null;
 

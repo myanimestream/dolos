@@ -89,15 +89,23 @@ test("nsMergeNested", () => {
 });
 
 describe("nsWithDefaults", () => {
-    test("mixed arguments should resolve to default", () => {
-        expect(nsWithDefaults("something", {a: 5})).toEqual({a: 5});
-        expect(nsWithDefaults({a: 5}, "test")).toEqual("test");
-        expect(nsWithDefaults({a: 5}, [1, 2, 3])).toEqual([1, 2, 3]);
+    test("primitive", () => {
+        expect(nsWithDefaults(5, undefined)).toBe(5);
+        expect(nsWithDefaults(5, 10)).toBe(5);
+        expect(nsWithDefaults(undefined, 10)).toBe(10);
+    });
+
+    test("primitive with namespace", () => {
+        expect(nsWithDefaults(5, {a: 5})).toEqual({a: 5});
+        expect(nsWithDefaults({a: 5}, 10)).toEqual(10);
+        expect(nsWithDefaults(undefined, {a: 5})).toEqual({a: 5});
+        expect(nsWithDefaults({a: 5}, undefined)).toEqual({a: 5});
     });
 
     test("shallow updates", () => {
         expect(nsWithDefaults({a: 5}, {a: 6, b: 5})).toEqual({a: 5, b: 5});
-        expect(nsWithDefaults({a: undefined}, {a: 5})).toEqual({a: undefined});
+        expect(nsWithDefaults({a: undefined}, {a: 5})).toEqual({a: 5});
+        expect(nsWithDefaults({a: 5}, {a: undefined})).toEqual({a: 5});
         expect(nsWithDefaults({a: [1, 2, 3], b: 3}, {a: 5, c: 3})).toEqual({a: [1, 2, 3], b: 3, c: 3});
     });
 

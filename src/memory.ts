@@ -306,6 +306,10 @@ export function cacheInMemory(name?: string) {
     return (target: object & HasMemory, propertyKey: string, descriptor: PropertyDescriptor) => {
         const keyName: string = name || `${target.constructor.name}-${propertyKey}`;
         const func = descriptor.value;
+
+        // keep track of whether the underlying function returns a promise
+        // so that subsequent calls can return a promise even though
+        // the value can be retrieved synchronously.
         let returnPromise: boolean;
 
         descriptor.value = function(this: HasMemory) {

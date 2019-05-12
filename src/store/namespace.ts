@@ -39,6 +39,14 @@ export function splitPath(path: Path): string[] {
     return path.split(".");
 }
 
+// TODO: test & docs
+export function joinPaths(...paths: Path[]): string[] {
+    return paths.map(splitPath).reduce((current, parts) => {
+        current.push(...parts);
+        return current;
+    }, [] as string[]);
+}
+
 /**
  * Check if the given value is an object.
  *
@@ -235,11 +243,14 @@ export function nsWithoutValue(ns: any, pathParts: string[]): any {
 }
 
 export function nsWithDefaults<T extends Namespace, V extends Namespace>(ns: T, defaults: V): Readonly<T & V>;
-export function nsWithDefaults<T>(ns: any, defaults: T): T;
+export function nsWithDefaults<V extends Namespace>(ns: any, defaults: V): V;
+export function nsWithDefaults<V extends any>(ns: Namespace, defaults: V): V;
+export function nsWithDefaults<T>(ns: T, defaults: any): T;
 /**
  * Recursively update a namespace with defaults.
  *
- * If either argument isn't a namespace, the default is returned.
+ * If one of the arguments is undefined, the other is returned directly.
+ * If both arguments are non-namespace values, the existing value is returned.
  * Likewise if a nested value doesn't match (i.e. it's a namespace in one,
  * but not the other), the default is used.
  *
@@ -247,20 +258,22 @@ export function nsWithDefaults<T>(ns: any, defaults: T): T;
  * @param defaults - Defaults to apply.
  */
 export function nsWithDefaults(ns: any, defaults: any): any {
-    if (!(isNS(ns) && isNS(defaults))) {
-        return defaults;
-    }
+    if (ns === undefined) return defaults;
+    if (defaults === undefined) return ns;
+
+    const nsIsNS = isNS(ns);
+    const defaultsIsNS = isNS(defaults);
+
+    // if one is a namespace, the other is not
+    if (nsIsNS !== defaultsIsNS) return defaults;
+    // if both arguments aren't namespaces
+    else if (!nsIsNS) return ns;
+
+    // at this point both arguments are namespaces!
 
     const output = {...ns} as { [key: string]: any };
     for (const [key, defaultValue] of Object.entries(defaults)) {
-        if (key in output) {
-            const outputValue = output[key];
-
-            if (isNS(defaultValue) || isNS(outputValue))
-                output[key] = nsWithDefaults(outputValue, defaultValue);
-        } else {
-            output[key] = defaultValue;
-        }
+        output[key] = nsWithDefaults(ns[key], defaultValue);
     }
 
     return output;

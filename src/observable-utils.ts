@@ -7,7 +7,7 @@
 /** @ignore */
 
 import events = chrome.events;
-import {from, fromEventPattern, isObservable, Observable} from "rxjs";
+import {fromEventPattern, isObservable, Observable, of} from "rxjs";
 import {map} from "rxjs/operators";
 
 /**
@@ -74,5 +74,7 @@ export type ResolvableObservable<T> = T | Observable<T>;
 export function resolveObservable<T>(value: ResolvableObservable<T>): Observable<T> {
     if (isObservable(value)) return value;
 
-    return from([value]);
+    // It's not really deprecated, only for schedulers.
+    // noinspection JSDeprecatedSymbols
+    return of(value);
 }

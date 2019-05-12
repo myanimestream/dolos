@@ -19,17 +19,17 @@ import SubtitlesIcon from "@material-ui/icons/Subtitles";
 import SwitchVideoIcon from "@material-ui/icons/SwitchVideo";
 import {Language} from "dolos/grobber";
 import * as React from "react";
-import {SettingsTabContentProps, SettingsToggle, useConfigChange, useConfigToggle} from "../SettingsTab";
+import {SettingsToggle, useConfigChange, useConfigToggle} from "../SettingsTab";
 import _ = chrome.i18n.getMessage;
 
 /**
  * [[SettingsTabContent]] for settings related to the video player.
  */
-export function Video({config}: SettingsTabContentProps) {
-    const [dubbed, handleTranslationTypeChange] = useConfigToggle(config, "dubbed");
+export function Video() {
+    const [dubbed, handleTranslationTypeChange] = useConfigToggle("dubbed");
 
-    const [language, handleLanguageChange] = useConfigChange(config, "language",
-        (current, e: React.ChangeEvent<any>) => e.target.value as Language);
+    const [language, setLanguage] = useConfigChange("language");
+    const handleLanguageChange = (e: React.ChangeEvent<{ value: unknown }>) => setLanguage(e.target.value as Language);
 
     const translationTypeSwitch = (
         <Switch
@@ -42,24 +42,21 @@ export function Video({config}: SettingsTabContentProps) {
         <>
             <List subheader={<ListSubheader>{_("options__video__general__title")}</ListSubheader>}>
                 <SettingsToggle
-                    configKey="autoplay"
+                    configPath="autoplay"
                     messageKey="options__video__general__autoplay"
                     icon={PlayArrowIcon}
-                    config={config}
                 />
 
                 <SettingsToggle
-                    configKey="autoNext"
+                    configPath="autoNext"
                     messageKey="options__video__general__auto_next"
                     icon={PlaylistPlayIcon}
-                    config={config}
                 />
 
                 <SettingsToggle
-                    configKey="preferDolosPlayer"
+                    configPath="preferDolosPlayer"
                     messageKey="options__video__general__prefer_dolos_player"
                     icon={SwitchVideoIcon}
-                    config={config}
                 />
             </List>
 

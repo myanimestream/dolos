@@ -66,7 +66,7 @@ interface ChangelogDisplayState {
  * The current version, determined by [[getCurrentVersion]], is
  * automatically expanded.
  *
- * "Old" changelogs, i.e. versions which have a different MINOR.MAJOR version
+ * "Old" logs, i.e. versions which have a different MINOR.MAJOR version
  * from the "current" version are merged based on the MAJOR.MINOR version
  * and labelled with "Previous Versions".
  */

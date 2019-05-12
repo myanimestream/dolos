@@ -21,13 +21,11 @@ import makeStyles from "@material-ui/styles/makeStyles";
 
 import {embedProviders, getEmbedProviderFromID} from "dolos/common";
 import {MUICreatable} from "dolos/components";
-import {Config} from "dolos/models";
-import {StoreElementProxy} from "dolos/store";
 import {arrayElementsEqual} from "dolos/utils";
 import * as React from "react";
 import {ValueType} from "react-select/lib/types";
 import {SortableContainer, SortableElement, SortableHandle, SortEnd} from "react-sortable-hoc";
-import {SettingsTabContentProps, SettingsToggle} from "../SettingsTab";
+import {SettingsToggle, useConfigChange} from "../SettingsTab";
 import _ = chrome.i18n.getMessage;
 
 const providerSuggestions = embedProviders.map(provider => ({
@@ -35,29 +33,29 @@ const providerSuggestions = embedProviders.map(provider => ({
     value: provider.id,
 }));
 
-function BlockedEmbedProviders({blocked, onChange}: { blocked: string[], onChange: (blocked: string[]) => void }) {
-    const [currentBlocked, setInternalBlocked] = React.useState(blocked.map(id => {
+function BlockedEmbedProviders() {
+    const [blockedIDs, setBlockedIDs] = useConfigChange<string[]>("embedProviders.blocked");
+
+    const blocked: ValueType<{ label: string; value: string }> = blockedIDs.map(id => {
         const provider = getEmbedProviderFromID(id);
 
         return {
             label: provider ? provider.name : id,
             value: id,
         };
-    }) as ValueType<{ label: string; value: string }>);
+    });
 
-    function setCurrentBlocked(value: ValueType<{ label: string; value: string }>) {
-        setInternalBlocked(value);
-
+    function setBlocked(value: ValueType<{ label: string; value: string }>): Promise<void> {
         if (Array.isArray(value))
-            onChange(value.map(val => val.value));
+            return setBlockedIDs(value.map(val => val.value));
         else
-            onChange([]);
+            return setBlockedIDs([]);
     }
 
     return (
         <MUICreatable
-            value={currentBlocked}
-            onChange={setCurrentBlocked}
+            value={blocked}
+            onChange={setBlocked}
             options={providerSuggestions}
             placeholder={_("options__embed_providers__blocked__placeholder")}
             isClearable
@@ -140,47 +138,50 @@ const useEmbedProviderStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-function EmbedProviderOrder({order, onChange}: { order: string[], onChange: (order: string[]) => void }) {
+function EmbedProviderOrder() {
     const classes = useEmbedProviderStyles();
-    const [internalOrder, setInternalOrder] = React.useState(order);
 
-    function setOrder(newOrder: string[]) {
-        if (arrayElementsEqual(internalOrder, newOrder)) return;
+    const [order, setOrder] = useConfigChange("embedProviders.order");
 
-        setInternalOrder(newOrder);
-        onChange(newOrder);
+    async function setOrderDedup(newOrder: string[]): Promise<void> {
+        if (arrayElementsEqual(order, newOrder)) return;
+
+        return await setOrder(newOrder);
     }
 
-    function handleSortEnd(sort: SortEnd) {
-        const newOrder = [...internalOrder];
-        newOrder[sort.newIndex] = internalOrder[sort.oldIndex];
-        newOrder[sort.oldIndex] = internalOrder[sort.newIndex];
-        setOrder(newOrder);
+    function handleSortEnd(sort: SortEnd): Promise<void> {
+        const newOrder = [...order];
+        newOrder[sort.newIndex] = order[sort.oldIndex];
+        newOrder[sort.oldIndex] = order[sort.newIndex];
+
+        return setOrderDedup(newOrder);
     }
 
-    function handleProviderRemove(index: number) {
-        const newOrder = [...internalOrder];
+    function handleProviderRemove(index: number): Promise<void> {
+        const newOrder = [...order];
         newOrder.splice(index, 1);
-        setOrder(newOrder);
+
+        // no deduplication required
+        return setOrder(newOrder);
     }
 
-    function handleProviderAdd(provider: ValueType<{ label: string; value: string }>) {
+    async function handleProviderAdd(provider: ValueType<{ label: string; value: string }>): Promise<void> {
         if (!provider || Array.isArray(provider)) return;
 
         const providerID = provider.value;
-        if (internalOrder.indexOf(providerID) > -1) return;
+        if (order.indexOf(providerID) > -1) return;
 
-        setOrder([...internalOrder, providerID]);
+        return await setOrder([...order, providerID]);
     }
 
     const validOptions = providerSuggestions
-        .filter(suggestion => internalOrder.indexOf(suggestion.value) === -1);
+        .filter(suggestion => order.indexOf(suggestion.value) === -1);
 
     let containerContent;
-    if (internalOrder.length > 0) {
+    if (order.length > 0) {
         containerContent = (
             <SortableEmbedProviderList
-                providerIDs={internalOrder}
+                providerIDs={order}
                 onSortEnd={handleSortEnd}
                 onRemove={handleProviderRemove}
                 useDragHandle
@@ -211,34 +212,23 @@ function EmbedProviderOrder({order, onChange}: { order: string[], onChange: (ord
 /**
  * [[SettingsTabContent]] for settings related to embed providers.
  */
-export function EmbedProviders({config}: SettingsTabContentProps) {
-    const embedProviderConfig = config.embedProviders as StoreElementProxy<Config["embedProviders"]>;
-
-    function handleBlockedChange(blocked: string[]) {
-        embedProviderConfig.blocked = blocked;
-    }
-
-    function handleOrderChange(order: string[]) {
-        embedProviderConfig.order = order;
-    }
-
+export function EmbedProviders() {
     return (
         <>
             <List subheader={<ListSubheader>{_("options__embed_providers__general__title")}</ListSubheader>}>
                 <SettingsToggle
-                    configKey="allowUnknown"
+                    configPath="embedProviders.allowUnknown"
                     messageKey="options__embed_providers__general__allow_unknown"
                     icon={WebAssetIcon}
-                    config={embedProviderConfig}
                 />
             </List>
 
             <List subheader={<ListSubheader>{_("options__embed_providers__blocked__title")}</ListSubheader>}>
-                <BlockedEmbedProviders onChange={handleBlockedChange} blocked={embedProviderConfig.blocked}/>
+                <BlockedEmbedProviders/>
             </List>
 
             <List subheader={<ListSubheader>{_("options__embed_providers__order__title")}</ListSubheader>}>
-                <EmbedProviderOrder onChange={handleOrderChange} order={embedProviderConfig.order}/>
+                <EmbedProviderOrder/>
             </List>
         </>
     );

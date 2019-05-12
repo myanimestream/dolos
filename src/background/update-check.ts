@@ -29,7 +29,7 @@ async function checkAnimeUpdate() {
     for (const animeSubscription of animeSubscriptions) {
         if (animeSubscription.error) continue;
 
-        const subSetter = store.getAnimeSubscriptionSetter(animeSubscription);
+        const subSetter = store.getMutAnimeSubscription(animeSubscription);
 
         const oldAnime = animeSubscription.anime;
         const uid = oldAnime.uid;
@@ -40,7 +40,7 @@ async function checkAnimeUpdate() {
         } catch (e) {
             if (e instanceof GrobberResponseError) {
                 if (e.name === GrobberErrorType.UIDUnknown) {
-                    await subSetter(SubscriptionError.UIDUnknown, "error");
+                    await subSetter.set(SubscriptionError.UIDUnknown, "error");
                     continue;
                 }
             }
@@ -49,7 +49,7 @@ async function checkAnimeUpdate() {
             continue;
         }
 
-        await subSetter(newAnime, "anime");
+        await subSetter.set(newAnime, "anime");
 
         if (newAnime.episodes > oldAnime.episodes) {
             const event: NewEpisodeEvent = {

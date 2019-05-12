@@ -11,17 +11,15 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 import Switch from "@material-ui/core/Switch";
 import UpdateIcon from "@material-ui/icons/Update";
 import * as React from "react";
-import {SettingsTabContentProps, useConfigToggle} from "../SettingsTab";
+import {useConfigToggle} from "../SettingsTab";
 import _ = chrome.i18n.getMessage;
 
 /**
  * [[SettingsTabContent]] settings related to how Dolos interacts
  * with the Anime database sites.
  */
-export function SiteIntegration(props: SettingsTabContentProps) {
-    const {config} = props;
-
-    const [updateAnimeProgress, handleUpdateAnimeProgressChange] = useConfigToggle(config, "updateAnimeProgress");
+export function SiteIntegration() {
+    const [updateAnimeProgress, handleUpdateAnimeProgressChange] = useConfigToggle("updateAnimeProgress");
 
     return (
         <>

@@ -63,10 +63,16 @@ export class Identifier {
         this.mediumID = args[2];
     }
 
+    /**
+     * Convert the identifier to an array with the individual components in it.
+     */
     public asTuple(): [string, string, string] {
         return [this.serviceID, this.languageID, this.mediumID];
     }
 
+    /**
+     * Convert the identifier to a string representation.
+     */
     public asString(): string {
         return `${this.serviceID}::${this.languageID}::${this.mediumID}`;
     }

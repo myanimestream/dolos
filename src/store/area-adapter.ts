@@ -7,7 +7,7 @@
 /** @ignore */
 
 import {getItem$, setItem, updateItem} from "./item";
-import {getItemSetter, getMutItem$, ItemSetter} from "./item-setter";
+import {getMutItem, MutItem} from "./mut-item";
 import {Path} from "./namespace";
 import {ItemObservable} from "./root";
 
@@ -25,9 +25,7 @@ export interface AreaAdapterLike {
 
     updateItem<T>(path: Path, value: T): Promise<void>;
 
-    getItemSetter<T>(path: Path): ItemSetter<T>;
-
-    getMutItem$<T>(path: Path): [ItemObservable<T>, ItemSetter<T>];
+    getMutItem<T>(path: Path): MutItem<T>;
 }
 
 /**
@@ -39,18 +37,20 @@ export interface AreaAdapterLike {
 export class AreaAdapter implements AreaAdapterLike {
     public readonly areaName: string;
 
+    /** @inheritDoc */
     public getItem$: AreaAdapterLike["getItem$"];
+    /** @inheritDoc */
     public setItem: AreaAdapterLike["setItem"];
+    /** @inheritDoc */
     public updateItem: AreaAdapterLike["setItem"];
-    public getItemSetter: AreaAdapterLike["getItemSetter"];
-    public getMutItem$: AreaAdapterLike["getMutItem$"];
+    /** @inheritDoc */
+    public getMutItem: AreaAdapterLike["getMutItem"];
 
     constructor(areaName: string) {
         this.areaName = areaName;
 
         this.getItem$ = getItem$.bind(undefined, areaName) as AreaAdapterLike["getItem$"];
-        this.getItemSetter = getItemSetter.bind(undefined, areaName);
-        this.getMutItem$ = getMutItem$.bind(undefined, areaName) as AreaAdapterLike["getMutItem$"];
+        this.getMutItem = getMutItem.bind(undefined, areaName) as AreaAdapterLike["getMutItem"];
         this.setItem = setItem.bind(undefined, areaName);
         this.updateItem = updateItem.bind(undefined, areaName);
     }

@@ -21,7 +21,7 @@ import WifiIcon from "@material-ui/icons/Wifi";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import {grobberClient} from "dolos/grobber";
 import * as React from "react";
-import {SettingsTabContentProps, useConfigChange, useConfigToggle} from "../SettingsTab";
+import {useConfigChange, useConfigToggle} from "../SettingsTab";
 import _ = chrome.i18n.getMessage;
 
 /**
@@ -43,13 +43,11 @@ function getGrobberURLAdornment(checkingURL: boolean, invalidURL: boolean) {
 /**
  * [[SettingsTabContent]] for debug and developer settings.
  */
-export function Debug(props: SettingsTabContentProps) {
-    const {config} = props;
-
+export function Debug() {
     const [checkingURL, setCheckingURL] = React.useState(false);
     const [invalidURL, setInvalidURL] = React.useState(undefined as string | undefined);
 
-    const [grobberURL, setGrobberURL] = useConfigChange(config, "grobberUrl");
+    const [grobberURL, setGrobberURL] = useConfigChange("grobberUrl");
 
     const changeGrobberURL = AwesomeDebouncePromise(async (url: string) => {
         if (!url.match(/https?:\/\/.+/)) {
@@ -61,7 +59,7 @@ export function Debug(props: SettingsTabContentProps) {
 
         const result = await grobberClient.checkGrobberInfo(url);
         if (result.valid) {
-            setGrobberURL(result.url);
+            await setGrobberURL(result.url);
             setInvalidURL(undefined);
         } else {
             const text = `options__grobber__url__${result.hint}`;
@@ -75,7 +73,7 @@ export function Debug(props: SettingsTabContentProps) {
 
     const grobberURLAdornment = getGrobberURLAdornment(checkingURL, !!invalidURL);
 
-    const [debugMode, handleDebugModeChange] = useConfigToggle(config, "debugMode");
+    const [debugMode, handleDebugModeChange] = useConfigToggle("debugMode");
 
     return (
         <>

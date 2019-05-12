@@ -19,7 +19,7 @@ import ServicePage from "./service-page";
  * State handler for services.
  */
 export default class State<T extends Service> extends ElementMemory {
-    public readonly serviceId: string;
+    public readonly serviceID: string;
     public readonly config$: ReadObservable<Config>;
 
     public page?: ServicePage<T>;
@@ -28,7 +28,7 @@ export default class State<T extends Service> extends ElementMemory {
 
     constructor(serviceID: string) {
         super();
-        this.serviceId = serviceID;
+        this.serviceID = serviceID;
 
         this.config$ = store.getConfig$();
     }
@@ -81,7 +81,7 @@ export default class State<T extends Service> extends ElementMemory {
     public renderWithTheme(element: React.ReactNode, tag: keyof HTMLElementTagNameMap | Element = "div"): Element {
         const el = (tag instanceof Element) ? tag : document.createElement(tag);
 
-        reactRenderWithTheme(element, getThemeFor(this.serviceId), el);
+        reactRenderWithTheme(element, getThemeFor(this.serviceID), el);
 
         return el;
     }
@@ -90,7 +90,7 @@ export default class State<T extends Service> extends ElementMemory {
      * Get an observable for an identifier.
      */
     public getID$(mediumID$: Observable<string>): Observable<Identifier> {
-        return store.getID$(this.serviceId, mediumID$);
+        return store.getID$(this.serviceID, mediumID$);
     }
 }
 

@@ -9,24 +9,12 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {SvgIconProps} from "@material-ui/core/SvgIcon";
 import Switch from "@material-ui/core/Switch";
 import makeStyles from "@material-ui/styles/makeStyles";
-import AwesomeDebouncePromise from "awesome-debounce-promise";
-import {useSubscription} from "dolos/hooks";
-import {Config} from "dolos/models";
-import {StoreElementProxy} from "dolos/store";
+import {useObservableMemo} from "dolos/hooks";
+import {DEFAULT_CONFIG} from "dolos/models";
+import {applyDefaults, Path, store} from "dolos/store";
+import {nsGet, splitPath} from "dolos/store/namespace";
 import * as React from "react";
 import _ = chrome.i18n.getMessage;
-
-/**
- * Props passed to [[SettingsTabContent]].
- */
-export interface SettingsTabContentProps {
-    config: StoreElementProxy<Config>;
-}
-
-/**
- * Group of settings that can be displayed by [[SettingsTab]].
- */
-export type SettingsTabContent = React.ComponentType<SettingsTabContentProps>;
 
 /** @ignore */
 const useStyles = makeStyles(() => ({
@@ -37,24 +25,14 @@ const useStyles = makeStyles(() => ({
 }));
 
 /**
- * @see [[SettingsTab]]
- */
-export interface SettingsTabProps extends SettingsTabContentProps {
-    content: SettingsTabContent;
-}
-
-/**
  * Wrapper around [[SettingsTabContent]].
  */
-export function SettingsTab(props: SettingsTabProps) {
-    const {config} = props;
-
+export function SettingsTab(props: React.ComponentProps<any>) {
     const classes = useStyles();
-    const content = React.createElement(props.content, {config});
 
     return (
         <div className={classes.root}>
-            {content}
+            {props.children}
         </div>
     );
 }
@@ -63,8 +41,7 @@ export function SettingsTab(props: SettingsTabProps) {
  * React props for [[SettingsToggle]]
  */
 export interface SettingsToggleProps<T> {
-    config: StoreElementProxy<T>;
-    configKey: keyof T;
+    configPath: Path;
     messageKey: string;
     icon: React.ComponentType<SvgIconProps>;
 }
@@ -77,8 +54,8 @@ export interface SettingsToggleProps<T> {
  *
  * Shows a switch which controls the [[Config]] value specified by `configKey`
  */
-export function SettingsToggle<T>({config, configKey, messageKey, icon}: SettingsToggleProps<T>) {
-    const [value, toggleValue] = useConfigToggle(config, configKey);
+export function SettingsToggle<T>({configPath, messageKey, icon}: SettingsToggleProps<T>) {
+    const [value, toggleValue] = useConfigToggle(configPath);
 
     const iconEl = React.createElement(icon);
 
@@ -103,54 +80,31 @@ export function SettingsToggle<T>({config, configKey, messageKey, icon}: Setting
     );
 }
 
-export function useConfigChange<TConfig, K extends keyof TConfig, VConfig extends TConfig[K]>(
-    config: StoreElementProxy<TConfig>,
-    key: K): [VConfig, (newValue: VConfig) => void];
-export function useConfigChange<TConfig, K extends keyof TConfig, VConfig extends TConfig[K], V>(
-    config: StoreElementProxy<TConfig>,
-    key: K,
-    valueCallback?: (currentValue: VConfig, newValue: V) => VConfig): [VConfig, (newValue: V) => void];
-export function useConfigChange<TConfig, K extends keyof TConfig, VConfig extends TConfig[K], V>(
-    config: StoreElementProxy<TConfig>,
-    key: K,
-    valueCallback?: (currentValue: VConfig, newValue?: V) => VConfig): [VConfig, (newValue?: V) => void];
-
 /**
  * Similar to React's `useState` but specifically for the [[Config]].
  *
  * Internally the value is set immediately, but writing to the actual
  * config is debounced.
  */
-export function useConfigChange<TConfig, K extends keyof TConfig, VConfig extends TConfig[K], V>(
-    config: StoreElementProxy<TConfig>,
-    key: K,
-    valueCallback?: (currentValue: VConfig, newValue?: V) => VConfig): [VConfig, (newValue?: V) => void] {
-    const [configValue, setInternalConfigValue] = React.useState(config[key] as unknown as VConfig);
-    const debouncedSetConfigValue = React.useMemo(() => AwesomeDebouncePromise(
-        val => config[key] = val,
-        750,
-    ), [config, key]);
+export function useConfigChange<T>(path: Path): [T, (newValue?: T) => Promise<void>] {
+    const item = React.useMemo(() => store.getMutConfig().withPath<T>(path), [path]);
 
-    useSubscription(config.onUpdate$, newConfig => setInternalConfigValue(newConfig[key] as unknown as VConfig));
+    const defaultValue = nsGet(DEFAULT_CONFIG, splitPath(path)) as T;
+    const itemValue = useObservableMemo(() => item.value$.pipe(
+        applyDefaults(defaultValue),
+    ), defaultValue);
 
-    const changer = (value?: V | VConfig) => {
-        if (valueCallback) {
-            value = valueCallback(configValue, value as V);
-        }
+    const itemSetter = (newValue?: T) => item.set(newValue);
 
-        debouncedSetConfigValue(value);
-        setInternalConfigValue(value as VConfig);
-    };
-
-    return [configValue, changer];
+    return [itemValue, itemSetter];
 }
 
 /**
  * Specialised [[useConfigChange]] for boolean values.
  */
-export function useConfigToggle<TConfig, K extends keyof TConfig>(
-    config: StoreElementProxy<TConfig>,
-    key: K): [boolean, () => void] {
-    // @ts-ignore
-    return useConfigChange(config, key, (current: boolean) => !current);
+export function useConfigToggle(path: Path): [boolean, () => Promise<void>] {
+    const [value, setter] = useConfigChange<boolean>(path);
+
+    const toggle = () => setter(!value);
+    return [value, toggle];
 }

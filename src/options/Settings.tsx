@@ -23,11 +23,9 @@ import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponen
 import VideoLibraryIcon from "@material-ui/icons/VideoLibrary";
 import makeStyles from "@material-ui/styles/makeStyles";
 import useTheme from "@material-ui/styles/useTheme";
-import {useObservableMemo} from "dolos/hooks";
 import * as React from "react";
 import {HashRouter, NavLink, Redirect, Route, Switch} from "react-router-dom";
-import Store from "../store";
-import {SettingsTab, SettingsTabContentProps} from "./SettingsTab";
+import {SettingsTab} from "./SettingsTab";
 import {Debug, EmbedProviders, SiteIntegration, Video} from "./tabs";
 import _ = chrome.i18n.getMessage;
 
@@ -93,15 +91,12 @@ export function Settings() {
     const classes = useStyles();
     const theme: Theme = useTheme();
 
-    // TODO maybe don't get config on top level
-    const config = useObservableMemo(() => Store.getConfig$());
-
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
-    function renderSettingsTab(content: React.ComponentType<SettingsTabContentProps>) {
-        if (!config) return null;
-        return (<SettingsTab config={config} content={content}/>);
+    function renderSettingsTab(tab: React.ComponentType<any>) {
+        const content = React.createElement(tab);
+        return (<SettingsTab>{content}</SettingsTab>);
     }
 
     const tabs = [

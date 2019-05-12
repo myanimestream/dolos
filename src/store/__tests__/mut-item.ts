@@ -1,11 +1,11 @@
-import {getItemSetter} from "dolos/store";
+import {getMutItem} from "dolos/store";
 import {testWithLock, uniqueRootKey} from ".";
 
-describe("getItemSetter", () => {
+describe("getMutItem", () => {
     test("set", testWithLock(async () => {
         const key = uniqueRootKey();
 
-        const setter = getItemSetter("local", `${key}.b`);
+        const setter = getMutItem("local", `${key}.b`);
 
         await setter.set({a: 3});
         expect(chrome.storage.local.set).toHaveBeenCalledWith({[key]: {b: {a: 3}}}, expect.any(Function));
@@ -19,7 +19,7 @@ describe("getItemSetter", () => {
     test("update", testWithLock(async () => {
         const key = uniqueRootKey();
 
-        const setter = getItemSetter("local", `${key}.b`);
+        const setter = getMutItem("local", `${key}.b`);
 
         await setter.set({a: 3});
 
@@ -29,7 +29,7 @@ describe("getItemSetter", () => {
 
     test("withPath", testWithLock(async () => {
         const key = uniqueRootKey();
-        const setter = getItemSetter("local", `${key}.b`);
+        const setter = getMutItem("local", `${key}.b`);
         const newSetter = setter.withPath("c");
 
         await newSetter.set("test2");

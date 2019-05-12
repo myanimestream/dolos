@@ -1,7 +1,34 @@
-import {nsMergeNested, nsWithValue} from "./namespace";
-import {getCurrentRoot} from "./root";
+/**
+ * Internal item which are reused between different high-level abstractions.
+ *
+ * @module store
+ */
+
+/** @ignore */
+
+import {distinctUntilChanged, map} from "rxjs/operators";
+import {nsGet, nsMergeNested, nsWithValue} from "./namespace";
+import {getCurrentRoot, getRootItem$, ItemObservable} from "./root";
 import {storageSet} from "./storage";
 import storage = chrome.storage;
+
+/**
+ * Internal implementation of non-root item getter.
+ *
+ * @param storageArea - Storage area where the item is stored.
+ * @param rootKey - Key of the root item.
+ * @param nsKeys - Namespace path of the item.
+ */
+export function getItem$Internal<T>(storageArea: string, rootKey: string, nsKeys: string[]): ItemObservable<T> {
+    const root$ = getRootItem$(storageArea, rootKey);
+
+    return root$.pipe(
+        map(value => nsGet<T>(value, nsKeys)),
+        // this is probably useless since we can expect to pass objects through
+        // this, but eh.
+        distinctUntilChanged(),
+    );
+}
 
 /**
  * Internal implementation of non-root item setter.

@@ -16,6 +16,8 @@
 import * as React from "react";
 import {BehaviorSubject, EMPTY, Observable, PartialObserver} from "rxjs";
 
+// TODO accept deps for Memo functions!
+
 export function usePromise<T>(promise: PromiseLike<T>): T | undefined;
 export function usePromise<T, V>(promise: PromiseLike<T>, defaultValue: V): T | V;
 /**

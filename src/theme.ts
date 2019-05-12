@@ -59,7 +59,7 @@ export const malTheme = createMuiTheme({
 /**
  * Get the correct theme for a [[Service]] or the [[mainTheme]] if there is none.
  *
- * @param service - Service id as seen in [[State.serviceId]]
+ * @param service - Service id as seen in [[State.serviceID]]
  */
 export function getThemeFor(service: string): Theme {
     switch (service) {

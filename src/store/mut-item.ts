@@ -1,22 +1,26 @@
-import {getItem$} from "./item";
-import {setItemInternal} from "./item-internal";
+/**
+ * @module store
+ */
+
+/** @ignore */
+
+import {getItem$Internal, setItemInternal} from "./item-internal";
 import {Path, splitPath} from "./namespace";
 import {ItemObservable} from "./root";
 import {getStorageArea} from "./storage";
 import storage = chrome.storage;
 
 /**
- * Function which can be used to set the value of an item simply by calling it.
- * Calling it with `undefined` deletes the item altogether.
- *
- * The second argument can be used to specify a relative path.
+ * Can be used to set the value of an item.
  */
-export class ItemSetter<T> {
-    public readonly rootKey: string;
-    public readonly nsKeys: string[];
+export class MutItem<T> {
+    private readonly rootKey: string;
+    private readonly nsKeys: string[];
 
     private _areaName: string;
     private _area: storage.StorageArea;
+
+    private _value$: ItemObservable<T>;
 
     constructor(areaName: string, path: Path);
     constructor(args: { areaName: string, rootKey: string, nsKeys: Path });
@@ -45,8 +49,13 @@ export class ItemSetter<T> {
 
         this.rootKey = rootKey;
         this.nsKeys = nsKeys;
+
+        this._value$ = getItem$Internal(this._areaName, this.rootKey, this.nsKeys);
     }
 
+    /**
+     * Storage area name.
+     */
     public get areaName(): string {
         return this._areaName;
     }
@@ -56,28 +65,58 @@ export class ItemSetter<T> {
         this._areaName = areaName;
     }
 
+    /**
+     * Current path which is set by the item setter.
+     */
     public get path(): string[] {
         return [this.rootKey, ...this.nsKeys];
     }
 
+    // TODO test
+
+    /**
+     * Observable for the value which is accessed.
+     */
+    public get value$(): ItemObservable<T> {
+        return this._value$;
+    }
+
     public set(value: T | undefined): Promise<void>;
     public set(value: any, relativePath: Path): Promise<void>;
-
+    /**
+     * Set the value.
+     *
+     * @param value - Value to set
+     * @param relativePath - Specify the path relative to the item setter's path
+     */
     public set(value: any, relativePath?: Path): Promise<void> {
         return this.setOrUpdate(value, relativePath, false);
     }
 
     public update(value: Partial<T> | undefined): Promise<void>;
     public update(value: any, relativePath: Path): Promise<void>;
-
+    /**
+     * Update the value.
+     * This behaves differently from [[set]] for namespaces.
+     * Instead of overwriting the namespace, it only overwrites
+     * values specified in the value namespace.
+     *
+     * @param value - Value to update the current value with
+     * @param relativePath - Specify the path relative to the item setter's path
+     */
     public update(value: any, relativePath?: Path): Promise<void> {
         return this.setOrUpdate(value, relativePath, true);
     }
 
-    public withPath<V>(relativePath: Path): ItemSetter<V> {
-        const nsKeys = this.nsKeys.concat(relativePath);
+    /**
+     * Get a new item setter with a path relative to the current one.
+     *
+     * @param relativePath - Relative location for the new path.
+     */
+    public withPath<V>(relativePath: Path): MutItem<V> {
+        const nsKeys = this.getNSKeys(relativePath);
 
-        return new ItemSetter<V>({
+        return new MutItem<V>({
             areaName: this._areaName,
             rootKey: this.rootKey,
 
@@ -85,41 +124,25 @@ export class ItemSetter<T> {
         });
     }
 
-    private setOrUpdate(value: any, relativePath: Path | undefined, update: boolean): Promise<void> {
-        let nsKeys: string[];
-
+    private getNSKeys(relativePath?: Path): string[] {
         if (relativePath === undefined)
-            nsKeys = this.nsKeys;
+            return this.nsKeys;
         else
-            nsKeys = this.nsKeys.concat(splitPath(relativePath));
+            return this.nsKeys.concat(splitPath(relativePath));
+    }
 
-        return setItemInternal(this._areaName, this._area, this.rootKey, nsKeys, update, value);
+    private setOrUpdate(value: any, relativePath: Path | undefined, update: boolean): Promise<void> {
+        return setItemInternal(this._areaName, this._area, this.rootKey,
+            this.getNSKeys(relativePath), update, value);
     }
 }
 
 /**
- * Create an item setter function for the given path.
+ * Create a mutable item for the given path.
  *
  * @param storageArea - Storage area where the item is stored.
  * @param path - Dot-separated path.
  */
-export function getItemSetter<T>(storageArea: string, path: Path): ItemSetter<T> {
-    return new ItemSetter<T>(storageArea, path);
-}
-
-/**
- * Mutable item access containing the item observable and the item setter.
- */
-export type MutItem<T> = [ItemObservable<T>, ItemSetter<T>];
-
-/**
- * Get an observable and a setter function for the given path.
- *
- * This is just a convenience function for [[getItem$]] and [[getItemSetter]].
- *
- * @param storageArea - Storage area where the item is stored.
- * @param path - Dot-separated path.
- */
-export function getMutItem$<T>(storageArea: string, path: Path): MutItem<T> {
-    return [getItem$(storageArea, path), getItemSetter(storageArea, path)];
+export function getMutItem<T>(storageArea: string, path: Path): MutItem<T> {
+    return new MutItem<T>(storageArea, path);
 }

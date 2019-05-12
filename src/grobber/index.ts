@@ -15,7 +15,7 @@
 
 /** @ignore */
 
-import Store from "dolos/store";
+import {store} from "dolos/store";
 import {GrobberClient} from "./client";
 import {RemoteGrobberClient} from "./remote";
 
@@ -28,7 +28,7 @@ export * from "./remote";
  *
  * Uses the dolos config.
  */
-export const grobberClient = new GrobberClient(Store.getConfig$());
+export const grobberClient = new GrobberClient(store.getConfig$());
 
 /**
  * Default [[RemoteGrobberClient]].

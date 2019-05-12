@@ -18,7 +18,7 @@ import {createRootItemChange$, getStorageArea, storageGet} from "./storage";
  * item doesn't exist.
  *
  * The value is also read only! If you wish to change the value, use the
- * [[setItem]] function, or an [[ItemSetter]] from [[getItemSetter]].
+ * [[setItem]] function, or an [[MutItem]] from [[getMutItem]].
  */
 export type ItemObservable<T> = Observable<Readonly<T> | undefined>;
 
