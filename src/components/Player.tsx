@@ -6,7 +6,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles, {WithStyles} from "@material-ui/core/styles/withStyles";
 import {Plyr} from "dolos/plyr";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import {findDOMNode} from "react-dom";
 
 /** @ignore */
 const styles = () => createStyles({
@@ -45,7 +45,7 @@ export const Player = withStyles(styles)(
             const autoplay = options.autoplay;
             options.autoplay = false;
 
-            const domNode = ReactDOM.findDOMNode(this);
+            const domNode = findDOMNode(this);
             if (!(domNode && domNode.firstChild))
                 throw new Error("Couldn't find dom node");
 
