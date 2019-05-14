@@ -17,13 +17,13 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import withMobileDialog, {WithMobileDialog} from "@material-ui/core/withMobileDialog";
 import SearchIcon from "@material-ui/icons/Search";
-import AwesomeDebouncePromise from "awesome-debounce-promise";
 import {Service} from "dolos/common";
 import {AnimePage} from "dolos/common/pages";
 import {GrobberMedium, remoteGrobberClient} from "dolos/grobber";
 import {useSubscription} from "dolos/hooks";
 import * as React from "react";
-import {Observable} from "rxjs";
+import {EMPTY, Observable, of, Subject, SubscriptionLike} from "rxjs";
+import {debounceTime, map, switchMap, tap, withLatestFrom} from "rxjs/operators";
 import {AnimeSearchSelection} from "./index";
 import _ = chrome.i18n.getMessage;
 
@@ -79,8 +79,8 @@ const styles = (theme: Theme) => createStyles({
  * Required [[AnimePage]] properties for [[AnimeSearchDialog]].
  */
 export type AnimeSearchDialogAnimePage = Pick<AnimePage<Service>,
-    | "getAnimeUID"
-    | "getAnimeSearchQuery"
+    | "getAnimeUID$"
+    | "getSearchQuery$"
     | "state">;
 
 export interface AnimeSearchDialogProps extends WithStyles<typeof styles>, WithMobileDialog {
@@ -100,74 +100,91 @@ export interface AnimeSearchDialogState {
 // tslint:disable-next-line:variable-name
 export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearchDialogProps>()(
     class extends React.Component<AnimeSearchDialogProps, AnimeSearchDialogState> {
-        public searchDebounced = AwesomeDebouncePromise(async (query: string) => {
-            await this.search(query);
-        }, 250);
+        private readonly subscriptions: SubscriptionLike[];
+        private readonly searchQuery$: Subject<string>;
+        private readonly debouncedSearchQuery$: Subject<string>;
 
         constructor(props: AnimeSearchDialogProps) {
             super(props);
             this.state = {
                 loading: true,
             };
+
+            this.subscriptions = [];
+            this.searchQuery$ = new Subject();
+            this.debouncedSearchQuery$ = new Subject();
         }
 
-        public async handleDialogEnter() {
-            const {animePage} = this.props;
-
-            (async () => {
-                const currentAnimeUID = await animePage.getAnimeUID();
-                this.setState({currentAnimeUID});
-            })();
-
-            const searchQuery = await animePage.getAnimeSearchQuery();
-            if (!searchQuery) {
-                this.setState({loading: false});
-                return;
-            }
-
-            await this.search(searchQuery);
-        }
-
-        public async search(query: string) {
+        public handleDialogEnter() {
             const {animePage} = this.props;
             const state = animePage.state;
 
-            if (!query) {
-                this.setState({
-                    results: undefined,
-                    searchQuery: query,
-                });
-                return;
+            const searchQuerySub = this.searchQuery$.pipe(
+                switchMap(searchQuery => {
+                    if (!searchQuery) {
+                        this.setState({
+                            results: undefined,
+                            searchQuery,
+                        });
+
+                        return EMPTY;
+                    }
+
+                    return of(searchQuery);
+                }),
+                // begin loading
+                tap(searchQuery => this.setState({loading: true, searchQuery})),
+                switchMap(searchQuery => remoteGrobberClient.searchAnime(searchQuery)),
+                withLatestFrom(state.config$),
+                map(([searchResults, config]) => {
+                    if (!searchResults) return;
+
+                    const resultUIDs = new Set();
+                    let consideration = searchResults
+                        .filter(res => {
+                            // make absolutely sure that there are no duplicate UIDs
+                            // it shouldn't happen anyway, but Grobber seems to have
+                            // some issues which causes duplicates
+                            const uid = res.item.uid;
+                            if (resultUIDs.has(uid))
+                                return false;
+                            else
+                                resultUIDs.add(uid);
+
+                            return res.certainty >= config.minCertaintyForSearchResult;
+                        });
+
+                    if (consideration.length === 0) consideration = searchResults;
+
+                    return consideration.map(res => res.item);
+                }),
+            ).subscribe(results => this.setState({loading: false, results}));
+
+            this.subscriptions.push(
+                searchQuerySub,
+                // TODO don't overwrite current anime uid if the user already changed it
+                animePage.getAnimeUID$().subscribe(currentAnimeUID => this.setState({currentAnimeUID})),
+                // TODO don't overwrite if the user changed the search query!
+                animePage.getSearchQuery$().pipe(
+                    switchMap(searchQuery => {
+                        if (!searchQuery) {
+                            this.setState({loading: false});
+                            return EMPTY;
+                        }
+
+                        return of(searchQuery);
+                    }),
+                ).subscribe(this.searchQuery$),
+                this.debouncedSearchQuery$.pipe(debounceTime(200))
+                    .subscribe(this.searchQuery$),
+            );
+        }
+
+        public handleDialogExit() {
+            // unsubscribe from all subscriptions
+            while (this.subscriptions.length > 0) {
+                this.subscriptions.pop()!.unsubscribe();
             }
-
-            this.setState({loading: true, searchQuery: query});
-
-            let results: GrobberMedium[] | undefined;
-            const config = await state.config;
-            const searchResults = await remoteGrobberClient.searchAnime(query);
-            const resultUIDs = new Set();
-
-            if (searchResults) {
-                let consideration = searchResults
-                    .filter(res => {
-                        // make absolutely sure that there are no duplicate UIDs
-                        // it shouldn't happen anyway, but Grobber seems to have
-                        // some issues which causes duplicates
-                        const uid = res.item.uid;
-                        if (resultUIDs.has(uid))
-                            return false;
-                        else
-                            resultUIDs.add(uid);
-
-                        return res.certainty >= config.minCertaintyForSearchResult;
-                    });
-
-                if (consideration.length === 0) consideration = searchResults;
-
-                results = consideration.map(res => res.item);
-            }
-
-            this.setState({loading: false, results});
         }
 
         public handleSelect(medium: GrobberMedium) {
@@ -211,10 +228,11 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
             const {searchQuery, currentAnime} = this.state;
 
             const handleDialogEnter = this.handleDialogEnter.bind(this);
+            const handleDialogExit = this.handleDialogExit.bind(this);
             const handleClose = () => onClose && onClose();
 
             const handleSearchInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                this.searchDebounced(event.target.value);
+                this.debouncedSearchQuery$.next(event.target.value);
 
             const searchInputClasses = {
                 input: classes.inputInput,
@@ -260,6 +278,7 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
                     fullWidth
                     open={open}
                     onEnter={handleDialogEnter}
+                    onExit={handleDialogExit}
                     onBackdropClick={handleClose}
                     scroll="paper"
                     aria-labelledby="anime-search-result-dialog-title"
@@ -272,13 +291,16 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
                         <div className={classes.grow}/>
                         {searchInputField}
                     </Toolbar>
+
                     <DialogContent className={classes.content}>
                         {this.renderContent()}
                     </DialogContent>
+
                     <DialogActions>
                         <Button onClick={handleClose} color="primary">
                             {_("anime__search__abort")}
                         </Button>
+
                         {pickButton}
                     </DialogActions>
                 </Dialog>

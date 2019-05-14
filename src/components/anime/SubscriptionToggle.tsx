@@ -48,8 +48,8 @@ export function SubscriptionToggle(props: SubscriptionToggleProps) {
     const classes = useStyles();
     const [loading, setLoading] = React.useState(false);
 
-    const canSubscribe = useObservableMemo(() => animePage.canSubscribe$(), false);
-    const isSubscribed = useObservableMemo(() => animePage.isSubscribed$());
+    const canSubscribe = useObservableMemo(() => animePage.canSubscribe$(), [animePage], false);
+    const isSubscribed = useObservableMemo(() => animePage.isSubscribed$(), [animePage]);
 
     async function toggleSubscription(): Promise<void> {
         // still loading
@@ -98,6 +98,7 @@ export function SubscriptionToggle(props: SubscriptionToggleProps) {
                     {icon}
                     {_("anime__" + (isSubscribed ? "unsubscribe" : "subscribe"))}
                 </Button>
+
                 {loading && <CircularProgress size={24} className={classes.progress}/>}
             </div>
         </Tooltip>

@@ -30,6 +30,9 @@ export interface Changelog {
  * This is done using a Map to make sure it can be iterated over in the right order.
  */
 const CHANGELOG: Changelog = new Map([
+    ["0.3.2", [
+        "Rewrote Dolos' storage handler",
+    ]],
     ["0.3.0", [
         (
             "The [Grobber API](https://grobber.docs.apiary.io/) client used by Dolos " +

@@ -19,17 +19,17 @@ function NamespaceComponent({namespace}: { namespace: Namespace }) {
     // yes, this is bad but I'm tired so leave me be!
     // this is necessary because namespaces need to be mutated,
     // not replaced.
-    const [, forceUpdate] = React.useState(undefined);
+    const [value, setValueInternal] = React.useState(namespace.__value);
 
     let valueDisplay;
     if ("__value" in namespace) {
         const handleChange = (newValue: any) => {
             namespace.__value = newValue;
-            forceUpdate(undefined);
+            setValueInternal(newValue);
         };
 
         valueDisplay = (
-            <DynamicInput value={namespace.__value} onChange={handleChange}/>
+            <DynamicInput value={value} onChange={handleChange}/>
         );
     }
 
@@ -37,7 +37,7 @@ function NamespaceComponent({namespace}: { namespace: Namespace }) {
     for (const [key, ns] of Object.entries(namespace)) {
         if (key === "__value") continue;
         children.push((
-            <ExpansionPanel key={key}>
+            <ExpansionPanel key={key} TransitionProps={{unmountOnExit: true}}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                     <Typography variant="h6">{key}</Typography>
                 </ExpansionPanelSummary>

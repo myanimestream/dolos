@@ -51,7 +51,7 @@ export const ContinueWatchingButton = withStyles(styles)(
         public async componentDidMount() {
             const {animePage} = this.props;
             this.episodesWatchedSub = (await animePage.getEpisodesWatched$())
-                .subscribe((epsWatched) => this.handleEpisodesWatchedChanged(epsWatched));
+                .subscribe(epsWatched => this.handleEpisodesWatchedChanged(epsWatched));
         }
 
         public componentWillUnmount(): void {
@@ -68,6 +68,7 @@ export const ContinueWatchingButton = withStyles(styles)(
 
         public async handleEpisodesWatchedChanged(epsWatched?: number) {
             const {animePage} = this.props;
+            // TODO if this takes too long, show a "take me to the next episode anyway" kind of button
             const anime = await animePage.getAnime();
 
             if (!anime) {
@@ -90,9 +91,8 @@ export const ContinueWatchingButton = withStyles(styles)(
                 const msg = _("anime__continue_watching__unknown");
 
                 this.setState({
-                    tooltip: msg,
-
                     disabled: true,
+                    tooltip: msg,
                 });
 
                 epsWatched = 0;
@@ -143,8 +143,7 @@ export const ContinueWatchingButton = withStyles(styles)(
 
             const handleClick = (event: React.MouseEvent) => {
                 event.preventDefault();
-                if (onClick)
-                    onClick();
+                if (onClick) onClick();
             };
 
             return (

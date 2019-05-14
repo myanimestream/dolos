@@ -87,12 +87,12 @@ export function SettingsToggle<T>({configPath, messageKey, icon}: SettingsToggle
  * config is debounced.
  */
 export function useConfigChange<T>(path: Path): [T, (newValue?: T) => Promise<void>] {
-    const item = React.useMemo(() => store.getMutConfig().withPath<T>(path), [path]);
+    const item = React.useMemo(() => store.getMutConfig().withPath<T>(path), [store, path]);
 
     const defaultValue = nsGet(DEFAULT_CONFIG, splitPath(path)) as T;
     const itemValue = useObservableMemo(() => item.value$.pipe(
         applyDefaults(defaultValue),
-    ), defaultValue);
+    ), [item], defaultValue);
 
     const itemSetter = (newValue?: T) => item.set(newValue);
 

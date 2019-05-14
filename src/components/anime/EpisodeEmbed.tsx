@@ -97,6 +97,8 @@ interface EpisodeEmbedState {
     menuAnchorElement?: HTMLElement;
 }
 
+// TODO SPLIT INTO PARTS
+
 // tslint:disable-next-line:variable-name
 export const EpisodeEmbed = withStyles(styles)(
     class extends React.Component<EpisodeEmbedProps, EpisodeEmbedState> {

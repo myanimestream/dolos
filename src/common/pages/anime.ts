@@ -3,14 +3,20 @@
  */
 
 import {AnimeStatusBar, RemoteAnimeSearchDialog, SearchDialogOpenCommand} from "dolos/components/anime";
-import {AnimeInfo, GrobberErrorType, GrobberSearchResult, remoteGrobberClient} from "dolos/grobber";
+import {
+    AnimeInfo,
+    GrobberErrorType,
+    GrobberResponseError,
+    GrobberSearchResult,
+    remoteGrobberClient,
+} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
 import {AnimeSubscriptionInfo, Config, StoredAnimeInfo, SubscriptionError} from "dolos/models";
 import {Identifier, ReadObservable, store} from "dolos/store";
 import {wrapSentryLogger} from "dolos/utils";
-import * as React from "react";
-import {BehaviorSubject, combineLatest, defer, from, Observable, of, Subject} from "rxjs";
-import {concatAll, distinctUntilChanged, first, map, pluck, switchMap} from "rxjs/operators";
+import {createElement} from "react";
+import {BehaviorSubject, combineLatest, concat, defer, from, NEVER, Observable, of, Subject, throwError} from "rxjs";
+import {catchError, concatAll, distinctUntilChanged, first, map, pluck, switchMap} from "rxjs/operators";
 import {EpisodePage} from ".";
 import Service from "../service";
 import ServicePage from "../service-page";
@@ -36,13 +42,15 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
     }
 
     public getAnimeIdentifier$(): Observable<string> {
-        return defer(() => this.getAnimeIdentifier()).pipe(map(value => {
-            if (value === undefined) {
-                throw new Error("No anime identifier returned!");
-            }
+        return defer(() => this.getAnimeIdentifier()).pipe(
+            map(value => {
+                if (value === undefined) {
+                    throw new Error("No anime identifier returned!");
+                }
 
-            return value;
-        }));
+                return value;
+            }),
+        );
     }
 
     /**
@@ -51,16 +59,20 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
     public abstract async getAnimeIdentifier(): Promise<string | undefined>;
 
     public getSearchQuery$(): Observable<string> {
-        return defer(() => this.getAnimeSearchQuery()).pipe(map(value => {
-            if (value === undefined) {
-                throw new Error("No search query returned!");
-            }
+        return concat(defer(() => this.getAnimeSearchQuery()), NEVER).pipe(
+            map(value => {
+                if (value === undefined) {
+                    throw new Error("No search query returned!");
+                }
 
-            return value;
-        }));
+                return value;
+            }),
+        );
     }
 
     /**
+     * @deprecated use [[getSearchQuery$]]
+     *
      * Get the search query to be used for Grobber's search endpoint.
      * @return `undefined` if there is no search query.
      */
@@ -71,11 +83,12 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
     }
 
     public getStoredAnimeInfo$(): ReadObservable<StoredAnimeInfo> {
-        const id$ = this.getID$();
-        return store.getStoredAnimeInfo$(id$);
+        return store.getStoredAnimeInfo$(this.getID$());
     }
 
     /**
+     * @deprecated use [[getStoredAnimeInfo$]]
+     *
      * Get the information stored in the browser storage.
      *
      * @throws if [[AnimePage.getAnimeIdentifier]] didn't return an identifier
@@ -105,6 +118,8 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
     }
 
     /**
+     * @deprecated use [[getAnimeUID$]]
+     *
      * Get the UID of the Anime.
      * This method will return the stored UID (if available) unless `forceSearch` is true.
      *
@@ -137,8 +152,10 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
         ]);
         animeInfo.uid = uid;
 
-        if (subscription)
-            subscription.anime = anime;
+        if (subscription) {
+            const subSetter = store.getMutAnimeSubscription(subscription);
+            await subSetter.set(anime, "anime");
+        }
 
         // this handles the case of a page "abusing" the AnimePage
         // such as the EpisodePage
@@ -146,6 +163,21 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
             await this.state.page.reload();
         else
             await this.reload();
+    }
+
+    public getAnime$(): Observable<AnimeInfo> {
+        return this.getAnimeUID$().pipe(
+            switchMap(uid => remoteGrobberClient.getAnimeInfo(uid)),
+            catchError(err => {
+                if (err instanceof GrobberResponseError && err.name === GrobberErrorType.UIDUnknown) {
+                    return this.getAnimeUID$(true).pipe(
+                        switchMap(uid => remoteGrobberClient.getAnimeInfo(uid)),
+                    );
+                } else {
+                    return throwError(err);
+                }
+            }),
+        );
     }
 
     /**
@@ -177,15 +209,14 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
     }
 
     /**
+     * @deprecated use [[isSubscribed$]]
+     *
      * Check whether the user is subscribed to the Anime
      *
      * @see [[AnimePage.isSubscribed$]]
      */
     public async isSubscribed(): Promise<boolean | undefined> {
-        const subscribed$ = await this.isSubscribed$();
-        if (!subscribed$) return undefined;
-        // should behave like a behaviour subject so the value should return right away.
-        return await subscribed$.pipe(first()).toPromise();
+        return await this.isSubscribed$().pipe(first()).toPromise();
     }
 
     /**
@@ -214,7 +245,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
      */
     public canSubscribe$(): Observable<boolean> {
         return combineLatest([
-            from(this.getEpisodesWatched$).pipe(concatAll()),
+            from(this.getEpisodesWatched$()).pipe(concatAll()),
             defer(() => this.getEpisodeCount()),
         ]).pipe(
             // only allow subscriptions when the user hasn't finished the anime or we're unsure whether they have
@@ -267,7 +298,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
         const subscription = await this.getSubscription();
         if (!subscription) return;
 
-        const subSetter = store.getAnimeSubscriptionSetter(subscription);
+        const subSetter = store.getMutAnimeSubscription(subscription);
 
         // unsubscribe from completed animes
         if (epsWatched === totalEpisodes) {
@@ -275,26 +306,25 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
             return;
         }
 
-        let nextSubscription: AnimeSubscriptionInfo | undefined;
+        let subscriptionUpdate: Partial<AnimeSubscriptionInfo> | undefined;
 
         if (subscription.error) {
-            nextSubscription = await this.fixSubscription(subscription);
+            subscriptionUpdate = await this.fixSubscription(subscription);
 
-            if (nextSubscription) {
+            if (subscriptionUpdate) {
                 this.service.showInfoSnackbar(_("subscriptions__fix__successful"));
             } else {
                 this.service.showWarningSnackbar(_("subscriptions__fix__failed"));
             }
         }
 
-        if (nextSubscription === undefined)
-            nextSubscription = {...subscription};
+        if (subscriptionUpdate === undefined)
+            subscriptionUpdate = {};
 
-        nextSubscription.episodesWatched = epsWatched;
-        nextSubscription.nextEpisodeURL = await this.getEpisodeURL(epsWatched);
+        subscriptionUpdate.episodesWatched = epsWatched;
+        subscriptionUpdate.nextEpisodeURL = await this.getEpisodeURL(epsWatched);
 
-        // TODO use update function to avoid (tiny) risk of overwrite
-        await subSetter(nextSubscription);
+        await subSetter.update(subscriptionUpdate);
     }
 
     /**
@@ -306,7 +336,8 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
 
         try {
             id = await this.getID$().pipe(first()).toPromise();
-        } catch {
+        } catch (e) {
+            console.warn("Couldn't unsubscribe (couldn't get id):", e);
             // TODO create sentry warning?
             // because we shouldn't unsubscribe from an anime if we don't have the id...
             return false;
@@ -376,7 +407,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
 
     public async buildAnimeStatusBar(): Promise<Element> {
         return this.state.renderWithTheme(
-            wrapSentryLogger(React.createElement(AnimeStatusBar, {animePage: this})),
+            wrapSentryLogger(createElement(AnimeStatusBar, {animePage: this})),
         );
     }
 
@@ -428,7 +459,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
 
     public async buildAnimeSearchDialog(): Promise<Element> {
         return this.state.renderWithTheme(
-            React.createElement(RemoteAnimeSearchDialog, {
+            createElement(RemoteAnimeSearchDialog, {
                 animePage: this,
                 open$: this._animeSearchDialogOpen$,
             }),
@@ -473,28 +504,29 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
      */
     protected abstract async _setEpisodesWatched(progress: number): Promise<boolean>;
 
-    private async fixSubscription(subscription: AnimeSubscriptionInfo): Promise<AnimeSubscriptionInfo | undefined> {
-        let newSubscription: AnimeSubscriptionInfo | undefined;
+    private async fixSubscription(subscription: AnimeSubscriptionInfo):
+        Promise<Partial<AnimeSubscriptionInfo> | undefined> {
+        let subFix: Partial<AnimeSubscriptionInfo> | undefined;
 
         switch (subscription.error) {
             case undefined:
                 // if there's no error just return the subscription as is
-                newSubscription = {...subscription};
+                subFix = {};
                 break;
 
             case SubscriptionError.UIDUnknown:
                 const anime = await this.getAnime();
                 if (anime !== undefined) {
-                    newSubscription = {...subscription, anime};
+                    subFix = {anime};
                 }
 
                 break;
         }
 
-        if (newSubscription)
-            delete newSubscription.error;
+        if (subFix)
+            subFix.error = undefined;
 
-        return newSubscription;
+        return subFix;
     }
 
     private async searchAnimeForTitle(query: string, config: Config):

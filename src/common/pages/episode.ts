@@ -6,8 +6,8 @@ import {EpisodeEmbed, SkipButton} from "dolos/components/anime";
 import {Episode, GrobberErrorType, remoteGrobberClient} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
 import {wrapSentryLogger} from "dolos/utils";
-import * as React from "react";
-import * as rxjs from "rxjs";
+import {createElement} from "react";
+import {BehaviorSubject, Subscription} from "rxjs";
 import {AnimePage} from ".";
 import Service from "../service";
 import ServicePage from "../service-page";
@@ -18,7 +18,7 @@ import _ = chrome.i18n.getMessage;
  *
  * Incidentally this is a subset of [[AnimePage]] and is used as such.
  */
-export type EpisodeAnimePage = Pick<AnimePage<Service>,
+export type EpisodeAnimePage<T extends Service> = Pick<AnimePage<T>,
     | "getAnimeUID"
     | "setAnimeUID"
     | "getAnime"
@@ -31,9 +31,9 @@ export type EpisodeAnimePage = Pick<AnimePage<Service>,
  * Possible values for [[EpisodePage.animePage]].
  */
 export type EpisodeAnimePageLike<T extends Service> =
-    | EpisodeAnimePage
-    | AnimePage<T>
-    | EpisodeAnimePage & ServicePage<T>;
+    | EpisodeAnimePage<T>
+    | EpisodeAnimePage<T> & ServicePage<T>
+    | AnimePage<T>;
 
 /**
  * A page that will show the [[EpisodeEmbed]].
@@ -67,21 +67,23 @@ export abstract class EpisodePage<T extends Service> extends ServicePage<T> {
     }
 
     set animePage(page: EpisodeAnimePageLike<T>) {
+        // TODO unload previous?
+
         if (page instanceof AnimePage)
             this.registerBackgroundPage(page, "anime");
 
         this._animePage = page;
     }
 
-    public episodeBookmarked$: rxjs.BehaviorSubject<boolean>;
-    private epsWatchedSub?: rxjs.Subscription;
+    public readonly episodeBookmarked$: BehaviorSubject<boolean>;
+    private epsWatchedSub?: Subscription;
 
     private _animePage?: EpisodeAnimePageLike<T>;
 
     constructor(service: T) {
         super(service);
 
-        this.episodeBookmarked$ = new rxjs.BehaviorSubject(false as boolean);
+        this.episodeBookmarked$ = new BehaviorSubject(false as boolean);
     }
 
     public abstract buildAnimePage(): EpisodeAnimePageLike<T>;
@@ -125,7 +127,7 @@ export abstract class EpisodePage<T extends Service> extends ServicePage<T> {
 
     public async buildEmbed(): Promise<Element> {
         return this.state.renderWithTheme(
-            wrapSentryLogger(React.createElement(EpisodeEmbed, {episodePage: this})),
+            wrapSentryLogger(createElement(EpisodeEmbed, {episodePage: this})),
         );
     }
 
@@ -175,12 +177,16 @@ export abstract class EpisodePage<T extends Service> extends ServicePage<T> {
             return;
         }
 
-        if (await this.animePage.setEpisodesWatched(epIndex)) this.episodeBookmarked$.next(false);
-        else this.service.showErrorSnackbar(_("episode__bookmark_failed"));
+        if (await this.animePage.setEpisodesWatched(epIndex))
+            this.episodeBookmarked$.next(false);
+        else
+            this.service.showErrorSnackbar(_("episode__bookmark_failed"));
     }
 
     public async _load() {
         const loadAnimePage = async () => {
+            // They are very much related, TypeScript!
+            // noinspection SuspiciousTypeOfGuard
             if (this.animePage instanceof ServicePage)
                 await this.animePage.load();
         };

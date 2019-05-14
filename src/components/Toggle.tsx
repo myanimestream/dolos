@@ -75,6 +75,7 @@ export function Toggle(props: ToggleProps) {
                 <IconButton onClick={handleToggle} color="primary" disabled={toggleDisabled}>
                     {toggled ? iconToggled : icon}
                 </IconButton>
+
                 <Fade
                     in={loading}
                     style={fadeStyle}

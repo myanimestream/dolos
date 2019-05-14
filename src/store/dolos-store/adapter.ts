@@ -115,9 +115,7 @@ export class DolosStore extends AreaAdapter {
      */
     public getAnimeSubscriptionInfo$(id$: Observable<Identifier>): ItemObservable<AnimeSubscriptionInfo> {
         return id$.pipe(
-            switchMap(id => this.getAnimeSubscriptions$().pipe(
-                map(subscriptions => subscriptions[id.asString()]),
-            )),
+            switchMap(id => this.getItem$<AnimeSubscriptionInfo>([K_SUBS_A, id.asString()])),
         );
     }
 

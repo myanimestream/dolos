@@ -20,7 +20,7 @@ export class MutItem<T> {
     private _areaName: string;
     private _area: storage.StorageArea;
 
-    private _value$: ItemObservable<T>;
+    private readonly _value$: ItemObservable<T>;
 
     constructor(areaName: string, path: Path);
     constructor(args: { areaName: string, rootKey: string, nsKeys: Path });
@@ -68,7 +68,14 @@ export class MutItem<T> {
     /**
      * Current path which is set by the item setter.
      */
-    public get path(): string[] {
+    public get path(): string {
+        return this.pathParts.join(".");
+    }
+
+    /**
+     * Current path which is set by the item setter.
+     */
+    public get pathParts(): string[] {
         return [this.rootKey, ...this.nsKeys];
     }
 

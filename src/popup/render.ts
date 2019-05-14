@@ -8,14 +8,14 @@
 
 /** @ignore */
 
-import * as React from "react";
+import {createElement} from "react";
 import {HashRouter} from "react-router-dom";
 import {Popup} from ".";
 import dolosTheme from "../theme";
 import {reactRenderWithTheme, wrapSentryLogger} from "../utils";
 
 chrome.tabs.query({active: true, currentWindow: true}, () => {
-    const el = React.createElement(HashRouter, {}, React.createElement(Popup));
+    const el = createElement(HashRouter, {}, createElement(Popup));
 
     reactRenderWithTheme(
         wrapSentryLogger(el),

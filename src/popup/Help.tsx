@@ -12,7 +12,7 @@ import * as React from "react";
 import _ = chrome.i18n.getMessage;
 
 export function Help() {
-    const grobberInfo = usePromiseMemo(() => remoteGrobberClient.getGrobberInfo());
+    const grobberInfo = usePromiseMemo(() => remoteGrobberClient.getGrobberInfo(), [remoteGrobberClient]);
 
     return (
         <>

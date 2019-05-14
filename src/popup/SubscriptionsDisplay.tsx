@@ -42,8 +42,8 @@ export function SubscriptionItem({subscription}: SubscriptionItemProps) {
         chrome.tabs.create({url: subscription.animeURL});
     }
 
-    async function unsubscribeAnime(): Promise<void> {
-        await store.unsubscribeAnime(subscription);
+    function unsubscribeAnime(): Promise<void> {
+        return store.unsubscribeAnime(subscription);
     }
 
     let secondaryText = null;
@@ -108,7 +108,7 @@ export function SubscriptionItem({subscription}: SubscriptionItemProps) {
  * The list also comes with a header.
  */
 export function SubscriptionsDisplay() {
-    const subscriptions = useObservableMemo(() => store.getAnimeSubscriptions$());
+    const subscriptions = useObservableMemo(() => store.getAnimeSubscriptions$(), [store]);
 
     // TODO: center circular progress
     if (subscriptions === undefined)

@@ -12,8 +12,8 @@ import ThemeProvider, {ThemeProviderProps} from "@material-ui/styles/ThemeProvid
 import axios from "axios";
 import {NewEpisodeEvent} from "dolos/background/update-check";
 import {GrobberClient} from "dolos/grobber";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import {createElement, ReactElement, ReactNode} from "react";
+import {render} from "react-dom";
 import {BehaviorSubject, Subject} from "rxjs";
 import {SentryLogger} from "./logging";
 
@@ -152,8 +152,8 @@ export async function retryUntil<T>(
  *
  * @see [[SentryLogger]]
  */
-export function wrapSentryLogger(component: React.ReactNode): React.ReactNode {
-    return React.createElement(SentryLogger, {}, component);
+export function wrapSentryLogger(component: ReactNode): ReactNode {
+    return createElement(SentryLogger, {}, component);
 }
 
 /**
@@ -164,15 +164,15 @@ export function wrapSentryLogger(component: React.ReactNode): React.ReactNode {
  *
  * @see [[reactRenderWithTheme]] to render the result to an element.
  */
-export function wrapWithTheme(component: React.ReactNode, theme: Theme): React.ReactElement<any> {
-    return React.createElement(ThemeProvider, {theme} as ThemeProviderProps<any>, component);
+export function wrapWithTheme(component: ReactNode, theme: Theme): ReactElement<any> {
+    return createElement(ThemeProvider, {theme} as ThemeProviderProps<any>, component);
 }
 
 /**
  * Apply a theme to a React node and render it to renderTarget
  */
-export function reactRenderWithTheme(component: React.ReactNode, theme: Theme, renderTarget: Element) {
-    ReactDOM.render(wrapWithTheme(component, theme), renderTarget);
+export function reactRenderWithTheme(component: ReactNode, theme: Theme, renderTarget: Element) {
+    render(wrapWithTheme(component, theme), renderTarget);
 }
 
 /**

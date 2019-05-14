@@ -6,7 +6,7 @@
 
 import {getThemeFor} from "dolos/theme";
 import {reactRenderWithTheme} from "dolos/utils";
-import * as React from "react";
+import {ReactNode} from "react";
 import {Observable} from "rxjs";
 import {first} from "rxjs/operators";
 import {ElementMemory} from "../memory";
@@ -78,7 +78,12 @@ export default class State<T extends Service> extends ElementMemory {
         this.page = page;
     }
 
-    public renderWithTheme(element: React.ReactNode, tag: keyof HTMLElementTagNameMap | Element = "div"): Element {
+    /**
+     * Render a given react node with the appropriate theme for this service.
+     * @param element - Element to render
+     * @param tag - Tag to render element to.
+     */
+    public renderWithTheme(element: ReactNode, tag: keyof HTMLElementTagNameMap | Element = "div"): Element {
         const el = (tag instanceof Element) ? tag : document.createElement(tag);
 
         reactRenderWithTheme(element, getThemeFor(this.serviceID), el);

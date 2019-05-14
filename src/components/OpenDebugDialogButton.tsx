@@ -8,6 +8,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import BuildOutlinedIcon from "@material-ui/icons/BuildOutlined";
 import {Debug, DebugProps} from "dolos/debug";
+import {useObservableMemo} from "dolos/hooks";
+import {store} from "dolos/store";
 import * as React from "react";
 
 /**
@@ -20,7 +22,9 @@ export function OpenDebugDialogButton(props: DebugProps) {
 
     return (
         <>
-            <IconButton color="secondary" onClick={handleOpen}><BuildOutlinedIcon/></IconButton>
+            <IconButton color="secondary" onClick={handleOpen}>
+                <BuildOutlinedIcon/>
+            </IconButton>
 
             <Dialog
                 open={open}
@@ -40,5 +44,18 @@ export function OpenDebugDialogButton(props: DebugProps) {
                 </DialogActions>
             </Dialog>
         </>
+    );
+}
+
+/**
+ * Same as [[OpenDebugDialogButton]] but only exists if [[Config.debugMode]] is
+ * true.
+ */
+export function SmartOpenDebugDialogButton(props: DebugProps) {
+    const config = useObservableMemo(() => store.getConfig$(), [store]);
+    if (!(config && config.debugMode)) return null;
+
+    return (
+        <div><OpenDebugDialogButton {...props}/></div>
     );
 }

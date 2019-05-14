@@ -3,7 +3,7 @@
  */
 
 import {resolveSnackbarMessage, SnackbarMessage, SnackbarQueue} from "dolos/components";
-import * as React from "react";
+import {createElement} from "react";
 import {Subject} from "rxjs";
 import {Type} from "../utils";
 import {AnimePage, EpisodePage} from "./pages";
@@ -14,9 +14,8 @@ export default abstract class Service {
     public animePageType: Type<AnimePage<this>>;
     public episodePageType: Type<EpisodePage<this>>;
 
-    public state: State<this>;
-
-    public snackbarMessage$: Subject<SnackbarMessage>;
+    public readonly state: State<this>;
+    public readonly snackbarMessage$: Subject<SnackbarMessage>;
 
     protected constructor(serviceID: string, animePage: Type<AnimePage<any>>, episodePage: Type<EpisodePage<any>>) {
         this.state = new State(serviceID);
@@ -53,7 +52,7 @@ export default abstract class Service {
 
     public async buildSnackbarQueue(): Promise<Element> {
         return this.state.renderWithTheme(
-            React.createElement(SnackbarQueue, {
+            createElement(SnackbarQueue, {
                 snackbarMessage$: this.snackbarMessage$,
             }),
         );

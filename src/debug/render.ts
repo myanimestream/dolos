@@ -7,14 +7,14 @@
 
 /** @ignore */
 
-import * as React from "react";
+import {createElement} from "react";
 import {Debug} from ".";
 import dolosTheme from "../theme";
 import {reactRenderWithTheme, wrapSentryLogger} from "../utils";
 
 chrome.tabs.query({active: true, currentWindow: true}, () => {
     reactRenderWithTheme(
-        wrapSentryLogger(React.createElement(Debug)),
+        wrapSentryLogger(createElement(Debug)),
         dolosTheme,
         // @ts-ignore
         document.getElementById("root"),

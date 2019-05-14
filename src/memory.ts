@@ -7,7 +7,7 @@
 
 /** @ignore */
 
-import * as ReactDOM from "react-dom";
+import {unmountComponentAtNode} from "react-dom";
 
 /**
  * Abstract representation of a Namespace.
@@ -238,7 +238,7 @@ export interface HasElementMemory<T extends ElementMemory = any> {
  * its React component if there is any.
  */
 function removeElement(el: Element): void {
-    ReactDOM.unmountComponentAtNode(el);
+    unmountComponentAtNode(el);
     el.remove();
 }
 
@@ -302,15 +302,10 @@ export class ElementMemory extends Memory implements HasElementMemory {
  *
  * The method must not take any arguments (i.e. be a nullary function)
  */
-export function cacheInMemory(name?: string) {
+export function cacheInMemory(name?: string, isSync?: boolean) {
     return (target: object & HasMemory, propertyKey: string, descriptor: PropertyDescriptor) => {
         const keyName: string = name || `${target.constructor.name}-${propertyKey}`;
         const func = descriptor.value;
-
-        // keep track of whether the underlying function returns a promise
-        // so that subsequent calls can return a promise even though
-        // the value can be retrieved synchronously.
-        let returnPromise: boolean;
 
         descriptor.value = function(this: HasMemory) {
             const memory = this.memory;
@@ -320,15 +315,14 @@ export function cacheInMemory(name?: string) {
                 value = memory[keyName];
             } else {
                 value = func.apply(this);
-                returnPromise = !!value.then;
 
                 Promise.resolve(value)
                     .then(val => this.remember(keyName, val))
                     .catch(console.error);
             }
 
-            if (returnPromise) return Promise.resolve(value);
-            else return value;
+            if (isSync) return value;
+            else return Promise.resolve(value);
         };
     };
 }

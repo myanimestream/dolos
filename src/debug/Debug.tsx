@@ -13,7 +13,6 @@ import makeStyles from "@material-ui/styles/makeStyles";
 import Service from "dolos/common/service";
 import {grobberClient as localGrobberClient} from "dolos/grobber";
 import {usePromiseMemo} from "dolos/hooks";
-import {store} from "dolos/store";
 import {getBackgroundWindow} from "dolos/utils";
 import * as React from "react";
 import {MemoryComponent} from "./Memory";
@@ -27,10 +26,11 @@ function StoreTab() {
                 Please be careful when editing values as it directly manipulates
                 the actual values used by Dolos.
 
-                There is no input validation other than the basic type distinction.
+                There is no input validation other than the basic type
+                distinction which can easily be overwritten.
             </Typography>
 
-            <StoreComponent store={store}/>
+            <StoreComponent/>
         </>
     );
 }
@@ -42,7 +42,7 @@ function GrobberClientTab() {
         } catch {
             return undefined;
         }
-    })());
+    })(), []);
 
     let grobberClient;
     if (background)
@@ -56,6 +56,7 @@ function GrobberClientTab() {
                 {"Grobber client cache. "}
                 {`Showing ${!!background ? "background" : "local"} grobber client`}
             </Typography>
+
             <MemoryComponent memory={grobberClient}/>
         </>
     );
@@ -71,15 +72,28 @@ function ServiceTab({service}: DebugProps) {
     if (page) {
         const backgroundPages = Array.from(page.backgroundPages.entries()).map(([key, bPage]) => (
             <div key={key}>
-                <Typography variant="h4" gutterBottom>Background page #{key.toString()}</Typography>
+                <Typography variant="h4" gutterBottom>
+                    Background page #{key.toString()} memory
+                </Typography>
+                <Typography paragraph>
+                    Background pages are loaded by the current main page.
+                </Typography>
+
                 <MemoryComponent memory={bPage}/>
             </div>
         ));
 
         pageComponent = (
             <>
-                <Typography variant="h4" gutterBottom>Service page memory</Typography>
+                <Typography variant="h4" gutterBottom>
+                    Main page memory
+                </Typography>
+                <Typography paragraph>
+                    The main page is the currently active page.
+                </Typography>
+
                 <MemoryComponent memory={page}/>
+
                 {backgroundPages}
             </>
         );
@@ -87,7 +101,14 @@ function ServiceTab({service}: DebugProps) {
 
     return (
         <>
-            <Typography variant="h4" gutterBottom>State memory</Typography>
+            <Typography variant="h4" gutterBottom>
+                Service state memory
+            </Typography>
+            <Typography paragraph>
+                The service coordinates which page to show and
+                can hold data shared between all pages.
+            </Typography>
+
             <MemoryComponent memory={state}/>
 
             {pageComponent}
@@ -131,7 +152,7 @@ export function Debug(props: DebugProps) {
     }
 
     const tabs = [
-        "store",
+        "Store",
         "Grobber Client",
     ];
 

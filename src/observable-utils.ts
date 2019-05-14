@@ -75,6 +75,5 @@ export function resolveObservable<T>(value: ResolvableObservable<T>): Observable
     if (isObservable(value)) return value;
 
     // It's not really deprecated, only for schedulers.
-    // noinspection JSDeprecatedSymbols
     return of(value);
 }

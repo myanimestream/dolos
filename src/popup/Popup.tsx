@@ -357,8 +357,7 @@ export const Popup = withStyles(styles, {withTheme: true})(withRouter(
  * React component link which is only visible when [[Config.debugMode]] is true.
  */
 function DebugLink() {
-    const config = useObservableMemo(() => store.getConfig$());
-
+    const config = useObservableMemo(() => store.getConfig$(), [store]);
     if (!(config && config.debugMode)) return null;
 
     const handleOpenDebug = () => window.open(chrome.runtime.getURL("debug.html"));

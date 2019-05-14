@@ -7,6 +7,7 @@
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import makeStyles from "@material-ui/styles/makeStyles";
 import {AnimePage} from "dolos/common/pages";
+import {SmartOpenDebugDialogButton} from "dolos/components";
 import * as React from "react";
 import {ContinueWatchingButton, SubscriptionToggle} from "./index";
 
@@ -35,6 +36,7 @@ export function AnimeStatusBar({animePage}: AnimeStatusBarProps) {
         <span className={classes.bar}>
             <ContinueWatchingButton animePage={animePage}/>
             <SubscriptionToggle animePage={animePage}/>
+            <SmartOpenDebugDialogButton service={animePage.service}/>
         </span>
     );
 }
