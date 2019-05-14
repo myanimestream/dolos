@@ -131,7 +131,7 @@ jobs:
             - build/
       - run:
           name: Build changelog
-          command: npx ts-node --transpile-only "tools/extract-changelog.ts" auto > "changes.md"
+          command: npm run --silent changelogExtract > "changes.md"
       - store_artifacts:
           path: changes.md
       - run:

@@ -6,7 +6,8 @@
     "build:production": "webpack --config webpack.prod.js",
     "lint": "tslint --project .",
     "watch": "webpack -w --config webpack.dev.js",
-    "docs": "typedoc --options typedoc.json src/"
+    "docs": "typedoc --options typedoc.json src/",
+    "changelogExtract": "ts-node --transpile-only --compiler-options \"{\\\"module\\\": \\\"CommonJS\\\"}\" \"tools/extract-changelog.ts\" auto"
   },
   "author": "siku2",
   "license": "MIT",

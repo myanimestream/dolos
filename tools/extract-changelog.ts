@@ -5,7 +5,6 @@
 
 /** @ignore */
 
-/* tslint:disable */
 import CHANGELOG, {Change} from "../src/changelog";
 
 function formatChanges(changes: Change[]): string {
@@ -32,16 +31,22 @@ function extractVersion(version: string): string {
         return formatChanges(changes);
 }
 
-let versionInput = process.argv[2];
-let out;
-if (versionInput) {
-    if (versionInput === "auto") {
-        const manifest = require("../dist/manifest");
-        versionInput = manifest.version;
-    }
+async function main() {
+    let versionInput = process.argv[2];
+    let out;
+    if (versionInput) {
+        if (versionInput === "auto") {
+            // @ts-ignore
+            const manifest = await import("../dist/manifest");
+            versionInput = manifest.version;
+        }
 
-    out = extractVersion(versionInput);
-} else
-    out = extractChangelog();
+        out = extractVersion(versionInput);
+    } else
+        out = extractChangelog();
 
-console.log(out);
+    console.info(out);
+}
+
+main()
+    .catch(console.error);
