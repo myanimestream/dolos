@@ -125,7 +125,7 @@ const usePercentageInputStyles = makeStyles((theme: Theme) => ({
 function PercentageInput({value, error, onChange, setError}: DynamicInputProps<number>) {
     const classes = usePercentageInputStyles();
 
-    const handleChange = (...args: any[]) => onChange(Number(args[1].toFixed(2)));
+    const handleChange = (_: any, newVal: number) => onChange(Math.round(100 * newVal) / 100);
     const handleTextChange = createJSONChangeHandler(onChange, setError);
 
     return (

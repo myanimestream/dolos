@@ -13,8 +13,9 @@
 
 /** @ignore */
 
-import {DependencyList, useEffect, useMemo, useState} from "react";
-import {BehaviorSubject, Observable, PartialObserver, Subscribable} from "rxjs";
+import {DependencyList, useCallback, useEffect, useMemo, useState} from "react";
+import {BehaviorSubject, Observable, PartialObserver, Subject, Subscribable} from "rxjs";
+import {debounceTime} from "rxjs/operators";
 
 export function usePromise<T>(promise: PromiseLike<T>): T | undefined;
 export function usePromise<T, V>(promise: PromiseLike<T>, defaultValue: V): T | V;
@@ -104,4 +105,42 @@ export function useObservableMemo<T, V>(func: () => Observable<T>, deps: MemoDep
 export function useObservableMemo<T, V>(func: () => Observable<T>, deps: MemoDependencies, defaultValue?: V): T | V {
     const obs$ = useMemo(func, deps);
     return useObservable(obs$, defaultValue) as T | V;
+}
+
+export function useDebouncedState<T>(setter: (v: T) => any,
+                                     dueTime: number): [T | undefined, (v: T) => any];
+export function useDebouncedState<T>(setter: (v: T) => any,
+                                     dueTime: number,
+                                     actualValue: T | (() => T)): [T, (v: T) => any];
+/**
+ * Like React's useState function but the set dispatcher is debounced.
+ * The value, however, always reflects the current, non-debounced, value.
+ *
+ * @param setter - Setter to call to update the actual value.
+ * @param dueTime - Debounce time in milliseconds.
+ * @param actualValue - The current value. When this changes, the returned value
+ * updates to it.
+ */
+export function useDebouncedState<T>(setter: (v: T) => any,
+                                     dueTime: number,
+                                     actualValue?: T | (() => T)): [T | undefined, (v: T) => any] {
+    const [internalValue, setInternalValue] = useState<T | undefined>(actualValue);
+    // update the internal value if the actual value changes
+    useEffect(() => setInternalValue(actualValue), [actualValue]);
+
+    const in$ = useMemo(() => new Subject<T>(), []);
+
+    // listen to the debounced setter
+    useEffect(() => {
+        const sub = in$.pipe(debounceTime(dueTime)).subscribe(setter);
+        return () => sub.unsubscribe();
+    }, [in$, setter, dueTime]);
+
+    // set the internal value and push to the debouncer
+    const externalSetter = useCallback((v: T) => {
+        setInternalValue(v);
+        in$.next(v);
+    }, [in$]);
+
+    return [internalValue, externalSetter];
 }

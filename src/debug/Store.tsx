@@ -8,8 +8,9 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {DynamicInput} from "dolos/debug/DynamicInput";
-import {useObservableMemo} from "dolos/hooks";
-import {MutItem} from "dolos/store";
+import {useDebouncedState, useObservableMemo} from "dolos/hooks";
+import {MutItem, StorageAreaName} from "dolos/store";
+import {createAllMutRootItems$, MutItemArray} from "dolos/store/debug";
 import * as React from "react";
 
 /**
@@ -17,16 +18,20 @@ import * as React from "react";
  */
 export function StoreItem({item}: { item: MutItem<any> }) {
     const value = useObservableMemo(() => item.value$, [item]);
-    const handleChange = (newValue: any) => item.set(newValue);
+    const setValue = React.useCallback((newValue: any) => item.set(newValue), [item]);
+    const [internalValue, handleChange] = useDebouncedState(setValue, 200, value);
 
-    return <DynamicInput value={value} onChange={handleChange}/>;
+    return <DynamicInput value={internalValue} onChange={handleChange}/>;
 }
 
 /**
  * React component for displaying the contents of the extension storage.
  */
 export function StoreComponent() {
-    const items: Array<MutItem<any>> = [];
+    const items: MutItemArray<any> = useObservableMemo(
+        () => createAllMutRootItems$(StorageAreaName.Sync), [],
+        [] as MutItemArray<any>,
+    );
 
     const elementComponents = items.map(item => {
         const path = item.path;

@@ -9,7 +9,7 @@
 import {defer, merge, Observable} from "rxjs";
 import {first, map, shareReplay, takeUntil} from "rxjs/operators";
 import {nsFreeze} from "./namespace";
-import {createRootItemChange$, getStorageArea, storageGet} from "./storage";
+import {getRootItemChange$, getStorageArea, storageGet} from "./storage";
 
 /**
  * Observable which emits the current value of the item.
@@ -34,7 +34,7 @@ function createRootItem$<T>(storageArea: string, key: string): ItemObservable<T>
     const area = getStorageArea(storageArea);
 
     // update stream
-    const change$ = createRootItemChange$(storageArea, key)
+    const change$ = getRootItemChange$(storageArea, key)
         .pipe(map(change => change.newValue));
 
     // get current value from the storage,

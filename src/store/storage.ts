@@ -55,6 +55,21 @@ export function getStorageArea(name: string): storage.StorageArea {
 }
 
 /**
+ * Get all items in the given storage area.
+ *
+ * @param area - Storage area to get items from.
+ */
+export async function storageGetAll(area: storage.StorageArea): Promise<{ [key: string]: any }> {
+    return new Promise((res, rej) => area.get(items => {
+        if (runtime.lastError) {
+            rej(runtime.lastError.message);
+        } else {
+            res(items);
+        }
+    }));
+}
+
+/**
  * Get the current value of an item in the given storage area.
  *
  * This is just a wrapper for the area's `get` method to use promises instead
@@ -64,14 +79,13 @@ export function getStorageArea(name: string): storage.StorageArea {
  * @param key - Key of item to get
  */
 export async function storageGet<T>(area: storage.StorageArea, key: string): Promise<T | undefined> {
-    return new Promise((res, rej) =>
-        area.get(key, items => {
-            if (runtime.lastError) {
-                rej(runtime.lastError.message);
-            } else {
-                res(items[key]);
-            }
-        }));
+    return new Promise((res, rej) => area.get(key, items => {
+        if (runtime.lastError) {
+            rej(runtime.lastError.message);
+        } else {
+            res(items[key]);
+        }
+    }));
 }
 
 /**
@@ -104,14 +118,30 @@ export async function storageSet<T>(area: storage.StorageArea, key: string, valu
 }
 
 /**
+ * Create an observable which emits an object containing the new values for a key.
+ *
+ * @param areaName - Storage area to listen to.
+ */
+export function getRootChange$(areaName: string): Observable<{ [key: string]: any }> {
+    return globalItemChange$.pipe(
+        filter(change => change.areaName === areaName),
+        map(globalChange => Object.entries(globalChange.changes)
+            .reduce((current, [key, change]) => {
+                current[key] = change.newValue;
+                return current;
+            }, {} as { [key: string]: any })),
+    );
+}
+
+/**
  * Observable which emits [[storage.StorageChange]] whenever the given root key changes its value.
  *
  * @param storageArea - Storage area to get key from
  * @param key - Key to get changes for
  */
-export function createRootItemChange$<T>(storageArea: string, key: string): Observable<storage.StorageChange> {
+export function getRootItemChange$<T>(storageArea: string, key: string): Observable<storage.StorageChange> {
     return globalItemChange$.pipe(
-        filter(value => value.areaName === storageArea && key in value.changes),
-        map(value => value.changes[key]),
+        filter(change => change.areaName === storageArea && key in change.changes),
+        map(change => change.changes[key]),
     );
 }

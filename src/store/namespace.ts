@@ -61,7 +61,7 @@ function isObject(obj: any): obj is object {
  *
  * Note that even though it's an object, an array isn't a namespace!
  */
-type Namespace = object;
+export type Namespace = object;
 
 /**
  * Check whether the given value is a [[Namespace]].

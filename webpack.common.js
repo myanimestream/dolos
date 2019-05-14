@@ -76,4 +76,10 @@ module.exports = {
         },
         extensions: [".ts", ".tsx", ".js"],
     },
+    watchOptions: {
+        ignored: [
+            "node_modules",
+            "tools"
+        ],
+    },
 };
