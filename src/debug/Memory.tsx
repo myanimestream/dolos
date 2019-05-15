@@ -50,13 +50,13 @@ function NamespaceComponent({namespace}: { namespace: Namespace }) {
     }
 
     return (
-        <div>
+        <>
             {valueDisplay}
 
             <List>
                 {children}
             </List>
-        </div>
+        </>
     );
 }
 

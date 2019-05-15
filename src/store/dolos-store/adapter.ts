@@ -79,6 +79,13 @@ export class DolosStore extends AreaAdapter {
     }
 
     /**
+     * Update the stored [[StoredAnimeInfo]].
+     */
+    public updateStoredAnimeInfo$(id: Identifier, update: Partial<StoredAnimeInfo>): Promise<void> {
+        return this.updateItem([`${id.serviceID}::anime`, id.languageID, id.mediumID], update);
+    }
+
+    /**
      * Get the stored [[SubscribedAnimes]] object.
      */
     public getAnimeSubscriptions$(): ReadObservable<AnimeSubscriptions> {

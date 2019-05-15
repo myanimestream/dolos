@@ -16,7 +16,7 @@ import {Identifier, ReadObservable, store} from "dolos/store";
 import {wrapSentryLogger} from "dolos/utils";
 import {createElement} from "react";
 import {BehaviorSubject, combineLatest, concat, defer, from, NEVER, Observable, of, Subject, throwError} from "rxjs";
-import {catchError, concatAll, distinctUntilChanged, first, map, pluck, switchMap} from "rxjs/operators";
+import {catchError, concatAll, distinctUntilChanged, first, map, pluck, switchMap, tap} from "rxjs/operators";
 import {EpisodePage} from ".";
 import Service from "../service";
 import ServicePage from "../service-page";
@@ -97,6 +97,14 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
         return this.getStoredAnimeInfo$().pipe(first()).toPromise();
     }
 
+    /**
+     * Update the stored anime info with the given update.
+     */
+    public async updateStoredAnimeInfo(update: Partial<StoredAnimeInfo>): Promise<void> {
+        const id = await this.getID$().pipe(first()).toPromise();
+        await store.updateStoredAnimeInfo$(id, update);
+    }
+
     public getAnimeUID$(forceSearch?: boolean): Observable<string> {
         const searchResultUID$ = combineLatest([this.getSearchQuery$(), this.state.config$]).pipe(
             switchMap(([query, config]) => this.searchAnimeForTitle(query, config)),
@@ -106,6 +114,7 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
                 else
                     return result.item.uid;
             }),
+            tap(uid => this.updateStoredAnimeInfo({uid})),
         );
 
         if (forceSearch)
