@@ -1,6 +1,8 @@
 const webpack = require("webpack");
 const path = require("path");
 const glob = require("glob");
+
+const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 // load the config from the file
@@ -42,20 +44,19 @@ module.exports = {
             {
                 exclude: /node_modules/,
                 test: /\.tsx?$/,
-                use: "ts-loader",
+                use: {
+                    loader: "ts-loader",
+                    options: {
+                        transpileOnly: false,
+                    },
+                },
             },
             {
                 test: /\.scss$/,
                 use: [
-                    {
-                        loader: "style-loader",
-                    },
-                    {
-                        loader: "css-loader",
-                    },
-                    {
-                        loader: "sass-loader",
-                    },
+                    {loader: "style-loader"},
+                    {loader: "css-loader"},
+                    {loader: "sass-loader"},
                 ],
             },
         ],
@@ -64,7 +65,14 @@ module.exports = {
         filename: "[name].js",
         path: path.join(__dirname, "dist/js"),
     },
+    optimization: {
+        splitChunks: false,
+        removeAvailableModules: false,
+        removeEmptyChunks: false,
+        mergeDuplicateChunks: false,
+    },
     plugins: [
+        new HardSourceWebpackPlugin(),
         new webpack.DefinePlugin({
             WEBPACK_SECRETS: JSON.stringify(secrets),
         }),

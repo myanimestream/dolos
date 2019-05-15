@@ -23,6 +23,7 @@
     "@types/react-select": "^2.0.17",
     "css-loader": "^2.1.1",
     "glob": "^7.1.4",
+    "hard-source-webpack-plugin": "^0.13.1",
     "jest": "^24.8.0",
     "jest-junit": "^6.4.0",
     "jest-webextension-mock": "^3.5.0",
