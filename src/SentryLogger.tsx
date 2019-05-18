@@ -11,9 +11,9 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import withTheme, {WithTheme} from "@material-ui/core/styles/withTheme";
 import Typography from "@material-ui/core/Typography";
-import * as Sentry from "@sentry/browser";
 import * as React from "react";
 import * as CopyToClipboard from "react-copy-to-clipboard";
+import {captureException, showReportDialog, withScope} from "./logging";
 import _ = chrome.i18n.getMessage;
 
 type SentryLoggerProps = WithTheme;
@@ -32,7 +32,7 @@ interface SentryLoggerState {
  *
  * @see [[wrapSentryLogger]]
  */
-class SentryLogger extends React.Component<SentryLoggerProps, SentryLoggerState> {
+export class SentryLoggerNoTheme extends React.Component<SentryLoggerProps, SentryLoggerState> {
     constructor(props: SentryLoggerProps) {
         super(props);
         this.state = {};
@@ -41,13 +41,10 @@ class SentryLogger extends React.Component<SentryLoggerProps, SentryLoggerState>
     public componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
         this.setState({error});
 
-        Sentry.withScope(scope => {
-            Object.keys(errorInfo).forEach(key => {
-                // @ts-ignore
-                scope.setExtra(key, errorInfo[key]);
-            });
+        withScope(scope => {
+            scope.setExtras(errorInfo);
 
-            const eventId = Sentry.captureException(error);
+            const eventId = captureException(error);
             this.setState({eventId});
         });
     }
@@ -65,8 +62,6 @@ class SentryLogger extends React.Component<SentryLoggerProps, SentryLoggerState>
                         <span style={{color: theme.palette.error.main}}> {eventId}</span>
                     </Typography>
                 );
-
-            const showReportDialog = () => Sentry.showReportDialog();
 
             return (
                 <Card>
@@ -90,8 +85,21 @@ class SentryLogger extends React.Component<SentryLoggerProps, SentryLoggerState>
                     </CardActions>
                 </Card>
             );
-        } else return this.props.children;
+        } else {
+            return this.props.children;
+        }
     }
 }
 
-export default withTheme(SentryLogger);
+// tslint:disable-next-line:variable-name
+export const SentryLogger = withTheme(SentryLoggerNoTheme);
+
+/**
+ * Wrap a React node with a Sentry logger which catches errors and displays a message
+ * to the user.
+ *
+ * @see [[SentryLogger]]
+ */
+export function wrapSentryLogger(component: React.ReactNode): React.ReactNode {
+    return <SentryLogger>{component}</SentryLogger>;
+}

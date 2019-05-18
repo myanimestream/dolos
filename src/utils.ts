@@ -15,7 +15,6 @@ import {GrobberClient} from "dolos/grobber";
 import {createElement, ReactElement, ReactNode} from "react";
 import {render} from "react-dom";
 import {BehaviorSubject, Subject} from "rxjs";
-import {SentryLogger} from "./logging";
 
 /**
  * BackgroundWindow interface with all of its attributes.
@@ -144,16 +143,6 @@ export async function retryUntil<T>(
 
     running = false;
     return result;
-}
-
-/**
- * Wrap a React node with a Sentry logger which catches errors and displays a message
- * to the user.
- *
- * @see [[SentryLogger]]
- */
-export function wrapSentryLogger(component: ReactNode): ReactNode {
-    return createElement(SentryLogger, {}, component);
 }
 
 /**

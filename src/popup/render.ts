@@ -8,11 +8,12 @@
 
 /** @ignore */
 
+import {wrapSentryLogger} from "dolos/SentryLogger";
 import {createElement} from "react";
 import {HashRouter} from "react-router-dom";
 import {Popup} from ".";
 import dolosTheme from "../theme";
-import {reactRenderWithTheme, wrapSentryLogger} from "../utils";
+import {reactRenderWithTheme} from "../utils";
 
 chrome.tabs.query({active: true, currentWindow: true}, () => {
     const el = createElement(HashRouter, {}, createElement(Popup));
@@ -20,7 +21,6 @@ chrome.tabs.query({active: true, currentWindow: true}, () => {
     reactRenderWithTheme(
         wrapSentryLogger(el),
         dolosTheme,
-        // @ts-ignore
-        document.getElementById("root"),
+        document.getElementById("root")!,
     );
 });

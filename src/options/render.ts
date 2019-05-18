@@ -8,16 +8,16 @@
 
 /** @ignore */
 
+import {wrapSentryLogger} from "dolos/SentryLogger";
 import {createElement} from "react";
 import {Settings} from ".";
 import dolosTheme from "../theme";
-import {reactRenderWithTheme, wrapSentryLogger} from "../utils";
+import {reactRenderWithTheme} from "../utils";
 
 chrome.tabs.query({active: true, currentWindow: true}, () => {
     reactRenderWithTheme(
         wrapSentryLogger(createElement(Settings)),
         dolosTheme,
-        // @ts-ignore
-        document.getElementById("root"),
+        document.getElementById("root")!,
     );
 });

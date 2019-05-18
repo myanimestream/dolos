@@ -2,12 +2,14 @@
  * @module debug
  */
 
-import {ListItem} from "@material-ui/core";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 import {Theme} from "@material-ui/core/styles/createMuiTheme";
 import Switch from "@material-ui/core/Switch";
 import Table from "@material-ui/core/Table";
@@ -15,65 +17,96 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Slider from "@material-ui/lab/Slider";
 import makeStyles from "@material-ui/styles/makeStyles";
 import * as React from "react";
 
-type Type<T> = string;
+type TypeID =
+    | "array"
+    | "boolean"
+    | "number"
+    | "object"
+    | "string"
+    | "undefined"
+    | "unknown";
 
 /**
  * Get the type of the given value.
  */
-function getType<T>(value: T): Type<T> {
+function getType(value: any): TypeID {
+    if (value === undefined || value === null) return "undefined";
     if (typeof value === "boolean") return "boolean";
     if (typeof value === "string") return "string";
-    if (isNumeric(value)) return "number";
     if (isArray(value)) return "array";
+    if (isNumeric(value)) return "number";
     if (isObject(value)) return "object";
 
     return "unknown";
 }
 
+const allTypeIDs: TypeID[] = [
+    "array",
+    "boolean",
+    "number",
+    "object",
+    "string",
+    "undefined",
+];
+
 /**
  * Create and return the empty value for the given type.
  */
-function createEmpty<T>(type: Type<T>): T {
-    if (type === "boolean") return false as any;
-    if (type === "string") return "" as any;
-    if (type === "number") return 0 as any;
-    if (type === "array") return [] as any;
+function createEmpty(type: TypeID): any {
+    switch (type) {
+        case "array":
+            return [];
+        case "boolean":
+            return false;
+        case "number":
+            return 0;
+        case "string":
+            return "";
+        case "undefined":
+            return undefined;
 
-    return {} as any;
+        default:
+            return {};
+    }
 }
 
-type TransformerKey<T, V> = [Type<T>, Type<V>];
 type Transformer<T, V> = (v: T) => V | undefined;
 
-const typeTransformers = new Map<TransformerKey<any, any>, Transformer<any, any>>([
-    [["boolean", "string"], (v: boolean) => String(v)],
-    [["boolean", "number"], (v: boolean) => Number(v)],
+const typeTransformers = new Map<string, Transformer<any, any>>([
+    ["array>boolean", (v: any[]) => v.length !== 0],
+    ["array>number", (v: any[]) => v.length],
+    ["array>object", (v: any[]) => ({...v})],
+    ["array>string", (v: any[]) => v.join(", ")],
 
-    [["string", "boolean"], (v: string) => v.toLowerCase() === "true"],
-    [["string", "number"], (v: string) => Number(v)],
-    [["string", "array"], (v: string) => v.split(",").map(a => a.trim())],
-    [["string", "object"], (v: string) => {
+    ["boolean>number", (v: boolean) => Number(v)],
+    ["boolean>string", (v: boolean) => String(v)],
+
+    ["number>array", (v: number) => Array(v).fill(undefined)],
+    ["number>boolean", (v: number) => v !== 0],
+    ["number>string", (v: number) => String(v)],
+
+    ["object>array", (v: object) => Object.values(v)],
+    ["object>boolean", (v: object) => Object.keys(v).length !== 0],
+    ["object>string", (v: object) => JSON.stringify(v)],
+
+    ["string>array", (v: string) => v.split(",").map(a => a.trim())],
+    ["string>boolean", (v: string) => ["true", "1"].indexOf(v.toLowerCase()) > -1],
+    ["string>number", (v: string) => Number(v)],
+    ["string>object", (v: string) => {
         const maybeObj = JSON.parse(v);
         return isObject(maybeObj) ? maybeObj : undefined;
     }],
-
-    [["number", "boolean"], (v: number) => v !== 0],
-    [["number", "string"], (v: number) => String(v)],
-    [["number", "array"], (v: number) => Array(v).fill(undefined)],
-
-    [["array", "boolean"], (v: any[]) => v.length !== 0],
-    [["array", "string"], (v: any[]) => v.join(", ")],
-    [["array", "number"], (v: any[]) => v.length],
-    [["array", "object"], (v: any[]) => ({...v})],
-
-    [["object", "boolean"], (v: object) => Object.keys(v).length !== 0],
-    [["object", "string"], (v: object) => JSON.stringify(v)],
 ]);
+
+function hasTransformer(aType: TypeID, bType: TypeID): boolean {
+    return typeTransformers.has(`${aType}>${bType}`);
+}
 
 /**
  * Convert the given value to the given type.
@@ -81,11 +114,14 @@ const typeTransformers = new Map<TransformerKey<any, any>, Transformer<any, any>
  * Uses a transformer if possible, otherwise returns a new empty value of
  * the type created using [[createEmpty]].
  */
-function transformValue<T, V>(value: T, toType: Type<V>): V {
+function transformValue(value: any, toType: TypeID): any {
     const valueType = getType(value);
-    const transformer = typeTransformers.get([valueType, toType]);
 
-    let transformedValue: V | undefined;
+    if (valueType === toType) return value;
+
+    const transformer = typeTransformers.get(`${valueType}>${toType}`);
+
+    let transformedValue: any | undefined;
     if (transformer) {
         try {
             transformedValue = transformer(value);
@@ -135,9 +171,42 @@ function isArray(value: any): value is any[] {
     return Array.isArray(value);
 }
 
+/**
+ * Get the set of allowed types by taking the intersection of whitelist and blacklist.
+ * If whitelist isn't specified, all types are used.
+ */
+function getAllowedTypes(whitelist?: Iterable<TypeID>, blacklist?: Iterable<TypeID>): Set<TypeID> {
+    let allowed: Set<TypeID>;
+
+    if (whitelist === undefined)
+        allowed = new Set(allTypeIDs);
+    else
+        allowed = new Set(whitelist);
+
+    if (blacklist !== undefined) {
+        for (const type of blacklist)
+            allowed.delete(type);
+    }
+
+    return allowed;
+}
+
+function conformValueToType(value: any, allowedTypes: Set<TypeID>): [any, TypeID] {
+    const valueType = getType(value);
+    if (allowedTypes.has(valueType)) return [value as any, valueType];
+
+    let allowedType: TypeID | undefined;
+    for (allowedType of allowedTypes.values()) {
+        if (hasTransformer(valueType, allowedType))
+            return transformValue(value, allowedType);
+    }
+
+    return createEmpty(allowedType || "unknown");
+}
+
 export interface DynamicInputProps<T> extends TypedInputProps<T> {
-    whitelistTypes?: Iterable<Type<any>>;
-    blacklistTypes?: Iterable<Type<any>>;
+    whitelistTypes?: Iterable<TypeID>;
+    blacklistTypes?: Iterable<TypeID>;
 }
 
 /**
@@ -146,24 +215,56 @@ export interface DynamicInputProps<T> extends TypedInputProps<T> {
 export function DynamicInput<T>(props: DynamicInputProps<T>) {
     const [error, setError] = React.useState(false);
 
-    const value = props.value;
+    const {whitelistTypes, blacklistTypes} = props;
+    const allowedTypes = React.useMemo(
+        () => getAllowedTypes(whitelistTypes, blacklistTypes),
+        [whitelistTypes, blacklistTypes],
+    );
 
-    let type: React.ComponentType<TypedInputProps<any>>;
-    if (typeof value === "boolean")
-        type = BooleanInput;
-    else if (typeof value === "string")
-        type = StringInput;
-    else if (isNumeric(value))
-        if (value >= 0 && value <= 1) type = PercentageInput;
-        else type = JSONInput;
-    else if (isArray(value))
-        type = ArrayInput;
-    else if (isObject(value))
-        type = ObjectInput;
-    else
-        type = JSONInput;
+    const [conformedValue, conformedType] = React.useMemo(
+        () => conformValueToType(props.value, allowedTypes),
+        [props.value, allowedTypes],
+    );
 
-    return React.createElement(type, {error, setError, ...props});
+    const changeType = React.useCallback((newType: TypeID) => {
+        const newValue = transformValue(props.value, newType);
+        props.onChange(newValue);
+    }, [props.value, props.onChange]);
+
+    const type = typedInputComponentMap[conformedType] || JSONInput;
+
+    const valueContainer = React.createElement(type, {
+        onChange: props.onChange,
+        value: conformedValue,
+
+        error,
+        setError,
+    });
+
+    return (
+        <>
+            <InputTypeSelect type={conformedType} changeType={changeType}/>
+            {valueContainer}
+        </>
+    );
+}
+
+function InputTypeSelect({type, changeType}: { type: TypeID, changeType: (newType: TypeID) => void }) {
+    const handleChangeType = (e: React.ChangeEvent<{ value: unknown }>) => changeType(e.target.value as TypeID);
+
+    const choices = React.useMemo(() => allTypeIDs.map(typeID => (
+        <MenuItem key={typeID} value={typeID}>{typeID}</MenuItem>
+    )), []);
+
+    return (
+        <Select
+            variant="filled"
+            value={type}
+            onChange={handleChangeType}
+        >
+            {choices}
+        </Select>
+    );
 }
 
 export interface TypedInputProps<T> {
@@ -172,6 +273,17 @@ export interface TypedInputProps<T> {
     onChange: (value: T) => void;
     setError?: (hasError: boolean) => void;
 }
+
+export type TypedInputComponent<T> = React.ComponentType<TypedInputProps<T>>;
+
+const typedInputComponentMap: { [key: string]: TypedInputComponent<any> } = {
+    array: ArrayInput,
+    boolean: BooleanInput,
+    number: NumberInput,
+    object: ObjectInput,
+    string: StringInput,
+    undefined: UndefinedInput,
+};
 
 function createJSONChangeHandler<T>(onChange: TypedInputProps<T>["onChange"],
                                     setError: TypedInputProps<T>["setError"]):
@@ -206,11 +318,16 @@ function BooleanInput({value, onChange}: TypedInputProps<boolean>) {
 function StringInput({value, error, onChange}: TypedInputProps<string>) {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value);
 
+    const multiline = React.useMemo(() => {
+        return value.length >= 60 || value.indexOf("\n") > -1;
+    }, [value]);
+
     return (
         <TextField
             value={value}
             onChange={handleChange}
             error={error}
+            multiline={multiline}
             fullWidth
         />
     );
@@ -228,10 +345,10 @@ const usePercentageInputStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-function PercentageInput({value, error, onChange, setError}: TypedInputProps<number>) {
+function NumberInput({value, error, onChange, setError}: TypedInputProps<number>) {
     const classes = usePercentageInputStyles();
 
-    const handleChange = (_: any, newVal: number) => onChange(Math.round(100 * newVal) / 100);
+    const handleSliderChange = (_: any, newVal: number) => onChange(Math.round(100 * newVal) / 100);
     const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = Number(e.target.value);
         if (!isNaN(newValue))
@@ -240,18 +357,31 @@ function PercentageInput({value, error, onChange, setError}: TypedInputProps<num
             setError(true);
     };
 
-    return (
-        <div className={classes.slider}>
-            <Slider value={value} min={0} max={1} step={0.01} onChange={handleChange}/>
+    if (value > 0 && value < 1) {
+        // let's just go ahead and assume this is a percentage
+        return (
+            <div className={classes.slider}>
+                <Slider value={value} min={0} max={1} step={0.01} onChange={handleSliderChange}/>
+                <TextField
+                    type="number"
+                    margin="normal"
+                    className={classes.textFieldRight}
+                    value={value.toString()}
+                    onChange={handleTextChange}
+                    error={error}
+                />
+            </div>
+        );
+    } else {
+        return (
             <TextField
-                className={classes.textFieldRight}
+                type="number"
                 value={value.toString()}
                 onChange={handleTextChange}
-                margin="normal"
                 error={error}
             />
-        </div>
-    );
+        );
+    }
 }
 
 /** @ignore */
@@ -427,9 +557,18 @@ function JSONInput({value, error, onChange, setError}: TypedInputProps<any>) {
 
     return (
         <TextField
+            variant="filled"
             value={rawJSON}
             onChange={handleTextChange}
             error={error}
+            fullWidth
+            multiline
         />
+    );
+}
+
+function UndefinedInput({value}: TypedInputProps<undefined | null>) {
+    return (
+        <Typography color="textPrimary">{value}</Typography>
     );
 }

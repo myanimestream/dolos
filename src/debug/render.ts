@@ -9,14 +9,14 @@
 
 import {createElement} from "react";
 import {Debug} from ".";
+import {wrapSentryLogger} from "../SentryLogger";
 import dolosTheme from "../theme";
-import {reactRenderWithTheme, wrapSentryLogger} from "../utils";
+import {reactRenderWithTheme} from "../utils";
 
 chrome.tabs.query({active: true, currentWindow: true}, () => {
     reactRenderWithTheme(
         wrapSentryLogger(createElement(Debug)),
         dolosTheme,
-        // @ts-ignore
-        document.getElementById("root"),
+        document.getElementById("root")!,
     );
 });
