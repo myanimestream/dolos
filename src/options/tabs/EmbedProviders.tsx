@@ -168,7 +168,7 @@ function EmbedProviderOrder() {
     async function handleProviderAdd(provider: ValueType<{ label: string; value: string }>): Promise<void> {
         if (!provider || Array.isArray(provider)) return;
 
-        const providerID = provider.value;
+        const providerID = (provider as { value: string }).value;
         if (order.indexOf(providerID) > -1) return;
 
         return await setOrder([...order, providerID]);

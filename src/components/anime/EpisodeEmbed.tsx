@@ -27,6 +27,7 @@ import {AnimeInfo} from "dolos/grobber";
 import "plyr/src/sass/plyr.scss";
 import * as React from "react";
 import * as rxjs from "rxjs";
+import {first} from "rxjs/operators";
 import {EmbedPlayer, Player, PlayerProps, PlayerSource, Toggle, WithRatio} from "..";
 import _ = chrome.i18n.getMessage;
 
@@ -125,7 +126,8 @@ export const EpisodeEmbed = withStyles(styles)(
             this.episodeBookmarkedSubscription = episodePage.episodeBookmarked$
                 .subscribe(episodeBookmarked => this.setState({bookmarked: episodeBookmarked}));
 
-            const config = await episodePage.state.config;
+            // FIXME this is cursed
+            const config = await episodePage.state.config$.pipe(first()).toPromise();
             this.setState({debugMode: config.debugMode});
 
             const canSetProgress = await episodePage.animePage.canSetEpisodesWatched();

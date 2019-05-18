@@ -494,7 +494,7 @@ function ObjectInputRow({propKey, propValue, onKeyChange, onValueChange}: Object
                     elevation={0}
                     square
                     component={TableCell}
-                    colSpan={2}
+                    {...{colSpan: 2}}
                 >
                     <ExpansionPanelSummary className={classes.expansionPanelSummary} expandIcon={<ExpandMoreIcon/>}>
                         <StringInput value={propKey} onChange={handlePropKeyChange}/>

@@ -10,7 +10,7 @@ import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
 import makeStyles from "@material-ui/styles/makeStyles";
-import Service from "dolos/common/service";
+import {Service} from "dolos/common";
 import {grobberClient as localGrobberClient} from "dolos/grobber";
 import {usePromiseMemo} from "dolos/hooks";
 import {getBackgroundWindow} from "dolos/utils";
@@ -70,7 +70,7 @@ function ServiceTab({service}: DebugProps) {
 
     let pageComponent;
     if (page) {
-        const backgroundPages = Array.from(page.backgroundPages.entries()).map(([key, bPage]) => (
+        const backgroundPages = Array.from(page.backgroundPages.entries(), ([key, bPage]) => (
             <div key={key}>
                 <Typography variant="h4" gutterBottom>
                     Background page #{key.toString()} memory

@@ -109,11 +109,11 @@ export const ChangelogDisplay = withStyles(styles)(
                 }
             }
 
-            const renderedCurrentChangelog = Array.from(currentChangelog.entries())
-                .map(([version, changes]) => this.renderVersionPanel(version, changes));
+            const renderedCurrentChangelog = Array.from(currentChangelog.entries(),
+                ([version, changes]) => this.renderVersionPanel(version, changes));
 
-            const renderedOldChangelog = Array.from(oldChangelog.entries())
-                .map(([version, changes]) => this.renderVersionPanel(version, changes));
+            const renderedOldChangelog = Array.from(oldChangelog.entries(),
+                ([version, changes]) => this.renderVersionPanel(version, changes));
 
             return (
                 <>
