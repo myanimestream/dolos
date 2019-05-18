@@ -137,7 +137,7 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
                 switchMap(searchQuery => remoteGrobberClient.searchAnime(searchQuery)),
                 withLatestFrom(state.config$),
                 map(([searchResults, config]) => {
-                    if (!searchResults) return;
+                    if (!searchResults) return undefined;
 
                     const resultUIDs = new Set();
                     let consideration = searchResults

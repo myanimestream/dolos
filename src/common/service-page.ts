@@ -134,5 +134,6 @@ export abstract class ServicePage<T extends Service> extends ElementMemory {
     protected abstract async _load(): Promise<void>;
 
     protected async _unload(): Promise<void> {
+        return;
     }
 }
