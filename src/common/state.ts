@@ -8,23 +8,20 @@ import {getThemeFor} from "dolos/theme";
 import {reactRenderWithTheme} from "dolos/utils";
 import {ReactNode} from "react";
 import {Observable} from "rxjs";
-import {first} from "rxjs/operators";
 import {ElementMemory} from "../memory";
 import {Config} from "../models";
 import {Identifier, ReadObservable, store} from "../store";
-import Service from "./service";
-import ServicePage from "./service-page";
+import {Service} from "./service";
+import {ServicePage} from "./service-page";
 
 /**
  * State handler for services.
  */
-export default class State<T extends Service> extends ElementMemory {
+export class State<T extends Service> extends ElementMemory {
     public readonly serviceID: string;
     public readonly config$: ReadObservable<Config>;
 
     public page?: ServicePage<T>;
-
-    private _config?: Readonly<Config>;
 
     constructor(serviceID: string) {
         super();
@@ -33,30 +30,31 @@ export default class State<T extends Service> extends ElementMemory {
         this.config$ = store.getConfig$();
     }
 
-    get config(): Promise<Config> {
-        if (this._config !== undefined)
-            return Promise.resolve(this._config);
-
-        this.config$.subscribe(config => this._config = config);
-        return this.config$.pipe(first()).toPromise();
-    }
-
     /**
      * Reset state and reload current service page.
      */
     public async reload() {
         this.resetState();
         const page = this.page;
-        if (page) {
-            await page.reload();
-        }
+        if (page) await page.reload();
     }
 
+    /**
+     * Reset the state.
+     *
+     * This resets the state memory and removes all injected elements.
+     */
     public resetState() {
         this.removeInjected();
         this.resetMemory();
     }
 
+    /**
+     * Load a page.
+     *
+     * @param page - Page to load. If no page is given, the current one
+     * is unloaded.
+     */
     public async loadPage(page?: ServicePage<T>) {
         if (this.page) {
             try {
@@ -80,6 +78,7 @@ export default class State<T extends Service> extends ElementMemory {
 
     /**
      * Render a given react node with the appropriate theme for this service.
+     *
      * @param element - Element to render
      * @param tag - Tag to render element to.
      */
@@ -94,26 +93,29 @@ export default class State<T extends Service> extends ElementMemory {
     /**
      * Get an observable for an identifier.
      */
-    public getID$(mediumID$: Observable<string>): Observable<Identifier> {
+    public getAnimeID$(mediumID$: Observable<string>): Observable<Identifier> {
         return store.getID$(this.serviceID, mediumID$);
     }
 }
 
-export interface HasState<T extends Service = any> {
+/**
+ * Object that has access to a state.
+ */
+export interface HasState<T extends Service> {
     state: State<T>;
 }
 
 /**
- * Decorator which caches the result of a method in the state cache so that it's globally available.
+ * Decorator which caches the result of a method in the state cache so that
+ * it's globally available.
  * @see [[cacheInMemory]]
  */
-export function cacheInStateMemory(name?: string) {
-    return (target: object & HasState, propertyKey: string, descriptor: PropertyDescriptor) => {
+export function cacheInStateMemory(name?: string, isSync?: boolean) {
+    return (target: object & HasState<any>, propertyKey: string, descriptor: PropertyDescriptor) => {
         const keyName = name || `${target.constructor.name}-${propertyKey}`;
         const func = descriptor.value;
-        let returnPromise: boolean;
 
-        descriptor.value = function(this: HasState) {
+        descriptor.value = function(this: HasState<any>) {
             const memory = this.state.memory;
             if (memory === undefined)
                 throw new Error("No memory found");
@@ -123,15 +125,14 @@ export function cacheInStateMemory(name?: string) {
                 value = memory[keyName];
             } else {
                 value = func.apply(this);
-                returnPromise = !!value.then;
 
                 Promise.resolve(value)
                     .then(val => this.state.remember(keyName, val))
                     .catch(console.error);
             }
 
-            if (returnPromise) return Promise.resolve(value);
-            else return value;
+            if (isSync) return value;
+            else return Promise.resolve(value);
         };
     };
 }

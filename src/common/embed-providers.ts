@@ -14,6 +14,12 @@ export interface EmbedProvider {
     name: string;
     icon: string;
 
+    /**
+     * Whether the embed provider information was generated.
+     *
+     * This is false for all known embed providers.
+     * @see [[embedProviders]]
+     */
     external: boolean;
 }
 
@@ -43,17 +49,46 @@ export function createEmbedProvider(hostname: string, info?: Partial<EmbedProvid
     };
 }
 
+/**
+ * Clean the given hostname.
+ *
+ * - Removes "www."
+ * - Converts the hostname to lowercase
+ *
+ * @param hostname - Hostname to clean.
+ */
 function cleanHostname(hostname: string): string {
     return hostname
         .replace(wwwMatcher, "")
         .toLowerCase();
 }
 
+/**
+ * Get the domain of the hostname.
+ * The domain is the hostname without any sub-domain or top-level domain.
+ *
+ * @param hostname - Hostname to get domain from
+ *
+ * @example
+ * ```ts
+ *
+ * getDomain("www.google.com") // google
+ * ```
+ */
 function getDomain(hostname: string): string {
     return cleanHostname(hostname)
         .replace(tldMatcher, "");
 }
 
+/**
+ * Get the [[EmbedProvider]] information for the given hostname.
+ *
+ * Selects the first provider whose [[EmbedProvider.match]] matches the given
+ * hostname or the domain extracted using [[getDomain]].
+ * The hostname is cleaned using [[cleanHostname]].
+ *
+ * @param hostname - Hostname to get info for.
+ */
 function getEmbedProviderFromHostname(hostname: string): EmbedProvider | undefined {
     const domain = getDomain(hostname);
     hostname = cleanHostname(hostname);

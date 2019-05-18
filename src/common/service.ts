@@ -7,10 +7,13 @@ import {createElement} from "react";
 import {Subject} from "rxjs";
 import {Type} from "../utils";
 import {AnimePage, EpisodePage} from "./pages";
-import ServicePage from "./service-page";
-import State from "./state";
+import {ServicePage} from "./service-page";
+import {State} from "./state";
 
-export default abstract class Service {
+/**
+ * Service acts as a router and a state manager for a service.
+ */
+export abstract class Service {
     public animePageType: Type<AnimePage<this>>;
     public episodePageType: Type<EpisodePage<this>>;
 
@@ -26,8 +29,19 @@ export default abstract class Service {
         this.episodePageType = episodePage;
     }
 
+    /**
+     * Route the given url.
+     *
+     * @param url - URL to route.
+     */
     public abstract async route(url: URL): Promise<void>;
 
+    /**
+     * Load the service.
+     *
+     * @param noRoute - Whether or not to immediately call route with the
+     * current url.
+     */
     public async load(noRoute?: boolean) {
         const snackbar = await this.buildSnackbarQueue();
 
@@ -39,7 +53,10 @@ export default abstract class Service {
         if (!noRoute) await this.route(new URL(location.href));
     }
 
-    // noinspection JSMethodCanBeStatic
+    /**
+     * Insert a meta tag to the document head which
+     * specifies that the referrer shouldn't be sent.
+     */
     public async insertNoReferrerPolicy(): Promise<void> {
         const temp = document.createElement("template");
         temp.innerHTML = '<meta name="referrer" content="never">';
@@ -50,6 +67,10 @@ export default abstract class Service {
         this.state.injected(node);
     }
 
+    /**
+     * Build a snackbar queue which displays the messages
+     * from [[snackbarMessage$]].
+     */
     public async buildSnackbarQueue(): Promise<Element> {
         return this.state.renderWithTheme(
             createElement(SnackbarQueue, {
@@ -58,12 +79,25 @@ export default abstract class Service {
         );
     }
 
-    // noinspection JSMethodCanBeStatic
+    /**
+     * Insert a snackbar queue to the document body.
+     *
+     * @param snackbarQueue - Snackbar queue to inject.
+     *
+     * @see [[buildSnackbarQueue]] to build the snackbar queue element.
+     */
     public async insertSnackbarQueue(snackbarQueue: Element): Promise<void> {
         document.body.appendChild(snackbarQueue);
+        this.state.injected(snackbarQueue);
     }
 
-    public buildServicePage<T extends ServicePage<any>>(cls: Type<T>, memory?: { [key: string]: any }): T {
+    /**
+     * Build a service page of the given constructor.
+     *
+     * @param cls - Service page type to build.
+     * @param memory - Memory to pass to the built service page.
+     */
+    public buildServicePage<T extends ServicePage<this>>(cls: Type<T>, memory?: { [key: string]: any }): T {
         const page = new cls(this);
         if (memory) {
             for (const [key, value] of Object.entries(memory))
@@ -93,10 +127,20 @@ export default abstract class Service {
         this.showSnackbar(resolveSnackbarMessage(message, "info"));
     }
 
+    /**
+     * Show the anime page.
+     *
+     * @param memory - Memory to apply to the page.
+     */
     public async showAnimePage(memory?: { [key: string]: any }) {
         await this.state.loadPage(this.buildServicePage(this.animePageType, memory));
     }
 
+    /**
+     * Show the episode page.
+     *
+     * @param memory - Memory to apply to the page.
+     */
     public async showEpisodePage(memory?: { [key: string]: any }) {
         await this.state.loadPage(this.buildServicePage(this.episodePageType, memory));
     }

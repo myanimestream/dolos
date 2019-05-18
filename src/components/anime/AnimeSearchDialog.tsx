@@ -22,7 +22,7 @@ import {AnimePage} from "dolos/common/pages";
 import {GrobberMedium, remoteGrobberClient} from "dolos/grobber";
 import {useSubscription} from "dolos/hooks";
 import * as React from "react";
-import {EMPTY, Observable, of, Subject, SubscriptionLike} from "rxjs";
+import {defer, EMPTY, Observable, of, Subject, SubscriptionLike} from "rxjs";
 import {debounceTime, map, switchMap, tap, withLatestFrom} from "rxjs/operators";
 import {AnimeSearchSelection} from "./index";
 import _ = chrome.i18n.getMessage;
@@ -79,8 +79,8 @@ const styles = (theme: Theme) => createStyles({
  * Required [[AnimePage]] properties for [[AnimeSearchDialog]].
  */
 export type AnimeSearchDialogAnimePage = Pick<AnimePage<Service>,
-    | "getAnimeUID$"
-    | "getSearchQuery$"
+    | "getUID$"
+    | "getAnimeSearchQuery"
     | "state">;
 
 export interface AnimeSearchDialogProps extends WithStyles<typeof styles>, WithMobileDialog {
@@ -163,9 +163,9 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
             this.subscriptions.push(
                 searchQuerySub,
                 // TODO don't overwrite current anime uid if the user already changed it
-                animePage.getAnimeUID$().subscribe(currentAnimeUID => this.setState({currentAnimeUID})),
+                animePage.getUID$().subscribe(currentAnimeUID => this.setState({currentAnimeUID})),
                 // TODO don't overwrite if the user changed the search query!
-                animePage.getSearchQuery$().pipe(
+                defer(() => animePage.getAnimeSearchQuery()).pipe(
                     switchMap(searchQuery => {
                         if (!searchQuery) {
                             this.setState({loading: false});
@@ -174,7 +174,7 @@ export const AnimeSearchDialog = withStyles(styles)(withMobileDialog<AnimeSearch
 
                         return of(searchQuery);
                     }),
-                ).subscribe(this.searchQuery$),
+                ).subscribe(query => this.searchQuery$.next(query)),
                 this.debouncedSearchQuery$.pipe(debounceTime(200))
                     .subscribe(this.searchQuery$),
             );
