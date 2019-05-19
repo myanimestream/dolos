@@ -8,8 +8,6 @@
 export interface Secrets {
     sentryDSN?: string;
     sentryEnvironment?: string;
-    keenProjectID?: string;
-    keenWriteKey?: string;
 }
 
 let secrets: Secrets;
