@@ -2,6 +2,7 @@
  * @module common
  */
 
+import AsyncLock from "dolos/lock";
 import {ElementMemory} from "dolos/memory";
 import {Service} from "./service";
 import {State} from "./state";
@@ -19,6 +20,7 @@ export abstract class ServicePage<T extends Service> extends ElementMemory {
     public backgroundPages: Map<any, ServicePage<T>>;
 
     private loaded: boolean;
+    private readonly loadLock: AsyncLock;
 
     protected constructor(service: T) {
         super();
@@ -27,6 +29,7 @@ export abstract class ServicePage<T extends Service> extends ElementMemory {
         this.backgroundPages = new Map();
 
         this.loaded = false;
+        this.loadLock = new AsyncLock();
     }
 
     /**
@@ -34,14 +37,16 @@ export abstract class ServicePage<T extends Service> extends ElementMemory {
      * This is a no-op if the page
      * is already loaded.
      */
-    public async load(): Promise<void> {
-        if (this.loaded) return;
+    public load(): Promise<void> {
+        return this.loadLock.withLock(async () => {
+            if (this.loaded) return;
 
-        const pageLoad = this._load();
-        const backgroundLoad = this.loadBackgroundPages();
+            const pageLoad = this._load();
+            const backgroundLoad = this.loadBackgroundPages();
 
-        await Promise.all([pageLoad, backgroundLoad]);
-        this.loaded = true;
+            await Promise.all([pageLoad, backgroundLoad]);
+            this.loaded = true;
+        });
     }
 
     /**
@@ -58,16 +63,18 @@ export abstract class ServicePage<T extends Service> extends ElementMemory {
      * This is a no-op if the service page isn't loaded,
      * i.e. [[ServicePage.loaded]] is false.
      */
-    public async unload(): Promise<void> {
-        if (!this.loaded) return;
+    public unload(): Promise<void> {
+        return this.loadLock.withLock(async () => {
+            if (!this.loaded) return;
 
-        const pageUnload = this._unload();
-        const backgroundUnload = this.unloadBackgroundPages();
+            const pageUnload = this._unload();
+            const backgroundUnload = this.unloadBackgroundPages();
 
-        await Promise.all([pageUnload, backgroundUnload]);
+            await Promise.all([pageUnload, backgroundUnload]);
 
-        this.resetPage();
-        this.loaded = false;
+            this.resetPage();
+            this.loaded = false;
+        });
     }
 
     /**
