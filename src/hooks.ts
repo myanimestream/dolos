@@ -14,16 +14,16 @@
 /** @ignore */
 
 import {DependencyList, useCallback, useEffect, useMemo, useState} from "react";
-import {BehaviorSubject, Observable, PartialObserver, Subject, Subscribable} from "rxjs";
+import {BehaviorSubject, PartialObserver, Subject, Subscribable} from "rxjs";
 import {debounceTime} from "rxjs/operators";
 
 export function usePromise<T>(promise: PromiseLike<T>): T | undefined;
-export function usePromise<T, V>(promise: PromiseLike<T>, defaultValue: V): T | V;
+export function usePromise<T, V>(promise: PromiseLike<T>, initialValue: V): T | V;
 /**
  * Return the value of the resolved promise.
  */
-export function usePromise<T, V>(promise: PromiseLike<T>, defaultValue?: V): T | V {
-    const [value, setValue] = useState(defaultValue as T | V);
+export function usePromise<T, V>(promise: PromiseLike<T>, initialValue?: V): T | V {
+    const [value, setValue] = useState(initialValue as T | V);
 
     useEffect(() => {
         let cancelled = false;
@@ -43,12 +43,12 @@ export function usePromise<T, V>(promise: PromiseLike<T>, defaultValue?: V): T |
 export type MemoDependencies = DependencyList | undefined;
 
 export function usePromiseMemo<T>(func: () => PromiseLike<T>, deps: MemoDependencies): T | undefined;
-export function usePromiseMemo<T, V>(func: () => PromiseLike<T>, deps: MemoDependencies, defaultValue: V): T | V;
+export function usePromiseMemo<T, V>(func: () => PromiseLike<T>, deps: MemoDependencies, initialValue: V): T | V;
 /** Get the promise from a function and wait for it to resolve */
-export function usePromiseMemo<T, V>(func: () => PromiseLike<T>, deps: MemoDependencies, defaultValue?: V): T | V {
+export function usePromiseMemo<T, V>(func: () => PromiseLike<T>, deps: MemoDependencies, initialValue?: V): T | V {
     // func is presumed not to be stable!
     const promise = useMemo(func, deps);
-    return usePromise(promise, defaultValue) as T | V;
+    return usePromise(promise, initialValue) as T | V;
 }
 
 /**
@@ -70,8 +70,8 @@ export function useSubscription<T>(observable: Subscribable<T>,
 }
 
 export function useObservable<T>(observable: BehaviorSubject<T>): T;
-export function useObservable<T>(observable: Observable<T>): T | undefined;
-export function useObservable<T, V>(observable: Observable<T>, defaultValue: V): T | V;
+export function useObservable<T>(observable: Subscribable<T>): T | undefined;
+export function useObservable<T, V>(observable: Subscribable<T>, initialValue: V): T | V;
 /**
  * Always returns the latest value emitted by the observable.
  *
@@ -83,28 +83,29 @@ export function useObservable<T, V>(observable: Observable<T>, defaultValue: V):
  *
  * @return The latest value of the observable
  */
-export function useObservable<T, V>(observable: Observable<T>, defaultValue?: V): T | V {
+export function useObservable<T, V>(observable: Subscribable<T>, initialValue?: V): T | V {
     if (observable instanceof BehaviorSubject)
-        defaultValue = observable.getValue();
+        initialValue = observable.getValue();
 
-    const [value, setValue] = useState(defaultValue as T | V);
+    const [value, setValue] = useState(initialValue as T | V);
 
     useSubscription(observable, setValue);
 
     return value;
 }
 
-export function useObservableMemo<T>(func: () => Observable<T>, deps: MemoDependencies): T | undefined;
-export function useObservableMemo<T, V>(func: () => Observable<T>, deps: MemoDependencies, defaultValue?: V): T | V;
+export function useObservableMemo<T>(func: () => BehaviorSubject<T>, deps: MemoDependencies): T;
+export function useObservableMemo<T>(func: () => Subscribable<T>, deps: MemoDependencies): T | undefined;
+export function useObservableMemo<T, V>(func: () => Subscribable<T>, deps: MemoDependencies, initialValue?: V): T | V;
 /**
  * Get an observable from the given function and return its value.
  *
  * @param func - Function to call to get the observable
- * @param defaultValue - Value to use while no other value is available.
+ * @param initialValue - Value to use while no other value is available.
  */
-export function useObservableMemo<T, V>(func: () => Observable<T>, deps: MemoDependencies, defaultValue?: V): T | V {
+export function useObservableMemo<T, V>(func: () => Subscribable<T>, deps: MemoDependencies, initialValue?: V): T | V {
     const obs$ = useMemo(func, deps);
-    return useObservable(obs$, defaultValue) as T | V;
+    return useObservable(obs$, initialValue) as T | V;
 }
 
 export function useDebouncedState<T>(setter: (v: T) => any,
