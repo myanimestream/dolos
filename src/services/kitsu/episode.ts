@@ -2,8 +2,7 @@
  * @module services/kitsu
  */
 
-import {EpisodePage} from "dolos/common/pages";
-import {SkipButton} from "dolos/components/anime";
+import {EpisodePage, SkipButtonData} from "dolos/common/pages";
 import {cacheInMemory} from "dolos/memory";
 import {waitUntilExists} from "dolos/utils";
 import Kitsu from ".";
@@ -28,7 +27,7 @@ export default class KitsuEpisodePage extends EpisodePage<Kitsu> {
         this.injected(embed, "episode");
     }
 
-    public async nextEpisodeButton(): Promise<SkipButton | undefined> {
+    public async nextEpisodeButton(): Promise<SkipButtonData | undefined> {
         const epIndex = await this.getEpisodeIndex();
         if (!epIndex && epIndex !== 0)
             return undefined;
@@ -51,7 +50,7 @@ export default class KitsuEpisodePage extends EpisodePage<Kitsu> {
         transitionTo("anime.show.episodes.show", epIndex);
     }
 
-    public async prevEpisodeButton(): Promise<SkipButton | undefined> {
+    public async prevEpisodeButton(): Promise<SkipButtonData | undefined> {
         const epIndex = await this.getEpisodeIndex();
         if (!epIndex && epIndex !== 0)
             return undefined;

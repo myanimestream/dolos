@@ -161,7 +161,7 @@ function isObjectLike(value: any): value is object {
  * Check whether the value is a "true" object.
  */
 function isObject(value: any): value is object {
-    return isObjectLike(value) && value.constructor === Object;
+    return isObjectLike(value) && !isArray(value);
 }
 
 /**
@@ -193,15 +193,16 @@ function getAllowedTypes(whitelist?: Iterable<TypeID>, blacklist?: Iterable<Type
 
 function conformValueToType(value: any, allowedTypes: Set<TypeID>): [any, TypeID] {
     const valueType = getType(value);
-    if (allowedTypes.has(valueType)) return [value as any, valueType];
+    if (allowedTypes.has(valueType)) return [value, valueType];
 
     let allowedType: TypeID | undefined;
     for (allowedType of allowedTypes.values()) {
-        if (hasTransformer(valueType, allowedType))
-            return transformValue(value, allowedType);
+        if (hasTransformer(valueType, allowedType)) {
+            return [transformValue(value, allowedType), allowedType];
+        }
     }
 
-    return createEmpty(allowedType || "unknown");
+    return [createEmpty("unknown"), "unknown"];
 }
 
 export interface DynamicInputProps<T> extends TypedInputProps<T> {
@@ -240,6 +241,8 @@ export function DynamicInput<T>(props: DynamicInputProps<T>) {
         error,
         setError,
     });
+
+    // TODO only push changes after input was finished
 
     return (
         <>
@@ -402,7 +405,7 @@ function ArrayInputItem({index, value, onValueChange}: ArrayInputItemProps) {
 
     const handleValueChange = React.useCallback(
         newValue => onValueChange(index, newValue),
-        [onValueChange],
+        [onValueChange, index],
     );
 
     return (
@@ -420,7 +423,7 @@ function ArrayInput({value, onChange}: TypedInputProps<any[]>) {
             newValue[index] = newArrValue;
             onChange(newValue);
         },
-        [onChange],
+        [value, onChange],
     );
 
     const items = value.map((arrValue, index) => {
@@ -466,11 +469,11 @@ function ObjectInputRow({propKey, propValue, onKeyChange, onValueChange}: Object
 
     const handlePropKeyChange = React.useCallback(
         newKey => onKeyChange(propKey, newKey),
-        [onKeyChange],
+        [onKeyChange, propKey],
     );
     const handlePropValueChange = React.useCallback(
         newValue => onValueChange(propKey, newValue),
-        [onValueChange],
+        [onValueChange, propKey],
     );
 
     if (isPrimitive(propValue)) {
@@ -513,18 +516,18 @@ function ObjectInput({value, onChange}: TypedInputProps<object>) {
     const entries = React.useMemo(() => Object.entries(value), [value]);
 
     const handlePropKeyChange = React.useCallback((oldPropKey: string, newPropKey: string) => {
-        const newValue = {...value} as { [keyy: string]: any };
+        const newValue = {...value} as { [key: string]: any };
         newValue[newPropKey] = newValue[oldPropKey];
         delete newValue[oldPropKey];
 
         onChange(newValue);
-    }, [onChange]);
+    }, [value, onChange]);
 
     const handlePropValueChange = React.useCallback((propKey: string, newPropValue: any) => {
         const newValue = {...value, [propKey]: newPropValue};
 
         onChange(newValue);
-    }, [onChange]);
+    }, [value, onChange]);
 
     const rows = entries.map(([propKey, propValue]) => {
         return (

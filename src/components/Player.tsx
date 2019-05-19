@@ -27,7 +27,7 @@ export interface PlayerSource {
 
 export type PlyrEvents = Plyr.StandardEvent | Plyr.Html5Event;
 
-export interface PlayerProps extends WithStyles<typeof styles> {
+export interface PlayerProps {
     options?: any;
     eventListener?: Partial<{ [key in PlyrEvents]: (event: CustomEvent) => any }>;
     poster?: string;
@@ -36,7 +36,7 @@ export interface PlayerProps extends WithStyles<typeof styles> {
 
 // tslint:disable-next-line:variable-name
 export const Player = withStyles(styles)(
-    class extends React.Component<PlayerProps> {
+    class extends React.Component<PlayerProps & WithStyles<typeof styles>> {
         public player?: Plyr;
 
         public componentDidMount() {
@@ -77,11 +77,11 @@ export const Player = withStyles(styles)(
         }
 
         public render() {
-            const {classes} = this.props;
+            const {classes, poster} = this.props;
 
             return (
                 <div className={classes.plyrContainer}>
-                    <video poster={this.props.poster} playsInline controls>
+                    <video poster={poster} playsInline controls>
                         {this.renderSource()}
                     </video>
                 </div>

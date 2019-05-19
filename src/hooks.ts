@@ -17,13 +17,16 @@ import {DependencyList, useCallback, useEffect, useMemo, useState} from "react";
 import {BehaviorSubject, PartialObserver, Subject, Subscribable} from "rxjs";
 import {debounceTime} from "rxjs/operators";
 
+export type InitialValue<T> = T | (() => T);
+
 export function usePromise<T>(promise: PromiseLike<T>): T | undefined;
-export function usePromise<T, V>(promise: PromiseLike<T>, initialValue: V): T | V;
+export function usePromise<T, V>(promise: PromiseLike<T>, initialValue: InitialValue<V>): T | V;
+export function usePromise<T, V>(promise: PromiseLike<T>, initialValue?: InitialValue<V>): T | V | undefined;
 /**
  * Return the value of the resolved promise.
  */
-export function usePromise<T, V>(promise: PromiseLike<T>, initialValue?: V): T | V {
-    const [value, setValue] = useState(initialValue as T | V);
+export function usePromise<T, V>(promise: PromiseLike<T>, initialValue?: InitialValue<V>): T | V | undefined {
+    const [value, setValue] = useState<T | V | undefined>(initialValue);
 
     useEffect(() => {
         let cancelled = false;
@@ -42,13 +45,18 @@ export function usePromise<T, V>(promise: PromiseLike<T>, initialValue?: V): T |
 
 export type MemoDependencies = DependencyList | undefined;
 
-export function usePromiseMemo<T>(func: () => PromiseLike<T>, deps: MemoDependencies): T | undefined;
-export function usePromiseMemo<T, V>(func: () => PromiseLike<T>, deps: MemoDependencies, initialValue: V): T | V;
+export function usePromiseMemo<T>(func: () => PromiseLike<T>,
+                                  deps: MemoDependencies): T | undefined;
+export function usePromiseMemo<T, V>(func: () => PromiseLike<T>,
+                                     deps: MemoDependencies,
+                                     initialValue: InitialValue<V>): T | V;
 /** Get the promise from a function and wait for it to resolve */
-export function usePromiseMemo<T, V>(func: () => PromiseLike<T>, deps: MemoDependencies, initialValue?: V): T | V {
+export function usePromiseMemo<T, V>(func: () => PromiseLike<T>,
+                                     deps: MemoDependencies,
+                                     initialValue?: InitialValue<V>): T | V | undefined {
     // func is presumed not to be stable!
     const promise = useMemo(func, deps);
-    return usePromise(promise, initialValue) as T | V;
+    return usePromise(promise, initialValue);
 }
 
 /**
@@ -69,9 +77,20 @@ export function useSubscription<T>(observable: Subscribable<T>,
     }, [observable, observerOrNext, error, complete]);
 }
 
+// TODO DOCS
+export function useSubscriptionMemo<T>(func: () => Subscribable<T>,
+                                       deps: any[],
+                                       observerOrNext?: PartialObserver<T> | ((value: T) => void),
+                                       error?: (error: any) => void,
+                                       complete?: () => void): void {
+    const observable = useMemo(func, deps);
+    useSubscription(observable, observerOrNext, error, complete);
+}
+
 export function useObservable<T>(observable: BehaviorSubject<T>): T;
 export function useObservable<T>(observable: Subscribable<T>): T | undefined;
-export function useObservable<T, V>(observable: Subscribable<T>, initialValue: V): T | V;
+export function useObservable<T, V>(observable: Subscribable<T>, initialValue: InitialValue<V>): T | V;
+export function useObservable<T, V>(observable: Subscribable<T>, initialValue?: InitialValue<V>): T | V | undefined;
 /**
  * Always returns the latest value emitted by the observable.
  *
@@ -83,11 +102,11 @@ export function useObservable<T, V>(observable: Subscribable<T>, initialValue: V
  *
  * @return The latest value of the observable
  */
-export function useObservable<T, V>(observable: Subscribable<T>, initialValue?: V): T | V {
+export function useObservable<T, V>(observable: Subscribable<T>, initialValue?: InitialValue<V>): T | V | undefined {
     if (observable instanceof BehaviorSubject)
         initialValue = observable.getValue();
 
-    const [value, setValue] = useState(initialValue as T | V);
+    const [value, setValue] = useState<T | V | undefined>(initialValue);
 
     useSubscription(observable, setValue);
 
@@ -96,16 +115,63 @@ export function useObservable<T, V>(observable: Subscribable<T>, initialValue?: 
 
 export function useObservableMemo<T>(func: () => BehaviorSubject<T>, deps: MemoDependencies): T;
 export function useObservableMemo<T>(func: () => Subscribable<T>, deps: MemoDependencies): T | undefined;
-export function useObservableMemo<T, V>(func: () => Subscribable<T>, deps: MemoDependencies, initialValue?: V): T | V;
+export function useObservableMemo<T, V>(func: () => Subscribable<T>,
+                                        deps: MemoDependencies,
+                                        initialValue: InitialValue<V>): T | V;
 /**
  * Get an observable from the given function and return its value.
  *
  * @param func - Function to call to get the observable
  * @param initialValue - Value to use while no other value is available.
  */
-export function useObservableMemo<T, V>(func: () => Subscribable<T>, deps: MemoDependencies, initialValue?: V): T | V {
+export function useObservableMemo<T, V>(func: () => Subscribable<T>,
+                                        deps: MemoDependencies,
+                                        initialValue?: InitialValue<V>): T | V | undefined {
     const obs$ = useMemo(func, deps);
-    return useObservable(obs$, initialValue) as T | V;
+    return useObservable(obs$, initialValue);
+}
+
+/**
+ * Observable state as returned by [[useObservableState]].
+ */
+export interface ObservableState<T> {
+    readonly value: T;
+    readonly error?: any;
+    readonly complete: boolean;
+}
+
+export function useObservableState<T>(observable: Subscribable<T>): ObservableState<T>;
+export function useObservableState<T, V>(observable: Subscribable<T>,
+                                         initialValue: InitialValue<V>): ObservableState<T | V>;
+export function useObservableState<T, V>(observable: Subscribable<T>,
+                                         initialValue?: InitialValue<V>): ObservableState<T | V | undefined>;
+// TODO DOCS
+export function useObservableState<T, V>(observable: Subscribable<T>,
+                                         initialValue?: InitialValue<V>): ObservableState<T | V | undefined> {
+    const [value, setValue] = useState<T | V | undefined>(initialValue);
+    const [error, setError] = useState<any>(undefined);
+    const [complete, setComplete] = useState<boolean>(false);
+
+    useSubscription(observable, {
+        complete: () => setComplete(true),
+        error: setError,
+        next: setValue,
+    });
+
+    return {value, error, complete};
+}
+
+export function useObservableStateMemo<T>(func: () => Subscribable<T>,
+                                          deps: any[]): ObservableState<T | undefined>;
+export function useObservableStateMemo<T, V>(func: () => Subscribable<T>,
+                                             deps: any[],
+                                             initialValue: InitialValue<V>): ObservableState<T | V>;
+// TODO DOCS
+export function useObservableStateMemo<T, V>(func: () => Subscribable<T>,
+                                             deps: any[],
+                                             initialValue?: InitialValue<V>): ObservableState<T | V | undefined> {
+    const observable = useMemo(func, deps);
+    return useObservableState(observable, initialValue);
 }
 
 export function useDebouncedState<T>(setter: (v: T) => any,

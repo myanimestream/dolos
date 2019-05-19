@@ -2,8 +2,7 @@
  * @module services/myanimelist
  */
 
-import {EpisodePage} from "dolos/common/pages";
-import {SkipButton} from "dolos/components/anime";
+import {EpisodePage, SkipButtonData} from "dolos/common/pages";
 import MyAnimeList from ".";
 import MalAnimePage from "./anime";
 
@@ -41,7 +40,7 @@ export default class MalEpisodePage extends EpisodePage<MyAnimeList> {
         this.injected(embed);
     }
 
-    public async nextEpisodeButton(): Promise<SkipButton | undefined> {
+    public async nextEpisodeButton(): Promise<SkipButtonData | undefined> {
         const epIndex = await this.getEpisodeIndex();
         if (!epIndex && epIndex !== 0)
             return undefined;
@@ -64,7 +63,7 @@ export default class MalEpisodePage extends EpisodePage<MyAnimeList> {
         location.assign(epIndex.toString());
     }
 
-    public async prevEpisodeButton(): Promise<SkipButton | undefined> {
+    public async prevEpisodeButton(): Promise<SkipButtonData | undefined> {
         const epIndex = await this.getEpisodeIndex();
         if (!epIndex && epIndex !== 0)
             return undefined;

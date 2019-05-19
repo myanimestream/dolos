@@ -433,6 +433,14 @@
   "episode__player_type_name__embed": {
     "message": "Embed"
   },
+  "episode__player_type_name__unknown": {
+    "message": "Unknown",
+    "description": "Text for an unknown player type. This is extremely exceptional. If this value is ever used it's due to a bug"
+  },
+  "episode__menu__label": {
+    "message": "More",
+    "description": "Aria label for the open menu button on the episode embed"
+  },
   "episode__menu__search_anime": {
     "message": "Search Anime"
   },

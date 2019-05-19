@@ -2,7 +2,7 @@
  * @module common/pages
  */
 
-import {EpisodeEmbed, SkipButton} from "dolos/components/anime";
+import {EpisodeEmbed, SkipButtonData} from "dolos/components/anime";
 import {Episode, GrobberErrorType, GrobberResponseError, remoteGrobberClient} from "dolos/grobber";
 import {cacheInMemory} from "dolos/memory";
 import {wrapSentryLogger} from "dolos/SentryLogger";
@@ -23,6 +23,8 @@ import {AnimePage} from ".";
 import {Service} from "../service";
 import {ServicePage} from "../service-page";
 import _ = chrome.i18n.getMessage;
+
+export {SkipButtonData};
 
 /**
  * The methods required for [[EpisodePage.animePage]].
@@ -127,7 +129,7 @@ export abstract class EpisodePage<T extends Service> extends ServicePage<T> {
     /**
      * Get the [[SkipButton]] to go to the next episode.
      */
-    public abstract async nextEpisodeButton(): Promise<SkipButton | undefined>;
+    public abstract async nextEpisodeButton(): Promise<SkipButtonData | undefined>;
 
     /**
      * Navigate to the next episode
@@ -137,7 +139,7 @@ export abstract class EpisodePage<T extends Service> extends ServicePage<T> {
     /**
      * Get the [[SkipButton]] to go to the previous episode.
      */
-    public abstract async prevEpisodeButton(): Promise<SkipButton | undefined>;
+    public abstract async prevEpisodeButton(): Promise<SkipButtonData | undefined>;
 
     /**
      * Navigate to the previous episode

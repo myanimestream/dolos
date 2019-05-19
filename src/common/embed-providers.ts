@@ -235,11 +235,24 @@ function addEmbedInfoNumbers(embedInfos: EmbedInfo[]): void {
         if (embed) embed.number = undefined;
 }
 
+function getUnique<T>(seq: T[]): T[] {
+    const seen = new Set();
+
+    return seq.filter(value => {
+        if (seen.has(value)) return false;
+
+        seen.add(value);
+        return true;
+    });
+}
+
 /**
  * Create [[EmbedInfo]]s from urls and use the user config
  * to sort and filter them.
  */
 export function prepareEmbedInfos(urls: string[], embedConfig: Config["embedProviders"]): EmbedInfo[] {
+    urls = getUnique(urls);
+
     // filter non-https urls unless we don't have enough embeds otherwise
     let embedRawURLs = urls.filter(url => url.startsWith("https://"));
     if (embedRawURLs.length < 5) {
@@ -285,11 +298,12 @@ export const embedProviders: EmbedProvider[] = [
     },
     {
         hostname: "openload.co",
-        match: /(oload\.tv)|(openload\.co)/,
+        match: /(oload\.(tv|download))|(openload\.co)/,
         name: "openload",
     },
     {
         hostname: "rapidvideo.com",
+        match: /rapidvideo\.(com|is)/,
         name: "RapidVideo",
     },
     {
