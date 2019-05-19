@@ -20,6 +20,7 @@ import {
     combineLatest,
     defer,
     EMPTY,
+    forkJoin,
     from,
     merge,
     Observable,
@@ -31,6 +32,7 @@ import {
 } from "rxjs";
 import {
     catchError,
+    defaultIfEmpty,
     distinctUntilChanged,
     exhaustMap,
     filter,
@@ -38,7 +40,6 @@ import {
     map,
     mapTo,
     pluck,
-    share,
     switchMap,
     take,
     takeUntil,
@@ -184,25 +185,20 @@ export abstract class AnimePage<T extends Service> extends ServicePage<T> {
             typeof uidOrInfo === "string" ?
                 defer(() => remoteGrobberClient.getAnimeInfo(uidOrInfo)) :
                 of(uidOrInfo)
-        ).pipe(share());
-
-        const updateStoredInfo$ = info$.pipe(
-            switchMap(info => this.updateStoredInfo({uid: info.uid})),
         );
 
-        const updateSubInfo$ = zip(info$, this.getSubscriptionInfo$()).pipe(
-            switchMap(([info, subscription]) => {
-                if (subscription) {
-                    return store.getMutAnimeSubscription(subscription)
-                        .set(info, "anime");
-                } else {
-                    return EMPTY;
-                }
+        return zip(info$, this.getSubscriptionInfo$()).pipe(
+            exhaustMap(([info, subscription]) => {
+                const updateStoredInfo$ = defer(() => this.updateStoredInfo({uid: info.uid}));
+                const updateSubInfo$ = subscription ?
+                    defer(() => store.getMutAnimeSubscription(subscription).set(info, "anime")) :
+                    EMPTY;
+
+                return forkJoin([updateStoredInfo$, updateSubInfo$]).pipe(
+                    defaultIfEmpty(undefined as any),
+                );
             }),
-        );
-
-        return zip(updateStoredInfo$, updateSubInfo$).pipe(
-            switchMap(() => {
+            exhaustMap(() => {
                 // this handles the case of a page "abusing" the AnimePage
                 // such as the EpisodePage
                 if (this.state.page)
