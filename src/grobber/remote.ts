@@ -138,12 +138,16 @@ export class RemoteGrobberClientServer {
     private readonly portName: string;
     private readonly grobberClient: GrobberClientLike;
 
+    private readonly connectedPorts: Set<runtime.Port>;
+
     /**
      * @param portName - Must be the same as [[RemoteGrobberClient.portName]].
      */
     constructor(client: GrobberClientLike, portName: string = "grobber") {
         this.portName = portName;
         this.grobberClient = client;
+
+        this.connectedPorts = new Set();
     }
 
     /**
@@ -153,15 +157,27 @@ export class RemoteGrobberClientServer {
         runtime.onConnect.addListener(this.handleConnect.bind(this));
     }
 
+    /**
+     * Check whether the given port is still connected.
+     *
+     * @param port - Port to check
+     */
+    private isConnected(port: runtime.Port): boolean {
+        return this.connectedPorts.has(port);
+    }
+
     private handleConnect(port: runtime.Port): void {
         if (port.name !== this.portName) return;
 
         port.onMessage.addListener(this.handleMessage.bind(this));
+        port.onDisconnect.addListener(() => this.connectedPorts.delete(port));
+
+        this.connectedPorts.add(port);
     }
 
     private async performProcedure(procedure: string, body: any): Promise<any> {
         // @ts-ignore
-        const func: (...args: any[]) => any | undefined = this.grobberClient[procedure];
+        const func: (...args: any[]) => any = this.grobberClient[procedure];
         if (!func) throw new Error(`Unknown procedure: ${procedure}`);
 
         return await func.apply(this.grobberClient, body);
@@ -179,6 +195,8 @@ export class RemoteGrobberClientServer {
             response.error = marshalError(err);
         }
 
-        port.postMessage(response);
+        // make sure we're still connected
+        if (this.isConnected(port))
+            port.postMessage(response);
     }
 }
