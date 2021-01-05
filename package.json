@@ -51,7 +51,7 @@
     "@material-ui/styles": "^4.0.0-alpha.7",
     "@sentry/browser": "^5.0.8",
     "awesome-debounce-promise": "^2.1.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "notistack": "^0.6.1",
     "plyr": "^3.5.3",
     "react": "^16.8.6",
