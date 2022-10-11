@@ -38,7 +38,7 @@
     "typedoc-plugin-external-module-name": "^2.0.0",
     "typedoc-plugin-ui-router": "^2.0.0",
     "typescript": "^3.4.3",
-    "web-ext": "^3.0.0",
+    "web-ext": "^3.2.1",
     "webpack": "^4.30.0",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.0",
